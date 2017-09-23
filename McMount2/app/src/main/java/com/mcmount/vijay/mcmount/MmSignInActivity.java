@@ -2,6 +2,9 @@ package com.mcmount.vijay.mcmount;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -45,6 +49,8 @@ import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import retrofit2.Call;
@@ -77,6 +83,27 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(this);
         setContentView(R.layout.mobile_registration);
+
+
+        PackageInfo info;
+        try {
+            info = getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md;
+                md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                String something = new String(Base64.encode(md.digest(), 0));
+                //String something = new String(Base64.encodeBytes(md.digest()));
+                Log.e("hash key", something);
+            }
+        } catch (PackageManager.NameNotFoundException e1) {
+            Log.e("name not found", e1.toString());
+        } catch (NoSuchAlgorithmException e) {
+            Log.e("no such an algorithm", e.toString());
+        } catch (Exception e) {
+            Log.e("exception", e.toString());
+        }
+
 
         callbackManager = CallbackManager.Factory.create();
 
@@ -160,12 +187,8 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
                             if (object.has("gender"))
                                 gender = object.getString("gender");
 
-                            Intent main = new Intent(MmSignInActivity.this, MainActivity.class);
-                            main.putExtra("name", firstName);
-                            main.putExtra("surname", lastName);
-                            main.putExtra("imageUrl", profilePicture.toString());
-                            startActivity(main);
-                            finish();
+
+                            signup(email, firstName);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         } catch (MalformedURLException e) {
@@ -208,6 +231,46 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
         // Set the dimensions of the sign-in button.
         SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
+    }
+
+    public void signup(final String email, final String name) {
+        showProgressDialog();
+        ApiInterface apiService =
+                ApiClient.getClient().create(ApiInterface.class);
+        Call<EventResponse> call = apiService.register(name, email, email, "");
+        call.enqueue(new Callback<EventResponse>() {
+            @Override
+            public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
+                Log.d(TAG, "Number of movies received: " + response.body());
+
+                hideProgressDialog();
+                EventResponse sigInResponse = response.body();
+                if (sigInResponse != null) {
+                    PreferenceUtil preferenceUtil = new PreferenceUtil(MmSignInActivity.this);
+                    preferenceUtil.putBoolean(Keys.IS_ALREADY_REGISTERED, true);
+                    preferenceUtil.putString(Keys.NAME, name);
+                    preferenceUtil.putString(Keys.EmailID, email);
+                    preferenceUtil.putString(Keys.PHONE, "");
+                    preferenceUtil.putString(Keys.PASSWORD, email);
+                    Intent intent = new Intent(MmSignInActivity.this, MmSignInActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(MmSignInActivity.this, "Could not connect to server.", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<EventResponse> call, Throwable t) {
+                // Log error here since request failed
+                Log.e(TAG, t.toString());
+                hideProgressDialog();
+                Toast.makeText(MmSignInActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
 
@@ -264,7 +327,7 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
             if (acct != null) {
                 String name = acct.getDisplayName();
                 String email = acct.getEmail();
-                updateUI(true);
+                signup(email, name);
             }
         } else {
             // Signed out, show unauthenticated UI.
@@ -330,7 +393,8 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
             mProgressDialog.setIndeterminate(true);
         }
 
-        mProgressDialog.show();
+        if (!mProgressDialog.isShowing())
+            mProgressDialog.show();
     }
 
     private void hideProgressDialog() {

@@ -189,6 +189,7 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
 
 
         if (CommonUtil.isNetworkAvailable(activity)) {
+            MainActivity.showProgress(activity);
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
             Call<EventResponse> call = apiService.register(name, email, password, phone);
@@ -196,10 +197,9 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
                 @Override
                 public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
                     Log.d(TAG, "Number of movies received: " + response.body());
-
+                    MainActivity.dismissProgress();
                     EventResponse sigInResponse = response.body();
                     if (sigInResponse != null) {
-
                         if (sigInResponse.getError()) {
                             Toast.makeText(MmSignUpActivity.this, sigInResponse.getError_msg(), Toast.LENGTH_SHORT).show();
                         } else {
@@ -224,6 +224,7 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
                 public void onFailure(Call<EventResponse> call, Throwable t) {
                     // Log error here since request failed
                     Log.e(TAG, t.toString());
+                    MainActivity.dismissProgress();
                     Toast.makeText(MmSignUpActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                 }
             });

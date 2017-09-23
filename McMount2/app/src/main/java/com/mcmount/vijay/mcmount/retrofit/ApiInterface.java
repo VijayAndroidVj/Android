@@ -27,14 +27,14 @@ public interface ApiInterface {
 
     @POST("api/api-product.php")
     @FormUrlEncoded
-    Call<EventResponse> product(@Field("randuniq") String randuniq);
+    Call<CategoryListModel> product(@Field("randuniq") String randuniq);
 
     @POST("api/api-brand.php")
     @FormUrlEncoded
-    Call<EventResponse> brand(@Field("parent_id") String parent_id);
+    Call<CategoryListModel> brand(@Field("parent_id") String parent_id);
 
     @POST("api/api-model.php")
-    Call<EventResponse> model(@Field("model_id") String model_id);
+    Call<CategoryListModel> model(@Field("model_id") String model_id);
 
     @POST("api/mc-login/register.php")
     @FormUrlEncoded

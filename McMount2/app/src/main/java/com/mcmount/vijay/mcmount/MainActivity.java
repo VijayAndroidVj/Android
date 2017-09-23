@@ -22,7 +22,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ListItemClickListener {
 
     private RecyclerView recyclerView;
     private ViewPager viewPager;
@@ -94,11 +94,11 @@ public class MainActivity extends AppCompatActivity {
 
                     CategoryListModel categoryListModel = response.body();
                     if (categoryListModel != null) {
-                        if (categoryListModel.getCategory_name().size() == 0) {
+                        if (categoryListModel.getCategory_name() == null || categoryListModel.getCategory_name().size() == 0) {
                             Toast.makeText(MainActivity.this, "Category not Found", Toast.LENGTH_SHORT).show();
                         } else {
                             categoryListModelArrayList = categoryListModel.getCategory_name();
-                            CategoryAdapter categoryAdapter = new CategoryAdapter(categoryListModelArrayList, MainActivity.this);
+                            CategoryAdapter categoryAdapter = new CategoryAdapter(categoryListModelArrayList, MainActivity.this, MainActivity.this);
                             recyclerView.setAdapter(categoryAdapter);
                         }
                     } else {
@@ -119,6 +119,17 @@ public class MainActivity extends AppCompatActivity {
             });
         } else {
             Toast.makeText(MainActivity.this, "Check your internet connection!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void itemClicked(int position, Object object) {
+        try {
+            Intent intent = new Intent(MainActivity.this, ProductActivity.class);
+            intent.putExtra("id", ((Cateegory) object).getRanduniq());
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

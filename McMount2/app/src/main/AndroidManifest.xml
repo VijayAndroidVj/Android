@@ -38,6 +38,23 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeActionBar" />
 
+        <activity
+            android:name=".ProductActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeActionBar" />
+
+
+        <activity
+            android:name=".BrandActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeActionBar" />
+
+
+        <activity
+            android:name=".ModelActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeActionBar" />
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/fbId" />

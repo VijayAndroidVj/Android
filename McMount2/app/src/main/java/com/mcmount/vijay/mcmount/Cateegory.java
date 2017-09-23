@@ -15,6 +15,15 @@ public class Cateegory {
     @SerializedName("randuniq")
     private String randuniq;
 
+    @SerializedName("parent_id")
+    private String parent_id;
+
+    @SerializedName("brand_id")
+    private String brand_id;
+
+    @SerializedName("model_id")
+    private String model_id;
+
     @SerializedName("name")
     private String name;
 
@@ -51,6 +60,30 @@ public class Cateegory {
 
     public void setIcon_image(String icon_image) {
         this.icon_image = icon_image;
+    }
+
+    public String getParent_id() {
+        return parent_id;
+    }
+
+    public void setParent_id(String parent_id) {
+        this.parent_id = parent_id;
+    }
+
+    public String getBrand_id() {
+        return brand_id;
+    }
+
+    public void setBrand_id(String brand_id) {
+        this.brand_id = brand_id;
+    }
+
+    public String getModel_id() {
+        return model_id;
+    }
+
+    public void setModel_id(String model_id) {
+        this.model_id = model_id;
     }
 
     @Override

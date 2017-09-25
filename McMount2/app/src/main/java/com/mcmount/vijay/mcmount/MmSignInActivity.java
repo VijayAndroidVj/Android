@@ -252,7 +252,7 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
                     preferenceUtil.putString(Keys.EmailID, email);
                     preferenceUtil.putString(Keys.PHONE, "");
                     preferenceUtil.putString(Keys.PASSWORD, email);
-                    Intent intent = new Intent(MmSignInActivity.this, MmSignInActivity.class);
+                    Intent intent = new Intent(MmSignInActivity.this, MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     finish();

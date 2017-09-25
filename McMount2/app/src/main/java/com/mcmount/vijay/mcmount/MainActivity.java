@@ -10,6 +10,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.mcmount.vijay.mcmount.retrofit.ApiClient;
@@ -114,7 +115,11 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
                     // Log error here since request failed
                     Log.e("", t.toString());
                     dismissProgress();
-                    Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                    if (t.getMessage() != null && t.getMessage().contains("Expected BEGIN_OBJECT but was BEGIN_ARRAY")) {
+                        Toast.makeText(MainActivity.this, "Products not Found", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         } else {

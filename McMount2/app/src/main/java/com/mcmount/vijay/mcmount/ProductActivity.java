@@ -97,10 +97,17 @@ public class ProductActivity extends AppCompatActivity implements ListItemClickL
                 public void onFailure(Call<CategoryListModel> call, Throwable t) {
                     // Log error here since request failed
                     Log.e("", t.toString());
+                    if (t.getMessage() != null && t.getMessage().contains("Expected BEGIN_OBJECT but was BEGIN_ARRAY")) {
+                        txtLabel.setVisibility(View.VISIBLE);
+                        txtLabel.setText("Products not available");
+                        Toast.makeText(activity, "Products not Found", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
+                        txtLabel.setVisibility(View.VISIBLE);
+                        txtLabel.setText("Could not connect to server");
+                    }
                     dismissProgress();
-                    Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
-                    txtLabel.setVisibility(View.VISIBLE);
-                    txtLabel.setText("Could not connect to server");
+
                 }
             });
         } else {

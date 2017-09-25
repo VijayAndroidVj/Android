@@ -63,7 +63,7 @@ public class BrandActivity extends AppCompatActivity implements ListItemClickLis
             showProgress(activity);
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
-            Call<CategoryListModel> call = apiService.product(categoryId);
+            Call<CategoryListModel> call = apiService.brand(categoryId);
             call.enqueue(new Callback<CategoryListModel>() {
                 @Override
                 public void onResponse(Call<CategoryListModel> call, Response<CategoryListModel> response) {
@@ -96,9 +96,15 @@ public class BrandActivity extends AppCompatActivity implements ListItemClickLis
                     // Log error here since request failed
                     Log.e("", t.toString());
                     dismissProgress();
-                    Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
-                    txtLabel.setVisibility(View.VISIBLE);
-                    txtLabel.setText("Could not connect to server");
+                    if (t.getMessage() != null && t.getMessage().contains("Expected BEGIN_OBJECT but was BEGIN_ARRAY")) {
+                        txtLabel.setVisibility(View.VISIBLE);
+                        txtLabel.setText("Products not available");
+                        Toast.makeText(activity, "Products not Found", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
+                        txtLabel.setVisibility(View.VISIBLE);
+                        txtLabel.setText("Could not connect to server");
+                    }
                 }
             });
         } else {

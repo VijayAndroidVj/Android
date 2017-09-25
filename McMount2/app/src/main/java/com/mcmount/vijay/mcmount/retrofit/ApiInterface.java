@@ -6,7 +6,9 @@ import com.mcmount.vijay.mcmount.EventResponse;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 /**
  * Created by iyara_rajan on 06-07-2017.
@@ -25,16 +27,14 @@ public interface ApiInterface {
     @POST("api/api-category.php")
     Call<CategoryListModel> category();
 
-    @POST("api/api-product.php")
-    @FormUrlEncoded
-    Call<CategoryListModel> product(@Field("randuniq") String randuniq);
+    @GET("api/api-product.php")
+    Call<CategoryListModel> product(@Query("randuniq") String randuniq);
 
-    @POST("api/api-brand.php")
-    @FormUrlEncoded
-    Call<CategoryListModel> brand(@Field("parent_id") String parent_id);
+    @GET("api/api-brand.php")
+    Call<CategoryListModel> brand(@Query("parent_id") String parent_id);
 
-    @POST("api/api-model.php")
-    Call<CategoryListModel> model(@Field("model_id") String model_id);
+    @GET("api/api-model.php")
+    Call<CategoryListModel> model(@Query("model_id") String model_id);
 
     @POST("api/mc-login/register.php")
     @FormUrlEncoded

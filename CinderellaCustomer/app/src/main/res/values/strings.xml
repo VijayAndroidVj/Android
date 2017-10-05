@@ -1,0 +1,70 @@
+<resources>
+    <string name="app_name">Cinderella Laundry</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="mobile">Mobile</string>
+    <string name="pwd">Password</string>
+    <string name="con_pwd">Confirm Password</string>
+    <string name="address">Address</string>
+    <string name="email">Email</string>
+    <string name="logged_in">Logged SuccessFully</string>
+
+
+    <string name="prompt_password">Password</string>
+    <!--<string name="service">The scope of service will be as set out on our website cinderellalaundry.com. Any standard or temporary deviation from the service will be notified on our website.-->
+    <!--The company will maintain service subject only to matters within the control of company. The company reserves the right to reject Partial or Total services in case it is felt to be not in the prerogative of its services.-->
+    <!--Company reserves right to decline services to customer in the case of unprofessional behaviour towards the company's employees.</string>-->
+    <string name="name">Name</string>
+    <!--<string name="priceingpayments">Prices and services are periodically reviewed. Any changes to will be displayed on our web site cinderellalaundry.com and complete list will be at our outlet.-->
+    <!--All billings are subject to current standard rate of Service Tax and other taxes.-->
+    <!--An estimate of the bill amount will be provided at the time of booking the order.-->
+    <!--The exact bill amount will be informed to customer after items are checked at processing unit if necessary.-->
+    <!--We accept payment in Cash upon Delivery of items &amp; invoice to the Customer.-->
+    <!--Any advance payment must be recorded in Pickup Slip, signed by our representative.</string>-->
+    <!--<string name="bookingpickup">Our store and Pick-up / Drop service operates 9.00 AM to 7.00 PM, on weekdays.-->
+    <!--However online facility is available 24 x 7. Customer can schedule a Pickup through our website.-->
+    <!--Our representative will make best effort for schedule with a prior confirmation.-->
+    <!--Customer needs to check at time of pickup / drop all items to complete satisfaction.-->
+    <!--Any special process instruction provided to our representative must be mentioned in writing on the Pickup Slip.-->
+    <!--All accessories which can be detached from the garment will be counted as separate items and charged separately, case to case as necessary.</string>-->
+
+    <!--<string name="deliveryGOODS">The delivery will be made to the address registered with Cinderella. In case of customer not being present at the address, he is deemed to arrange someone on his behalf to receive the same at his Responsibility &amp; risk.-->
+    <!--Items will be deemed to have been delivered to customer unless company has received notification about any dispute/confusion from customer within 24 hours following delivery date.-->
+    <!--In the instance that the company tries to deliver to a customer address, as instructed by the customer, and the customer is not available for whatever reason, the company will arrange only one more delivery time with the customer with due confirmation.-->
+    <!--After second attempt, customer can pick up the items from our outlet for next 15 days.-->
+    <!--The company will not retain the items after 5 weeks from the first delivery date attempted. The company reserves right to dispose of such articles and is not entitled to any recompense the items.-->
+    <!--The company tries to deliver items on time but sometimes due to unforeseen circumstances there might be a delay in delivery due to natural calamities.-->
+    <!--The company reserves the right to decline services or cancel orders in the instance of repeated inability to gain access to the customer's collection/delivery address</string>-->
+    <string name="disclaimer">Items which the company considers under its services can only be processed at the risk of customer.</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <!--<string name="exclusions">The company accepts no liability for:-->
+    <!--Any feather/down filled item-->
+    <!--Any accessory attached to an item or damaged caused by the accessory.-->
+    <!--Any claim caused by ink marks left behind by the poly-marking label system.-->
+    <!--Any item that does not have a cleaning instruction.-->
+    <!--Any item with crinkles or creased effects that can be removed during processing.-->
+    <!--Any item with faulty interfacing or adhesives that mark off after processing.-->
+    <!--Any item that suffers color loss.-->
+    <!--Loss of any item which does not have an authentic cinderella receipt.-->
+    <!--In case of damage/loss of an item, it should be reported to Cinderella within 24 hours of delivery.</string>-->
+    <!--<string name="MAJEURE">Without limiting the foregoing, under no circumstances shall Cinderella be held liable for any damage or-->
+    <!--loss due to deficiency in performance of the Services resulting directly or indirectly from acts of nature,-->
+    <!--forces or causes beyond its reasonable control, including without limitation, Internet failures, computer-->
+    <!--equipment failures, telecommunication equipment failures, electrical power failures and other equipment failures.-->
+    <!--This TERMS OF USE is made by BlueFloyd Technologies Pvt. Ltd., (hereinafter referred to as “Dapper”) and you as a User of the Dapper Service. These terms and conditions (“Agreement”) apply to Dapper website and the related mobile application and/or selected other domains, existing or future, content, products and services (collectively, the “Services”). The term 'Dapper' or 'us' or 'we' or ‘company’ refers to the owners, managers, employees, investors of Dapper. The term 'you' refers to the user or viewer of our app, website or mobile application.</string>-->
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+</resources>

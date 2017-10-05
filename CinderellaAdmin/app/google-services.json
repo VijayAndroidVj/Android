@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "173710557706",
+    "firebase_url": "https://cindapp-94f5a.firebaseio.com",
+    "project_id": "cindapp-94f5a",
+    "storage_bucket": "cindapp-94f5a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:173710557706:android:0f3787b7d847ca4d",
+        "android_client_info": {
+          "package_name": "cinderellaadmin.vajaralabs.com.admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "173710557706-rbu2p99vmm81nri145vstj288ok7rn55.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPtPPZ75tuRRWAEgHWmfHFl7is3f_9S8w"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

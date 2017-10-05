@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="cinderellaadmin.vajaralabs.com.admin">
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+
+    <!-- Required to show current location -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+
+    <application
+        android:name=".MyApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".SplashActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CreateShop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".AddDealer"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".AddFactory"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".CaptureSignature"
+            android:label="Signature Confirmation"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity
+            android:name=".PriceList"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AddLocality"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ViewDeliveryPerson"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AssignDealerDelivery"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BookingZone"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme1" />
+        <activity
+            android:name=".BookingZoneDelivery"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BookingZonePickuped"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme1" />
+        <activity
+            android:name=".Booking"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AddCity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AssignDealer"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Graph"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DeliveryBookingZone"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DeliveryPickupCustomer"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|adjustResize" />
+        <activity
+            android:name=".AssignFactory"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ViewFactoryPerson"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FactoryList"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FromFactory"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ViewShopPerson"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FactoryAssignedData"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DoneJobs"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CreateSign"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ViewCustomers"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MoreView"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Notification"
+            android:screenOrientation="portrait" />
+
+        <!-- <meta-data -->
+        <!-- android:name="com.google.android.gms.version" -->
+        <!-- android:value="@integer/google_play_services_version" /> -->
+
+        <service
+            android:name=".MyService"
+            android:enabled="true"
+            android:exported="true" />
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBbBX27lURJbswxDDzXCJi6nwLvKrvlqAw" />
+
+        <activity
+            android:name=".MapsActivity"
+            android:label="@string/title_activity_maps" />
+        <activity android:name=".Report" />
+        <activity android:name=".ClientFeedback" />
+
+        <!-- Firebase Notifications -->
+        <service android:name="service.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name="service.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <!-- ./Firebase Notifications -->
+        <activity android:name=".WalkinCustomer"></activity>
+    </application>
+
+</manifest>

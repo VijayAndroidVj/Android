@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/sky"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/linear_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/profile_back"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@mipmap/profile" />
+
+                <TextView
+                    android:id="@+id/txt_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:padding="5dp"
+                    android:text="Name"
+                    android:textColor="@color/profile_name"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/linear_main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/btn_walkin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/pressed"
+                    android:gravity="center_vertical"
+                    android:padding="12dp"
+                    android:text="Walkin Customer"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="19dp"
+                    android:visibility="visible" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.9dp"
+                    android:background="@color/kpf_bg2" />
+
+                <Button
+                    android:id="@+id/btn_booking_zone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/pressed"
+                    android:gravity="center_vertical"
+                    android:padding="12dp"
+                    android:text="Booking Zone"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="19dp"
+                    android:visibility="visible" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.9dp"
+                    android:background="@color/kpf_bg2" />
+
+
+                <Button
+                    android:id="@+id/btn_pickuped_zone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/pressed"
+                    android:gravity="center_vertical"
+                    android:padding="12dp"
+                    android:text="Pickup Zone"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="19dp"
+                    android:visibility="visible" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.9dp"
+                    android:background="@color/kpf_bg2" />
+
+                <Button
+                    android:id="@+id/btn_delivery_zone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/pressed"
+                    android:gravity="center_vertical"
+                    android:padding="12dp"
+                    android:text="Delivery Zone"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="19dp"
+                    android:visibility="visible" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.9dp"
+                    android:background="@color/kpf_bg2" />
+
+
+                <Button
+                    android:id="@+id/btn_pickuped"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/pressed"
+                    android:gravity="center_vertical"
+                    android:padding="12dp"
+                    android:text="Pickup From Delivery Person"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+
+                    android:textSize="19dp"
+                    android:visibility="gone" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.9dp"
+                    android:background="@color/kpf_bg2" />
+
+                <Button
+                    android:id="@+id/btn_completed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/pressed"
+                    android:gravity="center_vertical"
+                    android:padding="12dp"
+                    android:text="Completed Jobs"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+
+                    android:textSize="19dp"
+                    android:visibility="visible" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.9dp"
+                    android:background="@color/kpf_bg2" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_delivery_home"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/pressed"
+                android:gravity="center_vertical"
+                android:padding="12dp"
+                android:text="From Factory"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="19dp"
+                android:visibility="gone" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.9dp"
+                android:background="@color/kpf_bg2" />
+
+            <Button
+                android:id="@+id/btn_assigned_factory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/pressed"
+                android:gravity="center_vertical"
+                android:padding="12dp"
+                android:text="Assigned Data To Factory Pesrson"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="19dp"
+                android:visibility="gone" />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.9dp"
+                android:background="@color/kpf_bg2" />
+
+            <Button
+                android:id="@+id/btn_delivery_booking_zone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/pressed"
+                android:gravity="center_vertical"
+                android:padding="12dp"
+                android:text="Pickup Zone"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="19dp"
+                android:visibility="gone" />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.9dp"
+                android:background="@color/kpf_bg2" />
+
+            <LinearLayout
+                android:id="@+id/linear_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+
+                <Button
+                    android:id="@+id/btn_add_shop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/pressed"
+                    android:gravity="center_vertical"
+                    android:padding="12dp"
+                    android:text="Add Shop"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="19dp"
+                    android:visibility="visible" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.9dp"
+                    android:background="@color/kpf_bg2">
+
+                </View>
+
+                <Button
+                    android:id="@+id/btn_factory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/pressed"
+                    android:gravity="center_vertical"
+                    android:padding="12dp"
+                    android:text="Add Factory"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="19dp"
+                    android:visibility="visible" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.9dp"
+                    android:background="@color/kpf_bg2">
+
+                </View>
+
+                <Button
+                    android:id="@+id/btn_add_delivery_person"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/pressed"
+                    android:gravity="center_vertical"
+                    android:padding="12dp"
+                    android:text="Add Delivery"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="19dp"
+                    android:visibility="visible" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.9dp"
+                    android:background="@color/kpf_bg2">
+
+                </View>
+
+                <Button
+                    android:id="@+id/btn_view_shop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/pressed"
+                    android:gravity="center_vertical"
+                    android:padding="12dp"
+                    android:text="View Shop"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="19dp"
+                    android:visibility="visible" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.9dp"
+                    android:background="@color/kpf_bg2">
+
+                </View>
+
+                <Button
+                    android:id="@+id/btn_view_delivery"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/pressed"
+                    android:gravity="center_vertical"
+                    android:padding="12dp"
+                    android:text="View Delivery"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="19dp"
+                    android:visibility="visible" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.9dp"
+                    android:background="@color/kpf_bg2">
+
+                </View>
+
+                <Button
+                    android:id="@+id/btn_view_factory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/pressed"
+                    android:gravity="center_vertical"
+                    android:padding="12dp"
+                    android:text="View Factory"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="19dp"
+                    android:visibility="visible" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.9dp"
+                    android:background="@color/kpf_bg2">
+
+                </View>
+
+                <Button
+                    android:id="@+id/btn_report"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/pressed"
+                    android:gravity="center_vertical"
+                    android:padding="12dp"
+                    android:text="Report"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="19dp"
+                    android:visibility="visible" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.9dp"
+                    android:background="@color/kpf_bg2">
+
+                </View>
+
+                <Button
+                    android:id="@+id/btn_graph"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/pressed"
+                    android:gravity="center_vertical"
+                    android:padding="12dp"
+                    android:text="Graph"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="19dp"
+                    android:visibility="visible" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.9dp"
+                    android:background="@color/kpf_bg2">
+
+                </View>
+
+                <Button
+                    android:id="@+id/btn_feed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/pressed"
+                    android:gravity="center_vertical"
+                    android:padding="12dp"
+                    android:text="Feedback"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="19dp"
+                    android:visibility="visible" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.9dp"
+                    android:background="@color/kpf_bg2">
+
+                </View>
+
+
+                <Button
+                    android:id="@+id/btn_price_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/pressed"
+                    android:gravity="center_vertical"
+                    android:padding="12dp"
+                    android:text="Add Price List"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="19dp"
+                    android:visibility="visible" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.9dp"
+                    android:background="@color/kpf_bg2" />
+
+                <Button
+                    android:id="@+id/btn_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/pressed"
+                    android:gravity="center_vertical"
+                    android:padding="12dp"
+                    android:text="Add City"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="19dp"
+                    android:visibility="visible" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.9dp"
+                    android:background="@color/kpf_bg2">
+
+                </View>
+
+
+                <Button
+                    android:id="@+id/btn_locality"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/pressed"
+                    android:gravity="center_vertical"
+                    android:padding="12dp"
+                    android:text="Add Locality"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="19dp"
+                    android:visibility="visible" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.9dp"
+                    android:background="@color/kpf_bg2">
+
+                </View>
+
+
+                <Button
+                    android:id="@+id/btn_customer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/pressed"
+                    android:gravity="center_vertical"
+                    android:padding="12dp"
+                    android:text="View Customers"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="19dp"
+                    android:visibility="visible" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.9dp"
+                    android:background="@color/kpf_bg2">
+
+                </View>
+
+                <Button
+                    android:id="@+id/btn_notification"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/pressed"
+                    android:gravity="center_vertical"
+                    android:padding="12dp"
+                    android:text="Offers"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="19dp"
+                    android:visibility="visible" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.9dp"
+                    android:background="@color/kpf_bg2">
+
+                </View>
+
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/btn_logut"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/pressed"
+                android:gravity="center_vertical"
+                android:padding="12dp"
+                android:text="Logout"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="19dp"
+                android:visibility="visible" />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.9dp"
+                android:background="@color/kpf_bg2">
+
+            </View>
+        </LinearLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

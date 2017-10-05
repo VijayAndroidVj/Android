@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/txt_straching"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:text="Starching"
+        android:textColor="@color/black_2"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/txt_stain_removal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:text="Stain Removal"
+        android:textColor="@color/black_2"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/txt_polishing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:text="Polishing"
+        android:textColor="@color/black_2"
+        android:textStyle="bold"/>
+
+
+</LinearLayout>

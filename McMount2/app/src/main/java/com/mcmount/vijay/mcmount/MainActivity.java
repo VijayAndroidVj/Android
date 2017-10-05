@@ -11,6 +11,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mcmount.vijay.mcmount.retrofit.ApiClient;
@@ -23,22 +24,24 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements ListItemClickListener {
+public class MainActivity extends BaseActivity implements ListItemClickListener {
 
     private RecyclerView recyclerView;
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
 
     private ArrayList<BannerModel> bannerModelArrayList = new ArrayList<>();
+    TextView txtLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        txtLabel = (TextView) findViewById(R.id.txtLabel);
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(mLayoutManager);
-
+        initNavigationDrawer();
         BannerModel bannerModel = new BannerModel();
         bannerModel.setTitle("Offer");
         bannerModel.setImage("https://www.apptha.com/blog/wp-content/uploads/2013/05/magento-product-sold-count-extension.jpg");
@@ -97,12 +100,15 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
                     if (categoryListModel != null) {
                         if (categoryListModel.getCategory_name() == null || categoryListModel.getCategory_name().size() == 0) {
                             Toast.makeText(MainActivity.this, "Category not Found", Toast.LENGTH_SHORT).show();
+                            txtLabel.setVisibility(View.VISIBLE);
                         } else {
                             categoryListModelArrayList = categoryListModel.getCategory_name();
                             CategoryAdapter categoryAdapter = new CategoryAdapter(categoryListModelArrayList, MainActivity.this, MainActivity.this);
                             recyclerView.setAdapter(categoryAdapter);
+                            txtLabel.setVisibility(View.GONE);
                         }
                     } else {
+                        txtLabel.setVisibility(View.VISIBLE);
                         Toast.makeText(MainActivity.this, "Could not connect to server.", Toast.LENGTH_SHORT).show();
                     }
 

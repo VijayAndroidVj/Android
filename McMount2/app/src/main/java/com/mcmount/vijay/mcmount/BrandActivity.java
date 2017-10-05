@@ -29,7 +29,7 @@ import static com.mcmount.vijay.mcmount.MainActivity.showProgress;
  * Created by vijay on 23/9/17.
  */
 
-public class BrandActivity extends AppCompatActivity implements ListItemClickListener {
+public class BrandActivity extends BaseActivity implements ListItemClickListener {
 
     private RecyclerView recyclerView;
     private String categoryId = "";
@@ -40,13 +40,19 @@ public class BrandActivity extends AppCompatActivity implements ListItemClickLis
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.actionbar_main);
         activity = this;
+
+        onlyActionbar();
 
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(mLayoutManager);
         txtLabel = (TextView) findViewById(R.id.txtLabel);
+
+        TextView title = (TextView) findViewById(R.id.txtTitle);
+        title.setVisibility(View.VISIBLE);
+        title.setText("Select Brand");
 
         findViewById(R.id.rlViewPager).setVisibility(View.GONE);
 
@@ -118,7 +124,7 @@ public class BrandActivity extends AppCompatActivity implements ListItemClickLis
     public void itemClicked(int position, Object object) {
         try {
             Intent intent = new Intent(activity, ModelActivity.class);
-            intent.putExtra("id", ((Cateegory) object).getRanduniq());
+            intent.putExtra("id", ((Cateegory) object).getBrand_id());
             startActivity(intent);
         } catch (Exception e) {
             e.printStackTrace();

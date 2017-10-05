@@ -13,4 +13,42 @@
     <string name="signup">Sign Up</string>
     <string name="fbId">499633053727762</string>
     <string name="terms"> By signing up for an account you agree to our Terms and Conditions</string>
+
+    <string name="fa_share">&#xf1e0;</string>
+    <string name="fa_reports">&#xf0f6;</string>
+    <string name="fa_notes">&#xf040;</string>
+    <string name="fa_my_account">&#xf2be;</string>
+    <string name="fa_home">&#xf015;</string>
+    <string name="fa_mic">&#xf130;</string>
+    <string name="fa_video">&#xf03d;</string>
+    <string name="fa_audio">&#xf028;</string>
+    <string name="fa_webview">&#xf15b;</string>
+    <string name="fa_logout">&#xf08b;</string>
+    <string name="fa_appointment">&#xf271;</string>
+
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+
+    <integer name="slide_animation_duration">500</integer>
+
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="comlaint_history">Complaint History</string>
+    <string name="upoad_bill">Upload Bill</string>
+    <string name="mc_box">MC Box</string>
+    <string name="warrenty_registration">Warrenty Registration</string>
+    <string name="complaint_escalate">Complaint Escalate</string>
+    <string name="raise_by_brand">Raise By Brand</string>
+
+
+    <string name="doctor">Doctor</string>
+    <string name="participants">Participants</string>
+    <string name="reports">Reports</string>
+    <string name="notes">Notes</string>
+    <string name="my_account">My Account</string>
+    <string name="add_appointment">Add Appointment</string>
+    <string name="note_name_here">Note Name Here</string>
+    <string name="consultation">Consultation</string>
+    <string name="logout1">Logout</string>
+
 </resources>

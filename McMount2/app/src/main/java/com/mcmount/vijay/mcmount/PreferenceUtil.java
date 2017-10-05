@@ -11,7 +11,7 @@ public class PreferenceUtil {
     SharedPreferences sharedpreferences;
 
     public PreferenceUtil(Context context) {
-        sharedpreferences = context.getSharedPreferences("Aster", Context.MODE_PRIVATE);
+        sharedpreferences = context.getSharedPreferences("McMount", Context.MODE_PRIVATE);
     }
 
     public void putString(String key, String value) {

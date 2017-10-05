@@ -27,7 +27,7 @@
         </activity>
         <activity
             android:name=".MmSignInActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".MmSignUpActivity"
@@ -35,25 +35,21 @@
 
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeActionBar" />
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".ProductActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeActionBar" />
+            android:screenOrientation="portrait" />
 
 
         <activity
             android:name=".BrandActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeActionBar" />
+            android:screenOrientation="portrait" />
 
 
         <activity
             android:name=".ModelActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeActionBar" />
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

@@ -524,10 +524,17 @@ public class MainActivity extends AppCompatActivity
                                     int n = 100000 + rnd.nextInt(900000);
                                     nameValuePairs.add(new BasicNameValuePair("city_id", Config.getDATA(MainActivity.this, "city_id")));
                                     nameValuePairs.add(new BasicNameValuePair("locality_id", Config.getDATA(MainActivity.this, "locality_id")));
+<<<<<<< HEAD
                                     nameValuePairs.add(new BasicNameValuePair("customer_name", Config.getDATA(MainActivity.this, "name")));
                                     nameValuePairs.add(new BasicNameValuePair("city", Config.getDATA(MainActivity.this, "city")));
                                     nameValuePairs.add(new BasicNameValuePair("locality", Config.getDATA(MainActivity.this, "locality")));
                                     nameValuePairs.add(new BasicNameValuePair("address", address));
+=======
+
+                                    nameValuePairs.add(new BasicNameValuePair("city", Config.getDATA(MainActivity.this, "city")));
+                                    nameValuePairs.add(new BasicNameValuePair("locality", Config.getDATA(MainActivity.this, "locality")));
+                                    nameValuePairs.add(new BasicNameValuePair("address", Config.getDATA(MainActivity.this, "address")));
+>>>>>>> 431469c6a67bb0d78a88fbd794966d2e12eba16e
                                     nameValuePairs.add(new BasicNameValuePair("pickup_date", edt_date.getText().toString().trim()));
                                     nameValuePairs.add(new BasicNameValuePair("pickup_time", edt_time.getText().toString()));
                                     nameValuePairs.add(new BasicNameValuePair("mobile", Config.getDATA(MainActivity.this, "mobile")));

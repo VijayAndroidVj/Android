@@ -3,6 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CinderellaCustomer.iml" filepath="$PROJECT_DIR$/CinderellaCustomer.iml" />
+<<<<<<< HEAD
+=======
+      <module fileurl="file://$PROJECT_DIR$/Ranger/Ranger.iml" filepath="$PROJECT_DIR$/Ranger/Ranger.iml" />
+>>>>>>> 431469c6a67bb0d78a88fbd794966d2e12eba16e
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

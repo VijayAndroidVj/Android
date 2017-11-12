@@ -89,7 +89,11 @@
                         android:textColor="@color/laundry_txt"
                         android:textSize="20dp"
 
+<<<<<<< HEAD
                         android:textStyle="bold" />
+=======
+                        android:textStyle="bold|" />
+>>>>>>> 431469c6a67bb0d78a88fbd794966d2e12eba16e
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -180,7 +184,11 @@
 
                         android:textColor="@color/laundry_txt"
                         android:textSize="20dp"
+<<<<<<< HEAD
                         android:textStyle="bold"
+=======
+                        android:textStyle="bold|"
+>>>>>>> 431469c6a67bb0d78a88fbd794966d2e12eba16e
                         android:id="@+id/textView2" />
 
                     <EditText
@@ -224,7 +232,11 @@
                         android:gravity="center_vertical"
                         android:textColor="@color/laundry_txt"
                         android:textSize="20dp"
+<<<<<<< HEAD
                         android:textStyle="bold"
+=======
+                        android:textStyle="bold|"
+>>>>>>> 431469c6a67bb0d78a88fbd794966d2e12eba16e
                         android:id="@+id/textView3" />
 
                     <EditText

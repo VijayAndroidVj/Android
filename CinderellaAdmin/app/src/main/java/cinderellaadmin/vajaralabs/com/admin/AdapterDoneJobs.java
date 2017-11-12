@@ -74,6 +74,7 @@ public class AdapterDoneJobs extends BaseAdapter {
         }
         mViewHolder.txt_delivery_name.setText(hashMapArrayList.get(posistion).get("delivery_contact_name"));
         mViewHolder.txt_tag_no.setText(hashMapArrayList.get(posistion).get("tag_no"));
+        mViewHolder.txt_customer_name.setText(hashMapArrayList.get(posistion).get("customer_name"));
         mViewHolder.txt_clothes.setText(hashMapArrayList.get(posistion).get("items"));
         mViewHolder.txt_total_amt.setText(hashMapArrayList.get(posistion).get("overall_total"));
         mViewHolder.txt_amount.setText(hashMapArrayList.get(posistion).get("amount"));
@@ -504,10 +505,11 @@ public class AdapterDoneJobs extends BaseAdapter {
         private final TextView txt_unique_code;
         private final TextView txt_time, txt_assign, txt_city, txt_locality, txt_address, txt_mobile;
         public TextView txt_tag_no;
-        public TextView txt_clothes, txt_amount, txt_total_amt, txt_delivery_name;
+        public TextView txt_clothes, txt_amount, txt_total_amt, txt_delivery_name, txt_customer_name;
 
         public MyViewHolder(View item) {
             txt_unique_code = (TextView) item.findViewById(R.id.txt_unique_code);
+            txt_customer_name = (TextView) item.findViewById(R.id.txt_customer_name);
             txt_time = (TextView) item.findViewById(R.id.txt_time);
             txt_assign = (TextView) item.findViewById(R.id.txt_assign);
             txt_date = (TextView) item.findViewById(R.id.txt_date);

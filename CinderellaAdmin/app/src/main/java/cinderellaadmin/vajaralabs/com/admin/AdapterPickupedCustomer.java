@@ -192,6 +192,7 @@ public class AdapterPickupedCustomer extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, MoreView.class);
+                intent.putExtra("count", hashMapArrayList.get(posistion).get("count"));
                 intent.putExtra("overall_count", hashMapArrayList.get(posistion).get("overall_count"));
                 intent.putExtra("given_amt", hashMapArrayList.get(posistion).get("given_amt"));
                 intent.putExtra("balance_amt", hashMapArrayList.get(posistion).get("balance_amt"));

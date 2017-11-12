@@ -106,12 +106,13 @@ public class AdapterBooking extends BaseAdapter {
             count = "-" + count;
         }
         mViewHolder.txt_unique_code.setText(hashMapArrayList.get(posistion).get("unique_code") + count);
-        mViewHolder.txt_time.setText(hashMapArrayList.get(posistion).get("pickup_time"));
+        mViewHolder.txt_time.setText(hashMapArrayList.get(posistion).get("pickup_time").trim());
         mViewHolder.txt_city.setText(hashMapArrayList.get(posistion).get("city"));
         mViewHolder.txt_locality.setText(hashMapArrayList.get(posistion).get("locality"));
         mViewHolder.txt_address.setText(hashMapArrayList.get(posistion).get("address"));
         mViewHolder.txt_mobile.setText(hashMapArrayList.get(posistion).get("mobile"));
-        mViewHolder.txt_name.setText(hashMapArrayList.get(posistion).get("customer_name"));
+        mViewHolder.txt_name.setText(hashMapArrayList.get(posistion).get("customer_name").trim());
+        mViewHolder.txt_amount.setText(hashMapArrayList.get(posistion).get("overall_total"));
 
         if (hashMapArrayList.get(posistion).get("completion").equals("25")) {
             mViewHolder.txt_cancel.setVisibility(View.VISIBLE);
@@ -730,9 +731,10 @@ public class AdapterBooking extends BaseAdapter {
         private final TextView txt_date;
         private final TextView txt_unique_code;
         private final TextView txt_time, txt_assign, txt_city, txt_locality, txt_address, txt_mobile, txt_name;
-        private final TextView txt_cancel;
+        private final TextView txt_cancel, txt_amount;
 
         public MyViewHolder(View item) {
+            txt_amount = (TextView) item.findViewById(R.id.txt_amount);
             txt_unique_code = (TextView) item.findViewById(R.id.txt_unique_code);
             txt_time = (TextView) item.findViewById(R.id.txt_time);
             txt_assign = (TextView) item.findViewById(R.id.txt_assign);

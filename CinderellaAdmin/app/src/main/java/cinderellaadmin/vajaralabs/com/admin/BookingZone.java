@@ -500,7 +500,7 @@ public class BookingZone extends AppCompatActivity implements Response {
                 stringHashMap.put("locality", jsonArray.getJSONObject(i).getString("locality"));
                 stringHashMap.put("city_id", jsonArray.getJSONObject(i).getString("city_id"));
                 stringHashMap.put("completion", jsonArray.getJSONObject(i).getString("completion"));
-
+                stringHashMap.put("overall_total", jsonArray.getJSONObject(i).getString("overall_total"));
                 stringHashMap.put("customer_id", jsonArray.getJSONObject(i).getString("customer_id"));
                 stringHashMap.put("customer_name", jsonArray.getJSONObject(i).getString("customer_name"));
                 stringHashMap.put("shop_code_and_name", jsonArray.getJSONObject(i).getString("shop_code_and_name"));

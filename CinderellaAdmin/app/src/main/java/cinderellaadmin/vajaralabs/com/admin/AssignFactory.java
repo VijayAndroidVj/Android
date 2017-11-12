@@ -141,7 +141,7 @@ public class AssignFactory extends AppCompatActivity implements Response {
                 stringHashMap = new HashMap<String, String>();
                 stringHashMap.put("tag_no", jsonArray.getJSONObject(i).getString("tag_no"));
                 stringHashMap.put("pcid", jsonArray.getJSONObject(i).getString("pcid"));
-
+                stringHashMap.put("count", jsonArray.getJSONObject(i).getString("count"));
 
                 stringHashMap.put("unique_code", jsonArray.getJSONObject(i).getString("unique_code"));
                 stringHashMap.put("items", jsonArray.getJSONObject(i).getString("items"));

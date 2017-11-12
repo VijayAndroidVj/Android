@@ -14,7 +14,7 @@ android {
         exclude 'META-INF/LGPL2.1'
     }
     compileSdkVersion 25
-    buildToolsVersion "26.0.0"
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "cinderellaadmin.vajaralabs.com.admin"
         minSdkVersion 15
@@ -39,6 +39,7 @@ android {
 repositories {
     jcenter()
     maven { url "https://jitpack.io" }
+    google()
 }
 
 dependencies {

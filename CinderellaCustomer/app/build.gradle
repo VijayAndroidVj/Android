@@ -14,7 +14,7 @@ android {
         exclude 'META-INF/LGPL2.1'
     }
     compileSdkVersion 25
-    buildToolsVersion "26.0.0"
+    buildToolsVersion '26.0.3'
     defaultConfig {
         applicationId "coustomer.cinderella.vajra.cinderellacustomerapp"
         minSdkVersion 15
@@ -43,15 +43,9 @@ dependencies {
         exclude module: "httpclient"
     }
 
-    //    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha5'
-
-    //    compile project(path: ':Ranger')
-    
-
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:design:24.2.1'
-    compile 'org.apache.httpcomponents:httpclient:4.5'
+    compile 'com.android.support:appcompat-v7:25.+'
+    compile 'com.android.support:design:25.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha5'
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.google.firebase:firebase-messaging:10.0.1'

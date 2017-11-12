@@ -2,10 +2,10 @@ package cinderellaadmin.vajaralabs.com.admin;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ArrayAdapter;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -23,7 +23,7 @@ public class MoreView extends AppCompatActivity implements Response {
     private PhotoView img_1;
     private LinearLayout list_itemLinearLayout;
     private MoreView activity;
-    private ListView list_item;
+    private LinearLayout list_item;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class MoreView extends AppCompatActivity implements Response {
         txt_balance = (TextView) findViewById(R.id.txt_balance);
         txt_count = (TextView) findViewById(R.id.txt_count);
 
-        list_item = (ListView) findViewById(R.id.list_item);
+        list_item = (LinearLayout) findViewById(R.id.llorderlist);
 
         txt_count.setText("no.of items:" + '\n' + getIntent().getStringExtra("overall_count"));
         txt_payed.setText("given amt:" + '\n' + getIntent().getStringExtra("given_amt"));
@@ -50,14 +50,33 @@ public class MoreView extends AppCompatActivity implements Response {
         Picasso.with(activity).load(getIntent().getStringExtra("image_one")).into(img_1);
 
         List<String> listitems = arr(getIntent().getStringExtra("items"));
+        List<String> costList = arr(getIntent().getStringExtra("count"));
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1
+       /* ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1
                 , listitems);
 
-        list_item.setAdapter(arrayAdapter);
+        list_item.setAdapter(arrayAdapter);*/
 
 
         System.out.println("items" + getIntent().getStringExtra("items"));
+
+        LayoutInflater inflater = (LayoutInflater) activity
+                .getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        for (int i = 0; i < listitems.size(); i++) {
+
+            final View convertView = inflater.inflate(R.layout.price_list, null);
+            final TextView txt_product = (TextView) convertView.findViewById(R.id.txt_product);
+            final TextView txt_price = (TextView) convertView.findViewById(R.id.txt_price);
+            convertView.setId(i);
+
+            txt_product.setText(listitems.get(i));
+            txt_price.setText(costList.get(i));
+            convertView.setTag(i);
+            list_item.addView(convertView);
+
+
+        }
     }
 
     private List<String> arr(String s) {

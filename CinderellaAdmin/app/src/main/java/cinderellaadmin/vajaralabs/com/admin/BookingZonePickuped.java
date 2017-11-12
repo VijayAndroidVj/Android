@@ -469,6 +469,7 @@ public class BookingZonePickuped extends AppCompatActivity implements Response {
             for (int i = 0; i < jsonArray.length(); i++) {
                 stringHashMap = new HashMap<String, String>();
                 stringHashMap.put("overall_count", jsonArray.getJSONObject(i).getString("overall_count"));
+                stringHashMap.put("overall_total", jsonArray.getJSONObject(i).getString("overall_total"));
                 stringHashMap.put("items", jsonArray.getJSONObject(i).getString("items"));
                 stringHashMap.put("pcid", jsonArray.getJSONObject(i).getString("pcid"));
                 stringHashMap.put("city", jsonArray.getJSONObject(i).getString("city"));

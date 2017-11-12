@@ -89,7 +89,7 @@
                         android:textColor="@color/laundry_txt"
                         android:textSize="20dp"
 
-                        android:textStyle="bold|" />
+                        android:textStyle="bold" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -180,7 +180,7 @@
 
                         android:textColor="@color/laundry_txt"
                         android:textSize="20dp"
-                        android:textStyle="bold|"
+                        android:textStyle="bold"
                         android:id="@+id/textView2" />
 
                     <EditText
@@ -224,7 +224,7 @@
                         android:gravity="center_vertical"
                         android:textColor="@color/laundry_txt"
                         android:textSize="20dp"
-                        android:textStyle="bold|"
+                        android:textStyle="bold"
                         android:id="@+id/textView3" />
 
                     <EditText

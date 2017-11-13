@@ -147,7 +147,20 @@ public class AdapterPickupedCustomer extends BaseAdapter {
         mViewHolder.txt_total_amt.setText(hashMapArrayList.get(posistion).get("overall_total"));
         mViewHolder.txt_payment_mode.setText(hashMapArrayList.get(posistion).get("payment_mode"));
         mViewHolder.txt_amt_taken.setText(hashMapArrayList.get(posistion).get("given_amt"));
-        mViewHolder.txt_balance_amt.setText(hashMapArrayList.get(posistion).get("balance_amt"));
+        mViewHolder.txt_reduce_amount.setVisibility(View.GONE);
+        String total = hashMapArrayList.get(posistion).get("overall_total");
+        String given = hashMapArrayList.get(posistion).get("given_amt");
+        try {
+            double ttl = Double.valueOf(total);
+            double gvn = Double.valueOf(given);
+            double blnce = ttl - gvn;
+            mViewHolder.txt_balance_amt.setText("" + blnce);
+        } catch (Exception e) {
+            e.printStackTrace();
+            mViewHolder.txt_balance_amt.setText(hashMapArrayList.get(posistion).get("balance_amt"));
+        }
+
+
 //        mViewHolder.txt_shop_contact.setText(hashMapArrayList.get(posistion).get("shop_contact"));
 
 
@@ -161,7 +174,104 @@ public class AdapterPickupedCustomer extends BaseAdapter {
         } else if (Configg.getDATA(context, "type").equals("shop")) {
             if (hashMapArrayList.get(posistion).get("completion").equals("90")) {
                 mViewHolder.txt_assign_factory.setText("Assign This to Delivery Person " + hashMapArrayList.get(posistion).get("delivery_contact_name"));
+                mViewHolder.txt_reduce_amount.setVisibility(View.VISIBLE);
+                mViewHolder.txt_reduce_amount.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
 
+                            final String total = hashMapArrayList.get(posistion).get("overall_total");
+                            final String given = hashMapArrayList.get(posistion).get("given_amt");
+
+                            final Dialog dialog2 = new Dialog(context);
+                            dialog2.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                            dialog2.setContentView(R.layout.reduce_amount);
+                            final TextView txt_total = (TextView) dialog2.findViewById(R.id.txt_total);
+                            final TextView txt_given = (TextView) dialog2.findViewById(R.id.txt_given);
+                            final EditText edt_amt2 = (EditText) dialog2.findViewById(R.id.edt_amt);
+                            final TextView txt_balance2 = (TextView) dialog2.findViewById(R.id.txt_balance);
+                            try {
+                                double ttl = Double.valueOf(total);
+                                double gvn = Double.valueOf(given);
+                                double blnce = ttl - gvn;
+                                txt_total.setText("" + total);
+                                txt_given.setText("" + gvn);
+                                txt_balance2.setText("" + blnce);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                txt_balance2.setText(hashMapArrayList.get(posistion).get("balance_amt"));
+                            }
+                            final TextView txt_final_balance = (TextView) dialog2.findViewById(R.id.txt_final_balance);
+                            Button submit = (Button) dialog2.findViewById(R.id.btn_submit);
+                            submit.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //                                                                      if (Double.parseDouble())
+                                    if (!edt_amt2.getText().toString().equals("")) {
+
+                                        double ttl = Double.valueOf(total);
+                                        double gvn = Double.valueOf(given);
+                                        double blnce = ttl - gvn;
+
+                                        Double aDouble2 = Double.parseDouble(edt_amt2.getText().toString());
+                                        if (!(aDouble2 > ttl)) {
+                                            double finalTotal = blnce - aDouble2;
+                                            volleyChangeBill(dialog2, hashMapArrayList.get(posistion).get("pcid"), "" + finalTotal, edt_amt2.getText().toString());
+                                        } else {
+                                            Toast.makeText(context, "Please Enter The Valid Amt.", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                    } else {
+                                        Toast.makeText(context, "Please Enter The Valid Amt.", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+
+                            edt_amt2.addTextChangedListener(new TextWatcher() {
+                                @Override
+                                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                                }
+
+                                @Override
+                                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                                    String s1 = s.toString();
+                                    if (!s1.equals("")) {
+
+                                        double ttl = Double.valueOf(total);
+                                        double gvn = Double.valueOf(given);
+                                        double blnce = ttl - gvn;
+
+                                        Double aDouble2 = Double.parseDouble(s1);
+                                        Double bal = blnce - aDouble2;
+
+
+                                        if (aDouble2 > bal) {
+                                            Toast.makeText(context, "Enter Valid Amt.", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            txt_final_balance.setText(bal + "");
+                                        }
+
+
+                                    } else {
+                                        txt_final_balance.setText("0.0");
+                                    }
+
+
+                                }
+
+                                @Override
+                                public void afterTextChanged(Editable s) {
+
+                                }
+                            });
+                            dialog2.show();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             } else if (hashMapArrayList.get(posistion).get("completion").equals("95")) {
                 mViewHolder.txt_assign_factory.setText("Assign This to Delivery Person " + hashMapArrayList.get(posistion).get("delivery_contact_name"));
 
@@ -207,283 +317,267 @@ public class AdapterPickupedCustomer extends BaseAdapter {
                                                       @Override
                                                       public void onClick(View view) {
 
+                                                          Dialog dialog = new Dialog(context);
+                                                          dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                                          dialog.setContentView(R.layout.finish_customer);
+                                                          final EditText edt_amt = (EditText) dialog.findViewById(R.id.edt_amt);
+                                                          Button btn_finish = (Button) dialog.findViewById(R.id.btn_submit);
+                                                          final TextView txt_balance = (TextView) dialog.findViewById(R.id.txt_balance);
+                                                          final TextView txt_already = (TextView) dialog.findViewById(R.id.txt_given);
+                                                          String balance_amt;
+                                                          if (!hashMapArrayList.get(posistion).get("balance_amt").equals("")) {
+                                                              balance_amt = hashMapArrayList.get(posistion).get("balance_amt").replaceAll("[^\\d.]", "");
 
-          // Method to create Directory, if the Directory doesn't exists
-    //                                                          file = new File(DIRECTORY);
-    //                                                          if (!file.exists()) {
-    //                                                              file.mkdir();
-    //                                                          }
-    //
-    //                                                          // Dialog Function
-    //                                                          dialog = new Dialog(context);
-    //                                                          // Removing the features of Normal Dialogs
-    //                                                          dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-    //                                                          dialog.setContentView(R.layout.dialog_signature);
-    //                                                          dialog.setCancelable(true);
-    //                                                          dialog_action(posistion);
+                                                          } else {
+                                                              balance_amt = hashMapArrayList.get(posistion).get("overall_total") + "vcxv".replaceAll("[^\\d.]", "");
+                                                          }
+                                                          if (!hashMapArrayList.get(posistion).get("given_amt").equals("")) {
+                                                              txt_already.setText(hashMapArrayList.get(posistion).get("given_amt"));
 
+                                                          } else {
+                                                              txt_already.setText("0.0");
 
-          Dialog dialog = new Dialog(context);
-          dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-          dialog.setContentView(R.layout.finish_customer);
-          final EditText edt_amt = (EditText) dialog.findViewById(R.id.edt_amt);
-          Button btn_finish = (Button) dialog.findViewById(R.id.btn_submit);
-          final TextView txt_balance = (TextView) dialog.findViewById(R.id.txt_balance);
-          final TextView txt_already = (TextView) dialog.findViewById(R.id.txt_given);
-          String balance_amt;
-          if (!hashMapArrayList.get(posistion).get("balance_amt").equals("")) {
-              balance_amt = hashMapArrayList.get(posistion).get("balance_amt").replaceAll("[^\\d.]", "");
-
-          } else {
-              balance_amt = hashMapArrayList.get(posistion).get("overall_total") + "vcxv".replaceAll("[^\\d.]", "");
-          }
-          if (!hashMapArrayList.get(posistion).get("given_amt").equals("")) {
-              txt_already.setText(hashMapArrayList.get(posistion).get("given_amt"));
-
-          } else {
-              txt_already.setText("0.0");
-
-          }
+                                                          }
 
 
-          txt_balance.setText(balance_amt);
-    //                final Double[] aDouble_taken = {0.0};
-          edt_amt.addTextChangedListener(new TextWatcher() {
-                 @Override
-                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                                                          txt_balance.setText(balance_amt);
+                                                          //                final Double[] aDouble_taken = {0.0};
+                                                          edt_amt.addTextChangedListener(new TextWatcher() {
+                                                                                             @Override
+                                                                                             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                 }
+                                                                                             }
 
-                 @Override
-                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                     String s1 = s.toString();
-                     if (!s1.equals("")) {
+                                                                                             @Override
+                                                                                             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                                                                                 String s1 = s.toString();
+                                                                                                 if (!s1.equals("")) {
 
-                         txt_already.setText("");
-                         txt_balance.setText("");
-                         String balance_amt2;
-                         if (!hashMapArrayList.get(posistion).get("balance_amt").equals("")) {
-                             balance_amt2 = hashMapArrayList.get(posistion).get("balance_amt").replaceAll("[^\\d.]", "");
-                         } else {
-                             balance_amt2 = hashMapArrayList.get(posistion).get("overall_total").replaceAll("[^\\d.]", "");
+                                                                                                     txt_already.setText("");
+                                                                                                     txt_balance.setText("");
+                                                                                                     String balance_amt2;
+                                                                                                     if (!hashMapArrayList.get(posistion).get("balance_amt").equals("")) {
+                                                                                                         balance_amt2 = hashMapArrayList.get(posistion).get("balance_amt").replaceAll("[^\\d.]", "");
+                                                                                                     } else {
+                                                                                                         balance_amt2 = hashMapArrayList.get(posistion).get("overall_total").replaceAll("[^\\d.]", "");
 
-                         }
+                                                                                                     }
 
-                         String final_amt = edt_amt.getText().toString();
-                         Double aDouble_balance = Double.parseDouble(balance_amt2) - Double.parseDouble(final_amt);
+                                                                                                     String final_amt = edt_amt.getText().toString();
+                                                                                                     Double aDouble_balance = Double.parseDouble(balance_amt2) - Double.parseDouble(final_amt);
 
-                         Double aDouble_taken;
-                         if (!hashMapArrayList.get(posistion).get("given_amt").equals("")) {
+                                                                                                     Double aDouble_taken;
+                                                                                                     if (!hashMapArrayList.get(posistion).get("given_amt").equals("")) {
 
-                             aDouble_taken = Double.parseDouble(hashMapArrayList
-                                     .get(posistion).get("given_amt")) + Double.parseDouble(edt_amt.getText().toString());
+                                                                                                         aDouble_taken = Double.parseDouble(hashMapArrayList
+                                                                                                                 .get(posistion).get("given_amt")) + Double.parseDouble(edt_amt.getText().toString());
 
-                         } else {
-                             aDouble_taken = Double.parseDouble("0.0") + Double.parseDouble(edt_amt.getText().toString());
+                                                                                                     } else {
+                                                                                                         aDouble_taken = Double.parseDouble("0.0") + Double.parseDouble(edt_amt.getText().toString());
 
-                         }
-                         if (aDouble_balance > -1) {
-                             txt_already.setText(String.valueOf(aDouble_taken));
-                             txt_balance.setText(String.valueOf(aDouble_balance));
-                         } else {
-                             Toast.makeText(context, "Entered Maximum Amt.", Toast.LENGTH_SHORT).show();
-                         }
+                                                                                                     }
+                                                                                                     if (aDouble_balance > -1) {
+                                                                                                         txt_already.setText(String.valueOf(aDouble_taken));
+                                                                                                         txt_balance.setText(String.valueOf(aDouble_balance));
+                                                                                                     } else {
+                                                                                                         Toast.makeText(context, "Entered Maximum Amt.", Toast.LENGTH_SHORT).show();
+                                                                                                     }
 
-                     } else
+                                                                                                 } else
 
-                     {
-                         String balance_amt = hashMapArrayList.get(posistion).get("balance_amt").replaceAll("[^\\d.]", "");
+                                                                                                 {
+                                                                                                     String balance_amt = hashMapArrayList.get(posistion).get("balance_amt").replaceAll("[^\\d.]", "");
 
-                         txt_balance.setText(balance_amt);
-                         txt_already.setText(hashMapArrayList.get(posistion).get("given_amt"));
-                     }
+                                                                                                     txt_balance.setText(balance_amt);
+                                                                                                     txt_already.setText(hashMapArrayList.get(posistion).get("given_amt"));
+                                                                                                 }
 
-                 }
+                                                                                             }
 
-                 @Override
-                 public void afterTextChanged(Editable s) {
+                                                                                             @Override
+                                                                                             public void afterTextChanged(Editable s) {
 
-                 }
-             }
+                                                                                             }
+                                                                                         }
 
-          );
-      btn_finish.setOnClickListener(new View.OnClickListener()
+                                                          );
+                                                          btn_finish.setOnClickListener(new View.OnClickListener()
 
-                                        {
-                                            @Override
-                                            public void onClick(View view) {
+                                                                                        {
+                                                                                            @Override
+                                                                                            public void onClick(View view) {
 
-            System.out.println();
-            if (!edt_amt.getText().toString().equals("")) {
-                String balance_amt3 = "";
-                if (!hashMapArrayList.get(posistion).get("balance_amt").equals("")) {
+                                                                                                System.out.println();
+                                                                                                if (!edt_amt.getText().toString().equals("")) {
+                                                                                                    String balance_amt3 = "";
+                                                                                                    if (!hashMapArrayList.get(posistion).get("balance_amt").equals("")) {
 
-                    balance_amt3 = hashMapArrayList.get(posistion).get("balance_amt").replaceAll("[^\\d.]", "");
-                } else {
-                    balance_amt3 = hashMapArrayList.get(posistion).get("overall_total").replaceAll("[^\\d.]", "");
+                                                                                                        balance_amt3 = hashMapArrayList.get(posistion).get("balance_amt").replaceAll("[^\\d.]", "");
+                                                                                                    } else {
+                                                                                                        balance_amt3 = hashMapArrayList.get(posistion).get("overall_total").replaceAll("[^\\d.]", "");
 
-                }
+                                                                                                    }
 
-                String final_amt = edt_amt.getText().toString();
-                Double aDouble_balance = Double.parseDouble(balance_amt3) - Double.parseDouble(final_amt);
+                                                                                                    String final_amt = edt_amt.getText().toString();
+                                                                                                    Double aDouble_balance = Double.parseDouble(balance_amt3) - Double.parseDouble(final_amt);
 //                                                                                                    Double aDouble_taken = Double.parseDouble(hashMapArrayList
 //                                                                                                            .get(posistion).get("given_amt")) + Double.parseDouble(edt_amt.getText().toString());
-                if (aDouble_balance > -1) {
-                    volley_finish(hashMapArrayList.get(posistion).get("pcid"),
-                            "100",
-                            hashMapArrayList.get(posistion).get("tag_no"),
-                            txt_already.getText().toString(),
-                            txt_balance.getText().toString(),
-                            Configg.getDATA(context, "did"),
-                            Configg.getDATA(context, "delivery_person"), posistion);
-                } else {
-                    Toast.makeText(context, "Enter The Valid Amount.", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                Toast.makeText(context, "Enter The Amount.", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
+                                                                                                    if (aDouble_balance > -1) {
+                                                                                                        volley_finish(hashMapArrayList.get(posistion).get("pcid"),
+                                                                                                                "100",
+                                                                                                                hashMapArrayList.get(posistion).get("tag_no"),
+                                                                                                                txt_already.getText().toString(),
+                                                                                                                txt_balance.getText().toString(),
+                                                                                                                Configg.getDATA(context, "did"),
+                                                                                                                Configg.getDATA(context, "delivery_person"), posistion);
+                                                                                                    } else {
+                                                                                                        Toast.makeText(context, "Enter The Valid Amount.", Toast.LENGTH_SHORT).show();
+                                                                                                    }
+                                                                                                } else {
+                                                                                                    Toast.makeText(context, "Enter The Amount.", Toast.LENGTH_SHORT).show();
+                                                                                                }
+                                                                                            }
+                                                                                        }
 
-          );
+                                                          );
 
-          if (!hashMapArrayList.get(posistion).get("given_amt").equals("0.0")) {
-              dialog.show();
+                                                          if (!hashMapArrayList.get(posistion).get("given_amt").equals("0.0")) {
+                                                              dialog.show();
 
-          } else {
-              Dialog dialog2 = new Dialog(context);
-              dialog2.requestWindowFeature(Window.FEATURE_NO_TITLE);
-              dialog2.setContentView(R.layout.finish_customer2);
-              final EditText edt_amt2 = (EditText) dialog2.findViewById(R.id.edt_amt);
-              final TextView txt_balance2 = (TextView) dialog2.findViewById(R.id.txt_balance);
-              final TextView txt_already2 = (TextView) dialog2.findViewById(R.id.txt_given);
-              Button btn_finish2 = (Button) dialog2.findViewById(R.id.btn_submit);
-              btn_finish2.setOnClickListener(new View.OnClickListener() {
-                  @Override
-                  public void onClick(View v) {
-                      //                                                                      if (Double.parseDouble())
-                      if (!edt_amt2.getText().toString().equals("")) {
-                          Double aDouble1 = Double.parseDouble(hashMapArrayList.get(posistion).get("overall_total"));
-                          Double aDouble2 = Double.parseDouble(edt_amt2.getText().toString());
-                          if (!(aDouble2 > aDouble1)) {
-                              if (Double.parseDouble(txt_already2.getText().toString()) > 50) {
-                                  volley_finish(hashMapArrayList.get(posistion).get("pcid"),
-                                          "100",
-                                          hashMapArrayList.get(posistion).get("tag_no"),
-                                          txt_already2.getText().toString(),
-                                          txt_balance2.getText().toString(),
-                                          Configg.getDATA(context, "did"),
-                                          Configg.getDATA(context, "delivery_person"), posistion);
-                              } else {
-                                  Toast.makeText(context, "Enter Valid Amount.", Toast.LENGTH_SHORT).show();
-                              }
-                          } else {
-                              Toast.makeText(context, "Please Enter The Valid Amt.", Toast.LENGTH_SHORT).show();
-                          }
+                                                          } else {
+                                                              Dialog dialog2 = new Dialog(context);
+                                                              dialog2.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                                              dialog2.setContentView(R.layout.finish_customer2);
+                                                              final EditText edt_amt2 = (EditText) dialog2.findViewById(R.id.edt_amt);
+                                                              final TextView txt_balance2 = (TextView) dialog2.findViewById(R.id.txt_balance);
+                                                              final TextView txt_already2 = (TextView) dialog2.findViewById(R.id.txt_given);
+                                                              Button btn_finish2 = (Button) dialog2.findViewById(R.id.btn_submit);
+                                                              btn_finish2.setOnClickListener(new View.OnClickListener() {
+                                                                  @Override
+                                                                  public void onClick(View v) {
+                                                                      //                                                                      if (Double.parseDouble())
+                                                                      if (!edt_amt2.getText().toString().equals("")) {
+                                                                          Double aDouble1 = Double.parseDouble(hashMapArrayList.get(posistion).get("overall_total"));
+                                                                          Double aDouble2 = Double.parseDouble(edt_amt2.getText().toString());
+                                                                          if (!(aDouble2 > aDouble1)) {
+                                                                              if (Double.parseDouble(txt_already2.getText().toString()) > 50) {
+                                                                                  volley_finish(hashMapArrayList.get(posistion).get("pcid"),
+                                                                                          "100",
+                                                                                          hashMapArrayList.get(posistion).get("tag_no"),
+                                                                                          txt_already2.getText().toString(),
+                                                                                          txt_balance2.getText().toString(),
+                                                                                          Configg.getDATA(context, "did"),
+                                                                                          Configg.getDATA(context, "delivery_person"), posistion);
+                                                                              } else {
+                                                                                  Toast.makeText(context, "Enter Valid Amount.", Toast.LENGTH_SHORT).show();
+                                                                              }
+                                                                          } else {
+                                                                              Toast.makeText(context, "Please Enter The Valid Amt.", Toast.LENGTH_SHORT).show();
+                                                                          }
 
-                      } else {
-                          Toast.makeText(context, "Please Enter The Valid Amt.", Toast.LENGTH_SHORT).show();
-                      }
-                  }
-              });
+                                                                      } else {
+                                                                          Toast.makeText(context, "Please Enter The Valid Amt.", Toast.LENGTH_SHORT).show();
+                                                                      }
+                                                                  }
+                                                              });
 
-              edt_amt2.addTextChangedListener(new TextWatcher() {
-                  @Override
-                  public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                                                              edt_amt2.addTextChangedListener(new TextWatcher() {
+                                                                  @Override
+                                                                  public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                  }
+                                                                  }
 
-                  @Override
-                  public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                                                  @Override
+                                                                  public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                      String s1 = s.toString();
-                      if (!s1.equals("")) {
-                          Double aDouble1 = Double.parseDouble(hashMapArrayList.get(posistion).get("overall_total"));
-                          Double aDouble2 = Double.parseDouble(s1);
-                          Double bal = aDouble1 - aDouble2;
+                                                                      String s1 = s.toString();
+                                                                      if (!s1.equals("")) {
+                                                                          Double aDouble1 = Double.parseDouble(hashMapArrayList.get(posistion).get("overall_total"));
+                                                                          Double aDouble2 = Double.parseDouble(s1);
+                                                                          Double bal = aDouble1 - aDouble2;
 
-                          txt_already2.setText(aDouble2 + "");
-                          txt_balance2.setText(bal + "");
+                                                                          txt_already2.setText(aDouble2 + "");
+                                                                          txt_balance2.setText(bal + "");
 
-                          if (aDouble2 > aDouble1) {
-                              Toast.makeText(context, "Enter Valid Amt.", Toast.LENGTH_SHORT).show();
-                          }
-
-
-                      } else {
-                          txt_already2.setText("0.0");
-                          txt_balance2.setText("0.0");
-                      }
+                                                                          if (aDouble2 > aDouble1) {
+                                                                              Toast.makeText(context, "Enter Valid Amt.", Toast.LENGTH_SHORT).show();
+                                                                          }
 
 
-                  }
+                                                                      } else {
+                                                                          txt_already2.setText("0.0");
+                                                                          txt_balance2.setText("0.0");
+                                                                      }
 
-                  @Override
-                  public void afterTextChanged(Editable s) {
 
-                  }
-              });
-              dialog2.show();
-          }
-      }
-    }
+                                                                  }
 
-    );
-    mViewHolder.txt_assign_factory.setOnClickListener(new View.OnClickListener()
+                                                                  @Override
+                                                                  public void afterTextChanged(Editable s) {
 
-          {
-              @Override
-              public void onClick(View v) {
-                  if (Configg.getDATA(context, "type").equals("shop")) {
+                                                                  }
+                                                              });
+                                                              dialog2.show();
+                                                          }
+                                                      }
+                                                  }
 
-                      if (hashMapArrayList.get(posistion).get("completion").equals("90")
-                              || hashMapArrayList.get(posistion).get("completion").equals("95")) {
-                          final Dialog dialog = new Dialog(context);
-                          dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                          dialog.setContentView(R.layout.confirmation2);
-                          Button button = (Button) dialog.findViewById(R.id.btn_yes);
-                          Button button1 = (Button) dialog.findViewById(R.id.btn_no);
-                          button.setOnClickListener(new View.OnClickListener() {
-                              @Override
-                              public void onClick(View view) {
-                                  volley_post_job_done(hashMapArrayList.get(posistion).get("pcid"), "95", hashMapArrayList.get(posistion).get("delivery_id"),
-                                          hashMapArrayList.get(posistion).get("delivery_contact_name"),
-                                          hashMapArrayList.get(posistion).get("delivery_contact"));
-                                  dialog.dismiss();
+        );
+        mViewHolder.txt_assign_factory.setOnClickListener(new View.OnClickListener()
 
-                              }
-                          });
-                          button1.setOnClickListener(new View.OnClickListener() {
-                              @Override
-                              public void onClick(View view) {
-                                  Intent intent = new Intent(context, AssignDealer.class);
-                                  intent.putExtra("completion", "90");
-                                  intent.putExtra("pcid", hashMapArrayList.get(posistion).get("pcid"));
+                                                          {
+                                                              @Override
+                                                              public void onClick(View v) {
+                                                                  if (Configg.getDATA(context, "type").equals("shop")) {
 
-                                  context.startActivity(intent);
-                                  dialog.dismiss();
-                                  ((Activity) context).finish();
-                              }
-                          });
-                          dialog.show();
-                      } else {
-                          Intent intent = new Intent(context, FactoryList.class);
-                          ((AssignFactory) context).shashMapArrayList = (HashMap<String, String>) v.getTag();
-                          intent.putExtra("pcid", hashMapArrayList.get(posistion).get("pcid"));
-                          intent.putExtra("tag_no", hashMapArrayList.get(posistion).get("tag_no"));
-                          ((AssignFactory) context).startActivityForResult(intent, 1111);
-                      }
+                                                                      if (hashMapArrayList.get(posistion).get("completion").equals("90")
+                                                                              || hashMapArrayList.get(posistion).get("completion").equals("95")) {
+                                                                          final Dialog dialog = new Dialog(context);
+                                                                          dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                                                          dialog.setContentView(R.layout.confirmation2);
+                                                                          Button button = (Button) dialog.findViewById(R.id.btn_yes);
+                                                                          Button button1 = (Button) dialog.findViewById(R.id.btn_no);
+                                                                          button.setOnClickListener(new View.OnClickListener() {
+                                                                              @Override
+                                                                              public void onClick(View view) {
+                                                                                  volley_post_job_done(hashMapArrayList.get(posistion).get("pcid"), "95", hashMapArrayList.get(posistion).get("delivery_id"),
+                                                                                          hashMapArrayList.get(posistion).get("delivery_contact_name"),
+                                                                                          hashMapArrayList.get(posistion).get("delivery_contact"));
+                                                                                  dialog.dismiss();
 
-                  } else if (Configg.getDATA(context, "type").equals("factory")) {
-                      if (hashMapArrayList.get(posistion).get("completion").equals("75")) {
-                          volley_post_job_done(hashMapArrayList.get(posistion).get("pcid"), "90", "", "", "");
-                      } else if (hashMapArrayList.get(posistion).get("completion").equals("90")) {
-                          volley_post_job_done(hashMapArrayList.get(posistion).get("pcid"), "75", "", "", "");
-                      }
-                  }
+                                                                              }
+                                                                          });
+                                                                          button1.setOnClickListener(new View.OnClickListener() {
+                                                                              @Override
+                                                                              public void onClick(View view) {
+                                                                                  Intent intent = new Intent(context, AssignDealer.class);
+                                                                                  intent.putExtra("completion", "90");
+                                                                                  intent.putExtra("pcid", hashMapArrayList.get(posistion).get("pcid"));
 
-              }
-          }
+                                                                                  context.startActivity(intent);
+                                                                                  dialog.dismiss();
+                                                                                  ((Activity) context).finish();
+                                                                              }
+                                                                          });
+                                                                          dialog.show();
+                                                                      } else {
+                                                                          Intent intent = new Intent(context, FactoryList.class);
+                                                                          ((AssignFactory) context).shashMapArrayList = (HashMap<String, String>) v.getTag();
+                                                                          intent.putExtra("pcid", hashMapArrayList.get(posistion).get("pcid"));
+                                                                          intent.putExtra("tag_no", hashMapArrayList.get(posistion).get("tag_no"));
+                                                                          ((AssignFactory) context).startActivityForResult(intent, 1111);
+                                                                      }
+
+                                                                  } else if (Configg.getDATA(context, "type").equals("factory")) {
+                                                                      if (hashMapArrayList.get(posistion).get("completion").equals("75")) {
+                                                                          volley_post_job_done(hashMapArrayList.get(posistion).get("pcid"), "90", "", "", "");
+                                                                      } else if (hashMapArrayList.get(posistion).get("completion").equals("90")) {
+                                                                          volley_post_job_done(hashMapArrayList.get(posistion).get("pcid"), "75", "", "", "");
+                                                                      }
+                                                                  }
+
+                                                              }
+                                                          }
 
         );
 
@@ -670,6 +764,7 @@ public class AdapterPickupedCustomer extends BaseAdapter {
         }
     }
 
+
     private void volley_post_job_done(final String pcid, final String completion,
                                       final String id,
                                       final String name,
@@ -724,14 +819,81 @@ public class AdapterPickupedCustomer extends BaseAdapter {
                 params.put("delivery_contact_name", name);
                 params.put("delivery_contact", mobile);
                 if (Configg.getDATA(context, "type").equals("factory")) {
-                    if (completion.equals("90")){
+                    if (completion.equals("90")) {
                         params.put("FactoryJobDone", "true");
+                        params.put("sms", "true");
+                    } else {
+                        params.put("sms", "false");
                     }
-                    params.put("sms", "true");
                 } else {
                     params.put("sms", "false");
                 }
 
+//                params.put("comment", Uri.encode(comment));
+//                params.put("comment_post_ID",String.valueOf(postId));
+//                params.put("blogId",String.valueOf(blogId));
+                System.out.println("params" + params.toString());
+
+                return params;
+            }
+        };
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                0,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        int socketTimeout = 30000;//30 seconds - change to what you want
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(policy);
+        queue.add(request);
+    }
+
+    private void volleyChangeBill(final Dialog dialog2, final String pcid, final String newTotal,
+                                  final String reducedAmount) {
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        final ProgressDialog pDialog = new ProgressDialog(context);
+        pDialog.setMessage("Loading...");
+        pDialog.show();
+        pDialog.setCancelable(false);
+        StringRequest request = new StringRequest(Request.Method.POST, Configg.MAIN_URL + Configg.CHANGE_BILL, new com.android.volley.Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.print("response" + response);
+                pDialog.dismiss();
+                try {
+                    dialog2.dismiss();
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (jsonObject.getString("success").equals("1")) {
+                        Toast.makeText(context, "Bill Changed Successfully", Toast.LENGTH_SHORT).show();
+                    } else if (jsonObject.getString("success").equals("3")) {
+                        Configg.alert("JOB Completion", jsonObject.getString("message"), 0, context);
+                    }
+                    ((AssignFactory) context).onResume();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+//                Toast.makeText(getApplicationContext(), "response" + response, 1000).show();
+
+
+            }
+        }, new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                error.printStackTrace();
+                pDialog.dismiss();
+
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("pcid", pcid);
+                params.put("total_amt", newTotal);
+                params.put("amt_reduced", reducedAmount);
 //                params.put("comment", Uri.encode(comment));
 //                params.put("comment_post_ID",String.valueOf(postId));
 //                params.put("blogId",String.valueOf(blogId));
@@ -864,6 +1026,7 @@ public class AdapterPickupedCustomer extends BaseAdapter {
 
 
     private class MyViewHolder {
+        private final TextView txt_reduce_amount;
         private final TextView tag_no;
         private final TextView txt_unique_code;
         private final TextView txt_more, txt_clothes, txt_assign_factory;
@@ -876,6 +1039,7 @@ public class AdapterPickupedCustomer extends BaseAdapter {
         private final Button btn_finish;
 
         public MyViewHolder(View item) {
+            txt_reduce_amount = (TextView) item.findViewById(R.id.txt_reduce_amount);
             txt_unique_code = (TextView) item.findViewById(R.id.txt_unique_code);
             txt_more = (TextView) item.findViewById(R.id.txt_more);
             tag_no = (TextView) item.findViewById(R.id.tag_no);

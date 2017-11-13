@@ -245,9 +245,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
                 android:layout_weight="2"
-                android:gravity="center"
                 android:paddingLeft="1dp"
                 android:paddingRight="5dp"
+                android:text="Request No"
                 android:textColor="@color/sky_blue"
                 android:textSize="15dp"
                 android:textStyle="bold" />
@@ -341,9 +341,11 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/lltotal_amt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="visible">
 
             <TextView
                 android:layout_width="match_parent"
@@ -352,7 +354,6 @@
                 android:layout_weight="2"
                 android:padding="5dp"
                 android:text="Total Amount"
-
                 android:textColor="@color/green2"
                 android:textSize="20dp"
                 android:textStyle="bold" />

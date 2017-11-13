@@ -19,8 +19,8 @@ android {
         applicationId "cinderellaadmin.vajaralabs.com.admin"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 17
-        versionName "2.7"
+        versionCode 18
+        versionName "2.8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
@@ -64,7 +64,6 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
-    compile 'org.apache.httpcomponents:httpclient:4.5'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha5'
 //    compile 'com.google.android.gms:play-services-appindexing:9.8.0'
     compile 'com.google.android.gms:play-services:10.2.6'

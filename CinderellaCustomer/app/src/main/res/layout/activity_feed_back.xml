@@ -16,93 +16,77 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:padding="5dp"
-            android:visibility="visible"
-            android:textColor="@color/black_2"
             android:layout_gravity="center"
-            android:text="Washing Quality" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="5dp"
+            android:text="Washing Quality"
+            android:textColor="@color/black_2"
+            android:visibility="visible" />
 
 
         <RatingBar
             android:id="@+id/ratebar_quality"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:numStars="5"
-<<<<<<< HEAD
             android:layout_gravity="center_vertical"
-=======
-            android:layout_gravity="center_vertical|"
->>>>>>> 431469c6a67bb0d78a88fbd794966d2e12eba16e
-
+            android:numStars="5"
             android:padding="5dp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:padding="5dp"
-            android:visibility="visible"
-            android:textColor="@color/black_2"
             android:layout_gravity="center"
-            android:text="Punctuality" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="5dp"
+            android:text="Punctuality"
+            android:textColor="@color/black_2"
+            android:visibility="visible" />
 
 
         <RatingBar
             android:id="@+id/ratebar_puntuality"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:numStars="5"
-<<<<<<< HEAD
             android:layout_gravity="center_vertical"
-=======
-            android:layout_gravity="center_vertical|"
->>>>>>> 431469c6a67bb0d78a88fbd794966d2e12eba16e
-
+            android:numStars="5"
             android:padding="5dp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:padding="5dp"
-            android:visibility="visible"
-            android:textColor="@color/black_2"
             android:layout_gravity="center"
-            android:text="Staff Behaviour" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="5dp"
+            android:text="Staff Behaviour"
+            android:textColor="@color/black_2"
+            android:visibility="visible" />
 
 
         <RatingBar
             android:id="@+id/ratebar_behaviour"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:numStars="5"
-<<<<<<< HEAD
             android:layout_gravity="center_vertical"
-=======
-            android:layout_gravity="center_vertical|"
->>>>>>> 431469c6a67bb0d78a88fbd794966d2e12eba16e
-
+            android:numStars="5"
             android:padding="5dp" />
 
         <EditText
             android:id="@+id/edt_review"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:lines="4"
-            android:gravity="top"
-            android:padding="5dp"
             android:layout_margin="5dp"
-            android:hint="Write a review..."/>
+            android:gravity="top"
+            android:hint="Write a review..."
+            android:lines="4"
+            android:padding="5dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
-
 
 
         </LinearLayout>
@@ -113,10 +97,10 @@
         android:id="@+id/btn_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Submit"
-        android:padding="10dp"
-        android:layout_margin="10dp"
         android:layout_alignParentBottom="true"
-        android:textColor="@color/white"
-        android:background="@drawable/edt_rounded_edge"/>
+        android:layout_margin="10dp"
+        android:background="@drawable/edt_rounded_edge"
+        android:padding="10dp"
+        android:text="Submit"
+        android:textColor="@color/white" />
 </RelativeLayout>

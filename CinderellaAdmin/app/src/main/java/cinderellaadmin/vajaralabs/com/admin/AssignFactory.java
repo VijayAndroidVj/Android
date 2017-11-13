@@ -79,8 +79,6 @@ public class AssignFactory extends AppCompatActivity implements Response {
         if (Configg.getDATA(activity, "type").equals("shop")) {
             nameValuePairs.add(new BasicNameValuePair("shop_id", Configg.getDATA(activity, "sid")));
             nameValuePairs.add(new BasicNameValuePair("pcid", getIntent().getStringExtra("pcid")));
-
-
             asyncPOST = new AsyncPOST(nameValuePairs, activity, Configg.MAIN_URL + Configg.GET_PICKUP_CUSTOMER, activity);
             asyncPOST.execute();
         } else if (Configg.getDATA(activity, "type").equals("factory")) {
@@ -164,7 +162,19 @@ public class AssignFactory extends AppCompatActivity implements Response {
                 stringHashMap.put("image_one", jsonArray.getJSONObject(i).getString("image_one"));
                 stringHashMap.put("bill", jsonArray.getJSONObject(i).getString("bill"));
                 stringHashMap.put("given_amt", jsonArray.getJSONObject(i).getString("given_amt"));
-                stringHashMap.put("balance_amt", jsonArray.getJSONObject(i).getString("balance_amt"));
+
+                String total = jsonArray.getJSONObject(i).getString("overall_total");
+                String given = jsonArray.getJSONObject(i).getString("given_amt");
+                try {
+                    double ttl = Double.valueOf(total);
+                    double gvn = Double.valueOf(given);
+                    double blnce = ttl - gvn;
+                    stringHashMap.put("balance_amt", "" + blnce);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    stringHashMap.put("balance_amt", jsonArray.getJSONObject(i).getString("balance_amt"));
+                }
+
                 stringHashMap.put("delivery_id", jsonArray.getJSONObject(i).getString("delivery_id"));
 
 

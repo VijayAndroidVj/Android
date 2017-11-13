@@ -8,10 +8,6 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-<<<<<<< HEAD
-=======
-            <option value="$PROJECT_DIR$/Ranger" />
->>>>>>> 431469c6a67bb0d78a88fbd794966d2e12eba16e
             <option value="$PROJECT_DIR$/app" />
           </set>
         </option>

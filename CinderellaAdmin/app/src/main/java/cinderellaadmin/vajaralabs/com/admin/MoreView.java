@@ -42,10 +42,20 @@ public class MoreView extends AppCompatActivity implements Response {
         list_item = (LinearLayout) findViewById(R.id.llorderlist);
 
         txt_count.setText("no.of items:" + '\n' + getIntent().getStringExtra("overall_count"));
-        txt_payed.setText("given amt:" + '\n' + getIntent().getStringExtra("given_amt"));
-        txt_balance.setText(getIntent().getStringExtra("balance_amt"));
-        txt_total.setText("total amt:" + '\n' + getIntent().getStringExtra("overall_total"));
+        String total = getIntent().getStringExtra("overall_total");
+        String given = getIntent().getStringExtra("given_amt");
+        txt_payed.setText("given amt:" + '\n' + given);
+        txt_total.setText("total amt:" + '\n' + total);
+        try {
+            double ttl = Double.valueOf(total);
+            double gvn = Double.valueOf(given);
+            double blnce = ttl - gvn;
+            txt_balance.setText("balance amt:" + blnce);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            txt_balance.setText(getIntent().getStringExtra("balance_amt"));
+        }
 
         Picasso.with(activity).load(getIntent().getStringExtra("image_one")).into(img_1);
 

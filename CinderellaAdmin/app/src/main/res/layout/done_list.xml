@@ -54,6 +54,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/lltxtTag"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -466,7 +467,6 @@
                 android:layout_weight="2"
                 android:padding="5dp"
                 android:text="Request Time"
-
                 android:textColor="@color/green2"
                 android:textSize="20dp"
                 android:textStyle="bold" />
@@ -487,9 +487,9 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="2dp"
                 android:layout_weight="2"
-                android:gravity="center"
                 android:padding="5dp"
-                android:textSize="15dp"
+                android:textColor="@color/sky_blue"
+                android:textSize="20dp"
                 android:textStyle="bold" />
 
 
@@ -531,8 +531,9 @@
                 android:layout_weight="2"
                 android:gravity="center_vertical|left"
                 android:padding="5dp"
-                android:text="fadsfds"
-                android:textSize="15dp"
+                android:text=""
+                android:textColor="@color/sky_blue"
+                android:textSize="20dp"
                 android:textStyle="bold" />
 
 
@@ -549,8 +550,7 @@
                 android:layout_margin="5dp"
                 android:layout_weight="2"
                 android:padding="5dp"
-                android:text="Customer Contact"
-
+                android:text="Customer Bill"
                 android:textColor="@color/green2"
                 android:textSize="20dp"
                 android:textStyle="bold" />
@@ -560,7 +560,6 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text=": "
-
                 android:textColor="@color/green2"
                 android:textStyle="bold" />
 

@@ -112,13 +112,20 @@ public class AdapterBooking extends BaseAdapter {
         mViewHolder.txt_address.setText(hashMapArrayList.get(posistion).get("address"));
         mViewHolder.txt_mobile.setText(hashMapArrayList.get(posistion).get("mobile"));
         mViewHolder.txt_name.setText(hashMapArrayList.get(posistion).get("customer_name").trim());
-        mViewHolder.txt_amount.setText(hashMapArrayList.get(posistion).get("overall_total"));
 
+        String totalAmount = hashMapArrayList.get(posistion).get("overall_total");
+        if (android.text.TextUtils.isEmpty(totalAmount)) {
+            mViewHolder.lltotal_amt.setVisibility(View.GONE);
+        } else {
+            mViewHolder.lltotal_amt.setVisibility(View.VISIBLE);
+            mViewHolder.txt_amount.setText(totalAmount);
+        }
         if (hashMapArrayList.get(posistion).get("completion").equals("25")) {
             mViewHolder.txt_cancel.setVisibility(View.VISIBLE);
 
         } else if (hashMapArrayList.get(posistion).get("completion").equals("")) {
             mViewHolder.txt_cancel.setVisibility(View.VISIBLE);
+            mViewHolder.lltotal_amt.setVisibility(View.GONE);
 
         }
 
@@ -732,9 +739,11 @@ public class AdapterBooking extends BaseAdapter {
         private final TextView txt_unique_code;
         private final TextView txt_time, txt_assign, txt_city, txt_locality, txt_address, txt_mobile, txt_name;
         private final TextView txt_cancel, txt_amount;
+        private View lltotal_amt;
 
         public MyViewHolder(View item) {
             txt_amount = (TextView) item.findViewById(R.id.txt_amount);
+            lltotal_amt = item.findViewById(R.id.lltotal_amt);
             txt_unique_code = (TextView) item.findViewById(R.id.txt_unique_code);
             txt_time = (TextView) item.findViewById(R.id.txt_time);
             txt_assign = (TextView) item.findViewById(R.id.txt_assign);

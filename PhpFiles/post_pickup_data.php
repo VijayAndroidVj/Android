@@ -77,11 +77,12 @@ if (isset($_FILES['image']['name'])) {
 
         // mysql inserting a new row
 
-        $query="select mobile, customer_id from pickup_customer where `delivery_id`  = '" . $delivery_id . "' AND `unique_code`  = '" . $unique_code . "'";
+        $query="select mobile, customer_id, shop_code_and_name from pickup_customer where `delivery_id`  = '" . $delivery_id . "' AND `unique_code`  = '" . $unique_code . "'";
         $result = mysql_query($query) or die(); 
         $row = mysql_fetch_object($result);
         $mobile = $row->mobile;
 	$customer_id = $row->customer_id; 
+	$shop_code_and_name = $row->shop_code_and_name; 
 
 
         $result_stock = mysql_query("UPDATE pickup_customer SET items = '" . $items . "',rate = '" . $rate . "',count = '" . $count . "',total = '" . $total . "',initialTotalSum = '".$initialTotalSum."', discount ='".$discount."',instruction = '" . $instruction . "',"
@@ -106,7 +107,7 @@ if (isset($_FILES['image']['name'])) {
             $mobileNumber = $mobile;
 
             //Your message to send, Add URL encoding here.
-            $message = "Your Booking is scheduled, Customer Id: ".$customer_id." Cloths: ".$overall_count." Amt: ".$overall_total." ".$payment_mode."";
+            $message = "Your Booking is scheduled, Customer Id: ".$customer_id." Shop Code: ".$shop_code_and_name." Cloths: ".$overall_count." Amt: ".$overall_total." ".$payment_mode."";
             $response["smsMessage"] = $message;
             $smessage = urlencode($message);
 

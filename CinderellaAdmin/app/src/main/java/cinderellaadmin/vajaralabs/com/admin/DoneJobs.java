@@ -126,6 +126,7 @@ public class DoneJobs extends AppCompatActivity implements Response {
                 stringHashMap.put("tag_no", jsonArray.getJSONObject(i).getString("tag_no"));
                 stringHashMap.put("overall_total", jsonArray.getJSONObject(i).getString("overall_total"));
                 stringHashMap.put("amount", jsonArray.getJSONObject(i).getString("amount"));
+                stringHashMap.put("given_amt", jsonArray.getJSONObject(i).getString("given_amt"));
                 stringHashMap.put("items", jsonArray.getJSONObject(i).getString("items"));
                 stringHashMap.put("delivery_contact_name", jsonArray.getJSONObject(i).getString("delivery_contact_name"));
 

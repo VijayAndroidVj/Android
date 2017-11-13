@@ -54,14 +54,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-<<<<<<< HEAD
 import common.AsyncPOST;
 import common.Config;
 import common.Response;
 import common.SendMail;
-=======
-import common.*;
->>>>>>> 431469c6a67bb0d78a88fbd794966d2e12eba16e
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -145,11 +141,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             if (!edt_email.getText().toString().equals("")) {
                                 if (Config.isValidEmaillId(edt_email.getText().toString().trim())) {
 
-<<<<<<< HEAD
                                     volley_post_delivery_booking(edt_email.getText().toString().trim(), dialog);
-=======
-                                    volley_post_delivery_booking(edt_email.getText().toString().trim(),dialog);
->>>>>>> 431469c6a67bb0d78a88fbd794966d2e12eba16e
                                 } else {
                                     Toast.makeText(LoginActivity.this, "Enter Valid Email", Toast.LENGTH_SHORT).show();
                                 }

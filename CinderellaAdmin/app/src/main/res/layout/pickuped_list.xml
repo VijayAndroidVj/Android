@@ -16,8 +16,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="match_parent"
@@ -93,6 +93,7 @@
                 android:textSize="20dp"
                 android:textStyle="bold" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -176,8 +177,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="match_parent"
@@ -375,8 +376,6 @@
         </LinearLayout>
 
 
-
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -431,13 +430,14 @@
             android:layout_marginLeft="3dp"
             android:layout_marginRight="3dp"
             android:background="@color/hint_2" />
+
         <Button
             android:id="@+id/btn_finish"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:text="Finish"
-            android:visibility="gone"
-            android:layout_margin="10dp"/>
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/linear_1"
@@ -449,7 +449,7 @@
             <TextView
                 android:id="@+id/txt_more"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:layout_weight="2"
                 android:background="@drawable/pressed_2"
@@ -460,7 +460,6 @@
                 android:text="More"
                 android:textColor="@color/kpf_bg2"
                 android:textStyle="bold|italic" />
-
 
 
             <TextView
@@ -478,16 +477,33 @@
                 android:textColor="@color/kpf_bg2"
                 android:textStyle="bold|italic" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/txt_reduce_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="2"
+            android:background="@drawable/pressed_2"
+            android:clickable="true"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Change Bill"
+            android:textColor="@color/kpf_bg2"
+            android:textStyle="bold|italic"
+            android:visibility="gone" />
+
         <Switch
             android:id="@+id/mySwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
             android:layout_alignParentTop="true"
+            android:layout_gravity="right"
             android:layout_marginTop="20dp"
             android:textOff="Not Completed"
-            android:visibility="gone"
-            android:textOn="Completed" />
+            android:textOn="Completed"
+            android:visibility="gone" />
     </LinearLayout>
 
 </LinearLayout>

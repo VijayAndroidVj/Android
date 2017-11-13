@@ -74,6 +74,7 @@ public class Configg {
     public static final String ASSIGN_FACTORY = "assign_factory.php";
     public static final String GET_PICKUP_CUSTOMER_FACTORY = "get_pickup_customer_factory.php";
     public static final String FACTORY_JOB_DONE = "factory_job_done.php";
+    public static final String CHANGE_BILL = "changebill.php";
     public static final String GET_FROM_FACTORY = "get_from_factory.php";
     public static final String POST_DELIVERY_ID = "post_delivery_id.php";
     public static final String GET_FROM_FACTORY_FACTORY = "get_from_factory_factory.php";

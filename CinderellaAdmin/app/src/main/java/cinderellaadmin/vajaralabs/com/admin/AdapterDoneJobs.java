@@ -3,6 +3,7 @@ package cinderellaadmin.vajaralabs.com.admin;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,9 +78,16 @@ public class AdapterDoneJobs extends BaseAdapter {
         mViewHolder.txt_customer_name.setText(hashMapArrayList.get(posistion).get("customer_name"));
         mViewHolder.txt_clothes.setText(hashMapArrayList.get(posistion).get("items"));
         mViewHolder.txt_total_amt.setText(hashMapArrayList.get(posistion).get("overall_total"));
-        mViewHolder.txt_amount.setText(hashMapArrayList.get(posistion).get("amount"));
+        mViewHolder.txt_amount.setText(hashMapArrayList.get(posistion).get("given_amt"));
         mViewHolder.txt_date.setText(hashMapArrayList.get(posistion).get("pickup_date"));
         mViewHolder.txt_date.setText(hashMapArrayList.get(posistion).get("pickup_date"));
+        String tag_no = hashMapArrayList.get(posistion).get("tag_no");
+        if (TextUtils.isEmpty(tag_no)) {
+            mViewHolder.lltxtTag.setVisibility(View.GONE);
+        } else {
+            mViewHolder.txt_tag_no.setText(tag_no);
+            mViewHolder.lltxtTag.setVisibility(View.VISIBLE);
+        }
         mViewHolder.txt_unique_code.setText(hashMapArrayList.get(posistion).get("unique_code"));
         mViewHolder.txt_time.setText(hashMapArrayList.get(posistion).get("pickup_time"));
         mViewHolder.txt_city.setText(hashMapArrayList.get(posistion).get("city"));
@@ -501,6 +509,7 @@ public class AdapterDoneJobs extends BaseAdapter {
     }
 
     private class MyViewHolder {
+        private View lltxtTag;
         private final TextView txt_date;
         private final TextView txt_unique_code;
         private final TextView txt_time, txt_assign, txt_city, txt_locality, txt_address, txt_mobile;
@@ -508,6 +517,7 @@ public class AdapterDoneJobs extends BaseAdapter {
         public TextView txt_clothes, txt_amount, txt_total_amt, txt_delivery_name, txt_customer_name;
 
         public MyViewHolder(View item) {
+            lltxtTag = item.findViewById(R.id.lltxtTag);
             txt_unique_code = (TextView) item.findViewById(R.id.txt_unique_code);
             txt_customer_name = (TextView) item.findViewById(R.id.txt_customer_name);
             txt_time = (TextView) item.findViewById(R.id.txt_time);

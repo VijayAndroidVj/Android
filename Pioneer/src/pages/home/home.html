@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons left>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>
+     DASHBOARD
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="bg">
+  <ion-card>
+    <ion-card-header>
+      OverAll Graphs
+    </ion-card-header>
+    <ion-card-content>
+      <canvas #doughnutCanvas></canvas>
+    </ion-card-content>
+  </ion-card>
+
+
+<ion-list>
+  <h2>Leads Report</h2>
+    <ion-item center text-center *ngFor="let post of postList">
+     {{post.title}} 
+     {{post.title}} 
+    </ion-item>
+</ion-list>
+</ion-content>

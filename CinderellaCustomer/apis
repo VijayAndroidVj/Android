@@ -1,0 +1,77 @@
+
+
+Api for cinderella customer app:
+
+Forgot Password : http://vajralabs.com/Cinderella/post_forgot_password.php
+{"email" : email}
+
+Login : http://vajralabs.com/Cinderella/login_customer.php
+{
+"mobile" : mobile,
+"pwd" : pwd
+}
+Signup : http://vajralabs.com/Cinderella/signup_customer.php
+{
+"name" : name,
+"mobile":mobile,
+"email": email,
+"pwd":pwd,
+"address':address
+}
+Locality : http://vajralabs.com/Cinderella/get_locality.php
+Customer Bookings : http://vajralabs.com/Cinderella/customer_bookings.php
+{"city_id":city_id,
+"locality_id":locality_id,
+"customer_name":customer_name,
+"city":city,
+"locality':locality,
+"address":address,
+"pickup_date":pickup_date,
+"pickup_time":pickup_time,
+"mobile":mobile,
+"cid":cid,
+"mobile_date":mobile_date,
+"unique_code":unique_code,
+"customer_token":customer_token
+}
+
+Get Bookings: http://vajralabs.com/Cinderella/get_booking.php
+{
+"customer_id":customer_id
+}
+
+
+Get Booking Status: http://vajralabs.com/Cinderella/get_status.php
+{
+"customer_id":customer_id,
+"pcid":pcid
+}
+Get Profile : http://vajralabs.com/Cinderella/get_profile.php
+{
+"cid":cid
+}
+Edit Customer Profile : http://vajralabs.com/Cinderella/edit_customer_profile.php
+{
+"cid":cid,
+"name":name,
+"email":email,
+"address":address,
+"mobile":mobile
+}
+
+Booking cancel : http://vajralabs.com/Cinderella/booking_cancel.php
+{
+"cancel":"yes"/"no",
+"pcid":pcid
+}
+
+Customer FeedBack : http://vajralabs.com/Cinderella/customer_feedback.php
+
+{
+"washing_quality":washing_quality
+"puntuality":puntuality
+"staff_behaviour":staff_behaviour
+"review":review
+"customer_id":customer_id
+"customer_name":customer_name
+}

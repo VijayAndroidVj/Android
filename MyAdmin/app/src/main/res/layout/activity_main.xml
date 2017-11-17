@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/backback"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:orientation="horizontal">
+
+
+        <ImageView
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="-30dp"
+            android:background="@drawable/logo" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/admin" />
+
+            <ImageView
+                android:id="@+id/logoutDash"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_marginTop="-15dp"
+                android:background="@drawable/signout" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="#000" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/backback">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="5dp"
+                android:background="#b3b1b1"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:text="DASHBOARD"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />t
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                android:weightSum="2">
+
+                <!--<SearchView
+                    android:id="@+id/searchDash"
+                    android:hint="Search Sociaty Name"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:background="#1bc2d1"
+                    android:layout_weight="0.7"
+                    android:textSize="16dp"
+                    android:textColor="#000"
+                    android:drawableRight="@drawable/search"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />-->
+
+
+                <EditText
+                    android:id="@+id/searchDash"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.7"
+                    android:background="#1bc2d1"
+                    android:drawableRight="@drawable/search"
+                    android:gravity="center"
+                    android:hint="Search Sociaty Name"
+                    android:textColor="#000"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/tvAddNew"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1.3"
+                    android:background="@drawable/dashboard"
+                    android:gravity="center"
+                    android:text="Add New"
+                    android:textColor="#000000"
+                    android:textSize="16dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="#086643"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1.1"
+                    android:gravity="center"
+                    android:text="S.no"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="#000" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.8"
+                    android:gravity="center"
+                    android:text="Contributer type"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="#000" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Active"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="#000" />
+                <!--  <TextView
+                      android:layout_weight="1"
+                      android:text="Amount"
+                      android:textColor="#ffffff"
+                      android:textStyle="bold"
+                      android:layout_gravity="center"
+                      android:gravity="center"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent" />-->
+                <!-- <View
+                     android:layout_width="1dp"
+                     android:layout_height="match_parent"
+                     android:background="#000"/>-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1.1"
+                    android:gravity="center"
+                    android:text="Edit"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
+            <!--  <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="40dp"
+                  android:orientation="horizontal"
+                  android:weightSum="5">
+
+                  <TextView
+                      android:layout_weight="1.1"
+                      android:text="1"
+                      android:layout_gravity="center"
+                      android:gravity="center"
+                      android:textColor="#000000"
+                      android:textStyle="bold"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent" />
+                  <View
+                      android:layout_width="1dp"
+                      android:layout_height="match_parent"
+                      android:background="#000"/>
+                  <TextView
+                      android:layout_weight="0.8"
+                      android:text="Mohan"
+                      android:layout_gravity="center"
+                      android:gravity="center"
+                      android:textColor="#000"
+                      android:textStyle="bold"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent" />
+
+                  <View
+                      android:layout_width="1dp"
+                      android:layout_height="match_parent"
+                      android:background="#000"/>
+
+                  <TextView
+                      android:layout_weight="1"
+                      android:text="Active"
+                      android:layout_gravity="center"
+                      android:gravity="center"
+                      android:textColor="#000"
+                      android:textStyle="bold"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent" />
+                  <View
+                      android:layout_width="1dp"
+                      android:layout_height="match_parent"
+                      android:background="#000"/>
+                  <TextView
+                      android:layout_weight="1"
+                      android:text="500"
+                      android:textColor="#000000"
+                      android:textStyle="bold"
+                      android:layout_gravity="center"
+                      android:gravity="center"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent" />
+                  <View
+                      android:layout_width="1dp"
+                      android:layout_height="match_parent"
+                      android:background="#000"/>
+                  <ImageView
+                      android:layout_weight="1.1"
+                      android:background="@drawable/note"
+                      android:textColor="#000000"
+                      android:textStyle="bold"
+                      android:layout_gravity="center"
+                      android:gravity="center"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent" />
+
+
+              </LinearLayout>
+              <View
+                  android:layout_width="match_parent"
+                  android:layout_height="1dp"
+                  android:background="#000"/>
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="40dp"
+                  android:orientation="horizontal"
+                  android:weightSum="5">
+
+                  <TextView
+                      android:layout_weight="1.1"
+                      android:text="2"
+                      android:layout_gravity="center"
+                      android:gravity="center"
+                      android:textColor="#000000"
+                      android:textStyle="bold"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent" />
+                  <View
+                      android:layout_width="1dp"
+                      android:layout_height="match_parent"
+                      android:background="#000"/>
+                  <TextView
+                      android:layout_weight="0.8"
+                      android:text="Mani"
+                      android:layout_gravity="center"
+                      android:gravity="center"
+                      android:textColor="#000"
+                      android:textStyle="bold"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent" />
+                  <View
+                      android:layout_width="1dp"
+                      android:layout_height="match_parent"
+                      android:background="#000"/>
+
+                  <TextView
+                      android:layout_weight="1"
+                      android:text="In-Active"
+                      android:layout_gravity="center"
+                      android:gravity="center"
+                      android:textColor="#000"
+                      android:textStyle="bold"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent" />
+                  <View
+                      android:layout_width="1dp"
+                      android:layout_height="match_parent"
+                      android:background="#000"/>
+                  <TextView
+                      android:layout_weight="1"
+                      android:text="700"
+                      android:textColor="#000000"
+                      android:textStyle="bold"
+                      android:layout_gravity="center"
+                      android:gravity="center"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent" />
+                  <View
+                      android:layout_width="1dp"
+                      android:layout_height="match_parent"
+                      android:background="#000"/>
+                  <ImageView
+                      android:layout_weight="1.1"
+                      android:background="@drawable/note"
+                      android:textColor="#000000"
+                      android:textStyle="bold"
+                      android:layout_gravity="center"
+                      android:gravity="center"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent" />
+
+
+              </LinearLayout>
+              <View
+                  android:layout_width="match_parent"
+                  android:layout_height="1dp"
+                  android:background="#000"/>
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="40dp"
+                  android:orientation="horizontal"
+                  android:weightSum="5">
+
+                  <TextView
+                      android:layout_weight="1.1"
+                      android:text="3"
+                      android:layout_gravity="center"
+                      android:gravity="center"
+                      android:textColor="#000000"
+                      android:textStyle="bold"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent" />
+                  <View
+                      android:layout_width="1dp"
+                      android:layout_height="match_parent"
+                      android:background="#000"/>
+                  <TextView
+                      android:layout_weight="0.8"
+                      android:text="bharathi"
+                      android:layout_gravity="center"
+                      android:gravity="center"
+                      android:textColor="#000"
+                      android:textStyle="bold"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent" />
+                  <View
+                      android:layout_width="1dp"
+                      android:layout_height="match_parent"
+                      android:background="#000"/>
+                  <TextView
+                      android:layout_weight="1"
+                      android:text="Active"
+                      android:layout_gravity="center"
+                      android:gravity="center"
+                      android:textColor="#000"
+                      android:textStyle="bold"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent" />
+                  <View
+                      android:layout_width="1dp"
+                      android:layout_height="match_parent"
+                      android:background="#000"/>
+                  <TextView
+                      android:layout_weight="1"
+                      android:text="900"
+                      android:textColor="#000000"
+                      android:textStyle="bold"
+                      android:layout_gravity="center"
+                      android:gravity="center"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent" />
+                  <View
+                      android:layout_width="1dp"
+                      android:layout_height="match_parent"
+                      android:background="#000"/>
+                  <ImageView
+                      android:layout_weight="1.1"
+                      android:background="@drawable/note"
+                      android:textColor="#000000"
+                      android:textStyle="bold"
+                      android:layout_gravity="center"
+                      android:gravity="center"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent" />
+
+
+              </LinearLayout>
+              <View
+                  android:layout_width="match_parent"
+                  android:layout_height="1dp"
+                  android:background="#000"/>-->
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical" />
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

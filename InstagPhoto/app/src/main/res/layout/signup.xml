@@ -236,7 +236,7 @@
                         android:layout_height="wrap_content"
                         android:buttonTint="#ffffff"
                         android:text="@string/terms"
-                        android:textColor="#ffffff" />
+                        android:textColor="@color/black" />
 
                     <Button
                         android:id="@+id/btn_signup"

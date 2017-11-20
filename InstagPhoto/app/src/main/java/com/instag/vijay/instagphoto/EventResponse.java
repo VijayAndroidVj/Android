@@ -8,52 +8,74 @@ import com.google.gson.annotations.SerializedName;
 
 public class EventResponse {
 
-    @SerializedName("error")
-    private boolean error;
+    @SerializedName("result")
+    private String result;
 
-    @SerializedName("error_msg")
-    private String error_msg;
+    @SerializedName("message")
+    private String message;
 
-    @SerializedName("uid")
-    private int uid;
+    @SerializedName("name")
+    private String name;
 
-    @SerializedName("user")
-    private User user;
+    @SerializedName("username")
+    private String username;
 
-    public boolean getError() {
-        return error;
+    @SerializedName("email")
+    private String email;
+
+    @SerializedName("password")
+    private String password;
+
+    public String getResult() {
+        return result;
     }
 
-    public void setError(boolean error) {
-        this.error = error;
+    public void setResult(String result) {
+        this.result = result;
     }
 
-    public String getError_msg() {
-        return error_msg;
+    public String getMessage() {
+        return message;
     }
 
-    public void setError_msg(String error_msg) {
-        this.error_msg = error_msg;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public int getUid() {
-        return uid;
+    public String getName() {
+        return name;
     }
 
-    public void setUid(int uid) {
-        this.uid = uid;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public User getUser() {
-        return user;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
     public String toString() {
-        return "error = " + error + " , error_msg = " + error_msg;
+        return "result = " + result + " , message = " + message;
     }
 }

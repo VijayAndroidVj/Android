@@ -90,45 +90,6 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-    public void signup(final String email, final String name) {
-        showProgressDialog();
-        ApiInterface apiService =
-                ApiClient.getClient().create(ApiInterface.class);
-        Call<EventResponse> call = apiService.register(name, email, email, "");
-        call.enqueue(new Callback<EventResponse>() {
-            @Override
-            public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
-                Log.d(TAG, "Number of movies received: " + response.body());
-
-                hideProgressDialog();
-                EventResponse sigInResponse = response.body();
-                if (sigInResponse != null) {
-                    PreferenceUtil preferenceUtil = new PreferenceUtil(MmSignInActivity.this);
-                    preferenceUtil.putBoolean(Keys.IS_ALREADY_REGISTERED, true);
-                    preferenceUtil.putString(Keys.NAME, name);
-                    preferenceUtil.putString(Keys.EmailID, email);
-                    preferenceUtil.putString(Keys.PHONE, "");
-                    preferenceUtil.putString(Keys.PASSWORD, email);
-                    Intent intent = new Intent(MmSignInActivity.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Toast.makeText(MmSignInActivity.this, "Could not connect to server.", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<EventResponse> call, Throwable t) {
-                // Log error here since request failed
-                Log.e(TAG, t.toString());
-                hideProgressDialog();
-                Toast.makeText(MmSignInActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
 
 
     @Override
@@ -196,15 +157,15 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
 
                     EventResponse sigInResponse = response.body();
                     if (sigInResponse != null) {
-                        if (sigInResponse.getError()) {
-                            Toast.makeText(MmSignInActivity.this, sigInResponse.getError_msg(), Toast.LENGTH_SHORT).show();
+                        if (sigInResponse.getResult().equalsIgnoreCase("failed")) {
+                            Toast.makeText(MmSignInActivity.this, sigInResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         } else {
                             PreferenceUtil preferenceUtil = new PreferenceUtil(MmSignInActivity.this);
                             preferenceUtil.putBoolean(Keys.IS_ALREADY_REGISTERED, true);
-                            preferenceUtil.putString(Keys.NAME, sigInResponse.getUser().getName());
-                            preferenceUtil.putString(Keys.EmailID, sigInResponse.getUser().getEmail());
-                            preferenceUtil.putString(Keys.PHONE, sigInResponse.getUser().getMobile());
-                            preferenceUtil.putString(Keys.PASSWORD, password);
+                            preferenceUtil.putString(Keys.NAME, sigInResponse.getName());
+                            preferenceUtil.putString(Keys.EmailID, sigInResponse.getEmail());
+                            preferenceUtil.putString(Keys.USERNAME, sigInResponse.getUsername());
+                            preferenceUtil.putString(Keys.PASSWORD, sigInResponse.getPassword());
                             Intent intent = new Intent(MmSignInActivity.this, MainActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);

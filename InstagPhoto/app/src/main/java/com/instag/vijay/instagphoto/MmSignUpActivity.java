@@ -147,11 +147,11 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
             return;
         }
 
-        if (!validateEmail()) {
+        if (!validateUsername()) {
             return;
         }
 
-        if (!validatePhone()) {
+        if (!validateEmail()) {
             return;
         }
 
@@ -174,7 +174,7 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
             MainActivity.showProgress(activity);
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
-            Call<EventResponse> call = apiService.register(name, email, password, userName);
+            Call<EventResponse> call = apiService.register(name, userName, email, password);
             call.enqueue(new Callback<EventResponse>() {
                 @Override
                 public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
@@ -182,14 +182,14 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
                     MainActivity.dismissProgress();
                     EventResponse sigInResponse = response.body();
                     if (sigInResponse != null) {
-                        if (sigInResponse.getError()) {
-                            Toast.makeText(MmSignUpActivity.this, sigInResponse.getError_msg(), Toast.LENGTH_SHORT).show();
+                        if (sigInResponse.getResult().equalsIgnoreCase("failed")) {
+                            Toast.makeText(MmSignUpActivity.this, sigInResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         } else {
                             PreferenceUtil preferenceUtil = new PreferenceUtil(MmSignUpActivity.this);
                             preferenceUtil.putBoolean(Keys.IS_ALREADY_REGISTERED, true);
-                            preferenceUtil.putString(Keys.NAME, sigInResponse.getUser().getName());
-                            preferenceUtil.putString(Keys.EmailID, sigInResponse.getUser().getEmail());
-                            preferenceUtil.putString(Keys.PHONE, sigInResponse.getUser().getMobile());
+                            preferenceUtil.putString(Keys.NAME, name);
+                            preferenceUtil.putString(Keys.EmailID, email);
+                            preferenceUtil.putString(Keys.USERNAME, userName);
                             preferenceUtil.putString(Keys.PASSWORD, password);
                             Intent intent = new Intent(MmSignUpActivity.this, MmSignInActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -224,14 +224,10 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
         finish();
     }
 
-    private boolean validatePhone() {
-        String pass = input_userName.getText().toString().trim();
-        if (pass.isEmpty()) {
+    private boolean validateUsername() {
+        String username = input_userName.getText().toString().trim();
+        if (username.isEmpty()) {
             til_signup_userName.setError("Invalid phone");
-            requestFocus(input_userName);
-            return false;
-        } else if (pass.length() < 3) {
-            til_signup_userName.setError("Phone must be greater than 10 digit");
             requestFocus(input_userName);
             return false;
         } else {

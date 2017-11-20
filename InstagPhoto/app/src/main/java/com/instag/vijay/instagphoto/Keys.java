@@ -10,7 +10,7 @@ public interface Keys {
 
     String NAME = "name";
     String EmailID = "emailID";
-    String PHONE = "phone";
+    String USERNAME = "username";
     String PASSWORD = "password";
 
     /**

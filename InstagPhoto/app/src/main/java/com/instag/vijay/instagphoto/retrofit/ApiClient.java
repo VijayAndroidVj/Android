@@ -1,5 +1,8 @@
 package com.instag.vijay.instagphoto.retrofit;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -22,7 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
 
     private static Retrofit retrofit = null;
-    private static String serverAddress = "http://mcmount.com/";
+    private static String serverAddress = "http://vajralabs.com/insta/";
 
 
     private static TrustManager[] trustAllCerts = new TrustManager[]{
@@ -58,10 +61,15 @@ public class ApiClient {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
 //        if (retrofit == null) {
         retrofit = new Retrofit.Builder().client(client.build())
                 .baseUrl(serverAddress)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
 //        }

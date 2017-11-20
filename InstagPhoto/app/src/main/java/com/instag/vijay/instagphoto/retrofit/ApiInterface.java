@@ -23,12 +23,12 @@ public interface ApiInterface {
 //    http://mcmount.com/api/mc-login/login.php?email=xxx&password=xxxx
 
 
-    @POST("api/mc-login/register.php")
+    @POST("signup.php")
     @FormUrlEncoded
-    Call<EventResponse> register(@Field("name") String name, @Field("email") String email, @Field("password") String password, @Field("mobile") String mobile);
+    Call<EventResponse> register(@Field("name") String name, @Field("username") String username, @Field("email") String email, @Field("password") String password);
 
 
-    @POST("api/mc-login/login.php")
+    @POST("login.php")
     @FormUrlEncoded
-    Call<EventResponse> login(@Field("email") String email, @Field("password") String password);
+    Call<EventResponse> login(@Field("username") String username, @Field("password") String password);
 }

@@ -8,23 +8,23 @@ import com.google.gson.annotations.SerializedName;
 
 public class EventResponse {
 
+    @SerializedName("username")
+    private String username;
+
+    @SerializedName("password")
+    private String password;
+
+    @SerializedName("name")
+    private String name;
+
+    @SerializedName("email")
+    private String email;
+
     @SerializedName("result")
     private String result;
 
     @SerializedName("message")
     private String message;
-
-    @SerializedName("name")
-    private String name;
-
-    @SerializedName("username")
-    private String username;
-
-    @SerializedName("email")
-    private String email;
-
-    @SerializedName("password")
-    private String password;
 
     public String getResult() {
         return result;

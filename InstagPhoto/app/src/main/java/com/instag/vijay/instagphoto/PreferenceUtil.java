@@ -34,6 +34,10 @@ public class PreferenceUtil {
     }
 
 
+    public String getUserMailId() {
+        return getString(Keys.EmailID, "");
+    }
+
     public String getString(String key, String defaultValue) {
         return sharedpreferences.getString(key, defaultValue);
     }

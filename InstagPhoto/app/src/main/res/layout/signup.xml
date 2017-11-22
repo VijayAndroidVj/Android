@@ -236,7 +236,7 @@
                         android:id="@+id/terms"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:buttonTint="#ffffff"
+                        android:buttonTint="#000000"
                         android:text="@string/terms"
                         android:textColor="@color/black" />
 

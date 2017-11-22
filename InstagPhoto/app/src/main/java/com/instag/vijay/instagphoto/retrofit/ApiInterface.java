@@ -1,13 +1,14 @@
 package com.instag.vijay.instagphoto.retrofit;
 
 import com.instag.vijay.instagphoto.EventResponse;
+import com.instag.vijay.instagphoto.FavModel;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Query;
 
 /**
  * Created by iyara_rajan on 06-07-2017.
@@ -31,4 +32,14 @@ public interface ApiInterface {
     @POST("login.php")
     @FormUrlEncoded
     Call<EventResponse> login(@Field("username") String username, @Field("password") String password);
+
+
+    @POST("add_follow.php")
+    @FormUrlEncoded
+    Call<EventResponse> add_follow(@Field("useremail") String useremail, @Field("emailtofollow") String emailtofollow, @Field("follow") boolean follow);
+
+    @POST("follow_followers.php")
+    @FormUrlEncoded
+    Call<ArrayList<FavModel>> follow_followers(@Field("useremail") String useremail, @Field("following") boolean following);
 }
+

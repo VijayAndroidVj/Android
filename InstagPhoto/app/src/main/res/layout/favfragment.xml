@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:id="@+id/llfollow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+        android:layout_marginTop="7dp"
+        android:background="@drawable/round_corner_rect_blue"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+
+        <FrameLayout
+            android:id="@+id/viewUpcoming"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/txtUpcoming"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="3dp"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/followers"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+        </FrameLayout>
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="@color/colorPrimaryTransparent" />
+
+
+        <FrameLayout
+            android:id="@+id/viewPast"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/right_round_corner_rect_white">
+
+            <TextView
+                android:id="@+id/txtPast"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="3dp"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/following"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
+
+        </FrameLayout>
+    </LinearLayout>
+
+    <include
+        layout="@layout/list_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/llfollow" />
+</RelativeLayout>

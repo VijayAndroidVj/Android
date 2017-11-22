@@ -91,7 +91,6 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
-
     @Override
     public void onStart() {
         super.onStart();
@@ -143,13 +142,13 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
             return;
         }
 
-        final String email = input_username.getText().toString().trim();
+        final String username = input_username.getText().toString().trim();
         final String password = input_password.getText().toString().trim();
 
         if (CommonUtil.isNetworkAvailable(MmSignInActivity.this)) {
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
-            Call<EventResponse> call = apiService.login(email, password);
+            Call<EventResponse> call = apiService.login(username, password);
             call.enqueue(new Callback<EventResponse>() {
                 @Override
                 public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {

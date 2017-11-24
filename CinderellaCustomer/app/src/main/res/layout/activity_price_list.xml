@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_price_list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="coustomer.cinderella.vajra.cinderellacustomerapp.PriceList">
+
+
+    <coustomer.cinderella.vajra.cinderellacustomerapp.TouchImageView
+        android:id="@+id/img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@mipmap/pricing_back" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/edt_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:cursorVisible="false"
+            android:drawableRight="@mipmap/drop_down"
+            android:editable="false"
+            android:focusable="false"
+            android:hint="Select Product"
+            android:padding="10dp"
+            android:textColorHint="@color/hint_3" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@color/blue_2"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txt_product"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_weight="2"
+                android:padding="5dp"
+                android:text="Product List"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:padding="4dp"
+                android:src="@mipmap/rupee_icon1" />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/list_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"></ListView>
+    </LinearLayout>
+
+</RelativeLayout>

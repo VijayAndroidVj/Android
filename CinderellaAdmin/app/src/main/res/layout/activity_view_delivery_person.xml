@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_assign_dealer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="cinderellaadmin.vajaralabs.com.admin.AssignDealer">
+
+    <EditText
+        android:id="@+id/edt_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search by shop, shop person" />
+
+    <ListView
+        android:id="@+id/list_delivery_person"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edt_search"></ListView>
+</RelativeLayout>

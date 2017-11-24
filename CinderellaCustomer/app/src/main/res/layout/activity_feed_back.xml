@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_feed_back"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg1"
+    tools:context="coustomer.cinderella.vajra.cinderellacustomerapp.FeedBack">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:padding="5dp"
+            android:visibility="visible"
+            android:textColor="@color/black_2"
+            android:layout_gravity="center"
+            android:text="Washing Quality" />
+
+
+        <RatingBar
+            android:id="@+id/ratebar_quality"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:layout_gravity="center_vertical|"
+
+            android:padding="5dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:padding="5dp"
+            android:visibility="visible"
+            android:textColor="@color/black_2"
+            android:layout_gravity="center"
+            android:text="Punctuality" />
+
+
+        <RatingBar
+            android:id="@+id/ratebar_puntuality"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:layout_gravity="center_vertical|"
+
+            android:padding="5dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:padding="5dp"
+            android:visibility="visible"
+            android:textColor="@color/black_2"
+            android:layout_gravity="center"
+            android:text="Staff Behaviour" />
+
+
+        <RatingBar
+            android:id="@+id/ratebar_behaviour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:layout_gravity="center_vertical|"
+
+            android:padding="5dp" />
+
+        <EditText
+            android:id="@+id/edt_review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lines="4"
+            android:gravity="top"
+            android:padding="5dp"
+            android:layout_margin="5dp"
+            android:hint="Write a review..."/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/white"
+        android:background="@drawable/edt_rounded_edge"/>
+</RelativeLayout>

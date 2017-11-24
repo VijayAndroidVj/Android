@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_margin="5dp"
+        android:text="Select Time Slot"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/txt_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:background="@drawable/pressed"
+            android:padding="10dp"
+
+            android:text="09:00 AM-12:00AM"/>
+        <TextView
+            android:id="@+id/txt_2"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:clickable="true"
+            android:background="@drawable/pressed"
+
+            android:text="12:00 AM-03:00PM"/>
+
+        <TextView
+            android:id="@+id/txt_3"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:clickable="true"
+            android:background="@drawable/pressed"
+            android:text="03:00 PM-06:00PM"/>
+        <TextView
+            android:id="@+id/txt_4"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:clickable="true"
+            android:background="@drawable/pressed"
+            android:text="06:00 PM-09:00PM"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>

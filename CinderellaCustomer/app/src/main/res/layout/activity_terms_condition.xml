@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_terms_condition"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg1"
+    android:orientation="vertical"
+    tools:context="coustomer.cinderella.vajra.cinderellacustomerapp.TermsCondition">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/bg1"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Terms &amp; Conditions-Laundry"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity=""
+                android:background="@color/bg1"
+
+                android:text="● Minimum lot size is 4 KG for laundry ."
+                android:textColor="@color/black_2" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/bg1"
+                android:text="● Drop-n-Go is not responsible for your clothes once delivered."
+
+                android:textColor="@color/black_2" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/bg1"
+                android:text="● Stain removal is subject to feasibility as determined by our staff at the time of
+receipt."
+                android:textColor="@color/black_2" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/bg1"
+                android:text="● Not responsible for normal wear/tear of cleaning process including buttons, zipper,
+embellishment etc."
+
+                android:textColor="@color/black_2" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/bg1"
+                android:text="● All possible care will be taken but not responsible for shrinkage/discoloration/
+permanent stains."
+
+                android:textColor="@color/black_2" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/bg1"
+                android:text="● In case of damage to fabric or misplaced goods reimbursement will be in
+accordance with international fabric fair claims guide and shall not exceed 10 times
+of the billed amount for that particular garment regardless of brand or condition."
+
+                android:textColor="@color/black_2" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/bg1"
+                android:text="● 14% service charge applicable"
+
+                android:textColor="@color/black_2" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/bg1"
+                android:text="● Standard pricing may not be applicable in certain situations based on fabric and
+extent of restoration or stain removal services required"
+
+                android:textColor="@color/black_2" />
+
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:layout_marginRight="10dp"-->
+                <!--android:layout_marginTop="15dp"-->
+                <!--android:background="@color/bg1"-->
+
+                <!--android:text="● Minimum lot size is 4 KG for laundry ."-->
+                <!--android:textColor="@color/black_2" />-->
+
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:background="@color/bg1"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:padding="10dp"-->
+                <!--android:text="Services"-->
+                <!--android:textColor="@color/black"-->
+                <!--android:textSize="20dp"-->
+                <!--android:textStyle="bold" />-->
+
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:background="@color/bg1"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:paddingBottom="10dp"-->
+                <!--android:paddingLeft="5dp"-->
+                <!--android:paddingRight="5dp"-->
+                <!--android:text="The scope of service will be as set out on our website cinderellalaundry.com. Any standard or temporary deviation from the service will be notified on our website.-->
+<!--The company will maintain service subject only to matters within the control of company. The company reserves the right to reject Partial or Total services in case it is felt to be not in the prerogative of its services.-->
+<!--Company reserves right to decline services to customer in the case of unprofessional behaviour towards the company's employees."-->
+                <!--android:textColor="@color/black_2" />-->
+
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:background="@color/bg1"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:padding="10dp"-->
+                <!--android:text="Pricing &amp; Payments"-->
+                <!--android:textColor="@color/black"-->
+                <!--android:textSize="20dp"-->
+                <!--android:textStyle="bold" />-->
+
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:background="@color/bg1"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:paddingBottom="10dp"-->
+                <!--android:paddingLeft="5dp"-->
+                <!--android:paddingRight="5dp"-->
+
+                <!--android:text="Prices and services are periodically reviewed. Any changes to will be displayed on our web site cinderellalaundry.com and complete list will be at our outlet.-->
+<!--All billings are subject to current standard rate of Service Tax and other taxes.-->
+<!--An estimate of the bill amount will be provided at the time of booking the order.-->
+<!--The exact bill amount will be informed to customer after items are checked at processing unit if necessary.-->
+<!--We accept payment in Cash upon Delivery of items &amp; invoice to the Customer.-->
+<!--Any advance payment must be recorded in Pickup Slip, signed by our representative."-->
+                <!--android:textColor="@color/black_2" />-->
+
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:background="@color/bg1"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:padding="10dp"-->
+                <!--android:text="BOOKINGS &amp; PICK-UP"-->
+                <!--android:textColor="@color/black"-->
+                <!--android:textSize="20dp"-->
+                <!--android:textStyle="bold" />-->
+
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:background="@color/bg1"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:paddingBottom="10dp"-->
+                <!--android:paddingLeft="5dp"-->
+
+                <!--android:paddingRight="5dp"-->
+                <!--android:text="Our store and Pick-up / Drop service operates 9.00 AM to 7.00 PM, on weekdays.-->
+<!--However online facility is available 24 x 7. Customer can schedule a Pickup through our website.-->
+<!--Our representative will make best effort for schedule with a prior confirmation.-->
+<!--Customer needs to check at time of pickup / drop all items to complete satisfaction.-->
+<!--Any special process instruction provided to our representative must be mentioned in writing on the Pickup Slip.-->
+<!--All accessories which can be detached from the garment will be counted as separate items and charged separately, case to case as necessary."-->
+                <!--android:textColor="@color/black_2" />-->
+
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:background="@color/bg1"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:padding="10dp"-->
+                <!--android:text="DELIVERY OF GOODS"-->
+                <!--android:textColor="@color/black"-->
+                <!--android:textSize="20dp"-->
+                <!--android:textStyle="bold" />-->
+
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:background="@color/bg1"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:padding="10dp"-->
+                <!--android:text="DISCLAIMER"-->
+                <!--android:textColor="@color/black"-->
+                <!--android:textSize="20dp"-->
+                <!--android:textStyle="bold" />-->
+
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:background="@color/bg1"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:paddingBottom="10dp"-->
+                <!--android:paddingLeft="5dp"-->
+                <!--android:paddingRight="5dp"-->
+
+                <!--android:text="Items which the company considers under its services can only be processed at the risk of customer."-->
+                <!--android:textColor="@color/black_2" />-->
+
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:background="@color/bg1"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:padding="10dp"-->
+                <!--android:text="GENERAL LIABILITY EXCLUSIONS"-->
+                <!--android:textColor="@color/black"-->
+                <!--android:textSize="20dp"-->
+                <!--android:textStyle="bold" />-->
+
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:background="@color/bg1"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:paddingBottom="10dp"-->
+                <!--android:paddingLeft="5dp"-->
+                <!--android:paddingRight="5dp"-->
+
+                <!--android:text="The company accepts no liability for:-->
+<!--Any feather/down filled item-->
+<!--Any accessory attached to an item or damaged caused by the accessory.-->
+<!--Any claim caused by ink marks left behind by the poly-marking label system.-->
+<!--Any item that does not have a cleaning instruction.-->
+<!--Any item with crinkles or creased effects that can be removed during processing.-->
+<!--Any item with faulty interfacing or adhesives that mark off after processing.-->
+<!--Any item that suffers color loss.-->
+<!--Loss of any item which does not have an authentic cinderella receipt.-->
+<!--In case of damage/loss of an item, it should be reported to Cinderella within 24 hours of delivery.-->
+<!--The company will try to rectify damage/ find lost item within 5 working days. In case of failure in doing that, 5 times of our invoice value of our services for that item regardless of brand or condition will be reimbursed."-->
+                <!--android:textColor="@color/black_2" />-->
+
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:background="@color/bg1"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:padding="10dp"-->
+                <!--android:text="FORCE MAJEURE"-->
+                <!--android:textColor="@color/black"-->
+                <!--android:textSize="20dp"-->
+                <!--android:textStyle="bold" />-->
+
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:background="@color/bg1"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:paddingBottom="10dp"-->
+                <!--android:paddingLeft="5dp"-->
+                <!--android:paddingRight="5dp"-->
+
+                <!--android:text="Without limiting the foregoing, under no circumstances shall Cinderella be held liable for any damage or-->
+<!--loss due to deficiency in performance of the Services resulting directly or indirectly from acts of nature,-->
+<!--forces or causes beyond its reasonable control, including without limitation, Internet failures, computer-->
+<!--equipment failures, telecommunication equipment failures, electrical power failures and other equipment failures.-->
+<!--This TERMS OF USE is made by BlueFloyd Technologies Pvt. Ltd., (hereinafter referred to as “Dapper”) and you as a User of the Dapper Service. These terms and conditions (“Agreement”) apply to Dapper website and the related mobile application and/or selected other domains, existing or future, content, products and services (collectively, the “Services”). The term 'Dapper' or 'us' or 'we' or ‘company’ refers to the owners, managers, employees, investors of Dapper. The term 'you' refers to the user or viewer of our app, website or mobile application.-->
+<!--"-->
+                <!--android:textColor="@color/black_2" />-->
+
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tabs>
     <tab
-        icon="@drawable/ic_home_black_24dp"
+        icon="@drawable/ic_home_black"
         id="@+id/tab_home" />
     <tab
-        icon="@drawable/ic_search_black_24dp"
+        icon="@drawable/ic_search_black"
         id="@+id/tab_search" />
     <tab
-        icon="@drawable/ic_camera_alt_black_24dp"
+        icon="@drawable/ic_camera_black"
         id="@+id/tab_cam" />
     <tab
-        icon="@drawable/ic_favorite_black_24dp"
+        icon="@drawable/ic_favorite_black"
         id="@+id/tab_fav" />
     <tab
-        icon="@drawable/ic_person_black_24dp"
+        icon="@drawable/ic_person_black"
         id="@+id/tab_account" />
 </tabs>

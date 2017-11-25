@@ -6,8 +6,10 @@
     <!-- Network State Permissions -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.NETWORK" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="false"
@@ -15,7 +17,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme1">
         <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,11 +25,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MmSignInActivity" />
-        <activity android:name=".MmSignUpActivity" />
+        <activity
+            android:name=".MmSignInActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".MmSignUpActivity"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme1" />
+            android:theme="@style/AppTheme1"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".UpLoadImagePreview"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme1"
+            android:windowSoftInputMode="adjustPan" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="91a5950c8f66ccb0512cd4ca3b82ff55e8c46e4e" />
     </application>
 
 </manifest>

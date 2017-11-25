@@ -146,6 +146,7 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
         final String password = input_password.getText().toString().trim();
 
         if (CommonUtil.isNetworkAvailable(MmSignInActivity.this)) {
+            MainActivity.showProgress(MmSignInActivity.this);
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
             Call<EventResponse> call = apiService.login(username, password);
@@ -153,7 +154,7 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
                 @Override
                 public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
                     Log.d(TAG, "response: " + response.body());
-
+                    MainActivity.dismissProgress();
                     EventResponse sigInResponse = response.body();
                     if (sigInResponse != null) {
                         if (sigInResponse.getResult().equalsIgnoreCase("failed")) {
@@ -180,6 +181,7 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
                 public void onFailure(Call<EventResponse> call, Throwable t) {
                     // Log error here since request failed
                     Log.e(TAG, t.toString());
+                    MainActivity.dismissProgress();
                     Toast.makeText(MmSignInActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                 }
             });

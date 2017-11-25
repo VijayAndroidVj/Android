@@ -4,19 +4,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.instag.vijay.instagphoto.retrofit.ApiClient;
@@ -30,42 +27,35 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
     private static final String TAG = MmSignUpActivity.class.getSimpleName();
     private Activity activity;
 
-    private EditText input_name;
-    private EditText input_email;
-    //    private EditText input_Department;
-    private EditText input_password;
+    private TextInputEditText input_name;
+    private TextInputEditText input_email;
+    private TextInputEditText input_password;
     private Button bt_clear_name;
     private Button bt_clear_email;
     private TextInputLayout til_signup_name;
     private TextInputLayout til_signup_email;
     private TextInputLayout til_signup_password;
-    private EditText input_userName;
+    private TextInputEditText input_userName;
     private TextInputLayout til_signup_userName;
-    private CheckBox checkbox;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.signup);
+        setContentView(R.layout.user_signup);
 
         activity = this;
 
 
-        input_name = (EditText) findViewById(R.id.input_name);
-        input_email = (EditText) findViewById(R.id.input_email);
-        input_password = (EditText) findViewById(R.id.input_password);
-        til_signup_name = (TextInputLayout) findViewById(R.id.til_signup_name);
-        til_signup_email = (TextInputLayout) findViewById(R.id.til_signup_email);
-        input_userName = (EditText) findViewById(R.id.input_userName);
+        input_name = findViewById(R.id.input_name);
+        input_email = findViewById(R.id.input_email);
+        input_password = findViewById(R.id.input_password);
+        til_signup_name = findViewById(R.id.til_signup_name);
+        til_signup_email = findViewById(R.id.til_signup_email);
+        input_userName = findViewById(R.id.input_userName);
         til_signup_userName = (TextInputLayout) findViewById(R.id.til_signup_userName);
         til_signup_password = (TextInputLayout) findViewById(R.id.til_signup_password);
         bt_clear_name = (Button) findViewById(R.id.bt_clear_name);
         bt_clear_email = (Button) findViewById(R.id.bt_clear_email);
-        checkbox = (CheckBox) findViewById(R.id.terms);
-        checkbox.setText(Html.fromHtml("By signing up for an account you agree to our " +
-                "<a href='http://mcmount.com//terms-and-conditions'>Terms and Conditions</a>"));
-        checkbox.setClickable(true);
-        checkbox.setMovementMethod(LinkMovementMethod.getInstance());
 
 
         bt_clear_name.setOnClickListener(this);
@@ -164,11 +154,6 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
 
         final String userName = input_userName.getText().toString().trim();
         final String password = input_password.getText().toString().trim();
-
-        if (!checkbox.isChecked()) {
-            Toast.makeText(activity, "Accept terms ans conditions", Toast.LENGTH_LONG).show();
-        }
-
 
         if (CommonUtil.isNetworkAvailable(activity)) {
             MainActivity.showProgress(activity);

@@ -6,17 +6,28 @@ import android.graphics.Typeface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.instag.vijay.instagphoto.CommonUtil;
+import com.instag.vijay.instagphoto.EventResponse;
 import com.instag.vijay.instagphoto.FavModel;
+import com.instag.vijay.instagphoto.PreferenceUtil;
 import com.instag.vijay.instagphoto.R;
+import com.instag.vijay.instagphoto.retrofit.ApiClient;
+import com.instag.vijay.instagphoto.retrofit.ApiInterface;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHolder> implements View.OnClickListener {
 
@@ -29,6 +40,7 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
                 Object object = v.getTag();
                 if (object instanceof FavModel) {
                     FavModel userModel = (FavModel) object;
+                    followUser(userModel);
                 }
                 break;
         }
@@ -59,22 +71,23 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
         alertDialog.show();
     }
 
-   /* private void getPatients(final FavModel meetingItem) {
+    private void followUser(final FavModel meetingItem) {
         if (CommonUtil.isNetworkAvailable(activity)) {
-            MainActivity.showProgress(activity);
             ApiInterface service =
                     ApiClient.getClient().create(ApiInterface.class);
             PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
 
-            Call<EventResponse> call = service.add_follow(preferenceUtil.getUserMailId(), meetingItem.getWhom(), true);
+            String usermail = preferenceUtil.getUserMailId();
+            String followermail = usermail.equalsIgnoreCase(meetingItem.getWho()) ? meetingItem.getWhom() : meetingItem.getWho();
+            Call<EventResponse> call = service.add_follow(usermail, followermail, !meetingItem.isFollowing());
             call.enqueue(new Callback<EventResponse>() {
                 @Override
                 public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
                     EventResponse patientDetails = response.body();
                     Log.i("patientDetails", response.toString());
-                    if (patientDetails != null) {
-                    } else {
-                        Toast.makeText(activity, "Could not connect to server.", Toast.LENGTH_SHORT).show();
+                    if (patientDetails != null && patientDetails.getResult().equalsIgnoreCase("success")) {
+                        meetingItem.setFollowing(!meetingItem.isFollowing());
+                        notifyDataSetChanged();
                     }
 
                 }
@@ -94,7 +107,7 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
         } else {
             Toast.makeText(activity, "Check your internet connection!", Toast.LENGTH_SHORT).show();
         }
-    }*/
+    }
 
     private ProgressDialog progressDoalog;
 
@@ -113,24 +126,24 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView txtMeetingName;
+        private Button btnMeetingJoin;
 
         private MyViewHolder(View view) {
             super(view);
             txtMeetingName = (TextView) view.findViewById(R.id.txtMeetingName);
             txtMeetingName.setTypeface(font, Typeface.BOLD);
+            btnMeetingJoin = view.findViewById(R.id.btnMeetingJoin);
         }
     }
 
     private Activity activity;
     private LayoutInflater layoutInflater;
-    private boolean followers;
     private Typeface font;
 
-    public MeetingAdapter(Activity activity, List<FavModel> moviesList, boolean followers) {
+    public MeetingAdapter(Activity activity, List<FavModel> moviesList) {
         this.originalList = moviesList;
         this.activity = activity;
         layoutInflater = LayoutInflater.from(activity);
-        this.followers = followers;
         font = Typeface.createFromAsset(activity.getAssets(), "fontawesome-webfont.ttf");
     }
 
@@ -145,7 +158,7 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
         FavModel userModel = originalList.get(position);
 
 
-        if (TextUtils.isEmpty(userModel.getName())) {
+        if (TextUtils.isEmpty(userModel.getUserName())) {
             if (!TextUtils.isEmpty(userModel.getWhom()) && userModel.getWhom().contains("@")) {
                 String[] name = userModel.getWhom().split("@");
                 holder.txtMeetingName.setText(name[0]);
@@ -154,8 +167,16 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
             }
 
         } else {
-            holder.txtMeetingName.setText(userModel.getName());
+            holder.txtMeetingName.setText(userModel.getUserName());
         }
+
+        if (userModel.isFollowing()) {
+            holder.btnMeetingJoin.setText(activity.getString(R.string.unfollow));
+        } else {
+            holder.btnMeetingJoin.setText(activity.getString(R.string.follow));
+        }
+        holder.btnMeetingJoin.setTag(userModel);
+        holder.btnMeetingJoin.setOnClickListener(this);
 
     }
 

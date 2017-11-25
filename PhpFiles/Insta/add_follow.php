@@ -42,7 +42,7 @@ $result_chk = mysql_query("SELECT * FROM `insta_follower` WHERE `who`  = '" . $u
             if ($result) {
     // successfully inserted into database
                $response["result"] = "success";
-                $response["message"] = "Account Created Successfully.";
+                $response["message"] = "Followed Successfully.";
                 //echo $output;
                 // echoing JSON response
                 echo json_encode($response);
@@ -62,7 +62,7 @@ $result_chk = mysql_query("SELECT * FROM `insta_follower` WHERE `who`  = '" . $u
             if ($result1) {
                 // successfully inserted into database
                $response["result"] = "success";
-                $response["message"] = "Account Deleted Successfully.";
+                $response["message"] = "Unfollowed Successfully.";
                 //echo $output;
                 // echoing JSON response
                 echo json_encode($response);

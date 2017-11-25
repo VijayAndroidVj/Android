@@ -17,7 +17,7 @@
             android:layout_height="50dp"
             android:layout_centerHorizontal="true"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_camera_enhance_black_24dp"
+            android:src="@drawable/ic_cam_enhance"
             android:tint="@color/colorPrimary"
             android:visibility="visible" />
 
@@ -60,6 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/username"
+                android:imeOptions="actionNext"
                 android:paddingBottom="10dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="40dp"
@@ -101,6 +102,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
+                android:imeOptions="actionDone"
                 android:inputType="textPassword"
                 android:paddingBottom="10dp"
                 android:paddingLeft="10dp"
@@ -131,7 +133,7 @@
         android:layout_marginRight="15sp"
         android:layout_marginTop="10dp"
         android:background="@color/invite_title"
-        android:text="@string/signup"
+        android:text="@string/signin"
         android:textAllCaps="false"
         android:textColor="@android:color/white" />
 

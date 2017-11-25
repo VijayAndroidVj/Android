@@ -1,7 +1,6 @@
 package com.instag.vijay.instagphoto.fragments;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,7 +19,6 @@ import android.widget.Toast;
 
 import com.instag.vijay.instagphoto.CommonUtil;
 import com.instag.vijay.instagphoto.FavModel;
-import com.instag.vijay.instagphoto.MainActivity;
 import com.instag.vijay.instagphoto.PreferenceUtil;
 import com.instag.vijay.instagphoto.R;
 import com.instag.vijay.instagphoto.adapter.MeetingAdapter;
@@ -45,6 +43,16 @@ public class FavFragment extends Fragment implements View.OnClickListener {
     private SwipeRefreshLayout swipeRefreshLayout;
     private View viewUpcoming, viewPast;
     private TextView txtUpcoming, txtPast;
+
+    private static FavFragment favFragment;
+
+    public static FavFragment getInstance() {
+        if (favFragment == null) {
+            favFragment = new FavFragment();
+        }
+        return favFragment;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -84,7 +92,7 @@ public class FavFragment extends Fragment implements View.OnClickListener {
 
     private void refreshItems() {
         if (CommonUtil.isNetworkAvailable(activity)) {
-            MainActivity.showProgress(activity);
+            progressBar.setVisibility(View.VISIBLE);
             PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
@@ -94,15 +102,11 @@ public class FavFragment extends Fragment implements View.OnClickListener {
                 public void onResponse(Call<ArrayList<FavModel>> call, Response<ArrayList<FavModel>> response) {
                     Log.d("", "response: " + response.body());
                     swipeRefreshLayout.setRefreshing(false);
-                    MainActivity.dismissProgress();
+                    progressBar.setVisibility(View.GONE);
                     ArrayList<FavModel> sigInResponse = response.body();
                     if (sigInResponse != null) {
                         ilist = sigInResponse;
-                        if (sigInResponse.size() > 0) {
-                            setList();
-                        } else {
-                            Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
-                        }
+                        setList();
                     } else {
                         Toast.makeText(activity, "Could not connect to server.", Toast.LENGTH_SHORT).show();
                     }
@@ -113,47 +117,15 @@ public class FavFragment extends Fragment implements View.OnClickListener {
                 public void onFailure(Call<ArrayList<FavModel>> call, Throwable t) {
                     // Log error here since request failed
                     Log.e("", t.toString());
-                    MainActivity.dismissProgress();
+                    progressBar.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(false);
                     Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
-            MainActivity.dismissProgress();
+            progressBar.setVisibility(View.GONE);
             swipeRefreshLayout.setRefreshing(false);
             Toast.makeText(activity, "Check your internet connection!", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
-    ProgressDialog progress;
-
-    public void showProgress() {
-        if (progress == null) {
-            progress = new ProgressDialog(activity);
-            progress.setMessage("Checking please wait... ");
-            progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progress.setIndeterminate(false);
-        }
-        if (!progress.isShowing()) {
-            progress.show();
-        }
-    }
-
-    public void dismissProgress() {
-        if (progress != null && progress.isShowing()) {
-            progress.dismiss();
-        }
-    }
-
-    public void onItemsLoadComplete() {
-        // Update the adapter and notify data set changed
-        try {
-            setList();
-            // Stop refresh animation
-            swipeRefreshLayout.setRefreshing(false);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -193,22 +165,6 @@ public class FavFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void setInfoText(String text) {
-        viewInfo.setVisibility(View.VISIBLE);
-        recyclerView.setVisibility(View.GONE);
-        viewInfo.setText(text);
-    }
-
-
-    public void hideRefresh() {
-        try {
-            if (swipeRefreshLayout != null)
-                swipeRefreshLayout.setRefreshing(false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public ArrayList<FavModel> ilist = new ArrayList<>();
 
     public void setList() {
@@ -217,7 +173,7 @@ public class FavFragment extends Fragment implements View.OnClickListener {
             viewInfo.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
 
-            MeetingAdapter logAdapter = new MeetingAdapter(activity, ilist, followers);
+            MeetingAdapter logAdapter = new MeetingAdapter(activity, ilist);
             recyclerView.setAdapter(logAdapter);
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(activity);
             recyclerView.setLayoutManager(mLayoutManager);
@@ -249,6 +205,10 @@ public class FavFragment extends Fragment implements View.OnClickListener {
                     if (ilist != null) {
                         ilist.clear();
                     }
+                    progressBar.setVisibility(View.VISIBLE);
+                    viewInfo.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+
                     viewUpcoming.setBackgroundResource(R.drawable.left_round_corner_rect_blue);
                     viewPast.setBackgroundResource(R.drawable.right_round_corner_rect_white);
                     txtUpcoming.setTextColor(CommonUtil.getColorWrapper(activity, R.color.white));
@@ -260,6 +220,11 @@ public class FavFragment extends Fragment implements View.OnClickListener {
                     if (ilist != null) {
                         ilist.clear();
                     }
+
+                    progressBar.setVisibility(View.VISIBLE);
+                    viewInfo.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+
                     followers = true;
                     viewPast.setBackgroundResource(R.drawable.right_round_corner_rect_blue);
                     viewUpcoming.setBackgroundResource(R.drawable.left_round_corner_rect_white);

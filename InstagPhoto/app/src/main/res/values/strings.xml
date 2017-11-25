@@ -2,6 +2,7 @@
     <string name="app_name">InstaPhoto</string>
     <string name="terms"> By signing up for an account you agree to our Terms and Conditions</string>
     <string name="signup">Register</string>
+    <string name="signin">SignIn</string>
     <string name="name">Name*</string>
     <string name="username">Username*</string>
     <string name="email">Email*</string>
@@ -9,4 +10,11 @@
 
     <string name="followers">Followers</string>
     <string name="following">Following</string>
+    <string name="follow">Follow</string>
+    <string name="delete">Delete Post</string>
+    <string name="unfollow">UnFollow</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
+    <string name="share">Share</string>
+    <string name="share1">the best moment with your friends</string>
 </resources>

@@ -25,7 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
 
     private static Retrofit retrofit = null;
-    private static String serverAddress = "http://vajralabs.com/insta/";
+    public static String serverAddress = "http://vajralabs.com/insta/";
 
 
     private static TrustManager[] trustAllCerts = new TrustManager[]{

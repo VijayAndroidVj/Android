@@ -15,7 +15,7 @@ import com.instag.vijay.instagphoto.fragments.SearchFragment;
  */
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
-    int mNumOfTabs;
+    private int mNumOfTabs;
 
     public PagerAdapter(FragmentManager fm, int NumOfTabs) {
         super(fm);
@@ -27,20 +27,15 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                NewsfeedFragment newsfeedFragment = new NewsfeedFragment();
-                return newsfeedFragment;
+                return NewsfeedFragment.getInstance();
             case 1:
-                SearchFragment searchFragment = new SearchFragment();
-                return searchFragment;
+                return SearchFragment.getInstance();
             case 2:
-                PhotoFragment photoFragment = new PhotoFragment();
-                return photoFragment;
+                return PhotoFragment.getInstance();
             case 3:
-                FavFragment favFragment = new FavFragment();
-                return favFragment;
+                return FavFragment.getInstance();
             case 4:
-                ProfileFragment profileFragment = new ProfileFragment();
-                return profileFragment;
+                return ProfileFragment.getInstance();
             default:
                 return null;
         }

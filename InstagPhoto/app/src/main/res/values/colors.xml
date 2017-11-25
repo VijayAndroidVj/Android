@@ -7,6 +7,7 @@
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="grey">#808080</color>
+    <color name="litgrey">#80808080</color>
     <color name="blue">#334CFF</color>
     <color name="red">#F40A03</color>
     <color name="invite_title">#27aa80</color>

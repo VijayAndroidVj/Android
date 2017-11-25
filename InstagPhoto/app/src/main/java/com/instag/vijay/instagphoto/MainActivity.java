@@ -2,35 +2,29 @@ package com.instag.vijay.instagphoto;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.instag.vijay.instagphoto.adapter.PagerAdapter;
-import com.instag.vijay.instagphoto.retrofit.ApiClient;
-import com.instag.vijay.instagphoto.retrofit.ApiInterface;
+import com.instag.vijay.instagphoto.fragments.SearchFragment;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    SearchView searchView;
+    public static EditText searchEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +42,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         View view = LayoutInflater.from(this).inflate(R.layout.actionbar, null);
         final TextView name = (TextView) view.findViewById(R.id.txtAppName);
         view.findViewById(R.id.iv_actionbar_noti).setOnClickListener(this);
-        searchView = view.findViewById(R.id.searchview);
 
-        EditText searchEditText = (EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchEditText = (EditText) view.findViewById(R.id.searchview);
         searchEditText.setTextColor(getResources().getColor(R.color.white));
         searchEditText.setHintTextColor(getResources().getColor(R.color.white));
 
-        searchView.onActionViewExpanded();
+        searchEditText.clearFocus();
 
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         actionBar.setDisplayShowCustomEnabled(true);
@@ -76,10 +69,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 bottomBar.selectTabAtPosition(position);
                 if (position == 1) {
                     name.setVisibility(View.GONE);
-                    searchView.setVisibility(View.VISIBLE);
+                    searchEditText.setVisibility(View.VISIBLE);
                 } else {
                     name.setVisibility(View.VISIBLE);
-                    searchView.setVisibility(View.GONE);
+                    searchEditText.setVisibility(View.GONE);
                 }
             }
 
@@ -119,46 +112,65 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         bottomBar.selectTabAtPosition(0);
-
-        // perform set on query text listener event
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-// do something on text submit
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-// do something when text changes
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    SearchFragment searchFragment = (SearchFragment) adapter.getItem(1);
+                    searchFragment.refreshItems(searchEditText.getText().toString().trim());
+                    return true;
+                }
                 return false;
             }
         });
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     private static ProgressDialog progressDoalog;
 
     public static void showProgress(Activity activity) {
 
-        if (progressDoalog == null) {
-            progressDoalog = new ProgressDialog(activity);
-            progressDoalog.setMax(100);
-            progressDoalog.setMessage("Its loading....");
-            progressDoalog.setTitle("ProgressDialog bar example");
-            progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        try {
+            if (progressDoalog == null) {
+                progressDoalog = new ProgressDialog(activity);
+                progressDoalog.setMax(100);
+                progressDoalog.setMessage("Please wait....");
+                progressDoalog.setTitle(activity.getString(R.string.app_name));
+                progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDoalog.show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        if (!progressDoalog.isShowing())
-            progressDoalog.show();
     }
 
     public static void dismissProgress() {
         if (progressDoalog != null && progressDoalog.isShowing())
             progressDoalog.dismiss();
+        progressDoalog = null;
     }
 
     @Override
     public void onClick(View view) {
 
+    }
+
+
+    private static final int TIME_DELAY = 2000;
+    private static long back_pressed;
+
+    @Override
+    public void onBackPressed() {
+        if (back_pressed + TIME_DELAY > System.currentTimeMillis()) {
+            moveTaskToBack(true);
+        } else {
+            back_pressed = System.currentTimeMillis();
+            Toast.makeText(getBaseContext(), "Press once again to exit!",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 }

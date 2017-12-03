@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+    <include layout="@layout/actionbar"
+        android:id="@+id/layout_actionbar"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20dp"
+        android:layout_marginLeft="@dimen/_20dp"
+        android:textColor="@color/black"
+        android:text="@string/MEDIFICATION_NOTIFICATION"/>
+
+    <RadioGroup
+        android:id="@+id/rg_notification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_20dp">
+
+        <RadioButton
+            android:id="@+id/rb_setting_five_minutes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/before_five_minutes"
+            android:textColor="@color/text_color"/>
+
+        <RadioButton
+            android:id="@+id/rb_setting_fifteen_minutes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/before_fifteen_minutes"
+            android:textColor="@color/text_color"/>
+
+        <RadioButton
+            android:id="@+id/rb_setting_thirty_minutes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/before_thirty_minutes"
+            android:textColor="@color/text_color"/>
+
+        <RadioButton
+            android:id="@+id/rb_setting_sixty_minutes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/before_one_hour"
+            android:textColor="@color/text_color"/>
+    </RadioGroup>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1dp"
+        android:background="@color/text_color"/>
+
+</LinearLayout>

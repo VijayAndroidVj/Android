@@ -17,6 +17,7 @@ import org.apache.http.NameValuePair;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import common.Configg;
 
@@ -27,7 +28,7 @@ public class AdapterDoneJobs extends BaseAdapter {
 
 
     ArrayList<HashMap<String, String>> hashMapArrayList = new ArrayList<HashMap<String, String>>();
-
+    ArrayList<HashMap<String, String>> hashMapArrayList2;
     private Context context;
 
     LayoutInflater inflater;
@@ -41,7 +42,39 @@ public class AdapterDoneJobs extends BaseAdapter {
         this.hashMapArrayList = hashMapArrayList;
         this.context = context;
         inflater = LayoutInflater.from(context);
+        this.hashMapArrayList2 = new ArrayList<HashMap<String, String>>();
+        this.hashMapArrayList2.addAll(hashMapArrayList);
 
+    }
+
+
+    // Filter Class
+    public void filter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        hashMapArrayList.clear();
+        if (charText.length() == 0) {
+            hashMapArrayList.addAll(hashMapArrayList2);
+        } else {
+            for (HashMap<String, String> wp : hashMapArrayList2) {
+                if (wp.get("unique_code").toLowerCase(Locale.getDefault()).contains(charText)) {
+                    hashMapArrayList.add(wp);
+                }
+                if (wp.get("mobile").toLowerCase(Locale.getDefault()).contains(charText)) {
+                    hashMapArrayList.add(wp);
+                }
+                if (wp.get("locality").toLowerCase(Locale.getDefault()).contains(charText)) {
+                    hashMapArrayList.add(wp);
+                }
+                if (wp.get("city").toLowerCase(Locale.getDefault()).contains(charText)) {
+                    hashMapArrayList.add(wp);
+                }
+
+                if (wp.get("address").toLowerCase(Locale.getDefault()).contains(charText)) {
+                    hashMapArrayList.add(wp);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     @Override

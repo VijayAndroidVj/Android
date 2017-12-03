@@ -17,15 +17,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.instag.vijay.instagphoto.CommonUtil;
-import com.instag.vijay.instagphoto.EventResponse;
 import com.instag.vijay.instagphoto.PermissionCheck;
 import com.instag.vijay.instagphoto.R;
 import com.instag.vijay.instagphoto.UpLoadImagePreview;
-import com.instag.vijay.instagphoto.retrofit.ApiClient;
-import com.instag.vijay.instagphoto.retrofit.ApiInterface;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -36,11 +31,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -229,79 +219,5 @@ public class PhotoFragment extends Fragment {
             in.close();
         }
     }
-
-        /*
-  * Begins to upload the file specified by the file path.
-  */
-
-    private void beginUpload(final String locaPath) {
-        if (locaPath == null || !new File(locaPath).exists()) {
-            Toast.makeText(activity, "Could not find the filepath of the selected file",
-                    Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        File file = new File(locaPath);
-        try {
-            if (CommonUtil.isNetworkAvailable(activity)) {
-                ApiInterface apiService =
-                        ApiClient.getClient().create(ApiInterface.class);
-                RequestBody requestFile =
-                        RequestBody.create(
-                                null,
-                                file
-                        );
-                MultipartBody.Part description =
-                        MultipartBody.Part.createFormData("description", "de sddsgsdd s scription sf sdmngs");
-
-                // MultipartBody.Part is used to send also the actual file name
-                MultipartBody.Part image =
-                        MultipartBody.Part.createFormData("image", file.getName(), requestFile);
-
-                // finally, execute the request
-                Call<EventResponse> call = apiService.insta_posts(description, image);
-                call.enqueue(new Callback<EventResponse>() {
-                    @Override
-                    public void onResponse(Call<EventResponse> call, retrofit2.Response<EventResponse> response) {
-
-                        EventResponse sigInResponse = response.body();
-                        if (sigInResponse != null) {
-                            if (sigInResponse.getResult().equals("success")) {
-                                if (!TextUtils.isEmpty(sigInResponse.getMessage()))
-                                    Toast.makeText(activity, sigInResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(activity, sigInResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            Toast.makeText(activity, "Could not connect to server.", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<EventResponse> call, Throwable t) {
-                        // Log error here since request failed
-                        Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
-                    }
-                });
-//        upload(file);
-       /* TransferObserver observer = transferUtility.upload(Constants.BUCKET_NAME, getString(R.string.app_name) + "/" + file.getName(),
-                file);
-        *//*
-         * Note that usually we set the transfer listener after initializing the
-         * transfer. However it isn't required in this sample app. The flow is
-         * click upload button -> start an activity for image selection
-         * startActivityForResult -> onActivityResult -> beginUpload -> onResume
-         * -> set listeners to in progress transfers.
-         *//*
-        observer.setTransferListener(new UploadListener(reportsModel));*/
-            } else {
-                Toast.makeText(activity, "Check your internet connection!", Toast.LENGTH_SHORT).show();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 
 }

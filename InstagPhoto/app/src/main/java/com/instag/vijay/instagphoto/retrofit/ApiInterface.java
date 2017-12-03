@@ -2,6 +2,7 @@ package com.instag.vijay.instagphoto.retrofit;
 
 import com.instag.vijay.instagphoto.EventResponse;
 import com.instag.vijay.instagphoto.FavModel;
+import com.instag.vijay.instagphoto.model.Comments;
 import com.instag.vijay.instagphoto.model.PostModelMain;
 
 import java.util.ArrayList;
@@ -54,12 +55,17 @@ public interface ApiInterface {
     @POST("insta_posts.php")
     Call<EventResponse> insta_posts(
             @Part MultipartBody.Part description,
-            @Part MultipartBody.Part image
+            @Part MultipartBody.Part image,
+            @Part MultipartBody.Part user_mail
     );
 
     @POST("getposts.php")
     @FormUrlEncoded
     Call<PostModelMain> getposts(@Field("useremail") String useremail);
+
+    @POST("getcomments.php")
+    @FormUrlEncoded
+    Call<ArrayList<Comments>> getcomments(@Field("post_id") String post_id);
 
 
     @POST("delete_post.php")

@@ -18,11 +18,11 @@ $response = array();
 
 	$useremail = $_POST['useremail'];
 	$post_id = $_POST['post_id'];
-	$like = $_POST['like'];
 	$username = $_POST['username'];
 	$comment = $_POST['comment'];
+	$uniqueid = uniqid();
 
-    $result = mysql_query("INSERT INTO insta_post_comments(post_id, user_email, username, comment) VALUES('$post_id', '$user_email, '$username', '$comment')");
+    $result = mysql_query("INSERT INTO insta_post_comments(comment_id, post_id, user_email, username, comment) VALUES('$uniqueid', $post_id', '$user_email, '$username', '$comment')");
 
     if ($result) {
        $response["result"] = "success";
@@ -37,3 +37,4 @@ $response = array();
     }
 
 ?>
+

@@ -39,7 +39,11 @@
             android:name=".UpLoadImagePreview"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme1"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Comment"
+            android:theme="@style/AppTheme1"
+            android:windowSoftInputMode="adjustResize" />
 
         <meta-data
             android:name="io.fabric.ApiKey"

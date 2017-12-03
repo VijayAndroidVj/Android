@@ -79,31 +79,38 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
 
             String usermail = preferenceUtil.getUserMailId();
             String followermail = usermail.equalsIgnoreCase(meetingItem.getWho()) ? meetingItem.getWhom() : meetingItem.getWho();
-            Call<EventResponse> call = service.add_follow(usermail, followermail, !meetingItem.isFollowing());
-            call.enqueue(new Callback<EventResponse>() {
-                @Override
-                public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
-                    EventResponse patientDetails = response.body();
-                    Log.i("patientDetails", response.toString());
-                    if (patientDetails != null && patientDetails.getResult().equalsIgnoreCase("success")) {
-                        meetingItem.setFollowing(!meetingItem.isFollowing());
-                        notifyDataSetChanged();
+            if (TextUtils.isEmpty(followermail)) {
+                followermail = meetingItem.getEmail();
+            }
+            if (!TextUtils.isEmpty(followermail)) {
+                Call<EventResponse> call = service.add_follow(usermail, followermail, !meetingItem.isFollowing());
+                call.enqueue(new Callback<EventResponse>() {
+                    @Override
+                    public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
+                        EventResponse patientDetails = response.body();
+                        Log.i("patientDetails", response.toString());
+                        if (patientDetails != null && patientDetails.getResult().equalsIgnoreCase("success")) {
+                            meetingItem.setFollowing(!meetingItem.isFollowing());
+                            notifyDataSetChanged();
+                        }
+
                     }
 
-                }
-
-                @Override
-                public void onFailure(Call<EventResponse> call, Throwable t) {
-                    // Log error here since request failed
-                    String message = t.getMessage();
-                    if (message.contains("Failed to")) {
-                        message = "Failed to Connect";
-                    } else {
-                        message = "Failed";
+                    @Override
+                    public void onFailure(Call<EventResponse> call, Throwable t) {
+                        // Log error here since request failed
+                        String message = t.getMessage();
+                        if (message.contains("Failed to")) {
+                            message = "Failed to Connect";
+                        } else {
+                            message = "Failed";
+                        }
+                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                     }
-                    Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-                }
-            });
+                });
+            } else {
+                Toast.makeText(activity, "User not found", Toast.LENGTH_SHORT).show();
+            }
         } else {
             Toast.makeText(activity, "Check your internet connection!", Toast.LENGTH_SHORT).show();
         }
@@ -156,7 +163,6 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         FavModel userModel = originalList.get(position);
-
 
         if (TextUtils.isEmpty(userModel.getUserName())) {
             if (!TextUtils.isEmpty(userModel.getWhom()) && userModel.getWhom().contains("@")) {

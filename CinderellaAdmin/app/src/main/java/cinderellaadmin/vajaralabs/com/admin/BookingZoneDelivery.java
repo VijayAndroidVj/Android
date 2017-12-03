@@ -2,8 +2,11 @@ package cinderellaadmin.vajaralabs.com.admin;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import org.apache.http.NameValuePair;
@@ -14,6 +17,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import common.AsyncPOST;
 import common.Configg;
@@ -35,6 +39,27 @@ public class BookingZoneDelivery extends AppCompatActivity implements Response {
         getSupportActionBar().setTitle("Delivery-Zone");
         findViewById(R.id.flShareView).setVisibility(View.GONE);
         list_booking = (ListView) findViewById(R.id.list_booking);
+
+        final EditText edt_search = (EditText) findViewById(R.id.edt_search);
+        edt_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String text = edt_search.getText().toString().toLowerCase(Locale.getDefault());
+                if (adapterBooking != null)
+                    adapterBooking.filter(text);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     @Override

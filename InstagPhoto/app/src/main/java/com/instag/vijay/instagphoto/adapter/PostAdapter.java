@@ -2,6 +2,7 @@ package com.instag.vijay.instagphoto.adapter;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.instag.vijay.instagphoto.Comment;
 import com.instag.vijay.instagphoto.CommonUtil;
 import com.instag.vijay.instagphoto.EventResponse;
 import com.instag.vijay.instagphoto.PreferenceUtil;
@@ -57,48 +59,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
                 object = v.getTag();
                 if (object instanceof Posts) {
                     Posts post = (Posts) object;
-                    commentPost(post, "Hi");
+                    Intent intent = new Intent(activity, Comment.class);
+                    intent.putExtra("post_id", post.getPost_id());
+                    activity.startActivity(intent);
                 }
                 break;
-        }
-    }
-
-    private void commentPost(Posts post, String comment) {
-        if (CommonUtil.isNetworkAvailable(activity)) {
-            initProgress("Submitting...");
-            ApiInterface service =
-                    ApiClient.getClient().create(ApiInterface.class);
-            PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
-
-            String usermail = preferenceUtil.getUserMailId();
-            Call<EventResponse> call = service.post_comments(usermail, preferenceUtil.getUserName(), post.getPost_id(), comment);
-            call.enqueue(new Callback<EventResponse>() {
-                @Override
-                public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
-                    EventResponse patientDetails = response.body();
-                    Log.i("patientDetails", response.toString());
-                    if (patientDetails != null && patientDetails.getResult().equalsIgnoreCase("success")) {
-                        closeProgress();
-                        Toast.makeText(activity, "Comment added", Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-
-                @Override
-                public void onFailure(Call<EventResponse> call, Throwable t) {
-                    // Log error here since request failed
-                    String message = t.getMessage();
-                    if (message.contains("Failed to")) {
-                        message = "Failed to Connect";
-                    } else {
-                        message = "Failed";
-                    }
-                    closeProgress();
-                    Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-                }
-            });
-        } else {
-            Toast.makeText(activity, "Check your internet connection!", Toast.LENGTH_SHORT).show();
         }
     }
 

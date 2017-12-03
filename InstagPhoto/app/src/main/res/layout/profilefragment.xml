@@ -150,36 +150,36 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:focusableInTouchMode="true"
             android:orientation="vertical">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_gravity="center"
+                android:gravity="center">
 
                 <ImageView
                     android:id="@+id/btnGrid"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerHorizontal="true"
                     android:padding="5dp"
                     android:src="@drawable/gridview"
                     android:tint="@color/grey" />
 
                 <ImageView
                     android:id="@+id/btnlist"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerHorizontal="true"
                     android:padding="5dp"
                     android:src="@drawable/listview"
                     android:tint="@color/grey" />
-            </LinearLayout>
 
+            </RelativeLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerviewContact"
@@ -187,7 +187,6 @@
                 android:layout_height="match_parent"
                 android:scrollbars="vertical"
                 android:visibility="visible" />
-
 
             <ProgressBar
                 android:id="@+id/progressBar_cyclic"

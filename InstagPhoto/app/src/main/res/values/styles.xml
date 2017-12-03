@@ -5,6 +5,8 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="titleTextColor">@color/white</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
@@ -13,13 +15,17 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="titleTextColor">@color/white</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="MyActionBar" parent="ThemeOverlay.AppCompat.Light">
+    <style name="MyActionBar" parent="ThemeOverlay.AppCompat.ActionBar">
         <!-- Customize your theme here. -->
         <item name="android:windowContentOverlay">@null</item>
+        <item name="colorControlNormal">@color/white</item>
         <!-- Support library compatibility -->
+        <item name="titleTextColor">@color/white</item>
         <item name="elevation">0dp</item>
         <item name="android:textColorSecondary">@color/white</item>
     </style>

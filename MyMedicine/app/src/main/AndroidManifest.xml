@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.android.mymedicine">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <application
+        android:name=".java.application.MyMedicine"
+        android:allowBackup="true"
+        android:icon="@drawable/app_icon_mymedicine"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/app_icon_mymedicine"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".java.activity.SplashScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".java.activity.AppTour" />
+        <activity
+            android:name=".java.activity.Login"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".java.activity.Registration"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".java.activity.Home"
+            android:persistent="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".java.activity.AddMedicine"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".java.activity.MedicineDetails" />
+        <activity android:name=".java.activity.Settings" />
+        <activity
+            android:name=".java.activity.NavigationDrawerActivity"
+            android:label="@string/title_activity_navigation_drawer"
+            android:theme="@style/AppTheme" />
+
+        <receiver android:name=".java.notification.MedicineBroadcast"></receiver>
+        <receiver android:name=".java.notification.NotificationActionClass"></receiver>
+        <receiver
+            android:name=".java.notification.BootReceiver"
+            android:enabled="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".java.service.MyMedicineService"
+            android:enabled="true" />
+    </application>
+
+</manifest>

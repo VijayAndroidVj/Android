@@ -1,0 +1,138 @@
+package com.xr.vijay.tranzpost;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.FirebaseTooManyRequestsException;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.FirebaseTooManyRequestsException;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
+
+import java.util.concurrent.TimeUnit;
+
+/**
+ * Created by vijay on 3/12/17.
+ */
+
+public class VerificationActivity extends AppCompatActivity implements
+        View.OnClickListener {
+
+    private static final String TAG = "PhoneAuthActivity";
+
+    private EditText mPhoneNumberField;
+    FirebaseAuth mAuth;
+    private Button mVerifyButton;
+    String verificationId, mobilenumber;
+
+    private ProgressBar progressbar;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.verification_code);
+
+        // Restore instance state
+        if (savedInstanceState != null) {
+            onRestoreInstanceState(savedInstanceState);
+        }
+        mAuth = FirebaseAuth.getInstance();
+
+        verificationId = getIntent().getStringExtra("verificationId");
+        mobilenumber = getIntent().getStringExtra("mobile");
+        // Assign views
+        mPhoneNumberField = findViewById(R.id.edtCode);
+        progressbar = findViewById(R.id.progressbar);
+        mVerifyButton = findViewById(R.id.btnNext);
+        mVerifyButton.setOnClickListener(this);
+        findViewById(R.id.btnBack).setOnClickListener(this);
+        findViewById(R.id.txtnotrecieve).setOnClickListener(this);
+        TextView textViewnumber = findViewById(R.id.txtSendTo);
+        textViewnumber.setText("We have dent code to " + mobilenumber);
+        // Initialize phone auth callbacks
+        // [START phone_auth_callbacks]
+    }
+
+    private void verifyPhoneNumberWithCode(String code) {
+        // [START verify_with_code]
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "signInWithCredential:success");
+                            Intent intent = new Intent(VerificationActivity.this, Registration.class);
+                            intent.putExtra("mobile", mobilenumber);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            progressbar.setVisibility(View.GONE);
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                mPhoneNumberField.setError("Invalid code.");
+                                Intent intent = new Intent(VerificationActivity.this, Registration.class);
+                                intent.putExtra("mobile", mobilenumber);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+                    }
+                });
+        // [END verify_with_code]
+    }
+
+    private boolean validatePhoneNumber() {
+        String phoneNumber = mPhoneNumberField.getText().toString();
+        if (TextUtils.isEmpty(phoneNumber)) {
+            mPhoneNumberField.setError("Invalid verification code.");
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btnNext:
+                if (!validatePhoneNumber()) {
+                    return;
+                }
+                progressbar.setVisibility(View.VISIBLE);
+                verifyPhoneNumberWithCode(mPhoneNumberField.getText().toString());
+                break;
+            case R.id.txtnotrecieve:
+            case R.id.btnBack:
+                Intent intent = new Intent(VerificationActivity.this, PhoneNumberAuthentication.class);
+                startActivity(intent);
+                finish();
+                break;
+        }
+    }
+}

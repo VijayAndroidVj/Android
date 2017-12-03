@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -18,20 +17,15 @@ import android.view.animation.AlphaAnimation;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
+import com.instag.vijay.instagphoto.retrofit.ApiClient;
+import com.instag.vijay.instagphoto.retrofit.ApiInterface;
 
 import java.io.File;
-import java.io.IOException;
 
-import static com.instag.vijay.instagphoto.retrofit.ApiClient.serverAddress;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 /**
  * Created by vijay on 25/11/17.
@@ -84,7 +78,8 @@ public class UpLoadImagePreview extends AppCompatActivity {
             public void onClick(View view) {
                 uploadbtn.startAnimation(buttonClick);
                 if (!TextUtils.isEmpty(uploadFile)) {
-                    new UploadFileToServer(new File(uploadFile), edtDes.getText().toString().trim()).execute();
+//                    new UploadFileToServer(new File(uploadFile), edtDes.getText().toString().trim()).execute();
+                    beginUpload(uploadFile);
                 }
             }
         });
@@ -92,7 +87,90 @@ public class UpLoadImagePreview extends AppCompatActivity {
     }
 
 
-    private class UploadFileToServer extends AsyncTask<Void, Integer, String> {
+        /*
+  * Begins to upload the file specified by the file path.
+  */
+
+    private void beginUpload(final String locaPath) {
+        if (locaPath == null || !new File(locaPath).exists()) {
+            Toast.makeText(activity, "Could not find the filepath of the selected file",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        File file = new File(locaPath);
+        try {
+            if (CommonUtil.isNetworkAvailable(activity)) {
+                ApiInterface apiService =
+                        ApiClient.getClient().create(ApiInterface.class);
+                RequestBody requestFile =
+                        RequestBody.create(
+                                null,
+                                file
+                        );
+                MultipartBody.Part description =
+                        MultipartBody.Part.createFormData("description", edtDes.getText().toString().trim());
+
+                PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
+                MultipartBody.Part user_mail =
+                        MultipartBody.Part.createFormData("user_mail", preferenceUtil.getUserMailId());
+
+                // MultipartBody.Part is used to send also the actual file name
+                MultipartBody.Part image =
+                        MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+
+                // finally, execute the request
+                Call<EventResponse> call = apiService.insta_posts(description, image, user_mail);
+                call.enqueue(new Callback<EventResponse>() {
+                    @Override
+                    public void onResponse(Call<EventResponse> call, retrofit2.Response<EventResponse> response) {
+
+                        EventResponse sigInResponse = response.body();
+                        if (sigInResponse != null) {
+                            if (sigInResponse.getResult().equals("success")) {
+                                if (!TextUtils.isEmpty(sigInResponse.getMessage()))
+                                    Toast.makeText(activity, sigInResponse.getMessage(), Toast.LENGTH_SHORT).show();
+
+                                MainActivity.dismissProgress();
+                                Intent intent = new Intent();
+                                setResult(Activity.RESULT_OK, intent);
+                                finish();
+                            } else {
+                                Toast.makeText(activity, sigInResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(activity, "Could not connect to server.", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<EventResponse> call, Throwable t) {
+                        // Log error here since request failed
+                        Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+//        upload(file);
+       /* TransferObserver observer = transferUtility.upload(Constants.BUCKET_NAME, getString(R.string.app_name) + "/" + file.getName(),
+                file);
+        *//*
+         * Note that usually we set the transfer listener after initializing the
+         * transfer. However it isn't required in this sample app. The flow is
+         * click upload button -> start an activity for image selection
+         * startActivityForResult -> onActivityResult -> beginUpload -> onResume
+         * -> set listeners to in progress transfers.
+         *//*
+        observer.setTransferListener(new UploadListener(reportsModel));*/
+            } else {
+                Toast.makeText(activity, "Check your internet connection!", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /*private class UploadFileToServer extends AsyncTask<Void, Integer, String> {
 
         File destination;
         String description;
@@ -200,5 +278,5 @@ public class UpLoadImagePreview extends AppCompatActivity {
 
         }
 
-    }
+    }*/
 }

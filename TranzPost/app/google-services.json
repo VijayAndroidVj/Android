@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "266307892503",
+    "firebase_url": "https://tranzpost-a4cc9.firebaseio.com",
+    "project_id": "tranzpost-a4cc9",
+    "storage_bucket": "tranzpost-a4cc9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:266307892503:android:029814d79913e1da",
+        "android_client_info": {
+          "package_name": "com.xr.vijay.tranzpost"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "266307892503-qtg7uq0v4spv6lk5jrm0qrk9l9a2i8i8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.xr.vijay.tranzpost",
+            "certificate_hash": "08fcc3e15982a27d7d5e404ac4230477a08651b5"
+          }
+        },
+        {
+          "client_id": "266307892503-1gj1ln9knpcoukncpg71l41iih93ot45.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsWMO3gklecdgH5Yzwhkacy_UIH2x57aw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "266307892503-1gj1ln9knpcoukncpg71l41iih93ot45.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

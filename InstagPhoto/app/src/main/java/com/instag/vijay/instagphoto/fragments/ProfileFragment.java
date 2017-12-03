@@ -9,6 +9,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.instag.vijay.instagphoto.CommonUtil;
 import com.instag.vijay.instagphoto.PreferenceUtil;
 import com.instag.vijay.instagphoto.R;
+import com.instag.vijay.instagphoto.adapter.ImageAdapter;
 import com.instag.vijay.instagphoto.adapter.PostAdapter;
 import com.instag.vijay.instagphoto.model.PostModelMain;
 import com.instag.vijay.instagphoto.model.Posts;
@@ -40,8 +42,14 @@ import retrofit2.Response;
 public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     private static ProfileFragment profileFragment;
+    CollapsingToolbarLayout collapsingToolbarLayout;
     private Activity activity;
     private ArrayList<Posts> postsArrayList = new ArrayList<>();
+    private PostAdapter postAdapter;
+    private TextView viewInfo, txtPostsCount, txtFollowersCount, txtFolloweringCount;
+    private RecyclerView recyclerView;
+    private ProgressBar progressBar;
+    private ImageAdapter imageAdapter;
 
     public static ProfileFragment getInstance() {
         if (profileFragment == null) {
@@ -49,13 +57,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
         return profileFragment;
     }
-
-    CollapsingToolbarLayout collapsingToolbarLayout;
-    private PostAdapter postAdapter;
-
-    private TextView viewInfo, txtPostsCount, txtFollowersCount, txtFolloweringCount;
-    private RecyclerView recyclerView;
-    private ProgressBar progressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -77,7 +78,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         viewInfo = (TextView) view.findViewById(R.id.txtContactInfo);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerviewContact);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar_cyclic);
-
+        recyclerView.setVisibility(View.VISIBLE);
         PreferenceUtil preferenceUtil = new PreferenceUtil(getActivity());
         txtUsername.setText(preferenceUtil.getUserName());
 //        dynamicToolbarColor();
@@ -105,7 +106,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                             txtFolloweringCount.setText(String.valueOf(postModelMain.getTotal_followering()));
                             txtFollowersCount.setText(String.valueOf(postModelMain.getTotal_followers()));
                         }
-                        setList();
+                        showGrid();
                     }
 
                     @Override
@@ -128,6 +129,22 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void showGrid() {
+        viewInfo.setVisibility(View.GONE);
+        imageAdapter = new ImageAdapter(activity, postsArrayList);
+        recyclerView.setAdapter(imageAdapter);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(activity.getApplicationContext(), 2);
+        recyclerView.setLayoutManager(layoutManager);
+        if (postsArrayList.size() == 0) {
+            showView(1, "No Posts available");
+        } else {
+            progressBar.setVisibility(View.GONE);
+            viewInfo.setVisibility(View.GONE);
+        }
+        imageAdapter.notifyDataSetChanged();
     }
 
     public void setList() {
@@ -206,9 +223,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         try {
             switch (view.getId()) {
                 case R.id.btnGrid:
-                    recyclerView.setVisibility(View.GONE);
+                    showGrid();
                     break;
                 case R.id.btnlist:
+                    setList();
                     recyclerView.setVisibility(View.VISIBLE);
 
                     break;

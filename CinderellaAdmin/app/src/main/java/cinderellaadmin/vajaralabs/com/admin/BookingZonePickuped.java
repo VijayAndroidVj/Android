@@ -6,9 +6,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.itextpdf.text.BaseColor;
@@ -60,7 +63,26 @@ public class BookingZonePickuped extends AppCompatActivity implements Response {
         getSupportActionBar().setTitle("Pickup-Zone");
 
         list_booking = (ListView) findViewById(R.id.list_booking);
+        final EditText  edt_search = (EditText) findViewById(R.id.edt_search);
+        edt_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String text = edt_search.getText().toString().toLowerCase(Locale.getDefault());
+                if (adapterBooking != null)
+                    adapterBooking.filter(text);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         findViewById(R.id.ivShare).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

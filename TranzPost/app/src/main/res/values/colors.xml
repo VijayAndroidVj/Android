@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#0883C7</color>
+    <color name="colorPrimaryDark">#0577B7</color>
+    <color name="colorAccent">#0883C7</color>
+
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+
+
+    <color name="logo_color">#FBFFFF</color>
+    <color name="view_pager_bg">#808080</color>
+    <color name="selected_color">#0883C7</color>
+    <color name="unselected_color">#808080</color>
+
+    <color name="bg_button">#0883C7</color>
+    <color name="bg_button_pressed">#500883C7</color>
+    <color name="bg_login_banner">#0883C7</color>
+    <color name="text_color_link">#0883C7</color>
+    <color name="password_visibility">#0883C7</color>
+    <color name="search_icon_color">#808080</color>
+    <color name="text_color">#808080</color>
+
+    <color name="bg_taken">#27BA2B</color>
+    <color name="bg_skip_delete">#FD494A</color>
+
+    <color name="bg_unselected_day">#FFFFFF</color>
+    <color name="bg_selected_day">#F5F5F5</color>
+</resources>

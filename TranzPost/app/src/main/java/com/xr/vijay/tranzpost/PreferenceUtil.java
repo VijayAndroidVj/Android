@@ -3,8 +3,13 @@ package com.xr.vijay.tranzpost;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import static com.xr.vijay.tranzpost.Keys.ATTACHED_TRUCKS;
+import static com.xr.vijay.tranzpost.Keys.AlterNateNumber;
+import static com.xr.vijay.tranzpost.Keys.CITY;
 import static com.xr.vijay.tranzpost.Keys.EmailID;
 import static com.xr.vijay.tranzpost.Keys.IS_ALREADY_REGISTERED;
+import static com.xr.vijay.tranzpost.Keys.OWNED_TRUCKS;
+import static com.xr.vijay.tranzpost.Keys.PASSWORD;
 import static com.xr.vijay.tranzpost.Keys.USERNAME;
 import static com.xr.vijay.tranzpost.Keys.mobile;
 
@@ -14,8 +19,6 @@ import static com.xr.vijay.tranzpost.Keys.mobile;
 
 public class PreferenceUtil {
     public SharedPreferences sharedPreferences;
-    public String USER_NAME = "user_name";
-    public String USER_EMAIL = "user_email";
     Context context;
 
 
@@ -43,6 +46,74 @@ public class PreferenceUtil {
         editor.apply();
     }
 
+
+    public void setUserCity(String city) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(CITY, city);
+        editor.apply();
+
+    }
+
+    public String getUserCity() {
+        return sharedPreferences == null ? "" : sharedPreferences.getString(CITY, "");
+    }
+
+    public void setUserOwnedTruckes(int count) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(OWNED_TRUCKS, count);
+        editor.apply();
+
+    }
+
+    public int getUserOwnedTruckes() {
+        return sharedPreferences == null ? 0 : sharedPreferences.getInt(OWNED_TRUCKS, 0);
+    }
+
+    public void setUserRegisteredNumber(String mobile) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(Keys.mobile, mobile);
+        editor.apply();
+
+    }
+
+    public String getUserRegisteredNumber() {
+        return sharedPreferences == null ? "" : sharedPreferences.getString(Keys.mobile, "");
+    }
+
+
+    public void setUserAlternateNumber(String count) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(AlterNateNumber, count);
+        editor.apply();
+
+    }
+
+    public String getUserAlternateNumber() {
+        return sharedPreferences == null ? "" : sharedPreferences.getString(AlterNateNumber, "");
+    }
+
+
+    public void setUserAttachedTruckes(int count) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(ATTACHED_TRUCKS, count);
+        editor.apply();
+
+    }
+
+    public int getUserAttachedTruckes() {
+        return sharedPreferences == null ? 0 : sharedPreferences.getInt(ATTACHED_TRUCKS, 0);
+    }
+
+    public void setUserPassword(String userEmail) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(PASSWORD, userEmail);
+        editor.apply();
+
+    }
+
+    public String getUserPassword() {
+        return sharedPreferences == null ? "" : sharedPreferences.getString(PASSWORD, "");
+    }
 
     public String getUserMailId() {
         return getString(EmailID, "");
@@ -78,20 +149,21 @@ public class PreferenceUtil {
 
     public void setUserName(String userName) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(USER_NAME, userName);
+        editor.putString(USERNAME, userName);
         editor.apply();
 
     }
 
+
     public void setUserEmail(String userEmail) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(USER_EMAIL, userEmail);
+        editor.putString(EmailID, userEmail);
         editor.apply();
 
     }
 
     public String getUserEmail() {
-        return sharedPreferences == null ? "" : sharedPreferences.getString(USER_EMAIL, "");
+        return sharedPreferences == null ? "" : sharedPreferences.getString(EmailID, "");
     }
 
     public void logoutAll() {
@@ -99,8 +171,7 @@ public class PreferenceUtil {
         editor.putString(mobile, "");
         editor.putString(EmailID, "");
         editor.putString(USERNAME, "");
-        editor.putString(USER_EMAIL, "");
-        editor.putString(USER_NAME, "");
+        editor.putString(EmailID, "");
         editor.putBoolean(IS_ALREADY_REGISTERED, false);
         editor.apply();
 

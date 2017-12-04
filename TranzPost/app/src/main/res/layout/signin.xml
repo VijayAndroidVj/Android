@@ -33,8 +33,6 @@
                     android:id="@+id/et_registration_mobile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:editable="false"
-                    android:focusable="false"
                     android:hint="@string/mobile"
                     android:inputType="number"
                     android:text=""

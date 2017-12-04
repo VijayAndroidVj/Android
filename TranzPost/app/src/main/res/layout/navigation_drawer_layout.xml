@@ -9,7 +9,6 @@
         android:id="@+id/rl_profile"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/ll_app_details"
         android:orientation="vertical">
 
         <include
@@ -27,6 +26,106 @@
                 android:layout_height="match_parent"
                 android:background="@color/white"
                 android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/ll_residemmenu_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_10dp">
+
+                    <ImageView
+                        android:layout_width="@dimen/_30dp"
+                        android:layout_height="@dimen/_30dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="5dp"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_home_black_24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.83"
+                        android:paddingLeft="10dp"
+                        android:text="@string/home"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_residemmenu_available_offers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_10dp">
+
+                    <ImageView
+                        android:layout_width="@dimen/_30dp"
+                        android:layout_height="@dimen/_30dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="5dp"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_assignment_black_24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.83"
+                        android:paddingLeft="10dp"
+                        android:text="@string/available_orders"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_residemmenu_my_offers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_10dp">
+
+                    <ImageView
+                        android:layout_width="@dimen/_30dp"
+                        android:layout_height="@dimen/_30dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="5dp"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_assignment_black_24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.83"
+                        android:paddingLeft="10dp"
+                        android:text="@string/my_orders"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_residemmenu_charge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_10dp">
+
+                    <ImageView
+                        android:layout_width="@dimen/_30dp"
+                        android:layout_height="@dimen/_30dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="5dp"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_attach_money_black_24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.83"
+                        android:paddingLeft="10dp"
+                        android:text="@string/charges"
+                        android:textColor="@color/black" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/ll_residemmenu_profile"
@@ -74,59 +173,13 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.83"
                         android:paddingLeft="10dp"
-                        android:text="@string/settings" />
+                        android:text="@string/settings"
+                        android:textColor="@color/black" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/ll_residemmenu_document"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/_10dp">
-
-                    <ImageView
-                        android:layout_width="@dimen/_30dp"
-                        android:layout_height="@dimen/_30dp"
-                        android:layout_gravity="center"
-                        android:layout_margin="5dp"
-                        android:padding="5dp"
-                        android:src="@drawable/ic_library_books_black_24dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.83"
-                        android:paddingLeft="10dp"
-                        android:text="@string/document" />
-                </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/ll_residemmenu_charge"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/_10dp">
-
-                    <ImageView
-                        android:layout_width="@dimen/_30dp"
-                        android:layout_height="@dimen/_30dp"
-                        android:layout_gravity="center"
-                        android:layout_margin="5dp"
-                        android:padding="5dp"
-                        android:src="@drawable/ic_attach_money_black_24dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.83"
-                        android:paddingLeft="10dp"
-                        android:text="@string/charges" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/ll_residemmenu_language"
+                    android:id="@+id/ll_residemmenu_contactus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
@@ -146,7 +199,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.83"
                         android:paddingLeft="10dp"
-                        android:text="@string/contact_us" />
+                        android:text="@string/contact_us"
+                        android:textColor="@color/black" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -171,7 +225,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.83"
                         android:paddingLeft="10dp"
-                        android:text="@string/logout" />
+                        android:text="@string/logout"
+                        android:textColor="@color/black" />
                 </LinearLayout>
 
             </LinearLayout>

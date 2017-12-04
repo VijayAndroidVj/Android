@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/sky"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/link_signin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="35dp"
+        android:gravity="center"
+        android:padding="15dp"
+        android:text="Get In Touch"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="visible" />
+
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:src="@drawable/tplogo" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="35dp"
+        android:gravity="center"
+        android:padding="15dp"
+        android:text="Address"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:visibility="visible" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="15dp"
+        android:text="TranzPost"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="visible" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="146 , Yuma Street"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="visible" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Denver Anwar Co 80223"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="visible" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Karnataka - 638101"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="visible" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="call : +91 9876543210"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="visible" />
+
+</LinearLayout>

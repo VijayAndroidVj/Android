@@ -144,6 +144,17 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
                 }
             };
             actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
+
+            findViewById(R.id.ll_residemmenu_home).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                    } else
+                        drawerLayout.openDrawer(GravityCompat.START);
+                }
+            });
+
             iv_drawermenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -156,12 +167,43 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
             findViewById(R.id.ll_residemmenu_logout).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    drawerLayout.closeDrawer(GravityCompat.START);
                     preferenceUtil.logoutAll();
                     Intent intent = new Intent(activity, SplashScreen.class);
                     startActivity(intent);
                     finish();
                 }
             });
+
+            findViewById(R.id.ll_residemmenu_charge).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    Intent intent = new Intent(activity, HaltingPriceActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            findViewById(R.id.ll_residemmenu_profile).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    Intent intent = new Intent(activity, MyProfileActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+
+            findViewById(R.id.ll_residemmenu_contactus).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    Intent intent = new Intent(activity, ContactUs.class);
+                    startActivity(intent);
+                }
+            });
+
+
 //            toolbar.setNavigationIcon(R.drawable.home);
 //            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
 //                @Override

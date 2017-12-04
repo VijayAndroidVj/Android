@@ -17,6 +17,8 @@ import com.xr.vijay.tranzpost.model.EventResponse;
 import com.xr.vijay.tranzpost.retrofit.ApiClient;
 import com.xr.vijay.tranzpost.retrofit.ApiInterface;
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,6 +42,12 @@ public class Signin extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         preferenceUtil = new PreferenceUtil(this);
         setContentView(R.layout.signin);
+        ArrayList<String> pendingPermissions = PermissionCheck.checkPermission(this, PermissionCheck.getAllPermissions());
+        if (pendingPermissions.size() == 0) {
+        } else {
+            PermissionCheck.requestPermission(this, pendingPermissions, 111);
+        }
+
         setInitUI();
         setRegisterUI();
         setTextWatcher();
@@ -103,14 +111,6 @@ public class Signin extends AppCompatActivity implements View.OnClickListener {
     }
 
     @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(Signin.this, Registration.class);
-        intent.putExtra("mobile", et_registration_mobile.getText().toString());
-        startActivity(intent);
-        finish();
-    }
-
-    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_registration_signup:
@@ -125,9 +125,8 @@ public class Signin extends AppCompatActivity implements View.OnClickListener {
                 }
                 break;
             case R.id.link_signin:
-                Intent intent = new Intent(Signin.this, Registration.class);
+                Intent intent = new Intent(Signin.this, PhoneNumberAuthentication.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("mobile", et_registration_mobile.getText().toString());
                 startActivity(intent);
                 finish();
                 break;
@@ -158,8 +157,8 @@ public class Signin extends AppCompatActivity implements View.OnClickListener {
                                 preferenceUtil.putBoolean(Keys.IS_ALREADY_REGISTERED, true);
                                 preferenceUtil.putString(Keys.USERNAME, sigInResponse.getName());
                                 preferenceUtil.putString(Keys.EmailID, sigInResponse.getEmail());
-                                preferenceUtil.putString(Keys.USERNAME, sigInResponse.getUsername());
                                 preferenceUtil.putString(Keys.PASSWORD, sigInResponse.getPassword());
+                                preferenceUtil.setUserRegisteredNumber(mobile);
                                 Intent intent = new Intent(Signin.this, MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);

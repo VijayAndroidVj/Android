@@ -6,11 +6,14 @@ package com.xr.vijay.tranzpost;
 
 public interface Keys {
 
-    String USERID = "userId";
+    String CITY = "CITY";
     String mobile = "mobile";
+    String AlterNateNumber = "AlterNateNumber";
     String EmailID = "emailID";
     String USERNAME = "username";
     String PASSWORD = "PASSWORD";
+    String OWNED_TRUCKS = "OWNED_TRUCKS";
+    String ATTACHED_TRUCKS = "ATTACHED_TRUCKS";
     /**
      * Preference keys
      */

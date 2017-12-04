@@ -4,6 +4,9 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".MyApplication"
@@ -37,7 +40,21 @@
         <activity
             android:name=".Signin"
             android:theme="@style/AppTheme1" />
+        <activity
+            android:name=".HaltingPriceActivity"
+            android:theme="@style/AppTheme1" />
 
+        <activity
+            android:name=".MyProfileActivity"
+            android:theme="@style/AppTheme1" />
+
+        <activity
+            android:name=".ManageDocument"
+            android:theme="@style/AppTheme1" />
+
+        <activity
+            android:name=".ContactUs"
+            android:theme="@style/AppTheme1" />
     </application>
 
 </manifest>

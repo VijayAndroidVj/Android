@@ -31,6 +31,12 @@ public class MainActivity extends BaseActivity {
 
         initNavigationDrawer();
 
+        ArrayList<String> pendingPermissions = PermissionCheck.checkPermission(this, PermissionCheck.getAllPermissions());
+        if (pendingPermissions.size() == 0) {
+        } else {
+            PermissionCheck.requestPermission(this, pendingPermissions, 111);
+        }
+
         LinearLayout parentLayout = (LinearLayout) findViewById(R.id.custom_container);
         View view = View.inflate(activity, R.layout.activity_home, parentLayout);
         setInitUI(view);

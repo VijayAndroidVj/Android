@@ -1,8 +1,11 @@
 package com.xr.vijay.tranzpost;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -32,7 +35,7 @@ public class SplashScreen extends AppCompatActivity {
                     SplashScreen.this.startActivity(new Intent(SplashScreen.this, MainActivity.class));
                     finish();
                 } else {
-                    SplashScreen.this.startActivity(new Intent(SplashScreen.this, PhoneNumberAuthentication.class));
+                    SplashScreen.this.startActivity(new Intent(SplashScreen.this, Signin.class));
                     finish();
                 }
 

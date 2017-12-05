@@ -25,7 +25,7 @@
                 android:id="@+id/til_registration_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10dp"
+                android:layout_marginTop="@dimen/_80dp"
                 app:errorEnabled="true">
 
 
@@ -100,10 +100,70 @@
             </android.support.design.widget.TextInputLayout>
 
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_5dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/_5dp">
+
+                <CheckBox
+                    android:id="@+id/chkUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/view_pager_bg"
+                    android:text="Customer"
+                    android:textColor="@color/password_visibility" />
+
+
+                <CheckBox
+                    android:id="@+id/chkTransPorter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/view_pager_bg"
+                    android:text="TransPorter"
+                    android:textColor="@color/password_visibility" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_5dp"
+                android:gravity="center"
+                android:padding="@dimen/_5dp">
+
+                <CheckBox
+                    android:id="@+id/chkTruckowner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/view_pager_bg"
+                    android:text="Truck Owner"
+                    android:textColor="@color/password_visibility" />
+
+
+                <CheckBox
+                    android:id="@+id/chkTransporterTruckowner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/view_pager_bg"
+                    android:text="TransPorter and Truck Owner"
+                    android:textColor="@color/password_visibility" />
+
+            </LinearLayout>
+
             <Button
                 android:id="@+id/bt_registration_signup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15dp"
                 android:background="@drawable/bg_button"
                 android:text="@string/sign_up"
                 android:textColor="@color/white" />

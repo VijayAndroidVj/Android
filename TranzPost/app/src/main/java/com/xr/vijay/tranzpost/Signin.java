@@ -159,6 +159,7 @@ public class Signin extends AppCompatActivity implements View.OnClickListener {
                                 preferenceUtil.putString(Keys.EmailID, sigInResponse.getEmail());
                                 preferenceUtil.putString(Keys.PASSWORD, sigInResponse.getPassword());
                                 preferenceUtil.setUserRegisteredNumber(mobile);
+                                preferenceUtil.setType(sigInResponse.getUser_type());
                                 Intent intent = new Intent(Signin.this, MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);

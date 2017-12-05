@@ -115,6 +115,80 @@ public class PreferenceUtil {
         return sharedPreferences == null ? "" : sharedPreferences.getString(PASSWORD, "");
     }
 
+    public void setPan(String pan) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("PANIMAGE", pan);
+        editor.apply();
+
+    }
+
+    public String getPan() {
+        return sharedPreferences == null ? "" : sharedPreferences.getString("PANIMAGE", "");
+    }
+
+
+    public void setProof(String pan) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("ProofIMAGE", pan);
+        editor.apply();
+
+    }
+
+    public String getProof() {
+        return sharedPreferences == null ? "" : sharedPreferences.getString("ProofIMAGE", "");
+    }
+
+
+    public void setRCFront(String pan) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("VISITIMAGE", pan);
+        editor.apply();
+    }
+
+    public String getVISIT() {
+        return sharedPreferences == null ? "" : sharedPreferences.getString("VISITIMAGE", "");
+    }
+
+    public void setRCBack(String pan) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("RC", pan);
+        editor.apply();
+    }
+
+    public String getRC() {
+        return sharedPreferences == null ? "" : sharedPreferences.getString("RC", "");
+    }
+
+    public void setfirm(String pan) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("firm", pan);
+        editor.apply();
+    }
+
+    public String getfirm() {
+        return sharedPreferences == null ? "" : sharedPreferences.getString("firm", "");
+    }
+
+    public void setType(String type) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("type", type);
+        editor.apply();
+    }
+
+    public String gettype() {
+        return sharedPreferences == null ? "" : sharedPreferences.getString("type", "");
+    }
+
+    public void setProofType(String type) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("ProofType", type);
+        editor.apply();
+    }
+
+    public String getProofType() {
+        return sharedPreferences == null ? "" : sharedPreferences.getString("ProofType", "");
+    }
+
     public String getUserMailId() {
         return getString(EmailID, "");
     }

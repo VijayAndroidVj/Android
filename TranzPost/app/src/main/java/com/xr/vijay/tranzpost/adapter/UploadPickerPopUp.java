@@ -19,9 +19,11 @@ import com.xr.vijay.tranzpost.R;
 
 import static com.xr.vijay.tranzpost.ManageDocument.CAMERA_REQUEST_PAN;
 import static com.xr.vijay.tranzpost.ManageDocument.CAMERA_REQUEST_PROOF;
+import static com.xr.vijay.tranzpost.ManageDocument.CAMERA_REQUEST_RC;
 import static com.xr.vijay.tranzpost.ManageDocument.CAMERA_REQUEST_VISITING;
 import static com.xr.vijay.tranzpost.ManageDocument.PICK_IMAGE_REQUEST_PAN;
 import static com.xr.vijay.tranzpost.ManageDocument.PICK_IMAGE_REQUEST_PROOF;
+import static com.xr.vijay.tranzpost.ManageDocument.PICK_IMAGE_REQUEST_RC;
 import static com.xr.vijay.tranzpost.ManageDocument.PICK_IMAGE_REQUEST_VISITING;
 
 
@@ -75,6 +77,8 @@ public class UploadPickerPopUp extends BaseAdapter implements View.OnClickListen
                     addMedicine.launchCameraIntent(CAMERA_REQUEST_PROOF);
                 } else if (visiting.equalsIgnoreCase("VISITING")) {
                     addMedicine.launchCameraIntent(CAMERA_REQUEST_VISITING);
+                }else if (visiting.equalsIgnoreCase("RC")) {
+                    addMedicine.launchCameraIntent(CAMERA_REQUEST_RC);
                 }
                 break;
             case 1:
@@ -84,6 +88,10 @@ public class UploadPickerPopUp extends BaseAdapter implements View.OnClickListen
                     addMedicine.launchGalleryIntent(PICK_IMAGE_REQUEST_PROOF);
                 } else if (visiting.equalsIgnoreCase("VISITING")) {
                     addMedicine.launchGalleryIntent(PICK_IMAGE_REQUEST_VISITING);
+                }else if (visiting.equalsIgnoreCase("VISITING")) {
+                    addMedicine.launchGalleryIntent(PICK_IMAGE_REQUEST_VISITING);
+                }else if (visiting.equalsIgnoreCase("RC")) {
+                    addMedicine.launchGalleryIntent(PICK_IMAGE_REQUEST_RC);
                 }
 
                 break;

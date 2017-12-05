@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +44,8 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
 
     Button bt_registration_signup;
     PreferenceUtil preferenceUtil;
+
+    CheckBox chkTruckowner, chkUser, chkTransPorter, chkTransporterTruckowner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +118,15 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
         bt_registration_signup = findViewById(R.id.bt_registration_signup);
         et_registration_mobile = findViewById(R.id.et_registration_mobile);
         et_registration_password = findViewById(R.id.et_registration_password);
+
+        chkUser = findViewById(R.id.chkUser);
+        chkTransPorter = findViewById(R.id.chkTransPorter);
+        chkTruckowner = findViewById(R.id.chkTruckowner);
+        chkTransporterTruckowner = findViewById(R.id.chkTransporterTruckowner);
+        chkUser.setOnClickListener(this);
+        chkTransPorter.setOnClickListener(this);
+        chkTruckowner.setOnClickListener(this);
+        chkTransporterTruckowner.setOnClickListener(this);
         progressBar.setVisibility(View.GONE);
     }
 
@@ -124,9 +136,51 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
         finish();
     }
 
+    String type;
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.chkUser:
+                if (chkUser.isChecked()) {
+                    chkTransPorter.setChecked(false);
+                    chkTruckowner.setChecked(false);
+                    chkTransporterTruckowner.setChecked(false);
+                    type = "Customer";
+                } else {
+                    type = "";
+                }
+                break;
+            case R.id.chkTransPorter:
+                if (chkTransPorter.isChecked()) {
+                    chkUser.setChecked(false);
+                    chkTruckowner.setChecked(false);
+                    chkTransporterTruckowner.setChecked(false);
+                    type = "Transporter";
+                } else {
+                    type = "";
+                }
+                break;
+            case R.id.chkTruckowner:
+                if (chkTruckowner.isChecked()) {
+                    chkUser.setChecked(false);
+                    chkTransPorter.setChecked(false);
+                    chkTransporterTruckowner.setChecked(false);
+                    type = "Truckowner";
+                } else {
+                    type = "";
+                }
+                break;
+            case R.id.chkTransporterTruckowner:
+                if (chkTransporterTruckowner.isChecked()) {
+                    chkUser.setChecked(false);
+                    chkTransPorter.setChecked(false);
+                    chkTruckowner.setChecked(false);
+                    type = "TransporterandTruckOwner";
+                } else {
+                    type = "";
+                }
+                break;
             case R.id.bt_registration_signup:
                 if (TextUtils.isEmpty(et_registration_name.getText().toString())) {
                     til_registration_name.setError(getResources().getString(R.string.please_provide_name));
@@ -140,6 +194,8 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
                 } else if (TextUtils.isEmpty(et_registration_password.getText().toString())) {
                     et_registration_password.setError(getResources().getString(R.string.please_provide_password));
                     et_registration_password.requestFocus();
+                } else if (!chkUser.isChecked() && !chkTransPorter.isChecked() && !chkTruckowner.isChecked() && !chkTransporterTruckowner.isChecked()) {
+                    Toast.makeText(Registration.this, "Please select type", Toast.LENGTH_LONG).show();
                 } else {
                     submit();
                 }
@@ -182,6 +238,7 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
                                 preferenceUtil.putString(Keys.EmailID, email);
                                 preferenceUtil.putString(Keys.USERNAME, username);
                                 preferenceUtil.putString(Keys.PASSWORD, password);
+                                preferenceUtil.setType(type);
                                 Intent intent = new Intent(Registration.this, MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);

@@ -26,6 +26,9 @@ public class EventResponse {
     @SerializedName("message")
     private String message;
 
+    @SerializedName("user_type")
+    private String user_type;
+
     public String getResult() {
         return result;
     }
@@ -72,6 +75,14 @@ public class EventResponse {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUser_type() {
+        return user_type;
+    }
+
+    public void setUser_type(String user_type) {
+        this.user_type = user_type;
     }
 
     @Override

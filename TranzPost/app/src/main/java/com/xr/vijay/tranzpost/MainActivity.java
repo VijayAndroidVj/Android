@@ -21,7 +21,7 @@ public class MainActivity extends BaseActivity {
     private ViewPagerAdapter adapter;
 
     private ArrayList<BannerModel> bannerModelArrayList = new ArrayList<>();
-    TextView txtLabel;
+    TextView txtLabel, btnBookTruck, txtBookLoad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,5 +98,16 @@ public class MainActivity extends BaseActivity {
     private void setInitUI(View view) {
         txtLabel = (TextView) view.findViewById(R.id.txtLabel);
         recyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
+
+        btnBookTruck = (TextView) view.findViewById(R.id.btnBookTruck);
+        txtBookLoad = (TextView) view.findViewById(R.id.txtBookLoad);
+        if (preferenceUtil.getLogintype().equalsIgnoreCase("Customer")) {
+            txtBookLoad.setText("Find trucks across India");
+            btnBookTruck.setText("Find Trucks");
+        } else {
+            txtBookLoad.setText("Book loads for your truck all across India");
+            btnBookTruck.setText("Book Loads");
+        }
+
     }
 }

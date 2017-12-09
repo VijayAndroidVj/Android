@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -86,6 +87,7 @@ public class VerificationActivity extends AppCompatActivity implements
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()) {
+                            FirebaseAuth.getInstance().signOut();
                             Log.d(TAG, "signInWithCredential:success");
                             Intent intent = new Intent(VerificationActivity.this, Registration.class);
                             intent.putExtra("mobile", mobilenumber);
@@ -93,14 +95,8 @@ public class VerificationActivity extends AppCompatActivity implements
                             finish();
                         } else {
                             progressbar.setVisibility(View.GONE);
+                            Toast.makeText(VerificationActivity.this, "" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                mPhoneNumberField.setError("Invalid code.");
-                                Intent intent = new Intent(VerificationActivity.this, Registration.class);
-                                intent.putExtra("mobile", mobilenumber);
-                                startActivity(intent);
-                                finish();
-                            }
                         }
                     }
                 });

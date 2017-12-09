@@ -55,6 +55,14 @@
         <activity
             android:name=".ContactUs"
             android:theme="@style/AppTheme1" />
+
+        <activity
+            android:name=".Document_Preview"
+            android:theme="@style/AppTheme1" />
+
+        <activity
+            android:name=".TruckSettings"
+            android:theme="@style/AppTheme1" />
     </application>
 
 </manifest>

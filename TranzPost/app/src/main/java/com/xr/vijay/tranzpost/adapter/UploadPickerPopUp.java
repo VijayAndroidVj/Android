@@ -16,15 +16,34 @@ import android.widget.TextView;
 
 import com.xr.vijay.tranzpost.ManageDocument;
 import com.xr.vijay.tranzpost.R;
+import com.xr.vijay.tranzpost.TruckSettings;
 
+import static com.xr.vijay.tranzpost.ManageDocument.CAMERA_REQUEST_DrivingLicense;
+import static com.xr.vijay.tranzpost.ManageDocument.CAMERA_REQUEST_Insurance;
 import static com.xr.vijay.tranzpost.ManageDocument.CAMERA_REQUEST_PAN;
-import static com.xr.vijay.tranzpost.ManageDocument.CAMERA_REQUEST_PROOF;
+import static com.xr.vijay.tranzpost.ManageDocument.CAMERA_REQUEST_Permit;
+import static com.xr.vijay.tranzpost.ManageDocument.CAMERA_REQUEST_Photo;
 import static com.xr.vijay.tranzpost.ManageDocument.CAMERA_REQUEST_RC;
 import static com.xr.vijay.tranzpost.ManageDocument.CAMERA_REQUEST_VISITING;
+import static com.xr.vijay.tranzpost.ManageDocument.CAMERA_REQUEST_VoterOrAdhaar;
+import static com.xr.vijay.tranzpost.ManageDocument.CAMERA_REQUEST_address;
+import static com.xr.vijay.tranzpost.ManageDocument.PICK_IMAGE_REQUEST_DrivingLicense;
+import static com.xr.vijay.tranzpost.ManageDocument.PICK_IMAGE_REQUEST_Insurance;
 import static com.xr.vijay.tranzpost.ManageDocument.PICK_IMAGE_REQUEST_PAN;
-import static com.xr.vijay.tranzpost.ManageDocument.PICK_IMAGE_REQUEST_PROOF;
+import static com.xr.vijay.tranzpost.ManageDocument.PICK_IMAGE_REQUEST_Permit;
+import static com.xr.vijay.tranzpost.ManageDocument.PICK_IMAGE_REQUEST_Photo;
 import static com.xr.vijay.tranzpost.ManageDocument.PICK_IMAGE_REQUEST_RC;
 import static com.xr.vijay.tranzpost.ManageDocument.PICK_IMAGE_REQUEST_VISITING;
+import static com.xr.vijay.tranzpost.ManageDocument.PICK_IMAGE_REQUEST_VoterOrAdhaar;
+import static com.xr.vijay.tranzpost.ManageDocument.PICK_IMAGE_REQUEST_address;
+import static com.xr.vijay.tranzpost.TruckSettings.CAMERA_REQUEST_TRUCKS1;
+import static com.xr.vijay.tranzpost.TruckSettings.CAMERA_REQUEST_TRUCKS2;
+import static com.xr.vijay.tranzpost.TruckSettings.CAMERA_REQUEST_TRUCKS3;
+import static com.xr.vijay.tranzpost.TruckSettings.CAMERA_REQUEST_TRUCKS4;
+import static com.xr.vijay.tranzpost.TruckSettings.PICK_IMAGE_REQUEST_TRUCKS1;
+import static com.xr.vijay.tranzpost.TruckSettings.PICK_IMAGE_REQUEST_TRUCKS2;
+import static com.xr.vijay.tranzpost.TruckSettings.PICK_IMAGE_REQUEST_TRUCKS3;
+import static com.xr.vijay.tranzpost.TruckSettings.PICK_IMAGE_REQUEST_TRUCKS4;
 
 
 public class UploadPickerPopUp extends BaseAdapter implements View.OnClickListener {
@@ -68,30 +87,90 @@ public class UploadPickerPopUp extends BaseAdapter implements View.OnClickListen
     @Override
     public void onClick(View v) {
         id = ((ViewHolder) v.getTag()).position;
-        ManageDocument addMedicine = (ManageDocument) activity;
+
         switch (id) {
             case 0:
                 if (visiting.equalsIgnoreCase("PAN")) {
+                    ManageDocument addMedicine = (ManageDocument) activity;
                     addMedicine.launchCameraIntent(CAMERA_REQUEST_PAN);
-                } else if (visiting.equalsIgnoreCase("PROOF")) {
-                    addMedicine.launchCameraIntent(CAMERA_REQUEST_PROOF);
+                } else if (visiting.equalsIgnoreCase("DrivingLicense")) {
+                    ManageDocument addMedicine = (ManageDocument) activity;
+                    addMedicine.launchCameraIntent(CAMERA_REQUEST_DrivingLicense);
+                } else if (visiting.equalsIgnoreCase("VoterOrAdhaar")) {
+                    ManageDocument addMedicine = (ManageDocument) activity;
+                    addMedicine.launchCameraIntent(CAMERA_REQUEST_VoterOrAdhaar);
+                } else if (visiting.equalsIgnoreCase("address")) {
+                    ManageDocument addMedicine = (ManageDocument) activity;
+                    addMedicine.launchCameraIntent(CAMERA_REQUEST_address);
                 } else if (visiting.equalsIgnoreCase("VISITING")) {
+                    ManageDocument addMedicine = (ManageDocument) activity;
                     addMedicine.launchCameraIntent(CAMERA_REQUEST_VISITING);
-                }else if (visiting.equalsIgnoreCase("RC")) {
+                } else if (visiting.equalsIgnoreCase("RC")) {
+                    ManageDocument addMedicine = (ManageDocument) activity;
                     addMedicine.launchCameraIntent(CAMERA_REQUEST_RC);
+                } else if (visiting.equalsIgnoreCase("Insurance")) {
+                    ManageDocument addMedicine = (ManageDocument) activity;
+                    addMedicine.launchCameraIntent(CAMERA_REQUEST_Insurance);
+                } else if (visiting.equalsIgnoreCase("Permit")) {
+                    ManageDocument addMedicine = (ManageDocument) activity;
+                    addMedicine.launchCameraIntent(CAMERA_REQUEST_Permit);
+                } else if (visiting.equalsIgnoreCase("Photo")) {
+                    ManageDocument addMedicine = (ManageDocument) activity;
+                    addMedicine.launchCameraIntent(CAMERA_REQUEST_Photo);
+                } else if (visiting.equalsIgnoreCase("ivTruckPhoto1")) {
+                    TruckSettings addMedicine = (TruckSettings) activity;
+                    addMedicine.launchCameraIntent(CAMERA_REQUEST_TRUCKS1);
+                } else if (visiting.equalsIgnoreCase("ivTruckPhoto2")) {
+                    TruckSettings addMedicine = (TruckSettings) activity;
+                    addMedicine.launchCameraIntent(CAMERA_REQUEST_TRUCKS2);
+                } else if (visiting.equalsIgnoreCase("ivTruckPhoto3")) {
+                    TruckSettings addMedicine = (TruckSettings) activity;
+                    addMedicine.launchCameraIntent(CAMERA_REQUEST_TRUCKS3);
+                } else if (visiting.equalsIgnoreCase("ivTruckPhoto4")) {
+                    TruckSettings addMedicine = (TruckSettings) activity;
+                    addMedicine.launchCameraIntent(CAMERA_REQUEST_TRUCKS4);
                 }
                 break;
             case 1:
                 if (visiting.equalsIgnoreCase("PAN")) {
+                    ManageDocument addMedicine = (ManageDocument) activity;
                     addMedicine.launchGalleryIntent(PICK_IMAGE_REQUEST_PAN);
-                } else if (visiting.equalsIgnoreCase("PROOF")) {
-                    addMedicine.launchGalleryIntent(PICK_IMAGE_REQUEST_PROOF);
+                } else if (visiting.equalsIgnoreCase("DrivingLicense")) {
+                    ManageDocument addMedicine = (ManageDocument) activity;
+                    addMedicine.launchGalleryIntent(PICK_IMAGE_REQUEST_DrivingLicense);
+                } else if (visiting.equalsIgnoreCase("VoterOrAdhaar")) {
+                    ManageDocument addMedicine = (ManageDocument) activity;
+                    addMedicine.launchGalleryIntent(PICK_IMAGE_REQUEST_VoterOrAdhaar);
+                } else if (visiting.equalsIgnoreCase("address")) {
+                    ManageDocument addMedicine = (ManageDocument) activity;
+                    addMedicine.launchGalleryIntent(PICK_IMAGE_REQUEST_address);
                 } else if (visiting.equalsIgnoreCase("VISITING")) {
+                    ManageDocument addMedicine = (ManageDocument) activity;
                     addMedicine.launchGalleryIntent(PICK_IMAGE_REQUEST_VISITING);
-                }else if (visiting.equalsIgnoreCase("VISITING")) {
-                    addMedicine.launchGalleryIntent(PICK_IMAGE_REQUEST_VISITING);
-                }else if (visiting.equalsIgnoreCase("RC")) {
+                } else if (visiting.equalsIgnoreCase("RC")) {
+                    ManageDocument addMedicine = (ManageDocument) activity;
                     addMedicine.launchGalleryIntent(PICK_IMAGE_REQUEST_RC);
+                } else if (visiting.equalsIgnoreCase("Insurance")) {
+                    ManageDocument addMedicine = (ManageDocument) activity;
+                    addMedicine.launchGalleryIntent(PICK_IMAGE_REQUEST_Insurance);
+                } else if (visiting.equalsIgnoreCase("Permit")) {
+                    ManageDocument addMedicine = (ManageDocument) activity;
+                    addMedicine.launchGalleryIntent(PICK_IMAGE_REQUEST_Permit);
+                } else if (visiting.equalsIgnoreCase("Photo")) {
+                    ManageDocument addMedicine = (ManageDocument) activity;
+                    addMedicine.launchGalleryIntent(PICK_IMAGE_REQUEST_Photo);
+                } else if (visiting.equalsIgnoreCase("ivTruckPhoto1")) {
+                    TruckSettings addMedicine = (TruckSettings) activity;
+                    addMedicine.launchGalleryIntent(PICK_IMAGE_REQUEST_TRUCKS1);
+                } else if (visiting.equalsIgnoreCase("ivTruckPhoto2")) {
+                    TruckSettings addMedicine = (TruckSettings) activity;
+                    addMedicine.launchGalleryIntent(PICK_IMAGE_REQUEST_TRUCKS2);
+                } else if (visiting.equalsIgnoreCase("ivTruckPhoto3")) {
+                    TruckSettings addMedicine = (TruckSettings) activity;
+                    addMedicine.launchGalleryIntent(PICK_IMAGE_REQUEST_TRUCKS3);
+                } else if (visiting.equalsIgnoreCase("ivTruckPhoto4")) {
+                    TruckSettings addMedicine = (TruckSettings) activity;
+                    addMedicine.launchGalleryIntent(PICK_IMAGE_REQUEST_TRUCKS4);
                 }
 
                 break;

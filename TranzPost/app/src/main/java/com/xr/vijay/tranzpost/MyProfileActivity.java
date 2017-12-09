@@ -61,7 +61,13 @@ public class MyProfileActivity extends AppCompatActivity {
         et_registration_noofownedtruck.setText("" + preferenceUtil.getUserOwnedTruckes());
 
         et_registration_noofattachedtruck.setText("" + preferenceUtil.getUserAttachedTruckes());
-
+        findViewById(R.id.btnTruckSettings).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MyProfileActivity.this, TruckSettings.class);
+                startActivity(intent);
+            }
+        });
         findViewById(R.id.btnprofilesave).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,8 +96,10 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
 
-        if (preferenceUtil.gettype().equalsIgnoreCase("Customer")) {
+        if (preferenceUtil.getLogintype().equalsIgnoreCase("Customer")) {
             findViewById(R.id.documentsandTruckSettings).setVisibility(View.GONE);
+            findViewById(R.id.til_registration_noofownedtruck).setVisibility(View.GONE);
+            findViewById(R.id.til_registration_noofattachedtruck).setVisibility(View.GONE);
         }
 
     }

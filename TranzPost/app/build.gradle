@@ -53,5 +53,10 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'me.relex:circleindicator:1.2.2@aar'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.github.joielechong:countrycodepicker:2.1.5'
+    // https://mvnrepository.com/artifact/com.github.chrisbanes.photoview/library
+    compile group: 'com.github.chrisbanes.photoview', name: 'library', version: '1.2.3'
+
+
 }
 apply plugin: 'com.google.gms.google-services'

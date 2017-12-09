@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +23,8 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.rilixtech.Country;
+import com.rilixtech.CountryCodePicker;
 
 import java.util.concurrent.TimeUnit;
 
@@ -41,17 +44,18 @@ public class PhoneNumberAuthentication extends AppCompatActivity implements
     private boolean mVerificationInProgress = false;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
 
-    private EditText mPhoneNumberField;
+    private AppCompatEditText mPhoneNumberField;
 
     private Button mVerifyButton;
 
     private ProgressBar progressbar;
+    CountryCodePicker ccp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_auth);
-
+        ccp = (CountryCodePicker) findViewById(R.id.countrycode);
         // Restore instance state
         if (savedInstanceState != null) {
             onRestoreInstanceState(savedInstanceState);
@@ -63,6 +67,13 @@ public class PhoneNumberAuthentication extends AppCompatActivity implements
         mVerifyButton = findViewById(R.id.button_verify);
         mVerifyButton.setOnClickListener(this);
 
+        ccp.registerPhoneNumberTextView(mPhoneNumberField);
+        ccp.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
+            @Override
+            public void onCountrySelected(Country selectedCountry) {
+//                Toast.makeText(Signin.this, "Updated " + selectedCountry.getName(), Toast.LENGTH_SHORT).show();
+            }
+        });
         // Initialize phone auth callbacks
         // [START phone_auth_callbacks]
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -80,7 +91,7 @@ public class PhoneNumberAuthentication extends AppCompatActivity implements
                 // [START_EXCLUDE silent]
                 mVerificationInProgress = false;
 
-                signInWithPhoneAuthCredential(credential);
+//                signInWithPhoneAuthCredential(credential);
                 // [END_EXCLUDE]
 
             }
@@ -123,7 +134,7 @@ public class PhoneNumberAuthentication extends AppCompatActivity implements
                 progressbar.setVisibility(View.GONE);
 
                 Intent intent = new Intent(PhoneNumberAuthentication.this, VerificationActivity.class);
-                intent.putExtra("mobile", mPhoneNumberField.getText().toString());
+                intent.putExtra("mobile", ccp.getSelectedCountryCodeWithPlus() + ccp.getPhoneNumber().getNationalNumber());
                 intent.putExtra("verificationId", verificationId);
 
                 startActivity(intent);
@@ -142,7 +153,7 @@ public class PhoneNumberAuthentication extends AppCompatActivity implements
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("PhoneVERifier", "signInWithCredential:success");
-                            startActivity(new Intent(PhoneNumberAuthentication.this,MainActivity.class));
+                            startActivity(new Intent(PhoneNumberAuthentication.this, MainActivity.class));
                             finish();
                             FirebaseUser user = task.getResult().getUser();
                             FirebaseAuth.getInstance().signOut();
@@ -157,19 +168,6 @@ public class PhoneNumberAuthentication extends AppCompatActivity implements
                     }
                 });
     }
-
-    // [START on_start_check_user]
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        // [START_EXCLUDE]
-        if (mVerificationInProgress && validatePhoneNumber()) {
-            startPhoneNumberVerification(mPhoneNumberField.getText().toString());
-        }
-        // [END_EXCLUDE]
-    }
-    // [END on_start_check_user]
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -245,8 +243,8 @@ public class PhoneNumberAuthentication extends AppCompatActivity implements
                 if (!validatePhoneNumber()) {
                     return;
                 }
-
-                startPhoneNumberVerification(mPhoneNumberField.getText().toString());
+                String mobile = ccp.getSelectedCountryCodeWithPlus() + ccp.getPhoneNumber().getNationalNumber();
+                startPhoneNumberVerification(mobile);
                 break;
 //                String code = mVerificationField.getText().toString();
 //                if (TextUtils.isEmpty(code)) {

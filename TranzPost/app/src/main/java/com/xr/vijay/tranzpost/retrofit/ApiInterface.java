@@ -30,7 +30,7 @@ public interface ApiInterface {
 
     @POST("register.php")
     @FormUrlEncoded
-    Call<EventResponse> register(@Field("name") String name, @Field("mobile") String username, @Field("email") String email, @Field("password") String password);
+    Call<EventResponse> register(@Field("name") String name, @Field("mobile") String mobile, @Field("user_type") String user_type, @Field("email") String email, @Field("password") String password);
 
 
     @POST("signin.php")
@@ -45,19 +45,25 @@ public interface ApiInterface {
 
     @Multipart
     @POST("upload_document.php")
-    Call<DocumentModel> upload_document(
-            @Part MultipartBody.Part number,
+    Call<EventResponse> upload_document(
+            @Part MultipartBody.Part mobile,
             @Part MultipartBody.Part user_type,
-            @Part MultipartBody.Part pan_card_path,
-            @Part MultipartBody.Part pan_image_serverepath,
-            @Part MultipartBody.Part address_proof_type,
-            @Part MultipartBody.Part address_proof_path,
-            @Part MultipartBody.Part address_proof_image_serverpath,
-            @Part MultipartBody.Part rcbook_front_page,
-            @Part MultipartBody.Part rcbook_front_image_serverpath,
-            @Part MultipartBody.Part rcbook_back_page,
-            @Part MultipartBody.Part rcbook_back_image_serverpath,
-            @Part MultipartBody.Part company);
+            @Part MultipartBody.Part uploadDocumentType,
+            @Part MultipartBody.Part company,
+            @Part MultipartBody.Part uploadimage);
+
+    @Multipart
+    @POST("add_truck.php")
+    Call<DocumentModel> add_truck(
+            @Part MultipartBody.Part truck_model,
+            @Part MultipartBody.Part mobile,
+            @Part MultipartBody.Part body_type,
+            @Part MultipartBody.Part truck_weight,
+            @Part MultipartBody.Part permit_type,
+            @Part MultipartBody.Part truck_photo1,
+            @Part MultipartBody.Part truck_photo2,
+            @Part MultipartBody.Part truck_photo3,
+            @Part MultipartBody.Part truck_photo4);
 
 }
 

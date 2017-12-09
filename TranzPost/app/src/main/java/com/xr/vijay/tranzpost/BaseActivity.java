@@ -19,6 +19,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -42,16 +44,8 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<String> pendingPermissions;
     private float lastTranslate = 0.0f;
     private ImageView iv_drawermenu;
-    protected ImageView iv_actionbar_mic;
-    protected ImageView iv_actionbar_video;
-    protected ImageView iv_actionbar_speaker;
-    protected ImageView iv_actionbar_switchcamera;
-
-    public static final int ReportsActivity = 100;
-    public static final int NotesActivity = 101;
-
+    Animation animFadein;
     PreferenceUtil preferenceUtil;
-    Boolean isDoctor = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -113,6 +107,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
     public void initNavigationDrawer() {
         try {
+            animFadein = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
             toolbar = (Toolbar) findViewById(R.id.toolbar);
             setActionBar();
 
@@ -152,6 +147,8 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
                         drawerLayout.closeDrawer(GravityCompat.START);
                     } else
                         drawerLayout.openDrawer(GravityCompat.START);
+
+                    view.startAnimation(animFadein);
                 }
             });
 
@@ -162,14 +159,17 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
                         drawerLayout.closeDrawer(GravityCompat.START);
                     } else
                         drawerLayout.openDrawer(GravityCompat.START);
+
                 }
             });
             findViewById(R.id.ll_residemmenu_logout).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    view.startAnimation(animFadein);
                     drawerLayout.closeDrawer(GravityCompat.START);
                     preferenceUtil.logoutAll();
                     Intent intent = new Intent(activity, SplashScreen.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();
                 }
@@ -178,6 +178,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
             findViewById(R.id.ll_residemmenu_charge).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    view.startAnimation(animFadein);
                     drawerLayout.closeDrawer(GravityCompat.START);
                     Intent intent = new Intent(activity, HaltingPriceActivity.class);
                     startActivity(intent);
@@ -187,21 +188,44 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
             findViewById(R.id.ll_residemmenu_profile).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    view.startAnimation(animFadein);
                     drawerLayout.closeDrawer(GravityCompat.START);
                     Intent intent = new Intent(activity, MyProfileActivity.class);
                     startActivity(intent);
                 }
             });
 
+            findViewById(R.id.ll_residemmenu_settings).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    view.startAnimation(animFadein);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    Intent intent = new Intent(activity, TruckSettings.class);
+                    startActivity(intent);
+                }
+            });
 
             findViewById(R.id.ll_residemmenu_contactus).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    view.startAnimation(animFadein);
                     drawerLayout.closeDrawer(GravityCompat.START);
                     Intent intent = new Intent(activity, ContactUs.class);
                     startActivity(intent);
                 }
             });
+
+            if (preferenceUtil.getLogintype().equalsIgnoreCase("Customer")) {
+                findViewById(R.id.ll_residemmenu_available_offers).setVisibility(View.GONE);
+                findViewById(R.id.ll_residemmenu_my_offers).setVisibility(View.GONE);
+                findViewById(R.id.ll_residemmenu_charge).setVisibility(View.GONE);
+                findViewById(R.id.ll_residemmenu_my_booking).setVisibility(View.VISIBLE);
+            } else {
+                findViewById(R.id.ll_residemmenu_available_offers).setVisibility(View.VISIBLE);
+                findViewById(R.id.ll_residemmenu_my_offers).setVisibility(View.VISIBLE);
+                findViewById(R.id.ll_residemmenu_charge).setVisibility(View.VISIBLE);
+                findViewById(R.id.ll_residemmenu_my_booking).setVisibility(View.GONE);
+            }
 
 
 //            toolbar.setNavigationIcon(R.drawable.home);

@@ -45,7 +45,7 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
     Button bt_registration_signup;
     PreferenceUtil preferenceUtil;
 
-    CheckBox chkTruckowner, chkUser, chkTransPorter, chkTransporterTruckowner;
+    CheckBox chkUser, chkTransPorter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,12 +121,8 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
 
         chkUser = findViewById(R.id.chkUser);
         chkTransPorter = findViewById(R.id.chkTransPorter);
-        chkTruckowner = findViewById(R.id.chkTruckowner);
-        chkTransporterTruckowner = findViewById(R.id.chkTransporterTruckowner);
         chkUser.setOnClickListener(this);
         chkTransPorter.setOnClickListener(this);
-        chkTruckowner.setOnClickListener(this);
-        chkTransporterTruckowner.setOnClickListener(this);
         progressBar.setVisibility(View.GONE);
     }
 
@@ -144,8 +140,6 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
             case R.id.chkUser:
                 if (chkUser.isChecked()) {
                     chkTransPorter.setChecked(false);
-                    chkTruckowner.setChecked(false);
-                    chkTransporterTruckowner.setChecked(false);
                     type = "Customer";
                 } else {
                     type = "";
@@ -154,29 +148,7 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
             case R.id.chkTransPorter:
                 if (chkTransPorter.isChecked()) {
                     chkUser.setChecked(false);
-                    chkTruckowner.setChecked(false);
-                    chkTransporterTruckowner.setChecked(false);
                     type = "Transporter";
-                } else {
-                    type = "";
-                }
-                break;
-            case R.id.chkTruckowner:
-                if (chkTruckowner.isChecked()) {
-                    chkUser.setChecked(false);
-                    chkTransPorter.setChecked(false);
-                    chkTransporterTruckowner.setChecked(false);
-                    type = "Truckowner";
-                } else {
-                    type = "";
-                }
-                break;
-            case R.id.chkTransporterTruckowner:
-                if (chkTransporterTruckowner.isChecked()) {
-                    chkUser.setChecked(false);
-                    chkTransPorter.setChecked(false);
-                    chkTruckowner.setChecked(false);
-                    type = "TransporterandTruckOwner";
                 } else {
                     type = "";
                 }
@@ -194,7 +166,7 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
                 } else if (TextUtils.isEmpty(et_registration_password.getText().toString())) {
                     et_registration_password.setError(getResources().getString(R.string.please_provide_password));
                     et_registration_password.requestFocus();
-                } else if (!chkUser.isChecked() && !chkTransPorter.isChecked() && !chkTruckowner.isChecked() && !chkTransporterTruckowner.isChecked()) {
+                } else if (!chkUser.isChecked() && !chkTransPorter.isChecked()) {
                     Toast.makeText(Registration.this, "Please select type", Toast.LENGTH_LONG).show();
                 } else {
                     submit();
@@ -220,7 +192,7 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
             final String email = et_registration_email.getText().toString();
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
-            Call<EventResponse> call = apiService.register(username, mobile, email, password);
+            Call<EventResponse> call = apiService.register(username, mobile, type, email, password);
             call.enqueue(new Callback<EventResponse>() {
                 @Override
                 public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
@@ -238,7 +210,7 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
                                 preferenceUtil.putString(Keys.EmailID, email);
                                 preferenceUtil.putString(Keys.USERNAME, username);
                                 preferenceUtil.putString(Keys.PASSWORD, password);
-                                preferenceUtil.setType(type);
+                                preferenceUtil.setLoginType(type);
                                 Intent intent = new Intent(Registration.this, MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);

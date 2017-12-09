@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatEditText;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -13,6 +14,8 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.rilixtech.Country;
+import com.rilixtech.CountryCodePicker;
 import com.xr.vijay.tranzpost.model.EventResponse;
 import com.xr.vijay.tranzpost.retrofit.ApiClient;
 import com.xr.vijay.tranzpost.retrofit.ApiInterface;
@@ -29,9 +32,9 @@ import retrofit2.Response;
 
 public class Signin extends AppCompatActivity implements View.OnClickListener {
 
-    TextInputLayout til_registration_mobile;
+    //    TextInputLayout til_registration_mobile;
     TextInputLayout til_registration_password;
-    TextInputEditText et_registration_mobile;
+    //    TextInputEditText et_registration_mobile;
     TextInputEditText et_registration_password;
 
     Button bt_registration_signup;
@@ -51,11 +54,11 @@ public class Signin extends AppCompatActivity implements View.OnClickListener {
         setInitUI();
         setRegisterUI();
         setTextWatcher();
-        et_registration_mobile.setText(getIntent().getStringExtra("mobile"));
+//        et_registration_mobile.setText(getIntent().getStringExtra("mobile"));
     }
 
     private void setTextWatcher() {
-        et_registration_mobile.addTextChangedListener(new TextWatcher() {
+        edtPhoneNumber.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -68,7 +71,7 @@ public class Signin extends AppCompatActivity implements View.OnClickListener {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                til_registration_mobile.setError(null);
+                edtPhoneNumber.setError(null);
             }
         });
 
@@ -99,26 +102,37 @@ public class Signin extends AppCompatActivity implements View.OnClickListener {
     }
 
     ProgressBar progressBar;
+    AppCompatEditText edtPhoneNumber;
+    CountryCodePicker ccp;
 
     private void setInitUI() {
+        ccp = (CountryCodePicker) findViewById(R.id.countrycode);
         progressBar = findViewById(R.id.pb_registration);
-        til_registration_mobile = findViewById(R.id.til_registration_mobile);
+        edtPhoneNumber = (AppCompatEditText) findViewById(R.id.phone_number_edt);
+//        til_registration_mobile = findViewById(R.id.til_registration_mobile);
         til_registration_password = findViewById(R.id.til_registration_password);
         bt_registration_signup = findViewById(R.id.bt_registration_signup);
-        et_registration_mobile = findViewById(R.id.et_registration_mobile);
+//        et_registration_mobile = findViewById(R.id.et_registration_mobile);
         et_registration_password = findViewById(R.id.et_registration_password);
         progressBar.setVisibility(View.GONE);
+        ccp.registerPhoneNumberTextView(edtPhoneNumber);
+        ccp.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
+            @Override
+            public void onCountrySelected(Country selectedCountry) {
+//                Toast.makeText(Signin.this, "Updated " + selectedCountry.getName(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_registration_signup:
-                if (TextUtils.isEmpty(et_registration_mobile.getText().toString())) {
-                    til_registration_mobile.setError(getResources().getString(R.string.please_provide_name));
-                    et_registration_mobile.requestFocus();
+                if (TextUtils.isEmpty(edtPhoneNumber.getText().toString())) {
+                    edtPhoneNumber.setError(getResources().getString(R.string.please_provide_name));
+                    edtPhoneNumber.requestFocus();
                 } else if (TextUtils.isEmpty(et_registration_password.getText().toString())) {
-                    til_registration_password.setError(getResources().getString(R.string.please_provide_email));
+                    til_registration_password.setError(getResources().getString(R.string.please_provide_password));
                     et_registration_password.requestFocus();
                 } else {
                     submit();
@@ -137,7 +151,7 @@ public class Signin extends AppCompatActivity implements View.OnClickListener {
         if (Utils.isNetworkAvailable(this)) {
             progressBar.setVisibility(View.VISIBLE);
             findViewById(R.id.pb_registration).setVisibility(View.VISIBLE);
-            final String mobile = et_registration_mobile.getText().toString();
+            final String mobile = ccp.getSelectedCountryCodeWithPlus() + ccp.getPhoneNumber().getNationalNumber();
             final String password = et_registration_password.getText().toString();
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
@@ -159,7 +173,7 @@ public class Signin extends AppCompatActivity implements View.OnClickListener {
                                 preferenceUtil.putString(Keys.EmailID, sigInResponse.getEmail());
                                 preferenceUtil.putString(Keys.PASSWORD, sigInResponse.getPassword());
                                 preferenceUtil.setUserRegisteredNumber(mobile);
-                                preferenceUtil.setType(sigInResponse.getUser_type());
+                                preferenceUtil.setLoginType(sigInResponse.getUser_type());
                                 Intent intent = new Intent(Signin.this, MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);

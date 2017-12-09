@@ -138,6 +138,17 @@ public class PreferenceUtil {
         return sharedPreferences == null ? "" : sharedPreferences.getString("ProofIMAGE", "");
     }
 
+    public void setDriveLicense(String license) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("licenseIMAGE", license);
+        editor.apply();
+
+    }
+
+    public String getDriveLicense() {
+        return sharedPreferences == null ? "" : sharedPreferences.getString("licenseIMAGE", "");
+    }
+
 
     public void setRCFront(String pan) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -145,7 +156,7 @@ public class PreferenceUtil {
         editor.apply();
     }
 
-    public String getVISIT() {
+    public String getRcFront() {
         return sharedPreferences == null ? "" : sharedPreferences.getString("VISITIMAGE", "");
     }
 
@@ -155,9 +166,52 @@ public class PreferenceUtil {
         editor.apply();
     }
 
-    public String getRC() {
+    public String getRCBack() {
         return sharedPreferences == null ? "" : sharedPreferences.getString("RC", "");
     }
+
+    public void setProfile(String pan) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("ProfileIMAGE", pan);
+        editor.apply();
+    }
+
+    public String getProfile() {
+        return sharedPreferences == null ? "" : sharedPreferences.getString("ProfileIMAGE", "");
+    }
+
+
+    public void setVoter(String pan) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("VoterIMAGE", pan);
+        editor.apply();
+    }
+
+    public String getVoter() {
+        return sharedPreferences == null ? "" : sharedPreferences.getString("VoterIMAGE", "");
+    }
+
+
+    public void setPermit(String pan) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("PermitIMAGE", pan);
+        editor.apply();
+    }
+
+    public String getPermit() {
+        return sharedPreferences == null ? "" : sharedPreferences.getString("PermitIMAGE", "");
+    }
+
+    public void setInsurance(String pan) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("InsuranceIMAGE", pan);
+        editor.apply();
+    }
+
+    public String getInsurance() {
+        return sharedPreferences == null ? "" : sharedPreferences.getString("InsuranceIMAGE", "");
+    }
+
 
     public void setfirm(String pan) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -167,6 +221,16 @@ public class PreferenceUtil {
 
     public String getfirm() {
         return sharedPreferences == null ? "" : sharedPreferences.getString("firm", "");
+    }
+
+    public void setLoginType(String type) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("logintype", type);
+        editor.apply();
+    }
+
+    public String getLogintype() {
+        return sharedPreferences == null ? "" : sharedPreferences.getString("logintype", "");
     }
 
     public void setType(String type) {
@@ -240,12 +304,108 @@ public class PreferenceUtil {
         return sharedPreferences == null ? "" : sharedPreferences.getString(EmailID, "");
     }
 
+    public void setTruckPhoto1(String TruckPhoto1) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("TruckPhoto1", TruckPhoto1);
+        editor.apply();
+
+    }
+
+    public String getTruckPhoto1() {
+        return sharedPreferences == null ? "" : sharedPreferences.getString("TruckPhoto1", "");
+    }
+
+
+    public void setTruckPhoto2(String TruckPhoto1) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("TruckPhoto2", TruckPhoto1);
+        editor.apply();
+
+    }
+
+    public String getTruckPhoto2() {
+        return sharedPreferences == null ? "" : sharedPreferences.getString("TruckPhoto2", "");
+    }
+
+
+    public void setTruckPhoto3(String TruckPhoto) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("TruckPhoto3", TruckPhoto);
+        editor.apply();
+
+    }
+
+    public String getTruckPhoto3() {
+        return sharedPreferences == null ? "" : sharedPreferences.getString("TruckPhoto3", "");
+    }
+
+
+    public void setTruckPhoto4(String pan) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("TruckPhoto4", pan);
+        editor.apply();
+
+    }
+
+    public String getTruckPhoto4() {
+        return sharedPreferences == null ? "" : sharedPreferences.getString("TruckPhoto4", "");
+    }
+
+    public void setTruckModel(String pan) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("TruckModel", pan);
+        editor.apply();
+
+    }
+
+    public String getTruckModel() {
+        return sharedPreferences == null ? "" : sharedPreferences.getString("TruckModel", "");
+    }
+
+
+    public void setTruckPermitType(String pan) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("TruckPermitType", pan);
+        editor.apply();
+
+    }
+
+    public String getTruckPermitType() {
+        return sharedPreferences == null ? "" : sharedPreferences.getString("TruckPermitType", "");
+    }
+
+
+    public void setTruckBodyType(String pan) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("TruckBodyType", pan);
+        editor.apply();
+
+    }
+
+    public String getTruckBodyType() {
+        return sharedPreferences == null ? "" : sharedPreferences.getString("TruckBodyType", "");
+    }
+
+    public void setTruckWeight(int pan) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("TruckWeight", pan);
+        editor.apply();
+
+    }
+
+    public int getTruckWeight() {
+        return sharedPreferences == null ? 0 : sharedPreferences.getInt("TruckWeight", 0);
+    }
+
+
     public void logoutAll() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(mobile, "");
         editor.putString(EmailID, "");
         editor.putString(USERNAME, "");
         editor.putString(EmailID, "");
+        editor.putString("logintype", "");
+        editor.putString("type", "");
         editor.putBoolean(IS_ALREADY_REGISTERED, false);
         editor.apply();
 

@@ -29,6 +29,9 @@ public class EventResponse {
     @SerializedName("user_type")
     private String user_type;
 
+    @SerializedName("serverimage")
+    private String serverimage;
+
     public String getResult() {
         return result;
     }
@@ -83,6 +86,14 @@ public class EventResponse {
 
     public void setUser_type(String user_type) {
         this.user_type = user_type;
+    }
+
+    public String getServerimage() {
+        return serverimage;
+    }
+
+    public void setServerimage(String serverimage) {
+        this.serverimage = serverimage;
     }
 
     @Override

@@ -11,6 +11,9 @@ public class DocumentModel {
     @SerializedName("error1")
     private String error1;
 
+    @SerializedName("error")
+    private String error;
+
     @SerializedName("error2")
     private String error2;
 
@@ -19,6 +22,9 @@ public class DocumentModel {
 
     @SerializedName("error4")
     private String error4;
+
+    @SerializedName("image_path")
+    private String image_path;
 
     @SerializedName("pan_card_path")
     private String pan_card_path;
@@ -117,5 +123,21 @@ public class DocumentModel {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
+
+    public String getImage_path() {
+        return image_path;
+    }
+
+    public void setImage_path(String image_path) {
+        this.image_path = image_path;
     }
 }

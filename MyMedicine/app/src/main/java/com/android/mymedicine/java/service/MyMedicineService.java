@@ -47,12 +47,25 @@ public class MyMedicineService extends Service {
     public void onCreate() {
         super.onCreate();
         try {
+            makeAlarmEveryDay();
             dbService = new DbService(this);
             LocalBroadcastManager.getInstance(this).registerReceiver(receiver, getIntentFilter());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+    }
+
+    private void makeAlarmEveryDay() {
+        Intent myIntent = new Intent(this, MedicineBroadcast.class);
+        myIntent.setAction("EveryDayCheck");
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        PendingIntent pendingIntent = PendingIntent.getService(this, 0, myIntent, 0);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 55);
+        calendar.set(Calendar.SECOND, 00);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 24 * 60 * 60 * 1000, pendingIntent);
     }
 
     private IntentFilter getIntentFilter() {

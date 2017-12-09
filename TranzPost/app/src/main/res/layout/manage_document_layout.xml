@@ -6,13 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ProgressBar
-        android:id="@+id/pbmanageDocument"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:visibility="gone" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -63,201 +56,372 @@
                 android:layout_height="0.5dp"
                 android:background="@color/cardview_dark_background" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_15dp"
-                android:layout_marginTop="@dimen/_25dp"
-                android:text="PAN Card"
-                android:textColor="@color/colorAccent"
-                android:textSize="20sp"
-                android:textStyle="normal" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_15dp"
-                android:text="(Personal/Company)"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                android:textStyle="normal" />
-
             <LinearLayout
+                android:id="@+id/llPanCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5dp"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <android.support.v7.widget.CardView
-                    android:id="@+id/card_view"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_gravity="left"
-                    android:layout_marginLeft="@dimen/_25dp"
-                    android:layout_marginTop="@dimen/_15dp"
-                    android:padding="5dp"
-                    android:visibility="visible"
-                    card_view:cardCornerRadius="15dp"
-                    card_view:cardElevation="15dp"
-                    card_view:cardUseCompatPadding="true">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                    <RelativeLayout
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="@dimen/_15dp"
+                        android:layout_marginTop="@dimen/_25dp"
+                        android:layout_toLeftOf="@+id/editPan"
+                        android:text="PAN Card"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="20sp"
+                        android:textStyle="normal" />
+
+
+                    <ImageView
+                        android:id="@+id/editPan"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center">
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_mode_edit_black_24dp" />
+                </RelativeLayout>
 
-                        <ImageView
-                            android:id="@+id/ivCamPanCard"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_centerHorizontal="true"
-                            android:src="@drawable/ic_camera_alt_black_24dp"
-                            android:tint="@color/password_visibility" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/ivCamPanCard"
-                            android:layout_centerHorizontal="true"
-                            android:gravity="center"
-                            android:text="PAN Card" />
-                    </RelativeLayout>
-                </android.support.v7.widget.CardView>
-
-                <ImageView
-                    android:id="@+id/ivloadCamPanCard"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_gravity="center"
-                    android:padding="5dp"
-                    android:src="@drawable/ic_camera_alt_black_24dp"
-                    android:visibility="gone" />
-            </LinearLayout>
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginTop="@dimen/_15dp"
-                android:background="@color/cardview_dark_background" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_15dp"
-                android:layout_marginTop="@dimen/_25dp"
-                android:text="Address Proof"
-                android:textColor="@color/colorAccent"
-                android:textSize="20sp"
-                android:textStyle="normal" />
-
-            <RadioGroup
-                android:id="@+id/radioAddresstype"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_1dp">
-
-                <RadioButton
-                    android:id="@+id/radioDrivingLicence"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_10dp"
-                    android:checked="true"
-                    android:padding="@dimen/_5dp"
-                    android:text="Driving License" />
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:orientation="horizontal">
 
-                <RadioButton
-                    android:id="@+id/radioAadharCard"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_10dp"
-                    android:padding="@dimen/_5dp"
-                    android:text="Aadhar Card" />
-
-                <RadioButton
-                    android:id="@+id/radioVoterId"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_10dp"
-                    android:padding="@dimen/_5dp"
-                    android:text="Voter ID" />
-
-                <RadioButton
-                    android:id="@+id/radioPassport"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_10dp"
-                    android:padding="@dimen/_5dp"
-                    android:text="Passport" />
-
-
-                <RadioButton
-                    android:id="@+id/radioOthers"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_10dp"
-                    android:padding="@dimen/_5dp"
-                    android:text="Others" />
-
-            </RadioGroup>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <android.support.v7.widget.CardView
-                    android:id="@+id/card_view_address"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_gravity="left"
-                    android:layout_marginLeft="@dimen/_25dp"
-                    android:layout_marginTop="@dimen/_15dp"
-                    android:padding="5dp"
-                    android:visibility="visible"
-                    card_view:cardCornerRadius="15dp"
-                    card_view:cardElevation="15dp"
-                    card_view:cardUseCompatPadding="true">
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/card_view"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
                         android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_15dp">
+                        android:layout_marginLeft="@dimen/_25dp"
+                        android:padding="5dp"
+                        android:visibility="visible"
+                        card_view:cardCornerRadius="15dp"
+                        card_view:cardElevation="15dp"
+                        card_view:cardUseCompatPadding="true">
 
-                        <ImageView
-                            android:id="@+id/ivCamAddressProof"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_centerHorizontal="true"
-                            android:src="@drawable/ic_camera_alt_black_24dp"
-                            android:tint="@color/password_visibility" />
-
-                        <TextView
+                        <RelativeLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/ivCamAddressProof"
-                            android:layout_centerHorizontal="true"
-                            android:gravity="center"
-                            android:text="Proof of Address" />
-                    </RelativeLayout>
-                </android.support.v7.widget.CardView>
+                            android:layout_gravity="center">
 
-                <ImageView
-                    android:id="@+id/ivloadCamProof"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_gravity="center"
-                    android:padding="5dp"
-                    android:src="@drawable/ic_camera_alt_black_24dp"
-                    android:visibility="gone" />
+                            <ImageView
+                                android:id="@+id/ivCamPanCard"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_centerHorizontal="true"
+                                android:src="@drawable/ic_camera_alt_black_24dp"
+                                android:tint="@color/password_visibility" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ivCamPanCard"
+                                android:layout_centerHorizontal="true"
+                                android:gravity="center"
+                                android:text="PAN Card" />
+                        </RelativeLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <ImageView
+                        android:id="@+id/ivloadCamPanCard"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_gravity="center"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_camera_alt_black_24dp"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="@dimen/_15dp"
+                    android:background="@color/cardview_dark_background" />
+
             </LinearLayout>
 
-            <View
+            <LinearLayout
+                android:id="@+id/llDrivingLicense"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginTop="@dimen/_15dp"
-                android:background="@color/cardview_dark_background" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="@dimen/_15dp"
+                        android:layout_marginTop="@dimen/_25dp"
+                        android:layout_toLeftOf="@+id/editDriveLicense"
+                        android:text="Driving License"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="20sp"
+                        android:textStyle="normal" />
+
+
+                    <ImageView
+                        android:id="@+id/editDriveLicense"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_mode_edit_black_24dp" />
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/card_viewDrivingLicense"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_25dp"
+                        android:padding="5dp"
+                        android:visibility="visible"
+                        card_view:cardCornerRadius="15dp"
+                        card_view:cardElevation="15dp"
+                        card_view:cardUseCompatPadding="true">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center">
+
+                            <ImageView
+                                android:id="@+id/ivCamDrivingLicense"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_centerHorizontal="true"
+                                android:src="@drawable/ic_camera_alt_black_24dp"
+                                android:tint="@color/password_visibility" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ivCamDrivingLicense"
+                                android:layout_centerHorizontal="true"
+                                android:gravity="center"
+                                android:text="DrivingLicense" />
+                        </RelativeLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <ImageView
+                        android:id="@+id/ivloadCamDrivingLicense"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_gravity="center"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_camera_alt_black_24dp"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="@dimen/_15dp"
+                    android:background="@color/cardview_dark_background" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/llVoterOrAdhaar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="@dimen/_15dp"
+                        android:layout_marginTop="@dimen/_25dp"
+                        android:layout_toLeftOf="@+id/editAdhaar"
+                        android:text="VoterId or Aadhaar Card"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="20sp"
+                        android:textStyle="normal" />
+
+
+                    <ImageView
+                        android:id="@+id/editAdhaar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_mode_edit_black_24dp" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/card_viewVoterOrAdhaar"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_25dp"
+                        android:padding="5dp"
+                        android:visibility="visible"
+                        card_view:cardCornerRadius="15dp"
+                        card_view:cardElevation="15dp"
+                        card_view:cardUseCompatPadding="true">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center">
+
+                            <ImageView
+                                android:id="@+id/ivCamVoterOrAdhaar"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_centerHorizontal="true"
+                                android:src="@drawable/ic_camera_alt_black_24dp"
+                                android:tint="@color/password_visibility" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ivCamVoterOrAdhaar"
+                                android:layout_centerHorizontal="true"
+                                android:gravity="center"
+                                android:text="Votterid/Aadhaar" />
+                        </RelativeLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <ImageView
+                        android:id="@+id/ivloadCamVoterOrAdhaar"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_gravity="center"
+                        android:padding="5dp"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="@dimen/_15dp"
+                    android:background="@color/cardview_dark_background" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llAddressProof"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="@dimen/_15dp"
+                        android:layout_marginTop="@dimen/_25dp"
+                        android:layout_toLeftOf="@+id/editAddress"
+                        android:text="Address"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="20sp"
+                        android:textStyle="normal" />
+
+
+                    <ImageView
+                        android:id="@+id/editAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_mode_edit_black_24dp" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/card_view_address"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_25dp"
+                        android:padding="5dp"
+                        android:visibility="visible"
+                        card_view:cardCornerRadius="15dp"
+                        card_view:cardElevation="15dp"
+                        card_view:cardUseCompatPadding="true">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_15dp">
+
+                            <ImageView
+                                android:id="@+id/ivCamAddressProof"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_centerHorizontal="true"
+                                android:src="@drawable/ic_camera_alt_black_24dp"
+                                android:tint="@color/password_visibility" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ivCamAddressProof"
+                                android:layout_centerHorizontal="true"
+                                android:gravity="center"
+                                android:text="Proof of Address" />
+                        </RelativeLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <ImageView
+                        android:id="@+id/ivloadCamProof"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_gravity="center"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_camera_alt_black_24dp"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="@dimen/_15dp"
+                    android:background="@color/cardview_dark_background" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/llVisiting"
@@ -265,15 +429,31 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_15dp"
-                    android:layout_marginTop="@dimen/_25dp"
-                    android:text="RC Book"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="20sp"
-                    android:textStyle="normal" />
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="@dimen/_15dp"
+                        android:layout_marginTop="@dimen/_25dp"
+                        android:layout_toLeftOf="@+id/editRcBok"
+                        android:text="RC Book"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="20sp"
+                        android:textStyle="normal" />
+
+
+                    <ImageView
+                        android:id="@+id/editRcBok"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_mode_edit_black_24dp" />
+                </RelativeLayout>
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/til_transport_firm"
@@ -304,9 +484,8 @@
                         android:id="@+id/card_view_visiting"
                         android:layout_width="150dp"
                         android:layout_height="150dp"
-                        android:layout_gravity="left"
+                        android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/_25dp"
-                        android:layout_marginTop="@dimen/_15dp"
                         android:padding="5dp"
                         android:visibility="visible"
                         card_view:cardCornerRadius="15dp"
@@ -357,9 +536,8 @@
                         android:id="@+id/card_view_RcBook"
                         android:layout_width="150dp"
                         android:layout_height="150dp"
-                        android:layout_gravity="left"
+                        android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/_25dp"
-                        android:layout_marginTop="@dimen/_15dp"
                         android:padding="5dp"
                         android:visibility="visible"
                         card_view:cardCornerRadius="15dp"
@@ -406,6 +584,282 @@
                     android:background="@color/cardview_dark_background" />
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/llInsurance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="@dimen/_15dp"
+                        android:layout_marginTop="@dimen/_25dp"
+                        android:layout_toLeftOf="@+id/editInsurance"
+                        android:text="Insurance Copy"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="20sp"
+                        android:textStyle="normal" />
+
+
+                    <ImageView
+                        android:id="@+id/editInsurance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_mode_edit_black_24dp" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/card_viewInsurance"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_25dp"
+                        android:padding="5dp"
+                        android:visibility="visible"
+                        card_view:cardCornerRadius="15dp"
+                        card_view:cardElevation="15dp"
+                        card_view:cardUseCompatPadding="true">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center">
+
+                            <ImageView
+                                android:id="@+id/ivCamInsurance"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_centerHorizontal="true"
+                                android:src="@drawable/ic_camera_alt_black_24dp"
+                                android:tint="@color/password_visibility" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ivCamInsurance"
+                                android:layout_centerHorizontal="true"
+                                android:gravity="center"
+                                android:text="Insurance" />
+                        </RelativeLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <ImageView
+                        android:id="@+id/ivloadCamInsurance"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_gravity="center"
+                        android:padding="5dp"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="@dimen/_15dp"
+                    android:background="@color/cardview_dark_background" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llPermit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="@dimen/_15dp"
+                        android:layout_marginTop="@dimen/_25dp"
+                        android:layout_toLeftOf="@+id/editPermitCopy"
+                        android:text="Permit Copy"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="20sp"
+                        android:textStyle="normal" />
+
+
+                    <ImageView
+                        android:id="@+id/editPermitCopy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_mode_edit_black_24dp" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/card_viewPermit"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_25dp"
+                        android:padding="5dp"
+                        android:visibility="visible"
+                        card_view:cardCornerRadius="15dp"
+                        card_view:cardElevation="15dp"
+                        card_view:cardUseCompatPadding="true">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center">
+
+                            <ImageView
+                                android:id="@+id/ivCamPermit"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_centerHorizontal="true"
+                                android:src="@drawable/ic_camera_alt_black_24dp"
+                                android:tint="@color/password_visibility" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ivCamPermit"
+                                android:layout_centerHorizontal="true"
+                                android:gravity="center"
+                                android:text="Permit" />
+                        </RelativeLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <ImageView
+                        android:id="@+id/ivloadCamPermit"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_gravity="center"
+                        android:padding="5dp"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="@dimen/_15dp"
+                    android:background="@color/cardview_dark_background" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/llPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="@dimen/_15dp"
+                        android:layout_marginTop="@dimen/_25dp"
+                        android:layout_toLeftOf="@+id/editProfile"
+                        android:text="Profile"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="20sp"
+                        android:textStyle="normal" />
+
+
+                    <ImageView
+                        android:id="@+id/editProfile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_mode_edit_black_24dp" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/card_viewPhoto"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_25dp"
+                        android:padding="5dp"
+                        android:visibility="visible"
+                        card_view:cardCornerRadius="15dp"
+                        card_view:cardElevation="15dp"
+                        card_view:cardUseCompatPadding="true">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center">
+
+                            <ImageView
+                                android:id="@+id/ivCamPhoto"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_centerHorizontal="true"
+                                android:src="@drawable/ic_camera_alt_black_24dp"
+                                android:tint="@color/password_visibility" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ivCamPhoto"
+                                android:layout_centerHorizontal="true"
+                                android:gravity="center"
+                                android:text="Photo" />
+                        </RelativeLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <ImageView
+                        android:id="@+id/ivloadPhoto"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_gravity="center"
+                        android:padding="5dp"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="@dimen/_15dp"
+                    android:background="@color/cardview_dark_background" />
+
+            </LinearLayout>
+
+
             <Button
                 android:id="@+id/btnsaveandverify"
                 android:layout_width="match_parent"
@@ -415,9 +869,11 @@
                 android:padding="@dimen/_15dp"
                 android:text="Save and Verify"
                 android:textAllCaps="false"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:visibility="gone" />
 
         </LinearLayout>
 
     </ScrollView>
+
 </RelativeLayout>

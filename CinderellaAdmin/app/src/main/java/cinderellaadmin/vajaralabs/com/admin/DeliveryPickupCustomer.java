@@ -72,7 +72,7 @@ public class DeliveryPickupCustomer extends AppCompatActivity implements Respons
     private AsyncPOST asyncPOST;
     private ProgressDialog progressBar;
     private ArrayList<String> strings = new ArrayList<String>();
-
+    private HashMap<String, String> itemCountlist = new HashMap<>();
 
     private ArrayList<HashMap<String, String>> hashMapArrayList = new ArrayList<HashMap<String, String>>();
     private List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
@@ -106,7 +106,7 @@ public class DeliveryPickupCustomer extends AppCompatActivity implements Respons
     private double sum = 0;
     private int item_sum = 0;
     private double initialTotalSum = 0;
-
+    private boolean allowChange = true;
 
     private boolean bool_exist;
     private ArrayList<Double> doubleArrayList = new ArrayList<Double>();
@@ -184,23 +184,32 @@ public class DeliveryPickupCustomer extends AppCompatActivity implements Respons
 
             @Override
             public void afterTextChanged(Editable editable) {
-                try {
-                    String sdiscount = edtDiscount.getText().toString();
-                    if (sdiscount.length() > 0) {
-                        int discount = Integer.valueOf(sdiscount);
-                        sum = initialTotalSum - discount;
-                    }
-                    double percentage = ((sum * 18) / 100);
-                    txt_oveal_total2.setText(percentage + " GST 18%");
-                    sum = sum + percentage;
-                    txt_oveal_total.setText("" + sum);
-                    txt_oveal_count.setText(item_sum + "");
+                if (allowChange)
+                    try {
+                        String sdiscount = edtDiscount.getText().toString();
+                        int discount = 0;
+                        if (sdiscount.length() > 0) {
+                            discount = Integer.valueOf(sdiscount);
+                        }
+                        if (discount > initialTotalSum) {
+                            allowChange = false;
+                            edtDiscount.setText(sdiscount.substring(0, edtDiscount.getText().toString().length() - 1));
+                            edtDiscount.setSelection(edtDiscount.getText().toString().length());
+                            allowChange = true;
+                        } else {
+                            sum = initialTotalSum - discount;
+                            double percentage = ((sum * 18) / 100);
+                            txt_oveal_total2.setText(percentage + " GST 18%");
+                            sum = sum + percentage;
+                            txt_oveal_total.setText("" + sum);
+                            txt_oveal_count.setText(item_sum + "");
 
-                    getSupportActionBar().setTitle("Pricing-List " + "Amt:" + sum + '\n' +
-                            "Qty:" + item_sum);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                            getSupportActionBar().setTitle("Pricing-List " + "Amt:" + sum + '\n' +
+                                    "Qty:" + item_sum);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
             }
         });
 
@@ -257,7 +266,8 @@ public class DeliveryPickupCustomer extends AppCompatActivity implements Respons
                                     addOthers();
                                     return;
                                 }
-                                addSelectedProduct(stags, amount);
+                                String pcs = hashMapArrayList.get(tags).get("pcs");
+                                addSelectedProduct(stags, amount, pcs);
                             }
 
                         }
@@ -639,7 +649,7 @@ public class DeliveryPickupCustomer extends AppCompatActivity implements Respons
         builder.show();
     }
 
-    private void addSelectedProduct(String name, String amount) {
+    private void addSelectedProduct(String name, String amount, final String pcs) {
 
         bool_exist = false;
         for (int j = 0; j < list_itemLinearLayout.getChildCount(); j++) {
@@ -674,7 +684,6 @@ public class DeliveryPickupCustomer extends AppCompatActivity implements Respons
 //                                img_remove.setId(convertView.getId());
             txt_product2.setText(name);
             txt_price2.setText(amount);
-            edt_count.requestFocus();
             list_itemLinearLayout.addView(convertView2);
 
             for (int k = 0; k < list_itemLinearLayout.getChildCount(); k++) {
@@ -727,10 +736,18 @@ public class DeliveryPickupCustomer extends AppCompatActivity implements Respons
                             final LinearLayout linearLayout_parent = (LinearLayout) list_itemLinearLayout.getChildAt(k);
                             final TextView txt_total = (TextView) linearLayout_parent.getChildAt(3);
                             final EditText edt_count5 = (EditText) linearLayout_parent.getChildAt(2);
-
+                            TextView txt_product2 = (TextView) linearLayout_parent.getChildAt(0);
                             doubleArrayList.add(Double.parseDouble(txt_total.getText().toString()));
-                            if (!edt_count5.getText().toString().equals(""))
-                                integerArrayList.add(Integer.parseInt(edt_count5.getText().toString()));
+                            if (!edt_count5.getText().toString().equals("")) {
+                                int cont = 1;
+                                try {
+                                    cont = Integer.parseInt(itemCountlist.get(txt_product2.getText().toString()));
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                                integerArrayList.add(cont * Integer.parseInt(edt_count5.getText().toString()));
+                            }
                         }
                         System.out.println("array_double" + doubleArrayList.toString());
 
@@ -835,10 +852,18 @@ public class DeliveryPickupCustomer extends AppCompatActivity implements Respons
                                         final LinearLayout linearLayout_parent = (LinearLayout) list_itemLinearLayout.getChildAt(k);
                                         final TextView txt_total = (TextView) linearLayout_parent.getChildAt(3);
                                         final EditText edt_count5 = (EditText) linearLayout_parent.getChildAt(2);
-
+                                        TextView txt_product2 = (TextView) linearLayout_parent.getChildAt(0);
                                         doubleArrayList.add(Double.parseDouble(txt_total.getText().toString()));
-                                        if (!edt_count5.getText().toString().equals(""))
-                                            integerArrayList.add(Integer.parseInt(edt_count5.getText().toString()));
+                                        if (!edt_count5.getText().toString().equals("")) {
+                                            int cont = 1;
+                                            try {
+                                                cont = Integer.parseInt(itemCountlist.get(txt_product2.getText().toString()));
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+
+                                            integerArrayList.add(cont * Integer.parseInt(edt_count5.getText().toString()));
+                                        }
                                     }
                                     System.out.println("array_double" + doubleArrayList.toString());
 
@@ -926,7 +951,7 @@ public class DeliveryPickupCustomer extends AppCompatActivity implements Respons
                     Toast.makeText(activity, "Enter Amount", Toast.LENGTH_SHORT).show();
                 }
 
-                addSelectedProduct(name + size, amount);
+                addSelectedProduct(name + size, amount, "1");
             }
         });
         AlertDialog dialog = alert.create();
@@ -1250,6 +1275,7 @@ public class DeliveryPickupCustomer extends AppCompatActivity implements Respons
                     if (!(hashMapArrayList.size() == 0)) {
                         hashMapArrayList.clear();
                     }
+                    itemCountlist.clear();
                     JSONArray jsonArray = new JSONArray(response);
                     HashMap<String, String> stringHashMap = null;
                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -1259,7 +1285,8 @@ public class DeliveryPickupCustomer extends AppCompatActivity implements Respons
                         stringHashMap.put("product_name", jsonArray.getJSONObject(i).getString("product_name"));
                         stringHashMap.put("product_price", jsonArray.getJSONObject(i).getString("product_price"));
                         stringHashMap.put("mobile_date", jsonArray.getJSONObject(i).getString("mobile_date"));
-
+                        stringHashMap.put("pcs", jsonArray.getJSONObject(i).getString("pcs"));
+                        itemCountlist.put(jsonArray.getJSONObject(i).getString("product_name"), jsonArray.getJSONObject(i).getString("pcs"));
                         hashMapArrayList.add(stringHashMap);
                     }
                     stringHashMap = new HashMap<String, String>();

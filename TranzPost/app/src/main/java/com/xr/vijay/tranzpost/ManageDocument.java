@@ -1,14 +1,18 @@
 package com.xr.vijay.tranzpost;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -27,9 +31,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.xr.vijay.tranzpost.adapter.UploadPickerPopUp;
+import com.xr.vijay.tranzpost.model.EventResponse;
+import com.xr.vijay.tranzpost.retrofit.ApiClient;
+import com.xr.vijay.tranzpost.retrofit.ApiInterface;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -39,7 +47,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 /**
  * Created by vijay on 4/12/17.
@@ -204,64 +221,56 @@ public class ManageDocument extends AppCompatActivity {
             }
         });
 
-        /*findViewById(R.id.btnsaveandverify).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btnsaveandverify).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (TextUtils.isEmpty(imagePathPAN)) {
-                    Toast.makeText(ManageDocument.this, "Add PAN image", Toast.LENGTH_LONG).show();
-                } else if (TextUtils.isEmpty(imagePathAddress)) {
-                    Toast.makeText(ManageDocument.this, "Add Address image", Toast.LENGTH_LONG).show();
-                } else if (et_transport_firm.getText().toString().length() == 0 && llVisiting.getVisibility() == View.VISIBLE) {
-                    til_transport_firm.setError("please provide valid transport firm");
-                    et_transport_firm.requestFocus();
-                } else if (llVisiting.getVisibility() == View.VISIBLE && TextUtils.isEmpty(imagePathRcFront)) {
-                    Toast.makeText(ManageDocument.this, "Add Visiting image", Toast.LENGTH_LONG).show();
+                boolean allowVerify = false;
+                if (userType.equalsIgnoreCase("Transporter")) {
+                    if (TextUtils.isEmpty(imagePathDriving)) {
+                        Toast.makeText(ManageDocument.this, "Add Driving License", Toast.LENGTH_LONG).show();
+                    } else if (TextUtils.isEmpty(imagePathVoterAadhaar)) {
+                        Toast.makeText(ManageDocument.this, "Add Adhar card or Voter id document", Toast.LENGTH_LONG).show();
+                    } else if (TextUtils.isEmpty(imagePathAddress)) {
+                        Toast.makeText(ManageDocument.this, "Add Address document", Toast.LENGTH_LONG).show();
+                    } else if (TextUtils.isEmpty(imagePathPhoto)) {
+                        Toast.makeText(ManageDocument.this, "Add Profile", Toast.LENGTH_LONG).show();
+                    } else {
+                        allowVerify = true;
+                    }
                 } else {
-                    if (llVisiting.getVisibility() == View.GONE) {
-                        imagePathRcFront = "";
-                        imagePathRCBack = "";
-                    }
 
-                    if (radiotype.getCheckedRadioButtonId() == R.id.radioTransporter) {
-                        preferenceUtil.setType("Transporter");
-                    } else if (radiotype.getCheckedRadioButtonId() == R.id.radioTruckOwner) {
-                        preferenceUtil.setType("TruckOwner");
-                    } else if (radiotype.getCheckedRadioButtonId() == R.id.radioTransporterandTruckOwner) {
-                        preferenceUtil.setType("TransporterandTruckOwner");
-                    }
-
-//                    uploadDocuments();
-                    findViewById(R.id.pbmanageDocument).setVisibility(View.VISIBLE);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (llVisiting.getVisibility() == View.GONE) {
-                                preferenceUtil.setfirm("");
-                                preferenceUtil.setRCFront("");
-                                preferenceUtil.setRCBack("");
-                            } else {
-                                preferenceUtil.setfirm(et_transport_firm.getText().toString());
-                            }
-
-                            Toast.makeText(ManageDocument.this, "Successfully Updated", Toast.LENGTH_LONG).show();
-                            findViewById(R.id.pbmanageDocument).setVisibility(View.GONE);
-
-
-                            preferenceUtil.setPan(imagePathPAN);
-                            preferenceUtil.setProof(imagePathAddress);
-                            preferenceUtil.setRCFront(imagePathRcFront);
-                            preferenceUtil.setRCBack(imagePathRCBack);
-
-                              *//*  preferenceUtil.setPan(documentModel.getPan_card_path());
-                                preferenceUtil.setProof(documentModel.getAddress_proof_path());
-                                preferenceUtil.setRCFront(documentModel.getRcbook_front_path());
-                                preferenceUtil.setRCBack(documentModel.getRcbook_back_path());
-*//*
+                    if (TextUtils.isEmpty(imagePathPAN)) {
+                        Toast.makeText(ManageDocument.this, "Add Pan document", Toast.LENGTH_LONG).show();
+                    } else if (TextUtils.isEmpty(imagePathVoterAadhaar)) {
+                        Toast.makeText(ManageDocument.this, "Add Adhar card or Voter id document", Toast.LENGTH_LONG).show();
+                    } else if (et_transport_firm.getText().toString().length() == 0 && llVisiting.getVisibility() == View.VISIBLE) {
+                        til_transport_firm.setError("please provide valid transport firm");
+                        et_transport_firm.requestFocus();
+                    } else if (TextUtils.isEmpty(imagePathRcFront)) {
+                        Toast.makeText(ManageDocument.this, "Add RcBook Front page", Toast.LENGTH_LONG).show();
+                    } else if (TextUtils.isEmpty(imagePathRCBack)) {
+                        Toast.makeText(ManageDocument.this, "Add RcBook Back page", Toast.LENGTH_LONG).show();
+                    } else if (TextUtils.isEmpty(imagePathInsurence)) {
+                        Toast.makeText(ManageDocument.this, "Add Insurance document", Toast.LENGTH_LONG).show();
+                    } else if (TextUtils.isEmpty(imagePathPermit)) {
+                        Toast.makeText(ManageDocument.this, "Add Permit document", Toast.LENGTH_LONG).show();
+                    } else if (TextUtils.isEmpty(imagePathPhoto)) {
+                        Toast.makeText(ManageDocument.this, "Add Profile", Toast.LENGTH_LONG).show();
+                    } else if (userType.equalsIgnoreCase("TruckOwner")) {
+                        allowVerify = true;
+                    } else if (userType.equalsIgnoreCase("TransporterandTruckOwner")) {
+                        if (TextUtils.isEmpty(imagePathDriving)) {
+                            Toast.makeText(ManageDocument.this, "Add Driving License", Toast.LENGTH_LONG).show();
                         }
-                    }, 2500);
+                    } else {
+                        allowVerify = true;
+                    }
+                }
+                if (allowVerify) {
+                    verifyAndUpload();
                 }
             }
-        });*/
+        });
 
 
         findViewById(R.id.card_view).setOnClickListener(new View.OnClickListener() {
@@ -523,6 +532,76 @@ public class ManageDocument extends AppCompatActivity {
 
     }
 
+    private void verifyAndUpload() {
+
+        try {
+            if (Utils.isNetworkAvailable(activity)) {
+                findViewById(R.id.pbmanageDocument).setVisibility(View.VISIBLE);
+
+                ApiInterface apiService =
+                        ApiClient.getClient().create(ApiInterface.class);
+
+                final PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
+
+                // finally, execute the request
+                Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a", Locale.getDefault());
+                String currDate = df.format(calendar.getTime());
+
+                Call<EventResponse> call = apiService.saveandverify(userType, preferenceUtil.getUserRegisteredNumber(), et_transport_firm.getText().toString().trim(), currDate);
+                call.enqueue(new Callback<EventResponse>() {
+                    @Override
+                    public void onResponse(Call<EventResponse> call, retrofit2.Response<EventResponse> response) {
+
+                        findViewById(R.id.pbmanageDocument).setVisibility(View.GONE);
+
+                        EventResponse documentModel = response.body();
+                        if (documentModel != null) {
+                            if (documentModel.getResult().equals("success")) {
+                                if (!TextUtils.isEmpty(documentModel.getMessage()))
+                                    Toast.makeText(activity, documentModel.getMessage(), Toast.LENGTH_SHORT).show();
+
+                                if (radiotype.getCheckedRadioButtonId() == R.id.radioTransporter) {
+                                    preferenceUtil.setType("Transporter");
+                                    preferenceUtil.setfirm("");
+                                    preferenceUtil.setPan("");
+                                    preferenceUtil.setInsurance("");
+                                    preferenceUtil.setPermit("");
+                                    preferenceUtil.setRCFront("");
+                                    preferenceUtil.setRCBack("");
+                                } else if (radiotype.getCheckedRadioButtonId() == R.id.radioTruckOwner) {
+                                    preferenceUtil.setType("TruckOwner");
+                                    preferenceUtil.setDriveLicense("");
+                                    preferenceUtil.setProof("");
+                                    preferenceUtil.setfirm(et_transport_firm.getText().toString());
+                                } else if (radiotype.getCheckedRadioButtonId() == R.id.radioTransporterandTruckOwner) {
+                                    preferenceUtil.setType("TransporterandTruckOwner");
+                                    preferenceUtil.setProof("");
+                                    preferenceUtil.setfirm(et_transport_firm.getText().toString());
+                                }
+
+                            } else {
+                                Toast.makeText(activity, documentModel.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(activity, "Could not connect to server.", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<EventResponse> call, Throwable t) {
+                        // Log error here since request failed
+                        Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     public void launchCameraIntent(int code) {
         if (showPopup != null) {
@@ -589,6 +668,13 @@ public class ManageDocument extends AppCompatActivity {
 
                 int columnIndex = cursor.getColumnIndex(projection[0]);
                 String picturePath = cursor.getString(columnIndex); // returns null
+                if (picturePath == null)
+                    try {
+                        picturePath = getRealPathFromURI(activity, uri);
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
+
                 cursor.close();
                 if (!TextUtils.isEmpty(picturePath)) {
                     File myDir = new File(Environment.getExternalStorageDirectory() + "/" + getApplicationContext().getPackageName() + "/Med_images");
@@ -652,6 +738,13 @@ public class ManageDocument extends AppCompatActivity {
 
                 int columnIndex = cursor.getColumnIndex(projection[0]);
                 String picturePath = cursor.getString(columnIndex); // returns null
+                if (picturePath == null)
+                    try {
+                        picturePath = getRealPathFromURI(activity, uri);
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
+
                 cursor.close();
                 if (!TextUtils.isEmpty(picturePath)) {
                     File myDir = new File(Environment.getExternalStorageDirectory() + "/" + getApplicationContext().getPackageName() + "/Med_images");
@@ -714,6 +807,12 @@ public class ManageDocument extends AppCompatActivity {
 
                 int columnIndex = cursor.getColumnIndex(projection[0]);
                 String picturePath = cursor.getString(columnIndex); // returns null
+                if (picturePath == null)
+                    try {
+                        picturePath = getRealPathFromURI(activity, uri);
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
                 cursor.close();
                 if (!TextUtils.isEmpty(picturePath)) {
                     File myDir = new File(Environment.getExternalStorageDirectory() + "/" + getApplicationContext().getPackageName() + "/Med_images");
@@ -777,6 +876,12 @@ public class ManageDocument extends AppCompatActivity {
 
                 int columnIndex = cursor.getColumnIndex(projection[0]);
                 String picturePath = cursor.getString(columnIndex); // returns null
+                if (picturePath == null)
+                    try {
+                        picturePath = getRealPathFromURI(activity, uri);
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
                 cursor.close();
                 if (!TextUtils.isEmpty(picturePath)) {
                     File myDir = new File(Environment.getExternalStorageDirectory() + "/" + getApplicationContext().getPackageName() + "/Med_images");
@@ -840,6 +945,12 @@ public class ManageDocument extends AppCompatActivity {
 
                 int columnIndex = cursor.getColumnIndex(projection[0]);
                 String picturePath = cursor.getString(columnIndex); // returns null
+                if (picturePath == null)
+                    try {
+                        picturePath = getRealPathFromURI(activity, uri);
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
                 cursor.close();
                 if (!TextUtils.isEmpty(picturePath)) {
                     File myDir = new File(Environment.getExternalStorageDirectory() + "/" + getApplicationContext().getPackageName() + "/Med_images");
@@ -906,6 +1017,12 @@ public class ManageDocument extends AppCompatActivity {
 
                 int columnIndex = cursor.getColumnIndex(projection[0]);
                 String picturePath = cursor.getString(columnIndex); // returns null
+                if (picturePath == null)
+                    try {
+                        picturePath = getRealPathFromURI(activity, uri);
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
                 cursor.close();
                 if (!TextUtils.isEmpty(picturePath)) {
                     File myDir = new File(Environment.getExternalStorageDirectory() + "/" + getApplicationContext().getPackageName() + "/Med_images");
@@ -971,6 +1088,12 @@ public class ManageDocument extends AppCompatActivity {
 
                 int columnIndex = cursor.getColumnIndex(projection[0]);
                 String picturePath = cursor.getString(columnIndex); // returns null
+                if (picturePath == null)
+                    try {
+                        picturePath = getRealPathFromURI(activity, uri);
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
                 cursor.close();
                 if (!TextUtils.isEmpty(picturePath)) {
                     File myDir = new File(Environment.getExternalStorageDirectory() + "/" + getApplicationContext().getPackageName() + "/Med_images");
@@ -1038,6 +1161,12 @@ public class ManageDocument extends AppCompatActivity {
 
                 int columnIndex = cursor.getColumnIndex(projection[0]);
                 String picturePath = cursor.getString(columnIndex); // returns null
+                if (picturePath == null)
+                    try {
+                        picturePath = getRealPathFromURI(activity, uri);
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
                 cursor.close();
                 if (!TextUtils.isEmpty(picturePath)) {
                     File myDir = new File(Environment.getExternalStorageDirectory() + "/" + getApplicationContext().getPackageName() + "/Med_images");
@@ -1101,6 +1230,12 @@ public class ManageDocument extends AppCompatActivity {
 
                 int columnIndex = cursor.getColumnIndex(projection[0]);
                 String picturePath = cursor.getString(columnIndex); // returns null
+                if (picturePath == null)
+                    try {
+                        picturePath = getRealPathFromURI(activity, uri);
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
                 cursor.close();
                 if (!TextUtils.isEmpty(picturePath)) {
                     File myDir = new File(Environment.getExternalStorageDirectory() + "/" + getApplicationContext().getPackageName() + "/Med_images");
@@ -1245,5 +1380,72 @@ public class ManageDocument extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressLint("NewApi")
+    public static String getRealPathFromURI(Context context, Uri uri) throws URISyntaxException {
+        final boolean needToCheckUri = Build.VERSION.SDK_INT >= 19;
+        String selection = null;
+        String[] selectionArgs = null;
+
+        if (needToCheckUri && DocumentsContract.isDocumentUri(context, uri)) {
+            if (isExternalStorageDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                return Environment.getExternalStorageDirectory() + "/" + split[1];
+            } else if (isDownloadsDocument(uri)) {
+                final String id = DocumentsContract.getDocumentId(uri);
+                uri = ContentUris.withAppendedId(
+                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+            } else if (isMediaDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+                if ("image".equals(type)) {
+                    uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                } else if ("video".equals(type)) {
+                    uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                } else if ("audio".equals(type)) {
+                    uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                }
+                selection = "_id=?";
+                selectionArgs = new String[]{
+                        split[1]
+                };
+            }
+        }
+        if ("content".equalsIgnoreCase(uri.getScheme())) {
+            String[] projection = {
+                    MediaStore.Images.Media.DATA
+            };
+            Cursor cursor = null;
+            try {
+                cursor = context.getContentResolver()
+                        .query(uri, projection, selection, selectionArgs, null);
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                if (cursor.moveToFirst()) {
+                    String data = cursor.getString(column_index);
+                    cursor.close();
+                    return data;
+                }
+                cursor.close();
+            } catch (Exception e) {
+            }
+        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+        return null;
+    }
+
+    public static boolean isExternalStorageDocument(Uri uri) {
+        return "com.android.externalstorage.documents".equals(uri.getAuthority());
+    }
+
+    public static boolean isDownloadsDocument(Uri uri) {
+        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
+    }
+
+    public static boolean isMediaDocument(Uri uri) {
+        return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
 }

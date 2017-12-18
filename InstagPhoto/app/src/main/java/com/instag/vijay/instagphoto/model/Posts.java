@@ -17,6 +17,12 @@ public class Posts {
     @SerializedName("username")
     private String username;
 
+    @SerializedName("created_date")
+    private String created_date;
+
+    @SerializedName("postmail")
+    private String postmail;
+
     @SerializedName("description")
     private String description;
 
@@ -73,5 +79,21 @@ public class Posts {
 
     public void setLiked(boolean liked) {
         this.liked = liked;
+    }
+
+    public String getCreated_date() {
+        return created_date;
+    }
+
+    public void setCreated_date(String created_date) {
+        this.created_date = created_date;
+    }
+
+    public String getPostmail() {
+        return postmail;
+    }
+
+    public void setPostmail(String postmail) {
+        this.postmail = postmail;
     }
 }

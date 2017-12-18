@@ -29,6 +29,16 @@
         android:singleLine="true" />
 
     <EditText
+        android:id="@+id/edt_pcs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:hint="No of pieces"
+        android:inputType="numberDecimal"
+        android:padding="10dp"
+        android:singleLine="true" />
+
+    <EditText
         android:id="@+id/edt_price"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,11 +47,12 @@
         android:inputType="numberDecimal"
         android:padding="10dp"
         android:singleLine="true" />
+
     <Button
         android:id="@+id/btn_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
         android:layout_margin="10dp"
-        android:text="Submit"/>
+        android:padding="10dp"
+        android:text="Submit" />
 </LinearLayout>

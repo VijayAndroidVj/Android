@@ -159,6 +159,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             postAdapter.notifyDataSetChanged();
+            recyclerView.setNestedScrollingEnabled(false);
             if (postsArrayList.size() == 0) {
                 showView(1, "No Posts available");
             } else {

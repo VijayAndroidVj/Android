@@ -6,10 +6,23 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/txtPending"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="#d68a59"
+        android:drawableEnd="@drawable/ic_refresh"
+        android:drawableRight="@drawable/ic_refresh"
+        android:drawableTint="@color/white"
+        android:gravity="center"
+        android:text="Verification Pending"
+        android:textColor="@color/white" />
+
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/txtPending"
         android:scrollbars="none">
 
         <LinearLayout
@@ -870,10 +883,19 @@
                 android:text="Save and Verify"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
         </LinearLayout>
 
     </ScrollView>
+
+
+    <ProgressBar
+        android:id="@+id/pbmanageDocument"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:visibility="gone" />
 
 </RelativeLayout>

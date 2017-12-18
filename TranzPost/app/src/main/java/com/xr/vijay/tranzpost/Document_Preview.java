@@ -18,6 +18,9 @@ import com.xr.vijay.tranzpost.retrofit.ApiClient;
 import com.xr.vijay.tranzpost.retrofit.ApiInterface;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -102,8 +105,16 @@ public class Document_Preview extends AppCompatActivity {
                 MultipartBody.Part company =
                         MultipartBody.Part.createFormData("company", this.company);
 
+                Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a", Locale.getDefault());
+                String currDate = df.format(calendar.getTime());
+
+                MultipartBody.Part date =
+                        MultipartBody.Part.createFormData("date", currDate);
+
+
                 // finally, execute the request
-                Call<EventResponse> call = apiService.upload_document(mobile, user_type, uploadDocumentType, company, uploadimage);
+                Call<EventResponse> call = apiService.upload_document(mobile, user_type, uploadDocumentType, company, date, uploadimage);
                 call.enqueue(new Callback<EventResponse>() {
                     @Override
                     public void onResponse(Call<EventResponse> call, retrofit2.Response<EventResponse> response) {

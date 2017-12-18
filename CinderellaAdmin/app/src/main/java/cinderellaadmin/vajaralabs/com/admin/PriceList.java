@@ -29,7 +29,7 @@ public class PriceList extends AppCompatActivity implements Response {
     private AsyncPOST asyncPOST;
     private List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
     private EditText edt_type;
-    private EditText edt_product, edt_price;
+    private EditText edt_product, edt_price, edt_pcs;
     private Button btn_submit;
 
     @Override
@@ -44,6 +44,7 @@ public class PriceList extends AppCompatActivity implements Response {
         edt_type = (EditText) findViewById(R.id.edt_type);
         edt_product = (EditText) findViewById(R.id.edt_product_name);
         edt_price = (EditText) findViewById(R.id.edt_price);
+        edt_pcs = (EditText) findViewById(R.id.edt_pcs);
         btn_submit = (Button) findViewById(R.id.btn_submit);
         edt_type.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +104,7 @@ public class PriceList extends AppCompatActivity implements Response {
                             nameValuePairs.add(new BasicNameValuePair("product_name", edt_product.getText().toString()));
                             nameValuePairs.add(new BasicNameValuePair("product_price", edt_price.getText().toString()));
                             nameValuePairs.add(new BasicNameValuePair("mobile_date", currentDateTime));
-
+                            nameValuePairs.add(new BasicNameValuePair("product_pcs", edt_pcs.getText().toString()));
 
 
                             asyncPOST = new AsyncPOST(nameValuePairs, PriceList.this, Configg.MAIN_URL + Configg.PRICE_LIST, PriceList.this);
@@ -138,13 +139,12 @@ public class PriceList extends AppCompatActivity implements Response {
     @Override
     public void processFinish(String output) {
         try {
-            JSONObject jsonObject=new JSONObject(output);
-            if (jsonObject.getString("success").equals("1")){
-                Configg.alert("Response From Server.",jsonObject.getString("message"),1,PriceList.this);
+            JSONObject jsonObject = new JSONObject(output);
+            if (jsonObject.getString("success").equals("1")) {
+                Configg.alert("Response From Server.", jsonObject.getString("message"), 1, PriceList.this);
 
-            }
-            else if (jsonObject.getString("success").equals("3")){
-                Configg.alert("Response From Server.",jsonObject.getString("message"),0,PriceList.this);
+            } else if (jsonObject.getString("success").equals("3")) {
+                Configg.alert("Response From Server.", jsonObject.getString("message"), 0, PriceList.this);
 
             }
         } catch (JSONException e) {

@@ -2,12 +2,14 @@ package com.instag.vijay.instagphoto;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -17,19 +19,28 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.instag.vijay.instagphoto.adapter.PagerAdapter;
 import com.instag.vijay.instagphoto.fragments.SearchFragment;
+import com.instag.vijay.instagphoto.retrofit.ApiClient;
+import com.instag.vijay.instagphoto.retrofit.ApiInterface;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static EditText searchEditText;
+    private Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        activity = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -123,6 +134,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return false;
             }
         });
+
+        String token = FirebaseInstanceId.getInstance().getToken();
+        registerFcmToken(token, activity);
+
+    }
+
+    public static void registerFcmToken(String token, Context context) {
+        if (CommonUtil.isNetworkAvailable(context)) {
+
+            ApiInterface service =
+                    ApiClient.getClient().create(ApiInterface.class);
+            PreferenceUtil preferenceUtil = new PreferenceUtil(context);
+
+            String usermail = preferenceUtil.getUserMailId();
+            Call<EventResponse> call = service.register_fcm(usermail, token);
+            call.enqueue(new Callback<EventResponse>() {
+                @Override
+                public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
+                    EventResponse patientDetails = response.body();
+                    Log.i("patientDetails", response.toString());
+                    if (patientDetails != null && patientDetails.getResult().equalsIgnoreCase("success")) {
+                        Log.w("Fcm token Register", patientDetails.getMessage());
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<EventResponse> call, Throwable t) {
+                    // Log error here since request failed
+                    String message = t.getMessage();
+                    if (message.contains("Failed to")) {
+                        message = "Failed to Connect";
+                    } else {
+                        message = "Failed";
+                    }
+                    Log.w("Fcm token Register", message);
+                }
+            });
+        } else {
+            Log.w("Fcm token Register", "Check your internet connection");
+        }
     }
 
     @Override

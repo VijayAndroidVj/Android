@@ -37,6 +37,7 @@ import retrofit2.Response;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> implements View.OnClickListener {
 
     private List<Posts> originalList;
+    private PreferenceUtil preferenceUtil;
 
     @Override
     public void onClick(View v) {
@@ -72,7 +73,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
             initProgress("Please wait...");
             ApiInterface service =
                     ApiClient.getClient().create(ApiInterface.class);
-            PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
 
             String usermail = preferenceUtil.getUserMailId();
             Call<EventResponse> call = service.post_like(usermail, preferenceUtil.getUserName(), post.getPost_id(), !post.isLiked());
@@ -152,8 +152,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
             initProgress("Deleting....");
             ApiInterface service =
                     ApiClient.getClient().create(ApiInterface.class);
-            PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
-
             String usermail = preferenceUtil.getUserMailId();
             Call<EventResponse> call = service.delete_post(usermail, post.getPost_id());
             call.enqueue(new Callback<EventResponse>() {
@@ -237,6 +235,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         this.originalList = moviesList;
         this.activity = activity;
         layoutInflater = LayoutInflater.from(activity);
+        preferenceUtil = new PreferenceUtil(activity);
         font = Typeface.createFromAsset(activity.getAssets(), "fontawesome-webfont.ttf");
     }
 
@@ -273,12 +272,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         }
 
 
-        holder.btnpostDelete.setTag(post);
         holder.likePost.setTag(post);
         holder.commentPost.setTag(post);
-        holder.btnpostDelete.setOnClickListener(this);
         holder.likePost.setOnClickListener(this);
         holder.commentPost.setOnClickListener(this);
+
+        if (post.getPostmail() != null && post.getPostmail().equalsIgnoreCase(preferenceUtil.getUserMailId())) {
+            holder.btnpostDelete.setTag(post);
+            holder.btnpostDelete.setOnClickListener(this);
+            holder.btnpostDelete.setVisibility(View.VISIBLE);
+        } else {
+            holder.btnpostDelete.setVisibility(View.GONE);
+        }
 
         if (post.getImage() != null && !post.getImage().isEmpty()) {
 

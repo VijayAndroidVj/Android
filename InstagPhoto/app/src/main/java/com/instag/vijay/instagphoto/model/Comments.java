@@ -16,8 +16,8 @@ public class Comments {
     private String user_email;
 
 
-    @SerializedName("comments_id")
-    private String comments_id;
+    @SerializedName("comment_id")
+    private String comment_id;
 
     @SerializedName("comment")
     private String comment;
@@ -39,11 +39,11 @@ public class Comments {
     }
 
     public String getComments_id() {
-        return comments_id;
+        return comment_id;
     }
 
     public void setComments_id(String comments_id) {
-        this.comments_id = comments_id;
+        this.comment_id = comments_id;
     }
 
     public String getComment() {

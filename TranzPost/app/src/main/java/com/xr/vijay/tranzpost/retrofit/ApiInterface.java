@@ -43,6 +43,11 @@ public interface ApiInterface {
     Call<EventResponse> update_profile(@Field("name") String name, @Field("mobile") String mobile, @Field("email") String email, @Field("password") String password, @Field("alternate_mobile") String alternate_mobile, @Field("no_of_owned_trucks") String no_of_owned_trucks, @Field("no_of_attached_trucks") String no_of_attached_trucks, @Field("city") String city);
 
 
+    @POST("saveandverify.php")
+    @FormUrlEncoded
+    Call<EventResponse> saveandverify(@Field("user_type") String user_type, @Field("mobile") String mobile, @Field("company") String company, @Field("date") String date);
+
+
     @Multipart
     @POST("upload_document.php")
     Call<EventResponse> upload_document(
@@ -50,6 +55,7 @@ public interface ApiInterface {
             @Part MultipartBody.Part user_type,
             @Part MultipartBody.Part uploadDocumentType,
             @Part MultipartBody.Part company,
+            @Part MultipartBody.Part date,
             @Part MultipartBody.Part uploadimage);
 
     @Multipart

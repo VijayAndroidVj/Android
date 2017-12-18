@@ -19,8 +19,8 @@ android {
         applicationId "cinderellaadmin.vajaralabs.com.admin"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 20
-        versionName "3.0"
+        versionCode 21
+        versionName "3.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 

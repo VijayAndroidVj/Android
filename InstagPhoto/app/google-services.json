@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "918427355172",
+    "firebase_url": "https://instaphoto-ea5ea.firebaseio.com",
+    "project_id": "instaphoto-ea5ea",
+    "storage_bucket": "instaphoto-ea5ea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:918427355172:android:2a85873257a4b249",
+        "android_client_info": {
+          "package_name": "com.instag.vijay.instagphoto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "918427355172-3inq0rcneec50n328qo37cjgk8hlr0jj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.instag.vijay.instagphoto",
+            "certificate_hash": "08fcc3e15982a27d7d5e404ac4230477a08651b5"
+          }
+        },
+        {
+          "client_id": "918427355172-0scj1edogl2oddns5va7a2kj5esnqkag.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVmEowB2SzNSBlq5ETlp_vZlJ5vefwKyM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "918427355172-0scj1edogl2oddns5va7a2kj5esnqkag.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

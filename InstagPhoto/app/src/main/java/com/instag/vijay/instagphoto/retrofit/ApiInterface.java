@@ -63,6 +63,10 @@ public interface ApiInterface {
     @FormUrlEncoded
     Call<PostModelMain> getposts(@Field("useremail") String useremail);
 
+    @POST("getmynewsfeed.php")
+    @FormUrlEncoded
+    Call<PostModelMain> getmynewsfeed(@Field("useremail") String useremail);
+
     @POST("getcomments.php")
     @FormUrlEncoded
     Call<ArrayList<Comments>> getcomments(@Field("post_id") String post_id);
@@ -80,8 +84,19 @@ public interface ApiInterface {
 
     @POST("post_comments.php")
     @FormUrlEncoded
-    Call<EventResponse> post_comments(@Field("useremail") String useremail, @Field("username") String username, @Field("post_id") String post_id, @Field("comment") String comment);
+    Call<EventResponse> post_comments(@Field("user_email") String user_email, @Field("username") String username, @Field("post_id") String post_id, @Field("comment") String comment);
+
+
+    @POST("delete_comment.php")
+    @FormUrlEncoded
+    Call<EventResponse> delete_comment(@Field("useremail") String useremail, @Field("comment_id") String comment_id);
+
+
+    @POST("register_fcm.php")
+    @FormUrlEncoded
+    Call<EventResponse> register_fcm(@Field("email") String email, @Field("fcm_token") String fcm_token);
 
 
 }
+
 

@@ -46,20 +46,28 @@
                 android:textStyle="bold" />
 
 
-            <ImageView
+            <com.joooonho.SelectableRoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/ivProfile"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
+                android:layout_margin="10dp"
                 android:layout_marginBottom="3dp"
                 android:background="@drawable/big_rounded_corner_white"
                 android:padding="5dp"
+                android:scaleType="centerCrop"
                 android:src="@drawable/profile"
-                android:textAllCaps="false"
-                android:textSize="12sp"
-                android:textStyle="bold" />
+                app:layout_collapseMode="parallax"
+                app:sriv_border_color="@color/colorPrimaryDark"
+                app:sriv_border_width="2dip"
+                app:sriv_left_bottom_corner_radius="48dip"
+                app:sriv_left_top_corner_radius="16dip"
+                app:sriv_oval="true"
+                app:sriv_right_bottom_corner_radius="16dip"
+                app:sriv_right_top_corner_radius="0dip" />
+
 
             <Button
                 android:id="@+id/btnpostDelete"

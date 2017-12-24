@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.instag.vijay.instagphoto">
+    package="com.instag.vijay.fasttrending">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Network State Permissions -->
@@ -35,7 +35,7 @@
             android:value="123456" />
         <!-- [END fcm_default_channel] -->
 
-        <activity android:name=".SplashScreen">
+        <activity android:name="com.instag.vijay.fasttrending.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,33 +43,39 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MmSignInActivity"
+            android:name="com.instag.vijay.fasttrending.EditProfile"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".MmSignUpActivity"
+            android:name="com.instag.vijay.fasttrending.NotificationActivity"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.instag.vijay.fasttrending.MmSignInActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.instag.vijay.fasttrending.MmSignUpActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.instag.vijay.fasttrending.MainActivity"
             android:theme="@style/AppTheme1"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".UpLoadImagePreview"
+            android:name="com.instag.vijay.fasttrending.UpLoadImagePreview"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme1"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".Comment"
+            android:name="com.instag.vijay.fasttrending.Comment"
             android:theme="@style/AppTheme1"
             android:windowSoftInputMode="adjustResize" />
         <!-- [START firebase_service] -->
-        <service android:name=".fcm.MyFirebaseMessagingService">
+        <service android:name="com.instag.vijay.fasttrending.fcm.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
         <!-- [END firebase_service] -->
         <!-- [START firebase_iid_service] -->
-        <service android:name=".fcm.MyFirebaseInstanceIDService">
+        <service android:name="com.instag.vijay.fasttrending.fcm.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>

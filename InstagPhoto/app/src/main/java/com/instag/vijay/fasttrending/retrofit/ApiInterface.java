@@ -5,6 +5,7 @@ import com.instag.vijay.fasttrending.FavModel;
 import com.instag.vijay.fasttrending.model.Comments;
 import com.instag.vijay.fasttrending.model.Notification;
 import com.instag.vijay.fasttrending.model.PostModelMain;
+import com.instag.vijay.fasttrending.model.Posts;
 
 import java.util.ArrayList;
 
@@ -116,7 +117,9 @@ public interface ApiInterface {
     @FormUrlEncoded
     Call<EventResponse> register_fcm(@Field("email") String email, @Field("fcm_token") String fcm_token);
 
-
+    @POST("getpostbyid.php")
+    @FormUrlEncoded
+    Call<Posts> getpostbyid(@Field("postId") String postId);
 }
 
 

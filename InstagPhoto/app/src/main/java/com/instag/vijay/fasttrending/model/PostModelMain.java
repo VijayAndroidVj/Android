@@ -19,8 +19,30 @@ public class PostModelMain {
     @SerializedName("total_followers")
     private int total_followers;
 
+    @SerializedName("profile_image")
+    private String profile_image;
+
+    @SerializedName("username")
+    private String username;
+
     @SerializedName("data")
     private ArrayList<Posts> postsArrayList = new ArrayList<>();
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getProfile_image() {
+        return profile_image;
+    }
+
+    public void setProfile_image(String profile_image) {
+        this.profile_image = profile_image;
+    }
 
     public int getTotalposts() {
         return totalposts;

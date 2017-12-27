@@ -2,6 +2,7 @@ package com.instag.vijay.fasttrending.adapter;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +20,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.instag.vijay.fasttrending.CommonUtil;
 import com.instag.vijay.fasttrending.EventResponse;
+import com.instag.vijay.fasttrending.PostView;
 import com.instag.vijay.fasttrending.PreferenceUtil;
+import com.instag.vijay.fasttrending.ProfileView;
 import com.instag.vijay.fasttrending.R;
 import com.instag.vijay.fasttrending.model.Notification;
 import com.instag.vijay.fasttrending.model.Posts;
@@ -45,9 +48,24 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         switch (v.getId()) {
             case R.id.btnpostDelete:
                 Object object = v.getTag();
-                if (object instanceof Posts) {
+                if (object instanceof Notification) {
                     Notification post = (Notification) object;
                     showMeetingtAlert(activity, activity.getString(R.string.app_name), "Are you sure want to delete this post?", post);
+                }
+                break;
+            case R.id.rlnotification:
+                object = v.getTag();
+                if (object instanceof Notification) {
+                    Notification notification = (Notification) object;
+                    if (notification.getType() != null && notification.getType().equalsIgnoreCase("follow")) {
+//                        Intent intent = new Intent(activity, ProfileView.class);
+//                        intent.putExtra("profileId", notification.get());
+//                        activity.startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(activity, PostView.class);
+                        intent.putExtra("postId", notification.getPost_id());
+                        activity.startActivity(intent);
+                    }
                 }
                 break;
         }
@@ -154,6 +172,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView txtUsername, txtTitle, txtPostDescription;
         private ImageView postImage;
+        private View rlnotification;
 
         private MyViewHolder(View view) {
             super(view);
@@ -161,6 +180,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             txtTitle = view.findViewById(R.id.title);
             txtPostDescription = view.findViewById(R.id.description);
             postImage = view.findViewById(R.id.ivImage);
+            rlnotification = view.findViewById(R.id.rlnotification);
         }
     }
 
@@ -182,6 +202,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Notification post = originalList.get(position);
+        holder.rlnotification.setOnClickListener(this);
+        holder.rlnotification.setTag(post);
         holder.txtUsername.setText(post.getUsername());
         holder.txtTitle.setText(post.getTitle());
         holder.txtPostDescription.setText(post.getDescription());

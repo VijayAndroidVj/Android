@@ -1,6 +1,7 @@
 package com.instag.vijay.fasttrending.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +22,7 @@ import com.instag.vijay.fasttrending.CommonUtil;
 import com.instag.vijay.fasttrending.EventResponse;
 import com.instag.vijay.fasttrending.FavModel;
 import com.instag.vijay.fasttrending.PreferenceUtil;
+import com.instag.vijay.fasttrending.ProfileView;
 import com.instag.vijay.fasttrending.R;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
@@ -43,6 +45,21 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
                 if (object instanceof FavModel) {
                     FavModel userModel = (FavModel) object;
                     followUser(userModel);
+                }
+                break;
+            case R.id.rlParentMeeting:
+                object = v.getTag();
+                if (object instanceof FavModel) {
+                    FavModel userModel = (FavModel) object;
+                    PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
+                    String usermail = preferenceUtil.getUserMailId();
+                    String followermail = usermail.equalsIgnoreCase(userModel.getWho()) ? userModel.getWhom() : userModel.getWho();
+                    if (TextUtils.isEmpty(followermail)) {
+                        followermail = userModel.getEmail();
+                    }
+                    Intent intent = new Intent(activity, ProfileView.class);
+                    intent.putExtra("profileId", followermail);
+                    activity.startActivity(intent);
                 }
                 break;
         }
@@ -122,6 +139,7 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
         private TextView txtMeetingName, txtMeetingComments;
         private Button btnMeetingJoin;
         private ImageView ivProfile;
+        private View rlParentMeeting;
 
         private MyViewHolder(View view) {
             super(view);
@@ -130,6 +148,7 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
             txtMeetingComments = view.findViewById(R.id.txtMeetingComments);
             btnMeetingJoin = view.findViewById(R.id.btnMeetingJoin);
             ivProfile = view.findViewById(R.id.ivProfile);
+            rlParentMeeting = view.findViewById(R.id.rlParentMeeting);
         }
     }
 
@@ -155,6 +174,8 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
         FavModel userModel = originalList.get(position);
         holder.txtMeetingName.setVisibility(View.GONE);
         holder.txtMeetingComments.setVisibility(View.VISIBLE);
+        holder.rlParentMeeting.setOnClickListener(this);
+        holder.rlParentMeeting.setTag(userModel);
         if (TextUtils.isEmpty(userModel.getUserName())) {
             if (!TextUtils.isEmpty(userModel.getWhom()) && userModel.getWhom().contains("@")) {
                 String[] name = userModel.getWhom().split("@");

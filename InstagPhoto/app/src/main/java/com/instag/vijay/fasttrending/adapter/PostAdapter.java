@@ -22,7 +22,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.instag.vijay.fasttrending.Comment;
 import com.instag.vijay.fasttrending.CommonUtil;
 import com.instag.vijay.fasttrending.EventResponse;
+import com.instag.vijay.fasttrending.PostView;
 import com.instag.vijay.fasttrending.PreferenceUtil;
+import com.instag.vijay.fasttrending.ProfileView;
 import com.instag.vijay.fasttrending.R;
 import com.instag.vijay.fasttrending.model.Posts;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
@@ -62,6 +64,24 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
                     Posts post = (Posts) object;
                     Intent intent = new Intent(activity, Comment.class);
                     intent.putExtra("post_id", post.getPost_id());
+                    activity.startActivity(intent);
+                }
+                break;
+            case R.id.rlParentMeeting:
+                object = v.getTag();
+                if (object instanceof Posts) {
+                    Posts post = (Posts) object;
+                    Intent intent = new Intent(activity, PostView.class);
+                    intent.putExtra("postId", post.getPost_id());
+                    activity.startActivity(intent);
+                }
+                break;
+            case R.id.rlMeeting1:
+                object = v.getTag();
+                if (object instanceof Posts && !(activity instanceof ProfileView)) {
+                    Posts post = (Posts) object;
+                    Intent intent = new Intent(activity, ProfileView.class);
+                    intent.putExtra("profileId", post.getPostmail());
                     activity.startActivity(intent);
                 }
                 break;
@@ -213,6 +233,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         private Button btnpostDelete;
         private ImageView postImage, ivProfile;
         private ImageView likePost, commentPost;
+        private View rlParentMeeting, rlMeeting1;
 
         private MyViewHolder(View view) {
             super(view);
@@ -225,6 +246,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
             btnpostDelete = view.findViewById(R.id.btnpostDelete);
             likePost = view.findViewById(R.id.likePost);
             commentPost = view.findViewById(R.id.commentPost);
+            rlParentMeeting = view.findViewById(R.id.rlParentMeeting);
+            rlMeeting1 = view.findViewById(R.id.rlMeeting1);
         }
     }
 
@@ -249,7 +272,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Posts post = originalList.get(position);
-
+        holder.rlParentMeeting.setTag(post);
+        holder.rlParentMeeting.setOnClickListener(this);
+        holder.rlMeeting1.setTag(post);
+        holder.rlMeeting1.setOnClickListener(this);
 
         if (TextUtils.isEmpty(post.getUsername())) {
             holder.txtMeetingName.setText("");

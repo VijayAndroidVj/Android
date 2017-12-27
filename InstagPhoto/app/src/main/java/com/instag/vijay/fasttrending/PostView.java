@@ -1,15 +1,18 @@
-package com.instag.vijay.fasttrending.adapter;
+package com.instag.vijay.fasttrending;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Typeface;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,58 +21,189 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.instag.vijay.fasttrending.Comment;
-import com.instag.vijay.fasttrending.CommonUtil;
-import com.instag.vijay.fasttrending.EventResponse;
-import com.instag.vijay.fasttrending.PostView;
-import com.instag.vijay.fasttrending.PreferenceUtil;
-import com.instag.vijay.fasttrending.R;
+import com.instag.vijay.fasttrending.model.PostModelMain;
 import com.instag.vijay.fasttrending.model.Posts;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder> implements View.OnClickListener {
+import static android.view.View.GONE;
 
-    private List<Posts> originalList;
+/**
+ * Created by vijay on 27/12/17.
+ */
+
+public class PostView extends AppCompatActivity implements View.OnClickListener {
+    private Activity activity;
+    private TextView txtMeetingName, txtPostDescription, txtPostLikesCount;
+    private Button btnpostDelete;
+    private ImageView postImage, ivProfile;
+    private ImageView likePost, commentPost;
+    private PreferenceUtil preferenceUtil;
+    Posts posts;
+    private String postId;
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.postview);
+        activity = this;
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Post View");
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDefaultDisplayHomeAsUpEnabled(true);
+
+
+        preferenceUtil = new PreferenceUtil(activity);
+        txtMeetingName = findViewById(R.id.txtMeetingName);
+        txtPostDescription = findViewById(R.id.txtPostDescription);
+        txtPostLikesCount = findViewById(R.id.txtPostLikesCount);
+        postImage = findViewById(R.id.postImage);
+        ivProfile = findViewById(R.id.ivProfile);
+        btnpostDelete = findViewById(R.id.btnpostDelete);
+        likePost = findViewById(R.id.likePost);
+        commentPost = findViewById(R.id.commentPost);
+        try {
+            postId = getIntent().getStringExtra("postId");
+            if (!TextUtils.isEmpty(postId))
+                getPostById(postId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void getPostById(String postId) {
+        try {
+            if (CommonUtil.isNetworkAvailable(activity)) {
+                ApiInterface service =
+                        ApiClient.getClient().create(ApiInterface.class);
+                Call<Posts> call = service.getpostbyid(postId);
+                call.enqueue(new Callback<Posts>() {
+                    @Override
+                    public void onResponse(Call<Posts> call, Response<Posts> response) {
+                        Posts postModelMain = response.body();
+                        posts = postModelMain;
+                        if (postModelMain != null) {
+                            setPostValue(postModelMain);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Posts> call, Throwable t) {
+                        // Log error here since request failed
+                        String message = t.getMessage();
+                        if (message.contains("Failed to")) {
+                            message = "Failed to Connect";
+                        } else if (message.contains("Expected")) {
+                            message = "No Post available";
+                        } else {
+                            message = "Failed";
+                        }
+                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                Toast.makeText(activity, "Check your internet connection!", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setPostValue(Posts post) {
+        if (TextUtils.isEmpty(post.getUsername())) {
+            txtMeetingName.setText("");
+        } else {
+            txtMeetingName.setText(post.getUsername());
+        }
+
+        if (TextUtils.isEmpty(post.getDescription())) {
+            txtPostDescription.setText("");
+        } else {
+            txtPostDescription.setText(post.getDescription());
+        }
+
+        txtPostLikesCount.setText(post.getTotal_likes() + " likes");
+
+
+        if (post.isLiked()) {
+            likePost.setImageResource(R.drawable.ic_favorite_black);
+        } else {
+            likePost.setImageResource(R.drawable.ic_favorite_border_black);
+        }
+
+
+        likePost.setTag(post);
+        commentPost.setTag(post);
+        likePost.setOnClickListener(this);
+        commentPost.setOnClickListener(this);
+
+        if (post.getPostmail() != null && post.getPostmail().equalsIgnoreCase(preferenceUtil.getUserMailId())) {
+            btnpostDelete.setTag(post);
+            btnpostDelete.setOnClickListener(this);
+            btnpostDelete.setVisibility(View.VISIBLE);
+        } else {
+            btnpostDelete.setVisibility(GONE);
+        }
+
+        if (post.getImage() != null && !post.getImage().isEmpty()) {
+
+            Glide.with(activity).load(post.getImage()).centerCrop()
+                    .thumbnail(0.5f)
+                    .crossFade()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(postImage);
+        }
+
+        if (post.getProfile_image() != null && !post.getProfile_image().isEmpty()) {
+
+            Glide.with(activity).load(post.getProfile_image()).asBitmap().centerCrop()
+                    .thumbnail(0.5f)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(ivProfile);
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.btnpostDelete:
-                Object object = v.getTag();
+                Object object = view.getTag();
                 if (object instanceof Posts) {
                     Posts post = (Posts) object;
                     showMeetingtAlert(activity, activity.getString(R.string.app_name), "Are you sure want to delete this post?", post);
                 }
                 break;
             case R.id.likePost:
-                object = v.getTag();
+                object = view.getTag();
                 if (object instanceof Posts) {
                     Posts post = (Posts) object;
                     likePost(post);
                 }
                 break;
             case R.id.commentPost:
-                object = v.getTag();
+                object = view.getTag();
                 if (object instanceof Posts) {
                     Posts post = (Posts) object;
                     Intent intent = new Intent(activity, Comment.class);
                     intent.putExtra("post_id", post.getPost_id());
-                    activity.startActivity(intent);
-                }
-                break;
-            case R.id.rlgrid:
-                object = v.getTag();
-                if (object instanceof Posts) {
-                    Posts post = (Posts) object;
-                    Intent intent = new Intent(activity, PostView.class);
-                    intent.putExtra("postId", post.getPost_id());
                     activity.startActivity(intent);
                 }
                 break;
@@ -81,7 +215,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
             initProgress("Please wait...");
             ApiInterface service =
                     ApiClient.getClient().create(ApiInterface.class);
-            PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
 
             String usermail = preferenceUtil.getUserMailId();
             Call<EventResponse> call = service.post_like(usermail, preferenceUtil.getUserName(), post.getPost_id(), !post.isLiked());
@@ -97,7 +230,13 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
                         else
                             post.setTotal_likes(post.getTotal_likes() - 1);
 
-                        notifyDataSetChanged();
+                        if (post.isLiked()) {
+                            likePost.setImageResource(R.drawable.ic_favorite_black);
+                        } else {
+                            likePost.setImageResource(R.drawable.ic_favorite_border_black);
+                        }
+                        txtPostLikesCount.setText(post.getTotal_likes() + " likes");
+
                         closeProgress();
                     }
 
@@ -161,8 +300,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
             initProgress("Deleting....");
             ApiInterface service =
                     ApiClient.getClient().create(ApiInterface.class);
-            PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
-
             String usermail = preferenceUtil.getUserMailId();
             Call<EventResponse> call = service.delete_post(usermail, post.getPost_id());
             call.enqueue(new Callback<EventResponse>() {
@@ -171,9 +308,8 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
                     EventResponse patientDetails = response.body();
                     Log.i("patientDetails", response.toString());
                     if (patientDetails != null && patientDetails.getResult().equalsIgnoreCase("success")) {
-                        originalList.remove(post);
-                        notifyDataSetChanged();
                         closeProgress();
+                        onBackPressed();
 
                     }
 
@@ -218,64 +354,4 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
             progressDoalog.hide();
         progressDoalog = null;
     }
-
-    class MyViewHolder extends RecyclerView.ViewHolder {
-        //        private TextView txtMeetingName, txtPostDescription, txtPostLikesCount;
-//        private Button btnpostDelete;
-        private ImageView postImage;
-        private View rlgrid;
-//        private ImageView likePost, commentPost;
-
-        private MyViewHolder(View view) {
-            super(view);
-//            txtMeetingName = view.findViewById(R.id.txtMeetingName);
-//            txtPostDescription = view.findViewById(R.id.txtPostDescription);
-//            txtPostLikesCount = view.findViewById(R.id.txtPostLikesCount);
-            postImage = view.findViewById(R.id.postImg);
-            rlgrid = view.findViewById(R.id.rlgrid);
-//            txtMeetingName.setTypeface(font, Typeface.BOLD);
-//            btnpostDelete = view.findViewById(R.id.btnpostDelete);
-//            likePost = view.findViewById(R.id.likePost);
-//            commentPost = view.findViewById(R.id.commentPost);
-        }
-    }
-
-    private Activity activity;
-    private LayoutInflater layoutInflater;
-    private Typeface font;
-
-    public ImageAdapter(Activity activity, List<Posts> moviesList) {
-        this.originalList = moviesList;
-        this.activity = activity;
-        layoutInflater = LayoutInflater.from(activity);
-        font = Typeface.createFromAsset(activity.getAssets(), "fontawesome-webfont.ttf");
-    }
-
-    @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = layoutInflater.inflate(R.layout.grid_image_layout, parent, false);
-        return new MyViewHolder(itemView);
-    }
-
-    @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        Posts post = originalList.get(position);
-        holder.rlgrid.setOnClickListener(this);
-        holder.rlgrid.setTag(post);
-        if (post.getImage() != null && !post.getImage().isEmpty()) {
-
-            Glide.with(activity).load(post.getImage()).centerCrop()
-                    .thumbnail(0.5f)
-                    .crossFade()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(holder.postImage);
-        }
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return originalList == null ? 0 : originalList.size();
-    }
-
 }

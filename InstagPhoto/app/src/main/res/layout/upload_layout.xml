@@ -49,7 +49,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_marginTop="20dp"
                     android:hint="Type any photo description here"
-                    android:maxLength="150"
+                    android:maxLength="500"
                     android:maxLines="4"
                     android:minHeight="70dp"
                     android:textColor="@color/black" />

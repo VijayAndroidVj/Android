@@ -94,7 +94,7 @@ public class PostView extends AppCompatActivity implements View.OnClickListener 
             if (CommonUtil.isNetworkAvailable(activity)) {
                 ApiInterface service =
                         ApiClient.getClient().create(ApiInterface.class);
-                Call<Posts> call = service.getpostbyid(postId);
+                Call<Posts> call = service.getpostbyid(postId, preferenceUtil.getUserMailId());
                 call.enqueue(new Callback<Posts>() {
                     @Override
                     public void onResponse(Call<Posts> call, Response<Posts> response) {
@@ -152,8 +152,10 @@ public class PostView extends AppCompatActivity implements View.OnClickListener 
 
         likePost.setTag(post);
         commentPost.setTag(post);
+        txtPostLikesCount.setTag(post);
         likePost.setOnClickListener(this);
         commentPost.setOnClickListener(this);
+        txtPostLikesCount.setOnClickListener(this);
 
         if (post.getPostmail() != null && post.getPostmail().equalsIgnoreCase(preferenceUtil.getUserMailId())) {
             btnpostDelete.setTag(post);
@@ -204,6 +206,15 @@ public class PostView extends AppCompatActivity implements View.OnClickListener 
                     Posts post = (Posts) object;
                     Intent intent = new Intent(activity, Comment.class);
                     intent.putExtra("post_id", post.getPost_id());
+                    activity.startActivity(intent);
+                }
+                break;
+            case R.id.txtPostLikesCount:
+                object = view.getTag();
+                if (object instanceof Posts) {
+                    Posts post = (Posts) object;
+                    Intent intent = new Intent(activity, Likes.class);
+                    intent.putExtra("postid", post.getPost_id());
                     activity.startActivity(intent);
                 }
                 break;

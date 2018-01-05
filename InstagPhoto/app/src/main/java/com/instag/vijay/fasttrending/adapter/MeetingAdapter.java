@@ -36,6 +36,7 @@ import retrofit2.Response;
 public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHolder> implements View.OnClickListener {
 
     private List<FavModel> originalList;
+    private PreferenceUtil preferenceUtil;
 
     @Override
     public void onClick(View v) {
@@ -159,6 +160,7 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
     public MeetingAdapter(Activity activity, List<FavModel> moviesList) {
         this.originalList = moviesList;
         this.activity = activity;
+        preferenceUtil = new PreferenceUtil(activity);
         layoutInflater = LayoutInflater.from(activity);
         font = Typeface.createFromAsset(activity.getAssets(), "fontawesome-webfont.ttf");
     }
@@ -188,10 +190,15 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
             holder.txtMeetingComments.setText(userModel.getUserName());
         }
 
-        if (userModel.isFollowing()) {
-            holder.btnMeetingJoin.setText(activity.getString(R.string.unfollow));
+        if (preferenceUtil.getUserMailId().equalsIgnoreCase(userModel.getWho()) && preferenceUtil.getUserMailId().equalsIgnoreCase(userModel.getWhom())) {
+            holder.btnMeetingJoin.setVisibility(View.GONE);
         } else {
-            holder.btnMeetingJoin.setText(activity.getString(R.string.follow));
+            holder.btnMeetingJoin.setVisibility(View.VISIBLE);
+            if (userModel.isFollowing()) {
+                holder.btnMeetingJoin.setText(activity.getString(R.string.unfollow));
+            } else {
+                holder.btnMeetingJoin.setText(activity.getString(R.string.follow));
+            }
         }
 
         if (userModel.getProfile_image() != null && !userModel.getProfile_image().isEmpty()) {

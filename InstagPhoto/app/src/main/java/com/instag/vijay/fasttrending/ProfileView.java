@@ -111,7 +111,7 @@ public class ProfileView extends AppCompatActivity {
             if (CommonUtil.isNetworkAvailable(activity)) {
                 ApiInterface service =
                         ApiClient.getClient().create(ApiInterface.class);
-                Call<PostModelMain> call = service.getposts(profileId);
+                Call<PostModelMain> call = service.getposts(profileId, preferenceUtil.getUserMailId());
                 call.enqueue(new Callback<PostModelMain>() {
                     @Override
                     public void onResponse(Call<PostModelMain> call, Response<PostModelMain> response) {

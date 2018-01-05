@@ -22,6 +22,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.instag.vijay.fasttrending.Comment;
 import com.instag.vijay.fasttrending.CommonUtil;
 import com.instag.vijay.fasttrending.EventResponse;
+import com.instag.vijay.fasttrending.Likes;
 import com.instag.vijay.fasttrending.PostView;
 import com.instag.vijay.fasttrending.PreferenceUtil;
 import com.instag.vijay.fasttrending.ProfileView;
@@ -85,6 +86,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
                     activity.startActivity(intent);
                 }
                 break;
+
+            case R.id.txtPostLikesCount:
+                object = v.getTag();
+                if (object instanceof Posts) {
+                    Posts post = (Posts) object;
+                    Intent intent = new Intent(activity, Likes.class);
+                    intent.putExtra("postid", post.getPost_id());
+                    activity.startActivity(intent);
+                }
+                break;
+
+
         }
     }
 
@@ -237,9 +250,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
 
         private MyViewHolder(View view) {
             super(view);
+            txtPostLikesCount = view.findViewById(R.id.txtPostLikesCount);
             txtMeetingName = view.findViewById(R.id.txtMeetingName);
             txtPostDescription = view.findViewById(R.id.txtPostDescription);
-            txtPostLikesCount = view.findViewById(R.id.txtPostLikesCount);
             postImage = view.findViewById(R.id.postImage);
             ivProfile = view.findViewById(R.id.ivProfile);
             txtMeetingName.setTypeface(font, Typeface.BOLD);
@@ -301,9 +314,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
 
         holder.likePost.setTag(post);
         holder.commentPost.setTag(post);
+        holder.txtPostLikesCount.setTag(post);
         holder.likePost.setOnClickListener(this);
         holder.commentPost.setOnClickListener(this);
-
+        holder.txtPostLikesCount.setOnClickListener(this);
         if (post.getPostmail() != null && post.getPostmail().equalsIgnoreCase(preferenceUtil.getUserMailId())) {
             holder.btnpostDelete.setTag(post);
             holder.btnpostDelete.setOnClickListener(this);

@@ -562,7 +562,7 @@ public class AdapterBooking extends BaseAdapter {
                     } else if (hashMapArrayList.get(posistion).get("completion").equals("25")) {
                         final Dialog dialog = new Dialog(context);
                         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        dialog.setContentView(R.layout.status_popup);
+                        dialog.setContentView(R.customer_price_list.status_popup);
                         TextView txt_completion = (TextView) dialog.findViewById(R.id.txt_completion);
                         TextView txt_status = (TextView) dialog.findViewById(R.id.txt_status);
                         TextView txt_name = (TextView) dialog.findViewById(R.id.txt_name);
@@ -620,7 +620,7 @@ public class AdapterBooking extends BaseAdapter {
                     } else if (hashMapArrayList.get(posistion).get("completion").equals("75")) {
                         final Dialog dialog = new Dialog(context);
                         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        dialog.setContentView(R.layout.status_popup);
+                        dialog.setContentView(R.customer_price_list.status_popup);
                         TextView txt_completion = (TextView) dialog.findViewById(R.id.txt_completion);
                         TextView txt_status = (TextView) dialog.findViewById(R.id.txt_status);
                         TextView txt_name = (TextView) dialog.findViewById(R.id.txt_name);
@@ -659,7 +659,7 @@ public class AdapterBooking extends BaseAdapter {
                     } else if (hashMapArrayList.get(posistion).get("completion").equals("95")) {
                         Dialog dialog = new Dialog(context);
                         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        dialog.setContentView(R.layout.status_final_popup);
+                        dialog.setContentView(R.customer_price_list.status_final_popup);
                         TextView txt_completion = (TextView) dialog.findViewById(R.id.txt_completion);
                         TextView txt_status = (TextView) dialog.findViewById(R.id.txt_status);
                         TextView txt_name = (TextView) dialog.findViewById(R.id.txt_name);

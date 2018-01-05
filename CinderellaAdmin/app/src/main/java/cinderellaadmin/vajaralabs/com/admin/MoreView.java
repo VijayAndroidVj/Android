@@ -62,7 +62,7 @@ public class MoreView extends AppCompatActivity implements Response {
         List<String> listitems = arr(getIntent().getStringExtra("items"));
         List<String> costList = arr(getIntent().getStringExtra("count"));
 
-       /* ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1
+       /* ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(activity, android.R.customer_price_list.simple_list_item_1
                 , listitems);
 
         list_item.setAdapter(arrayAdapter);*/

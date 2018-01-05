@@ -49,6 +49,10 @@ public interface ApiInterface {
     @FormUrlEncoded
     Call<ArrayList<FavModel>> follow_followers(@Field("useremail") String useremail, @Field("following") boolean following);
 
+    @POST("likeslist.php")
+    @FormUrlEncoded
+    Call<ArrayList<FavModel>> likeslist(@Field("postid") String postid, @Field("myemail") String myemail);
+
     @POST("getnotification.php")
     @FormUrlEncoded
     Call<ArrayList<Notification>> getnotification(@Field("useremail") String useremail);
@@ -78,7 +82,7 @@ public interface ApiInterface {
 
     @POST("getposts.php")
     @FormUrlEncoded
-    Call<PostModelMain> getposts(@Field("useremail") String useremail);
+    Call<PostModelMain> getposts(@Field("useremail") String useremail, @Field("myemail") String myemail);
 
     @POST("getmynewsfeed.php")
     @FormUrlEncoded
@@ -119,7 +123,7 @@ public interface ApiInterface {
 
     @POST("getpostbyid.php")
     @FormUrlEncoded
-    Call<Posts> getpostbyid(@Field("postId") String postId);
+    Call<Posts> getpostbyid(@Field("postId") String postId, @Field("email") String email);
 }
 
 

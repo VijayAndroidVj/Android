@@ -70,6 +70,10 @@
         <activity
             android:name=".PriceList"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".PriceCustomerPriceList"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".AddLocality"
             android:screenOrientation="portrait" />

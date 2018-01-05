@@ -91,6 +91,8 @@ public class Configg {
     public static final String COMPLETED_LIST_ADMIN = "completed_list_all.php";
     public static final String GET_CUSTOMER_LIST = "customer_list.php";
     public static final String INSERT_LOCATION = "add_location.php";
+    public static final String UPLOAD_PRICE_LIST = "upload_price_list.php";
+    public static final String UPLOAD_CUSTOMER_PRICE_LIST = "upload_customer_price_list.php";
     public static final String POST_PICKUP_DATA = "post_pickup_data.php";
     public static final String BILL = "post_bill.php";
     public static final String NOTIFICATION_POST = "post_notification.php";

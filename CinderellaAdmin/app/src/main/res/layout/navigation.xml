@@ -437,6 +437,34 @@
                     android:layout_height="0.9dp"
                     android:background="@color/kpf_bg2" />
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.9dp"
+                    android:background="@color/kpf_bg2">
+
+                </View>
+
+
+                <Button
+                    android:id="@+id/btn_cus_price_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/pressed"
+                    android:gravity="center_vertical"
+                    android:padding="12dp"
+                    android:text="Add Customer Price List"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="19dp"
+                    android:visibility="visible" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.9dp"
+                    android:background="@color/kpf_bg2" />
+
+
                 <Button
                     android:id="@+id/btn_city"
                     android:layout_width="match_parent"

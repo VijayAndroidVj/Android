@@ -74,6 +74,11 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
+            android:name="com.instag.vijay.fasttrending.Likes"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
             android:name="com.instag.vijay.fasttrending.Comment"
             android:theme="@style/AppTheme1"
             android:windowSoftInputMode="adjustResize" />

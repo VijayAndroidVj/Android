@@ -105,7 +105,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 ApiInterface service =
                         ApiClient.getClient().create(ApiInterface.class);
                 String usermail = preferenceUtil.getUserMailId();
-                Call<PostModelMain> call = service.getposts(usermail);
+                Call<PostModelMain> call = service.getposts(usermail, usermail);
                 call.enqueue(new Callback<PostModelMain>() {
                     @Override
                     public void onResponse(Call<PostModelMain> call, Response<PostModelMain> response) {

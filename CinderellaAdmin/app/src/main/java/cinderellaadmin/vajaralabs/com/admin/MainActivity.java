@@ -80,7 +80,7 @@ import util.PermissionCheck;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private Button btn_add_shop, btn_factory, btn_add_delivery_person;
-    private Button btn_price_list;
+    private Button btn_price_list, btn_cus_price_list;
     private Button btn_locality;
     private Button btn_booking_zone;
     private Activity activity;
@@ -202,6 +202,7 @@ public class MainActivity extends AppCompatActivity
 
         btn_logut = (Button) findViewById(R.id.btn_logut);
         btn_price_list = (Button) findViewById(R.id.btn_price_list);
+        btn_cus_price_list = (Button) findViewById(R.id.btn_cus_price_list);
         btn_locality = (Button) findViewById(R.id.btn_locality);
         btn_add_delivery_person = (Button) findViewById(R.id.btn_add_delivery_person);
         btn_walkin.setOnClickListener(new View.OnClickListener() {
@@ -423,6 +424,14 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+        btn_cus_price_list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, PriceCustomerPriceList.class);
+                startActivity(intent);
+            }
+        });
+
         btn_add_shop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -483,7 +492,6 @@ public class MainActivity extends AppCompatActivity
             btn_notification.setVisibility(View.GONE);
             btn_view_shop.setVisibility(View.GONE);
 
-
         } else if (Configg.getDATA(activity, "type").equals("delivery")) {
             txt_name.setText("Deliver " + Configg.getDATA(activity, "delivery_person") + "-" +
                     Configg.getDATA(activity, "shop_code_and_name"));
@@ -496,7 +504,10 @@ public class MainActivity extends AppCompatActivity
             linear_list.setVisibility(View.GONE);
 
         }
-        if (!Configg.getDATA(activity, "type").equals("admin")) {
+        if (Configg.getDATA(activity, "type").equals("admin")) {
+            btn_cus_price_list.setVisibility(View.VISIBLE);
+        } else {
+            btn_cus_price_list.setVisibility(View.GONE);
             new updateFcm().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {

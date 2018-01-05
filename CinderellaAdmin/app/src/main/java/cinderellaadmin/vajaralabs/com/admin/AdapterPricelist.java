@@ -81,7 +81,7 @@ public class AdapterPricelist extends BaseAdapter {
 //
 //                HashMap<String, String> hashMap;
 //
-//                View convertView = inflater_custom.inflate(R.layout.price_tag, null);
+//                View convertView = inflater_custom.inflate(R.customer_price_list.price_tag, null);
 //
 //                final TextView txt_product = (TextView) convertView.findViewById(R.id.txt_product);
 //                final TextView txt_price = (TextView) convertView.findViewById(R.id.txt_price);

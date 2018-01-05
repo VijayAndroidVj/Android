@@ -32,6 +32,7 @@ public class Config {
     public static final String MAIN_URL = "http://vajralabs.com/Cinderella/";
     public static final String SIGNUP_ROOT = "signup_POST.php";
     public static final String SIGNUP_CUSTOMER = "signup_customer.php";
+    public static final String GET_CUSTOMER_PRICE = "get_customer_price.php";
 
     public static final String SIGNUP_CONFIRMATION_ROOT = "signup_confirmation.php";
     public static final String DOCTOR_LIST = "doctor_list.php";

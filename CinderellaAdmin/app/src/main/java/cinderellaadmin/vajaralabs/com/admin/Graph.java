@@ -88,7 +88,7 @@ public class Graph extends AppCompatActivity implements Response {
 //            public void onClick(View view) {
 //                final Dialog dialog=new Dialog(activity);
 //                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//                dialog.setContentView(R.layout.sort_by);
+//                dialog.setContentView(R.customer_price_list.sort_by);
 //                final TextView txt_detailer=(TextView)dialog.findViewById(R.id.txt_detailer);
 //                final TextView txt_dis=(TextView)dialog.findViewById(R.id.txt_dis);
 //                final TextView txt_date=(TextView)dialog.findViewById(R.id.txt_date);

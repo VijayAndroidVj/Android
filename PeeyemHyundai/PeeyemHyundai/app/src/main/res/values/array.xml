@@ -1,0 +1,43 @@
+<resources>
+    <string-array name="serviceType">
+        <item>Service Type*</item>
+        <item>Free Service</item>
+        <item>Paid Service</item>
+        <item>Running Repair</item>
+    </string-array>
+
+    <string-array name="carModel">
+        <item>Car Model*</item>
+        <item>EON</item>
+        <item>i10</item>
+        <item>Grand i10</item>
+        <item>Xcent</item>
+
+        <item>Elite i20</item>
+        <item>i20 Active</item>
+        <item>Verna</item>
+        <item>All New Elantra</item>
+
+        <item>Creta</item>
+        <item>Tucson</item>
+        <item>Santa Fe</item>
+    </string-array>
+
+    <string-array name="state">
+        <item>Select State*</item>
+        <item>kerala</item>
+
+    </string-array>
+
+    <string-array name="city">
+        <item>Select City*</item>
+        <item>TelliCherry</item>
+
+    </string-array>
+
+    <string-array name="dealerLocation">
+        <item>Dealer Location*</item>
+        <item>Peeyem, Thalassery, Tellicherry</item>
+
+    </string-array>
+</resources>

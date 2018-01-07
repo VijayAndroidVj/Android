@@ -121,7 +121,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView txtMeetingName, txtMeetingComments;
+        private TextView txtMeetingName, txtMeetingComments, txtMeetingTime;
         private Button btnMeetingJoin;
         private ImageView menuComments, ivProfile;
 
@@ -132,6 +132,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
             btnMeetingJoin = view.findViewById(R.id.btnMeetingJoin);
             ivProfile = view.findViewById(R.id.ivProfile);
             txtMeetingComments = view.findViewById(R.id.txtMeetingComments);
+            txtMeetingTime = view.findViewById(R.id.txtMeetingTime);
             txtMeetingComments.setVisibility(View.VISIBLE);
             menuComments = view.findViewById(R.id.menuComments);
             menuComments.setVisibility(View.VISIBLE);
@@ -182,6 +183,15 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
             holder.menuComments.setVisibility(View.GONE);
         }
         holder.btnMeetingJoin.setVisibility(View.GONE);
+
+
+        if (comment.getCreated_date() != null && !comment.getCreated_date().isEmpty()) {
+            holder.txtMeetingTime.setVisibility(View.VISIBLE);
+            holder.txtMeetingTime.setText(comment.getCreated_date());
+        } else {
+            holder.txtMeetingTime.setVisibility(View.GONE);
+        }
+
 
         if (comment.getProfile_image() != null && !comment.getProfile_image().isEmpty()) {
 

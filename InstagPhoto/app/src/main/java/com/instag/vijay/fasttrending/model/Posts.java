@@ -35,7 +35,6 @@ public class Posts implements Parcelable {
     @SerializedName("total_likes")
     private int total_likes;
 
-
     @SerializedName("liked")
     private boolean liked;
 

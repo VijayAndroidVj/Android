@@ -33,6 +33,22 @@ public class PreferenceUtil {
         editor.apply();
     }
 
+    public String getUserAboutMe() {
+        return getString(Keys.ABOUTME, "");
+    }
+
+    public String getUserGender() {
+        return getString(Keys.GENDER, "");
+    }
+
+    public String getUserState() {
+        return getString(Keys.STATE, "");
+    }
+
+    public String getUserCountry() {
+        return getString(Keys.COUNTRY, "");
+    }
+
 
     public String getUserPassword() {
         return getString(Keys.PASSWORD, "");
@@ -65,6 +81,9 @@ public class PreferenceUtil {
         editor.putString(Keys.USERID, "");
         editor.putString(Keys.USERNAME, "");
         editor.putString(Keys.PASSWORD, "");
+        editor.putString(Keys.STATE, "");
+        editor.putString(Keys.ABOUTME, "");
+        editor.putString(Keys.COUNTRY, "");
         editor.putString(Keys.PROFILE_IMAGE, "");
         editor.apply();
     }

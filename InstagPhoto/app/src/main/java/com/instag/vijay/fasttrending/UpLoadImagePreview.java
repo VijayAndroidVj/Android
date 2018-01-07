@@ -1,6 +1,7 @@
 package com.instag.vijay.fasttrending;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -36,6 +37,7 @@ public class UpLoadImagePreview extends AppCompatActivity {
     private Activity activity;
     private String uploadFile = "";
     private EditText edtDes;
+    private View uploadbtn;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,14 +50,13 @@ public class UpLoadImagePreview extends AppCompatActivity {
                 ActionBar.LayoutParams.MATCH_PARENT,
                 Gravity.CENTER);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         View view = LayoutInflater.from(this).inflate(R.layout.ulpoadactionbar, null);
-        final View uploadbtn = view.findViewById(R.id.iv_actionbar_noti);
-        final AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.8F);
+        uploadbtn = view.findViewById(R.id.iv_actionbar_noti);
 
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         actionBar.setDisplayShowCustomEnabled(true);
@@ -76,6 +77,7 @@ public class UpLoadImagePreview extends AppCompatActivity {
         uploadbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.8F);
                 uploadbtn.startAnimation(buttonClick);
                 if (!TextUtils.isEmpty(uploadFile)) {
 //                    new UploadFileToServer(new File(uploadFile), edtDes.getText().toString().trim()).execute();
@@ -86,6 +88,28 @@ public class UpLoadImagePreview extends AppCompatActivity {
 
     }
 
+
+    private ProgressDialog progressDoalog;
+
+    private void initProgress(String title) {
+        if (progressDoalog == null) {
+            progressDoalog = new ProgressDialog(activity);
+            progressDoalog.setMax(100);
+            progressDoalog.setMessage(title);
+            progressDoalog.setTitle(activity.getString(R.string.app_name));
+            progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDoalog.show();
+        } else {
+            progressDoalog.hide();
+            progressDoalog = null;
+        }
+    }
+
+    private void closeProgress() {
+        if (progressDoalog != null && progressDoalog.isShowing())
+            progressDoalog.hide();
+        progressDoalog = null;
+    }
 
         /*
   * Begins to upload the file specified by the file path.
@@ -98,9 +122,11 @@ public class UpLoadImagePreview extends AppCompatActivity {
             return;
         }
 
+
         File file = new File(locaPath);
         try {
             if (CommonUtil.isNetworkAvailable(activity)) {
+                initProgress("Processing...");
                 ApiInterface apiService =
                         ApiClient.getClient().create(ApiInterface.class);
                 RequestBody requestFile =
@@ -124,7 +150,7 @@ public class UpLoadImagePreview extends AppCompatActivity {
                 call.enqueue(new Callback<EventResponse>() {
                     @Override
                     public void onResponse(Call<EventResponse> call, retrofit2.Response<EventResponse> response) {
-
+                        closeProgress();
                         EventResponse sigInResponse = response.body();
                         if (sigInResponse != null) {
                             if (sigInResponse.getResult().equals("success")) {
@@ -147,6 +173,7 @@ public class UpLoadImagePreview extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<EventResponse> call, Throwable t) {
                         // Log error here since request failed
+                        closeProgress();
                         Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
                     }
                 });

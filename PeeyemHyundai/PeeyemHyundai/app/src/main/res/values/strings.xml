@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Peeyem Cars</string>
+    <string name="title_activity_about_us">AboutUs</string>
+    <string name="title_activity_product">Product List</string>
+    <string name="title_activity_download">Download List</string>
+    <string name="title_activity_view_pdf">Offer Detail</string>
+    <string name="title_activity_service">Service</string>
+    <string name="title_activity_testdrive">Test Drive</string>
+    <string name="send_to">Share Peeyem Hyundai App</string>
+    <string name="contactus_click_email_address">Click on the email address to reach us</string>
+</resources>

@@ -31,6 +31,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +41,10 @@ import com.instag.vijay.fasttrending.adapter.UploadPickerPopUp;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
 import com.joooonho.SelectableRoundedImageView;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
+import org.apache.commons.io.IOUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -63,7 +69,7 @@ import retrofit2.Response;
 
 public class EditProfile extends AppCompatActivity {
 
-    EditText input_username, input_usermail, input_userpassword;
+    EditText input_username, input_usermail, input_userpassword, input_aboutme, input_state, input_country;
     SelectableRoundedImageView ivProfile1;
     Activity activity;
     PreferenceUtil preferenceUtil;
@@ -91,6 +97,7 @@ public class EditProfile extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(galleryIntent, "Select Image"), code);
     }
 
+    private RadioGroup radioSexGroup;
     ProgressBar progressBar;
 
     @Override
@@ -109,10 +116,26 @@ public class EditProfile extends AppCompatActivity {
         input_username = findViewById(R.id.input_username);
         input_usermail = findViewById(R.id.input_usermail);
         input_userpassword = findViewById(R.id.input_userpassword);
+        input_aboutme = findViewById(R.id.input_useraboutme);
+        input_state = findViewById(R.id.input_userstate);
+        input_country = findViewById(R.id.input_usercountry);
         ivProfile1 = findViewById(R.id.ivProfile1);
+        radioSexGroup = (RadioGroup) findViewById(R.id.radioSex);
         input_username.setText(preferenceUtil.getUserName());
         input_usermail.setText(preferenceUtil.getUserMailId());
         input_userpassword.setText(preferenceUtil.getUserPassword());
+
+        input_aboutme.setText(preferenceUtil.getUserAboutMe());
+        input_state.setText(preferenceUtil.getUserState());
+        input_country.setText(preferenceUtil.getUserCountry());
+
+        RadioButton radioButtonmale = findViewById(R.id.radioMale);
+        RadioButton radioButtonfemale = findViewById(R.id.radioFemale);
+        if (preferenceUtil.getUserGender().equalsIgnoreCase("male")) {
+            radioButtonmale.setChecked(true);
+        } else {
+            radioButtonfemale.setChecked(true);
+        }
 
         String profileImage = preferenceUtil.getMyProfile();
         if (!TextUtils.isEmpty(profileImage) && profileImage.contains("http://")) {
@@ -128,7 +151,9 @@ public class EditProfile extends AppCompatActivity {
         ivProfile1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showAttachmentPopup(view);
+                CropImage.activity()
+                        .setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(16, 9)
+                        .start(activity);
             }
         });
 
@@ -209,10 +234,32 @@ public class EditProfile extends AppCompatActivity {
         final String userName1 = input_username.getText().toString().trim();
         final String password1 = input_userpassword.getText().toString().trim();
 
+        int selectedId = radioSexGroup.getCheckedRadioButtonId();
+
+        final String gender = selectedId == R.id.radioMale ? "male" : "female";
+
+        final String aboutme = input_aboutme.getText().toString().trim();
+        final String state = input_state.getText().toString().trim();
+        final String country = input_country.getText().toString().trim();
+
         if (CommonUtil.isNetworkAvailable(activity)) {
             progressBar.setVisibility(View.VISIBLE);
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
+
+            MultipartBody.Part aboutmemul =
+                    MultipartBody.Part.createFormData("aboutme", aboutme);
+
+            MultipartBody.Part statemul =
+                    MultipartBody.Part.createFormData("state", state);
+
+            MultipartBody.Part gendermul =
+                    MultipartBody.Part.createFormData("gender", gender);
+
+
+            MultipartBody.Part countrymul =
+                    MultipartBody.Part.createFormData("country", country);
+
 
             MultipartBody.Part userName =
                     MultipartBody.Part.createFormData("username", userName1);
@@ -242,7 +289,7 @@ public class EditProfile extends AppCompatActivity {
 
 
             // finally, execute the request
-            Call<EventResponse> call = apiService.update_profile(uploadimage, userName, email, password, profile_image);
+            Call<EventResponse> call = apiService.update_profile(uploadimage, userName, email, password, profile_image, aboutmemul, statemul, countrymul, gendermul);
             call.enqueue(new Callback<EventResponse>() {
                 @Override
                 public void onResponse(Call<EventResponse> call, retrofit2.Response<EventResponse> response) {
@@ -254,6 +301,10 @@ public class EditProfile extends AppCompatActivity {
                                 Toast.makeText(activity, sigInResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             preferenceUtil.putString(Keys.PASSWORD, password1);
                             preferenceUtil.putString(Keys.USERNAME, userName1);
+                            preferenceUtil.putString(Keys.ABOUTME, aboutme);
+                            preferenceUtil.putString(Keys.GENDER, gender);
+                            preferenceUtil.putString(Keys.STATE, state);
+                            preferenceUtil.putString(Keys.COUNTRY, country);
 //                            preferenceUtil.putString(Keys.PROFILE_IMAGE, imagePath);
                             preferenceUtil.putString(Keys.PROFILE_IMAGE, sigInResponse.getServerimage());
                         } else {
@@ -395,7 +446,33 @@ public class EditProfile extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST_PAN && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri selectedImageUri = result.getUri();
+                try {
+                    String filePath = getRealPathFromURI(activity, selectedImageUri);
+                    if (filePath == null) {
+                        filePath = getFilePathFromURI(activity, selectedImageUri);
+                    }
+                    if (!TextUtils.isEmpty(filePath)) {
+                        File destination = new File(Environment.getExternalStorageDirectory(),
+                                getString(R.string.app_name) + "/" + System.currentTimeMillis() + ".jpg");
+                        copy(new File(filePath), destination);
+                        imagePath = destination.getPath();
+                        Glide.with(activity)
+                                .load(new File(imagePath))
+                                .asBitmap()
+                                .into(ivProfile1);
+                        removePhoto = false;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
+        } else if (requestCode == PICK_IMAGE_REQUEST_PAN && resultCode == RESULT_OK && data != null && data.getData() != null) {
 
             Uri uri = data.getData();
 
@@ -484,6 +561,42 @@ public class EditProfile extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public static String getFilePathFromURI(Context context, Uri contentUri) {
+        //copy file and send new file path
+        String fileName = getFileName(contentUri);
+        if (!TextUtils.isEmpty(fileName)) {
+            File copyFile = new File(Environment.getExternalStorageDirectory() + File.separator + fileName);
+            copy(context, contentUri, copyFile);
+            return copyFile.getAbsolutePath();
+        }
+        return null;
+    }
+
+    public static String getFileName(Uri uri) {
+        if (uri == null) return null;
+        String fileName = null;
+        String path = uri.getPath();
+        int cut = path.lastIndexOf('/');
+        if (cut != -1) {
+            fileName = path.substring(cut + 1);
+        }
+        return fileName;
+    }
+
+    public static void copy(Context context, Uri srcUri, File dstFile) {
+        try {
+            InputStream inputStream = context.getContentResolver().openInputStream(srcUri);
+            if (inputStream == null) return;
+            OutputStream outputStream = new FileOutputStream(dstFile);
+            IOUtils.copy(inputStream, outputStream);
+            inputStream.close();
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

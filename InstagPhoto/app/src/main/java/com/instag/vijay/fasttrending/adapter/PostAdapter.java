@@ -242,7 +242,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView txtMeetingName, txtPostDescription, txtPostLikesCount;
+        private TextView txtMeetingName, txtPostDescription, txtPostLikesCount, txtCreatedDate;
         private Button btnpostDelete;
         private ImageView postImage, ivProfile;
         private ImageView likePost, commentPost;
@@ -261,6 +261,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
             commentPost = view.findViewById(R.id.commentPost);
             rlParentMeeting = view.findViewById(R.id.rlParentMeeting);
             rlMeeting1 = view.findViewById(R.id.rlMeeting1);
+            txtCreatedDate = view.findViewById(R.id.txtCreatedDate);
         }
     }
 
@@ -325,6 +326,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         } else {
             holder.btnpostDelete.setVisibility(View.GONE);
         }
+
+        if (post.getCreated_date() != null && !post.getCreated_date().isEmpty()) {
+            holder.txtCreatedDate.setVisibility(View.VISIBLE);
+            holder.txtCreatedDate.setText(post.getCreated_date());
+        } else {
+            holder.txtCreatedDate.setVisibility(View.GONE);
+        }
+
 
         if (post.getImage() != null && !post.getImage().isEmpty()) {
 

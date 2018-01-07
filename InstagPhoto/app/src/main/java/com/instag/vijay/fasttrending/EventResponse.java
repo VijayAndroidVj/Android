@@ -17,6 +17,18 @@ public class EventResponse {
     @SerializedName("name")
     private String name;
 
+    @SerializedName("gender")
+    private String gender;
+
+    @SerializedName("state")
+    private String state;
+
+    @SerializedName("country")
+    private String country;
+
+    @SerializedName("aboutme")
+    private String aboutme;
+
     @SerializedName("email")
     private String email;
 
@@ -28,6 +40,38 @@ public class EventResponse {
 
     @SerializedName("serverimage")
     private String serverimage;
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getAboutme() {
+        return aboutme;
+    }
+
+    public void setAboutme(String aboutme) {
+        this.aboutme = aboutme;
+    }
 
     public String getServerimage() {
         return serverimage;

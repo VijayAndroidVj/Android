@@ -21,7 +21,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.instag.vijay.fasttrending.model.PostModelMain;
 import com.instag.vijay.fasttrending.model.Posts;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
@@ -38,7 +37,7 @@ import static android.view.View.GONE;
 
 public class PostView extends AppCompatActivity implements View.OnClickListener {
     private Activity activity;
-    private TextView txtMeetingName, txtPostDescription, txtPostLikesCount;
+    private TextView txtMeetingName, txtPostDescription, txtPostLikesCount, txtCreatedDate;
     private Button btnpostDelete;
     private ImageView postImage, ivProfile;
     private ImageView likePost, commentPost;
@@ -68,6 +67,7 @@ public class PostView extends AppCompatActivity implements View.OnClickListener 
         ivProfile = findViewById(R.id.ivProfile);
         btnpostDelete = findViewById(R.id.btnpostDelete);
         likePost = findViewById(R.id.likePost);
+        txtCreatedDate = findViewById(R.id.txtCreatedDate);
         commentPost = findViewById(R.id.commentPost);
         try {
             postId = getIntent().getStringExtra("postId");
@@ -147,6 +147,12 @@ public class PostView extends AppCompatActivity implements View.OnClickListener 
             likePost.setImageResource(R.drawable.ic_favorite_black);
         } else {
             likePost.setImageResource(R.drawable.ic_favorite_border_black);
+        }
+        if (post.getCreated_date() != null && !post.getCreated_date().isEmpty()) {
+            txtCreatedDate.setVisibility(View.VISIBLE);
+            txtCreatedDate.setText(post.getCreated_date());
+        } else {
+            txtCreatedDate.setVisibility(View.GONE);
         }
 
 

@@ -14,10 +14,41 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
+import com.twitter.sdk.android.core.DefaultLogger;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.Twitter;
+import com.twitter.sdk.android.core.TwitterApiClient;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterAuthToken;
+import com.twitter.sdk.android.core.TwitterConfig;
+import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.identity.TwitterAuthClient;
+import com.twitter.sdk.android.core.identity.TwitterLoginButton;
+import com.twitter.sdk.android.core.models.User;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Arrays;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,7 +57,12 @@ import retrofit2.Response;
 public class MmSignUpActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
     private static final String TAG = MmSignUpActivity.class.getSimpleName();
     private Activity activity;
+    private static final String TWITTER_KEY = "NG4gO82b8JCVmu0mzaMcH412V";
+    private static final String TWITTER_SECRET = "NbG5AfDrbiKMM3skKH8xciwfsxbvYyFoYUYvebsA0K6E7D9de3";
 
+    //Tags to send the username and image url to next activity using intent
+    public static final String KEY_USERNAME = "username";
+    public static final String KEY_PROFILE_IMAGE_URL = "image_url";
     private TextInputEditText input_name;
     private TextInputEditText input_email;
     private TextInputEditText input_password;
@@ -37,14 +73,80 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
     private TextInputLayout til_signup_password;
     private TextInputEditText input_userName;
     private TextInputLayout til_signup_userName;
+    private LoginButton loginButton;
+    private TextView txtusravailable;
+    private CallbackManager callbackManager;
+    TwitterLoginButton twitterLoginButton;
+    TwitterAuthClient mTwitterAuthClient;
+    private RadioGroup radioSexGroup;
+    private String country;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        TwitterConfig config = new TwitterConfig.Builder(this)
+                .logger(new DefaultLogger(Log.DEBUG))
+                .twitterAuthConfig(new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET))
+                .debug(true)
+                .build();
+        Twitter.initialize(config);
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.user_signup);
 
         activity = this;
+        loginButton = (LoginButton) findViewById(R.id.login_button);
+        loginButton.setReadPermissions("public_profile email");
+        radioSexGroup = (RadioGroup) findViewById(R.id.radioSex);
+        txtusravailable = findViewById(R.id.txtusravailable);
+        txtusravailable.setVisibility(View.GONE);
+        mTwitterAuthClient = new TwitterAuthClient();
+        mTwitterAuthClient.authorize(activity, new com.twitter.sdk.android.core.Callback<TwitterSession>() {
+            @Override
+            public void success(Result<TwitterSession> session) {
+                TwitterAuthToken authToken = session.data.getAuthToken();
+                String token = authToken.token;
+                String secret = authToken.secret;
+            }
 
+            @Override
+            public void failure(TwitterException e) {
+                Log.i("Twitter Login Failure", e.getMessage());
+            }
+        });
+
+        twitterLoginButton = (TwitterLoginButton) findViewById(R.id.twitter_login_button);
+        twitterLoginButton.setCallback(new com.twitter.sdk.android.core.Callback<TwitterSession>() {
+            @Override
+            // If the login is successful...//
+            public void success(Result<TwitterSession> result) {
+                Log.d(TAG, "twitterLogin" + result);
+
+                TwitterApiClient twitterApiClient = TwitterCore.getInstance().getApiClient();
+                Call<User> user = twitterApiClient.getAccountService().verifyCredentials(true, false, true);
+                user.enqueue(new com.twitter.sdk.android.core.Callback<User>() {
+                    @Override
+                    public void success(Result<User> userResult) {
+                        input_name.setText(userResult.data.name);
+                        input_email.setText(userResult.data.email);
+                        String t_profile_image = userResult.data.profileImageUrl;
+
+                    }
+
+                    @Override
+                    public void failure(TwitterException e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+
+
+            @Override
+            public void failure(TwitterException e) {
+                e.printStackTrace();
+            }
+        });
 
         input_name = findViewById(R.id.input_name);
         input_email = findViewById(R.id.input_email);
@@ -56,7 +158,58 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
         til_signup_password = (TextInputLayout) findViewById(R.id.til_signup_password);
         bt_clear_name = (Button) findViewById(R.id.bt_clear_name);
         bt_clear_email = (Button) findViewById(R.id.bt_clear_email);
+        input_userName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                til_signup_userName.setError(null);
+                if (input_userName.getText().toString().trim().length() > 0) {
+                    ApiInterface apiService =
+                            ApiClient.getClient().create(ApiInterface.class);
+                    Call<EventResponse> call = apiService.user_name_availability(input_userName.getText().toString().trim());
+                    call.enqueue(new Callback<EventResponse>() {
+                        @Override
+                        public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
+                            Log.d(TAG, "Number of movies received: " + response.body());
+                            EventResponse sigInResponse = response.body();
+                            if (sigInResponse != null) {
+                                if (sigInResponse.getResult().equalsIgnoreCase("failed")) {
+                                    txtusravailable.setVisibility(View.GONE);
+                                    txtusravailable.setText(sigInResponse.getMessage());
+                                    til_signup_userName.setError("Username Not available");
+                                    requestFocus(input_userName);
+                                    isNameAailable = false;
+                                } else {
+                                    txtusravailable.setVisibility(View.VISIBLE);
+                                    txtusravailable.setText(sigInResponse.getMessage());
+                                    isNameAailable = true;
+                                }
+                            } else {
+                                Toast.makeText(MmSignUpActivity.this, "Could not connect to server.", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<EventResponse> call, Throwable t) {
+                            // Log error here since request failed
+                            Log.e(TAG, t.toString());
+                        }
+                    });
+                } else {
+                    txtusravailable.setVisibility(View.GONE);
+                }
+            }
+        });
 
         bt_clear_name.setOnClickListener(this);
         bt_clear_email.setOnClickListener(this);
@@ -113,10 +266,95 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
         input_email.clearFocus();
         input_password.clearFocus();
 
-//        spinner.setVisibility(View.INVISIBLE);
-        //spinner.performClick();
-//        spinner.setVisibility(View.GONE);
+        country = getIntent().getStringExtra("country");
+
+        callbackManager = CallbackManager.Factory.create();
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
+        loginButton.registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    String facebook_id, f_name, m_name, l_name, gender, profile_image, full_name, email_id = "";
+
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        if (AccessToken.getCurrentAccessToken() != null) {
+                            RequestData();
+                            Profile profile = Profile.getCurrentProfile();
+                            if (profile != null) {
+                                facebook_id = profile.getId();
+                                Log.e("facebook_id", facebook_id);
+                                f_name = profile.getFirstName();
+                                Log.e("f_name", f_name);
+                                m_name = profile.getMiddleName();
+                                Log.e("m_name", m_name);
+                                l_name = profile.getLastName();
+                                Log.e("l_name", l_name);
+                                full_name = profile.getName();
+                                Log.e("full_name", full_name);
+                                profile_image = profile.getProfilePictureUri(400, 400).toString();
+                                Log.e("profile_image", profile_image);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        // App code
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        // App code
+                    }
+                });
     }
+
+    public void RequestData() {
+        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+            @Override
+            public void onCompleted(JSONObject object, GraphResponse response) {
+
+                JSONObject json = response.getJSONObject();
+                System.out.println("Json data :" + json);
+                try {
+                    if (json != null) {
+                        input_email.setText(json.getString("email"));
+                        input_userName.setText(json.getString("name"));
+                    }
+                    LoginManager.getInstance().logOut();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,name,link,email,picture");
+        request.setParameters(parameters);
+        request.executeAsync();
+    }
+
+
+//        spinner.setVisibility(View.INVISIBLE);
+    //spinner.performClick();
+//        spinner.setVisibility(View.GONE);
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 64206)
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+        else if (mTwitterAuthClient.getRequestCode() == requestCode) {
+            TwitterSession session = TwitterCore.getInstance().getSessionManager().getActiveSession();
+            if (session != null) {
+                TwitterAuthToken authToken = session.getAuthToken();
+                String token = authToken.token;
+                String secret = authToken.secret;
+            }
+            mTwitterAuthClient.onActivityResult(requestCode, resultCode, data);
+        }
+//        loginButton.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -126,6 +364,8 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
 //            //Do you work here
 //        }
     }
+
+    boolean isNameAailable = false;
 
     /**
      * Validating form
@@ -149,17 +389,24 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
             return;
         }
 
+        if (!isNameAailable) {
+            til_signup_userName.setError("Username Not available");
+            requestFocus(input_userName);
+            return;
+        }
+
         final String email = input_email.getText().toString().trim();
         final String name = input_name.getText().toString().trim();
-
         final String userName = input_userName.getText().toString().trim();
         final String password = input_password.getText().toString().trim();
+        int selectedId = radioSexGroup.getCheckedRadioButtonId();
 
+        final String gender = selectedId == R.id.radioMale ? "male" : "female";
         if (CommonUtil.isNetworkAvailable(activity)) {
             MainActivity.showProgress(activity);
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
-            Call<EventResponse> call = apiService.register(name, userName, email, password);
+            Call<EventResponse> call = apiService.register(country, gender, name, userName, email, password);
             call.enqueue(new Callback<EventResponse>() {
                 @Override
                 public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
@@ -167,6 +414,7 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
                     MainActivity.dismissProgress();
                     EventResponse sigInResponse = response.body();
                     if (sigInResponse != null) {
+                        LoginManager.getInstance().logOut();
                         if (sigInResponse.getResult().equalsIgnoreCase("failed")) {
                             Toast.makeText(MmSignUpActivity.this, sigInResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         } else {
@@ -176,6 +424,8 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
                             preferenceUtil.putString(Keys.EmailID, email);
                             preferenceUtil.putString(Keys.USERNAME, userName);
                             preferenceUtil.putString(Keys.PASSWORD, password);
+                            preferenceUtil.putString(Keys.COUNTRY, country);
+                            preferenceUtil.putString(Keys.GENDER, gender);
                             Intent intent = new Intent(MmSignUpActivity.this, MmSignInActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
@@ -212,7 +462,7 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
     private boolean validateUsername() {
         String username = input_userName.getText().toString().trim();
         if (username.isEmpty()) {
-            til_signup_userName.setError("Invalid phone");
+            til_signup_userName.setError("Invalid username");
             requestFocus(input_userName);
             return false;
         } else {

@@ -129,7 +129,7 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
                     }
                 });
             } else {
-                Toast.makeText(activity, "User not found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "UserModel not found", Toast.LENGTH_SHORT).show();
             }
         } else {
             Toast.makeText(activity, "Check your internet connection!", Toast.LENGTH_SHORT).show();

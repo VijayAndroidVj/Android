@@ -13,6 +13,10 @@ public interface Keys {
     String USERNAME = "username";
     String PASSWORD = "password";
     String PROFILE_IMAGE = "PROFILE_IMAGE";
+    String GENDER = "gender";
+    String ABOUTME = "aboutme";
+    String STATE = "state";
+    String COUNTRY = "country";
 
     /**
      * Preference keys

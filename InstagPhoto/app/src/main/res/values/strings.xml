@@ -19,7 +19,18 @@
     <string name="unfollow">UnFollow</string>
     <string name="gallery">Gallery</string>
     <string name="camera">Camera</string>
+    <string name="photo">Photo</string>
+    <string name="video">Video</string>
     <string name="remove">Delete</string>
     <string name="share">Share</string>
+    <string name="hint_phone_number">Phone Number</string>
+    <string name="hint_otpphone_number">Enter Code</string>
     <string name="share1">the best moment with your friends</string>
+    <string name="facebook_app_id">1769655666386970</string>
+    <string name="fb_login_protocol_scheme">fb1769655666386970</string>
+    <string name="radio_male">Male</string>
+    <string name="radio_female">Female</string>
+    <string name="com.twitter.sdk.android.CONSUMER_KEY">NG4gO82b8JCVmu0mzaMcH412V</string>
+    <string name="com.twitter.sdk.android.CONSUMER_SECRET">NbG5AfDrbiKMM3skKH8xciwfsxbvYyFoYUYvebsA0K6E7D9de3</string>
+
 </resources>

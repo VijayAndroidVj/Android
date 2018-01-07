@@ -33,7 +33,12 @@ public interface ApiInterface {
 
     @POST("signup.php")
     @FormUrlEncoded
-    Call<EventResponse> register(@Field("name") String name, @Field("username") String username, @Field("email") String email, @Field("password") String password);
+    Call<EventResponse> register(@Field("country") String country, @Field("gender") String gender, @Field("name") String name, @Field("username") String username, @Field("email") String email, @Field("password") String password);
+
+
+    @POST("user_name_availability.php")
+    @FormUrlEncoded
+    Call<EventResponse> user_name_availability(@Field("searchname") String searchname);
 
 
     @POST("login.php")
@@ -77,8 +82,11 @@ public interface ApiInterface {
             @Part MultipartBody.Part username,
             @Part MultipartBody.Part email,
             @Part MultipartBody.Part password,
-            @Part MultipartBody.Part profile_image
-    );
+            @Part MultipartBody.Part profile_image,
+            @Part MultipartBody.Part aboutmemul,
+            @Part MultipartBody.Part statemul,
+            @Part MultipartBody.Part countrymul,
+            @Part MultipartBody.Part gendermul);
 
     @POST("getposts.php")
     @FormUrlEncoded

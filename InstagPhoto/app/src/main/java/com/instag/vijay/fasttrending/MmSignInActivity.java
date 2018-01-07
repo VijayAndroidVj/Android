@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -163,6 +164,12 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
                             PreferenceUtil preferenceUtil = new PreferenceUtil(MmSignInActivity.this);
                             preferenceUtil.putBoolean(Keys.IS_ALREADY_REGISTERED, true);
                             preferenceUtil.putString(Keys.NAME, sigInResponse.getName());
+
+                            preferenceUtil.putString(Keys.GENDER, sigInResponse.getGender());
+                            preferenceUtil.putString(Keys.STATE, sigInResponse.getState());
+                            preferenceUtil.putString(Keys.COUNTRY, sigInResponse.getCountry());
+                            preferenceUtil.putString(Keys.ABOUTME, sigInResponse.getAboutme());
+
                             preferenceUtil.putString(Keys.EmailID, sigInResponse.getEmail());
                             preferenceUtil.putString(Keys.USERNAME, sigInResponse.getUsername());
                             preferenceUtil.putString(Keys.PASSWORD, sigInResponse.getPassword());
@@ -266,9 +273,23 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.link_signup:
             case R.id.btn_signup:
-                Intent intent = new Intent(MmSignInActivity.this, MmSignUpActivity.class);
-                startActivity(intent);
-                finish();
+                PreferenceUtil preferenceUtil = new PreferenceUtil(MmSignInActivity.this);
+                if (TextUtils.isEmpty(preferenceUtil.getUserCountry())) {
+                    Intent intent = new Intent(MmSignInActivity.this, PhoneNumberAuthentication.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Intent intent = new Intent(MmSignInActivity.this, MmSignUpActivity.class);
+//                    intent.putExtra("mobile", mobilenumber);
+                    intent.putExtra("country", preferenceUtil.getUserCountry());
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+                }
+//                Intent intent = new Intent(MmSignInActivity.this, MmSignUpActivity.class);
+//                startActivity(intent);
+//                finish();
                 break;
             case R.id.bt_clear_username:
                 input_username.setText("");

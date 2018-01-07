@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerInParent="true"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_15dp"
+        android:padding="@dimen/_5dp"
+        android:visibility="visible"
+        card_view:cardCornerRadius="15dp"
+        card_view:cardElevation="15dp"
+        card_view:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/ivlogo"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="20dp"
+                android:src="@mipmap/ic_launcher" />
+
+            <TextView
+                android:id="@+id/tvLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ivlogo"
+                android:layout_centerHorizontal="true"
+                android:text="Enter 6-digit code"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtSendTo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvLabel"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:text="We have dent code to "
+                android:textColor="@android:color/background_dark"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+
+            <EditText
+                android:id="@+id/edtCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtSendTo"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="6"
+                android:padding="20dp"
+                android:text=""
+                android:textSize="14sp" />
+
+            <ProgressBar
+                android:id="@+id/progressbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone" />
+
+
+            <RelativeLayout
+                android:id="@+id/rlBtncode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edtCode"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/btnBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/button_shape"
+                    android:gravity="center"
+                    android:text="BACK"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/btnNext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_toEndOf="@+id/btnBack"
+                    android:layout_toRightOf="@+id/btnBack"
+                    android:background="@drawable/button_shape"
+                    android:gravity="center"
+                    android:text="NEXT"
+                    android:textColor="@color/white" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/txtnotrecieve"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rlBtncode"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/_15dp"
+                android:layout_marginTop="20dp"
+                android:text="Didn't Receive it? Try again"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</RelativeLayout>

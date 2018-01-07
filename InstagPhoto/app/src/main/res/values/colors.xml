@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#45B39D</color>
-    <color name="colorPrimaryTransparent">#8045B39D</color>
-    <color name="colorPrimaryDark">#117A65</color>
+    <color name="colorPrimary">#D50000</color>
+    <color name="colorPrimaryTransparent">#80D50000</color>
+    <color name="colorPrimaryDark">#D50000</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
@@ -10,6 +10,9 @@
     <color name="litgrey">#80808080</color>
     <color name="blue">#334CFF</color>
     <color name="red">#F40A03</color>
-    <color name="invite_title">#27aa80</color>
+    <color name="invite_title">#D50000</color>
     <color name="violet">#8A2BE2</color>
+    <color name="bg_button">#FF0000</color>
+    <color name="bg_button_pressed">#500883C7</color>
+    <color name="bg_login_banner">#FF0000</color>
 </resources>

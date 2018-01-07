@@ -24,6 +24,9 @@ public class Comments {
     @SerializedName("comment")
     private String comment;
 
+    @SerializedName("created_date")
+    private String created_date;
+
     public String getProfile_image() {
         return profile_image;
     }
@@ -66,6 +69,14 @@ public class Comments {
 
     public String getComment() {
         return comment;
+    }
+
+    public String getCreated_date() {
+        return created_date;
+    }
+
+    public void setCreated_date(String created_date) {
+        this.created_date = created_date;
     }
 
     public void setComment(String comment) {

@@ -28,8 +28,8 @@ import java.util.List;
 
 public class EMICalculator extends AppCompatActivity {
 
-    TextView txtroadPrice, txtLoanAmount, txtEMI;
-    EditText edtRateOfInterest, edtDownPayment;
+    TextView txtEMI, txtTotalInterest, txtTotalPayment;
+    EditText edtRateOfInterest, txtLoanAmount;
     boolean interestchanged = false;
     List<String> modellist = new ArrayList<String>();
     List<String> variantlist = new ArrayList<String>();
@@ -67,26 +67,28 @@ public class EMICalculator extends AppCompatActivity {
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setElevation(0);
 
-        txtroadPrice = (TextView) findViewById(R.id.txt_OnRoadPrice);
-        txtLoanAmount = (TextView) findViewById(R.id.txt_LoanAmount);
-        spinner = (Spinner) findViewById(R.id.spinner);
-        spinner.setVisibility(View.VISIBLE);
-        spinner1 = (Spinner) findViewById(R.id.spinner2);
-        spinner1.setVisibility(View.VISIBLE);
+//        txtroadPrice = (TextView) findViewById(R.id.txt_OnRoadPrice);
+        txtLoanAmount = (EditText) findViewById(R.id.txt_LoanAmount);
+        txtTotalPayment = (TextView) findViewById(R.id.txtTotalPayment);
+        txtTotalInterest = (TextView) findViewById(R.id.txtTotalInterest);
+//        spinner = (Spinner) findViewById(R.id.spinner);
+//        spinner.setVisibility(View.VISIBLE);
+//        spinner1 = (Spinner) findViewById(R.id.spinner2);
+//        spinner1.setVisibility(View.VISIBLE);
 
         spinner2 = (Spinner) findViewById(R.id.spinner3);
         spinner2.setVisibility(View.VISIBLE);
 
 
         txtEMI = (TextView) findViewById(R.id.txtEMI);
-        findViewById(R.id.rlModel).setOnClickListener(new View.OnClickListener() {
+        /*findViewById(R.id.rlModel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 spinner.callOnClick();
             }
-        });
+        });*/
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+        /*ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, modellist);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
@@ -133,25 +135,17 @@ public class EMICalculator extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
-        });
+        });*/
 
 
         ArrayAdapter<String> dataAdapter2 = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, tenurelist);
         dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner2.setAdapter(dataAdapter);
+        spinner2.setAdapter(dataAdapter2);
         spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i != 0) {
-//                    if (type == 0) {
-//                        txt_model.setText(list.get(i));
-//                    } else if (type == 1) {
-//                        txt_variant.setText(list.get(i));
-//                    } else {
-//                        txtTenure.setText(list.get(i));
-//                    }
-                }
+                calculateEmi();
             }
 
             @Override
@@ -161,10 +155,22 @@ public class EMICalculator extends AppCompatActivity {
         });
 
 
-        findViewById(R.id.rlVarient).setOnClickListener(new View.OnClickListener() {
+        /*findViewById(R.id.rlVarient).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 spinner1.callOnClick();
+            }
+        });*/
+
+        findViewById(R.id.btnClear).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                txtLoanAmount.setText("");
+                edtRateOfInterest.setText("");
+                spinner2.setSelection(0);
+                txtEMI.setText("0.00");
+                txtTotalInterest.setText("0.00");
+                txtTotalPayment.setText("0.00");
             }
         });
 
@@ -176,7 +182,7 @@ public class EMICalculator extends AppCompatActivity {
         });
 
         edtRateOfInterest = (EditText) findViewById(R.id.txt_Interest);
-        edtDownPayment = (EditText) findViewById(R.id.txt_DownPayment);
+//        edtDownPayment = (EditText) findViewById(R.id.txt_DownPayment);
 
         edtRateOfInterest.addTextChangedListener(new TextWatcher() {
             @Override
@@ -206,7 +212,7 @@ public class EMICalculator extends AppCompatActivity {
             }
         });
 
-        edtDownPayment.addTextChangedListener(new TextWatcher() {
+        txtLoanAmount.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -219,35 +225,21 @@ public class EMICalculator extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                String downPayment = edtDownPayment.getText().toString();
-                String roadPrice = txtroadPrice.getText().toString();
-                int rdpce = 0;
-                if (roadPrice.length() > 0) {
-                    rdpce = Integer.parseInt(roadPrice);
+                String loanPayment = txtLoanAmount.getText().toString();
+                long lnpce = 0;
+                if (loanPayment.length() > 0) {
+                    lnpce = Long.parseLong(loanPayment);
                 }
-                if (!interestchanged && downPayment.length() > 0) {
-                    if (Integer.parseInt(downPayment) > rdpce) {
-                        interestchanged = true;
-                        Toast.makeText(EMICalculator.this, "Down Payment should not be greater than Road Price", Toast.LENGTH_SHORT).show();
-                        edtDownPayment.setText("");
-                        interestchanged = false;
-                    } else if (rdpce > 0) {
-                        int loanAmount = rdpce - Integer.parseInt(downPayment);
-                        txtLoanAmount.setText("" + loanAmount);
-                        calculateEmi();
-                    }
+                if (!interestchanged && lnpce > 0) {
+                    calculateEmi();
                 }
             }
         });
     }
 
-    Spinner spinner;
-    Spinner spinner1;
+    //    Spinner spinner;
+//    Spinner spinner1;
     Spinner spinner2;
-
-    private void openSpinnerList(final int type, final List<String> list) {
-
-    }
 
     private void calculateEmi() {
         try {
@@ -260,8 +252,8 @@ public class EMICalculator extends AppCompatActivity {
             }
 
             if (TextUtils.isEmpty(st2)) {
-                edtRateOfInterest.setError("Enter Interest Rate");
-                edtRateOfInterest.requestFocus();
+//                edtRateOfInterest.setError("Enter Interest Rate");
+//                edtRateOfInterest.requestFocus();
                 return;
             }
 
@@ -289,12 +281,12 @@ public class EMICalculator extends AppCompatActivity {
 
             float emi = calEmi(FD, D);
 
-//            float TA = calTa(emi, Months);
+            float TA = calTa(emi, Months);
 
-//            float ti = calTotalInt(TA, Principal);
-            txtEMI.setText(String.valueOf(emi));
-//            TI.setText(String.valueOf(ti));
-
+            float ti = calTotalInt(TA, Principal);
+            txtEMI.setText(String.valueOf(Math.round(emi)));
+            txtTotalInterest.setText(String.valueOf(Math.round(ti)));
+            txtTotalPayment.setText(String.valueOf(Math.round(p) + Math.round(ti)));
         } catch (Exception e) {
             e.printStackTrace();
         }

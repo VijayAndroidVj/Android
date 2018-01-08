@@ -8,6 +8,8 @@
     <color name="black">#000000</color>
     <color name="flat_pressed">#66999999</color>
     <color name="white">#FFFFFF</color>
+    <color name="grey">#626263</color>
+    <color name="greytrans">#80626263</color>
     <color name="edittext_border">#c6c6c6</color>
     <color name="gray_1">#C0C0C0</color>
 </resources>

@@ -28,6 +28,14 @@
             android:label="@string/title_activity_about_us"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name="com.peeyemcar.UsedCarsActivity"
+            android:label="Used Cars"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.peeyemcar.CarViewActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name="com.peeyemcar.EMICalculator"
             android:label="EMI Calculatore"
             android:theme="@style/AppTheme.NoActionBar" />

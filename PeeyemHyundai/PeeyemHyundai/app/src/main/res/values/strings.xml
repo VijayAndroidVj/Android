@@ -7,5 +7,6 @@
     <string name="title_activity_service">Service</string>
     <string name="title_activity_testdrive">Test Drive</string>
     <string name="send_to">Share Peeyem Hyundai App</string>
+    <string name="Rs">\u20B9</string>
     <string name="contactus_click_email_address">Click on the email address to reach us</string>
 </resources>

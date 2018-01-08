@@ -64,6 +64,15 @@ public class MainActivity extends ActionBarActivity implements BaseSliderView.On
             }
         });
 
+        findViewById(R.id.lay8).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in = new Intent(MainActivity.this, UsedCarsActivity.class);
+                startActivity(in);
+            }
+        });
+
+
         aboutus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

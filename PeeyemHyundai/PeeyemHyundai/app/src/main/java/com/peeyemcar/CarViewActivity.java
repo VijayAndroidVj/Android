@@ -38,7 +38,7 @@ public class CarViewActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(getString(R.string.app_name));
+        actionBar.setTitle("Used Car");
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setElevation(0);
 
@@ -59,6 +59,7 @@ public class CarViewActivity extends AppCompatActivity {
                 txtCarModel.setText("");
             } else {
                 txtCarModel.setText(userModel.getModelname());
+                actionBar.setTitle(userModel.getModelname());
             }
 
             if (TextUtils.isEmpty(userModel.getKmsRunned())) {

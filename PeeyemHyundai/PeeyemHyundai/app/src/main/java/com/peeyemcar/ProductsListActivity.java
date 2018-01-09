@@ -1,17 +1,19 @@
 package com.peeyemcar;
 
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+
+import com.peeyem.app.R;
+import com.peeyemcar.adapter.RecyclerViewAdapter;
+import com.peeyemcar.data.ItemObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.peeyemcar.adapter.RecyclerViewAdapter;
-import com.peeyemcar.data.ItemObject;
-import com.peeyem.app.R;
 
 public class ProductsListActivity extends ActionBarActivity {
 
@@ -21,22 +23,28 @@ public class ProductsListActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_list_activity);
-        setTitle(null);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle("Products");
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setElevation(0);
 
 
         List<ItemObject> rowListItem = getAllItemList();
         lLayout = new LinearLayoutManager(ProductsListActivity.this);
 
-        RecyclerView rView = (RecyclerView)findViewById(R.id.recycler_view);
+        RecyclerView rView = (RecyclerView) findViewById(R.id.recycler_view);
         rView.setLayoutManager(lLayout);
 
         RecyclerViewAdapter rcAdapter = new RecyclerViewAdapter(ProductsListActivity.this, rowListItem);
         rView.setAdapter(rcAdapter);
     }
 
-    private List<ItemObject> getAllItemList(){
+    private List<ItemObject> getAllItemList() {
 
         List<ItemObject> allItems = new ArrayList<ItemObject>();
         allItems.add(new ItemObject("EON", R.drawable.eon));//http://www.hyundai.com/wcm/upload_wwn/IN/ebrochure/2012_EON_ebrochure_1509590304235.PDF
@@ -49,5 +57,15 @@ public class ProductsListActivity extends ActionBarActivity {
         allItems.add(new ItemObject("CRETA", R.drawable.creta));//http://www.hyundai.com/wcm/upload_wwn/IN/ebrochure/2015_Creta_ebrochure_1507607141789.pdf
         allItems.add(new ItemObject("TUCSON", R.drawable.tucson));//http://www.hyundai.com/wcm/upload_wwn/IN/ebrochure/2016_Tucson_ebrochure_1508226350887.pdf
         return allItems;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

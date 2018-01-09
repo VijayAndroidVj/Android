@@ -52,7 +52,7 @@ public class UsedCarsActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(getString(R.string.app_name));
+        actionBar.setTitle("Used Cars");
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setElevation(0);
 

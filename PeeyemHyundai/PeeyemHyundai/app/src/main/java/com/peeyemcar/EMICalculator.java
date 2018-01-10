@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.peeyem.app.R;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -242,6 +243,49 @@ public class EMICalculator extends AppCompatActivity {
     Spinner spinner2;
 
     private void calculateEmi() {
+
+        try {
+            String st1 = txtLoanAmount.getText().toString();
+            String st2 = edtRateOfInterest.getText().toString();
+            String st3 = (String) spinner2.getSelectedItem();
+
+            if (TextUtils.isEmpty(st1)) {
+                return;
+            }
+
+            if (TextUtils.isEmpty(st2)) {
+//                edtRateOfInterest.setError("Enter Interest Rate");
+//                edtRateOfInterest.requestFocus();
+                return;
+            }
+
+            if (TextUtils.isEmpty(st3) || st3.equalsIgnoreCase("Tenure")) {
+                return;
+            }
+
+            st3 = st3.split(" ")[0];
+
+
+            double loanAmount = Integer.parseInt(st1);
+            double interestRate = (Integer.parseInt(st2));
+            double loanPeriod = Integer.parseInt(st3);
+            double r = interestRate / 1200;
+            double r1 = Math.pow(r + 1, loanPeriod);
+
+            double monthlyPayment = (double) ((r + (r / (r1 - 1))) * loanAmount);
+            double totalPayment = monthlyPayment * loanPeriod;
+            double ti = calTotalInt(totalPayment, loanAmount);
+            txtEMI.setText(new DecimalFormat("##.##").format(monthlyPayment));
+            txtTotalInterest.setText(new DecimalFormat("##.##").format(ti));
+            txtTotalPayment.setText(new DecimalFormat("##.##").format(totalPayment));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void calculateEmi1() {
         try {
             String st1 = txtLoanAmount.getText().toString();
             String st2 = edtRateOfInterest.getText().toString();
@@ -341,9 +385,15 @@ public class EMICalculator extends AppCompatActivity {
 
     }
 
-    public float calTotalInt(float TA, float Principal) {
+    public float calTotalInt(double TA, float Principal) {
 
         return (float) (TA - Principal);
+
+    }
+
+    public double calTotalInt(double TA, double Principal) {
+
+        return (double) (TA - Principal);
 
     }
 

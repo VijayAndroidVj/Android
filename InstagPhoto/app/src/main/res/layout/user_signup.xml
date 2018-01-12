@@ -72,7 +72,6 @@
                     android:id="@+id/twitter_login_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:layout_gravity="center_horizontal"
                     android:padding="@dimen/_5dp" />
 
@@ -136,7 +135,6 @@
                                 android:id="@+id/radioFemale"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:checked="true"
                                 android:text="@string/radio_female" />
 
                         </RadioGroup>
@@ -215,7 +213,7 @@
                                 android:imeOptions="actionNext"
                                 android:inputType="textEmailAddress"
                                 android:padding="10dp"
-                                android:text="sfsfs"
+                                android:text=""
                                 android:textSize="16sp" />
                         </com.instag.vijay.fasttrending.NoChangingBackgroundTextInputLayout>
 

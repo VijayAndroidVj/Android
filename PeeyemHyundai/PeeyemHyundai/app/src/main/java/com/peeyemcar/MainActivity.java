@@ -1,9 +1,11 @@
 package com.peeyemcar;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.MenuItem;
@@ -24,10 +26,34 @@ import com.peeyem.app.R;
 import java.util.HashMap;
 
 
-public class MainActivity extends ActionBarActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
+public class MainActivity extends AppCompatActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
 
     private SliderLayout mDemoSlider;
     CardView product, aboutus, service, breakdown, testdrive, sOffer, locateus, shareapp, callHelpline;
+
+    private static ProgressDialog progressDoalog;
+
+    public static void showProgress(Activity activity) {
+
+        try {
+            if (progressDoalog == null) {
+                progressDoalog = new ProgressDialog(activity);
+                progressDoalog.setMax(100);
+                progressDoalog.setMessage("Please wait....");
+                progressDoalog.setTitle(activity.getString(R.string.app_name));
+                progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDoalog.show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void dismissProgress() {
+        if (progressDoalog != null && progressDoalog.isShowing())
+            progressDoalog.dismiss();
+        progressDoalog = null;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

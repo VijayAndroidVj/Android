@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,7 +23,6 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
@@ -31,13 +31,8 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
-import com.twitter.sdk.android.core.DefaultLogger;
 import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterApiClient;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
-import com.twitter.sdk.android.core.TwitterAuthToken;
-import com.twitter.sdk.android.core.TwitterConfig;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
@@ -57,8 +52,6 @@ import retrofit2.Response;
 public class MmSignUpActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
     private static final String TAG = MmSignUpActivity.class.getSimpleName();
     private Activity activity;
-    private static final String TWITTER_KEY = "NG4gO82b8JCVmu0mzaMcH412V";
-    private static final String TWITTER_SECRET = "NbG5AfDrbiKMM3skKH8xciwfsxbvYyFoYUYvebsA0K6E7D9de3";
 
     //Tags to send the username and image url to next activity using intent
     public static final String KEY_USERNAME = "username";
@@ -79,29 +72,23 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
     TwitterLoginButton twitterLoginButton;
     TwitterAuthClient mTwitterAuthClient;
     private RadioGroup radioSexGroup;
+    private RadioButton male, female;
     private String country;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        TwitterConfig config = new TwitterConfig.Builder(this)
-                .logger(new DefaultLogger(Log.DEBUG))
-                .twitterAuthConfig(new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET))
-                .debug(true)
-                .build();
-        Twitter.initialize(config);
-
-        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.user_signup);
 
         activity = this;
         loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setReadPermissions("public_profile email");
         radioSexGroup = (RadioGroup) findViewById(R.id.radioSex);
+        male = findViewById(R.id.radioMale);
+        female = findViewById(R.id.radioFemale);
         txtusravailable = findViewById(R.id.txtusravailable);
         txtusravailable.setVisibility(View.GONE);
-        mTwitterAuthClient = new TwitterAuthClient();
+        /*mTwitterAuthClient = new TwitterAuthClient();
         mTwitterAuthClient.authorize(activity, new com.twitter.sdk.android.core.Callback<TwitterSession>() {
             @Override
             public void success(Result<TwitterSession> session) {
@@ -114,22 +101,27 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
             public void failure(TwitterException e) {
                 Log.i("Twitter Login Failure", e.getMessage());
             }
-        });
+        });*/
 
         twitterLoginButton = (TwitterLoginButton) findViewById(R.id.twitter_login_button);
         twitterLoginButton.setCallback(new com.twitter.sdk.android.core.Callback<TwitterSession>() {
             @Override
             // If the login is successful...//
-            public void success(Result<TwitterSession> result) {
+            public void success(final Result<TwitterSession> result) {
                 Log.d(TAG, "twitterLogin" + result);
+                Result<TwitterSession> twitterSession = result;
 
                 TwitterApiClient twitterApiClient = TwitterCore.getInstance().getApiClient();
-                Call<User> user = twitterApiClient.getAccountService().verifyCredentials(true, false, true);
+                Call<User> user = twitterApiClient.getAccountService().verifyCredentials(true, true);
                 user.enqueue(new com.twitter.sdk.android.core.Callback<User>() {
                     @Override
                     public void success(Result<User> userResult) {
                         input_name.setText(userResult.data.name);
+                        input_userName.setText(result.data.getUserName());
                         input_email.setText(userResult.data.email);
+//                        TwitterSession session = TwitterCore.getInstance().getSessionManager().getActiveSession();
+
+
                         String t_profile_image = userResult.data.profileImageUrl;
 
                     }
@@ -139,6 +131,21 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
                         e.printStackTrace();
                     }
                 });
+                TwitterAuthClient authClient = new TwitterAuthClient();
+                authClient.requestEmail(twitterSession.data, new com.twitter.sdk.android.core.Callback<String>() {
+                    @Override
+                    public void success(Result<String> result) {
+                        input_email.setText(result.data);
+                        // Do something with the result, which provides the email address
+                    }
+
+                    @Override
+                    public void failure(TwitterException exception) {
+                        // Do something on failure
+                        exception.printStackTrace();
+                    }
+                });
+
             }
 
 
@@ -269,43 +276,52 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
         country = getIntent().getStringExtra("country");
 
         callbackManager = CallbackManager.Factory.create();
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
-        loginButton.registerCallback(callbackManager,
-                new FacebookCallback<LoginResult>() {
-                    String facebook_id, f_name, m_name, l_name, gender, profile_image, full_name, email_id = "";
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile"));
+                loginButton.registerCallback(callbackManager,
+                        new FacebookCallback<LoginResult>() {
+                            String facebook_id, f_name, m_name, l_name, gender, profile_image, full_name, email_id = "";
 
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        if (AccessToken.getCurrentAccessToken() != null) {
-                            RequestData();
-                            Profile profile = Profile.getCurrentProfile();
-                            if (profile != null) {
-                                facebook_id = profile.getId();
-                                Log.e("facebook_id", facebook_id);
-                                f_name = profile.getFirstName();
-                                Log.e("f_name", f_name);
-                                m_name = profile.getMiddleName();
-                                Log.e("m_name", m_name);
-                                l_name = profile.getLastName();
-                                Log.e("l_name", l_name);
-                                full_name = profile.getName();
-                                Log.e("full_name", full_name);
-                                profile_image = profile.getProfilePictureUri(400, 400).toString();
-                                Log.e("profile_image", profile_image);
+                            @Override
+                            public void onSuccess(LoginResult loginResult) {
+                                if (AccessToken.getCurrentAccessToken() != null) {
+                                    RequestData();
+                                    Profile profile = Profile.getCurrentProfile();
+                                    if (profile != null) {
+
+                                        facebook_id = profile.getId();
+                                        Log.e("facebook_id", facebook_id);
+                                        f_name = profile.getFirstName();
+                                        Log.e("f_name", f_name);
+                                        input_name.setText(f_name);
+                                        m_name = profile.getMiddleName();
+                                        Log.e("m_name", m_name);
+                                        l_name = profile.getLastName();
+                                        Log.e("l_name", l_name);
+                                        full_name = profile.getName();
+                                        Log.e("full_name", full_name);
+                                        profile_image = profile.getProfilePictureUri(400, 400).toString();
+                                        Log.e("profile_image", profile_image);
+                                    }
+                                }
                             }
-                        }
-                    }
 
-                    @Override
-                    public void onCancel() {
-                        // App code
-                    }
+                            @Override
+                            public void onCancel() {
+                                // App code
+                            }
 
-                    @Override
-                    public void onError(FacebookException exception) {
-                        // App code
-                    }
-                });
+                            @Override
+                            public void onError(FacebookException exception) {
+                                // App code
+                            }
+                        });
+            }
+        });
+
+
     }
 
     public void RequestData() {
@@ -319,6 +335,11 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
                     if (json != null) {
                         input_email.setText(json.getString("email"));
                         input_userName.setText(json.getString("name"));
+                        if (!json.getString("name").equalsIgnoreCase("male")) {
+                            female.setChecked(true);
+                        } else {
+                            male.setChecked(true);
+                        }
                     }
                     LoginManager.getInstance().logOut();
 
@@ -328,7 +349,7 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
             }
         });
         Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,link,email,picture");
+        parameters.putString("fields", "id,name,link,email,picture, gender");
         request.setParameters(parameters);
         request.executeAsync();
     }
@@ -340,19 +361,15 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 64206)
-            callbackManager.onActivityResult(requestCode, resultCode, data);
-        else if (mTwitterAuthClient.getRequestCode() == requestCode) {
-            TwitterSession session = TwitterCore.getInstance().getSessionManager().getActiveSession();
-            if (session != null) {
-                TwitterAuthToken authToken = session.getAuthToken();
-                String token = authToken.token;
-                String secret = authToken.secret;
-            }
-            mTwitterAuthClient.onActivityResult(requestCode, resultCode, data);
-        }
-//        loginButton.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
+        try {
+            if (requestCode == 64206)
+                callbackManager.onActivityResult(requestCode, resultCode, data);
+            else
+                twitterLoginButton.onActivityResult(requestCode, resultCode, data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

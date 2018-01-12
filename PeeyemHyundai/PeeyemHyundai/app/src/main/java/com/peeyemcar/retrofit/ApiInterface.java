@@ -17,6 +17,18 @@ public interface ApiInterface {
     @POST("get_used_cars.php")
     @FormUrlEncoded
     Call<EventResponse> get_used_cars(@Field("aid") String aid);
+
+
+    @POST("customer_signup.php")
+    @FormUrlEncoded
+    Call<EventResponse> register(@Field("aid") String aid, @Field("mobile") String mobile, @Field("name") String name, @Field("email") String email, @Field("password") String password);
+
+
+    @POST("customer_login.php")
+    @FormUrlEncoded
+    Call<EventResponse> login(@Field("email") String email, @Field("password") String password);
+
+
 }
 
 

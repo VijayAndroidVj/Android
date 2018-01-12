@@ -1,21 +1,20 @@
 package com.peeyemcar;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
-import java.util.ArrayList;
-import java.util.List;
 import com.peeyem.app.R;
-
-
 import com.peeyemcar.adapter.DownloadRecyclerViewAdapter;
 import com.peeyemcar.data.ItemObject;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class DownloadListActivity extends ActionBarActivity {
+
+public class DownloadListActivity extends AppCompatActivity {
 
     private LinearLayoutManager lLayout;
 
@@ -31,14 +30,14 @@ public class DownloadListActivity extends ActionBarActivity {
         List<ItemObject> rowListItem = getAllItemList();
         lLayout = new LinearLayoutManager(DownloadListActivity.this);
 
-        RecyclerView rView = (RecyclerView)findViewById(R.id.recycler_view);
+        RecyclerView rView = (RecyclerView) findViewById(R.id.recycler_view);
         rView.setLayoutManager(lLayout);
 
         DownloadRecyclerViewAdapter rcAdapter = new DownloadRecyclerViewAdapter(DownloadListActivity.this, rowListItem);
         rView.setAdapter(rcAdapter);
     }
 
-    private List<ItemObject> getAllItemList(){
+    private List<ItemObject> getAllItemList() {
 
         List<ItemObject> allItems = new ArrayList<ItemObject>();
         allItems.add(new ItemObject("EON", R.drawable.eon));//http://www.hyundai.com/wcm/upload_wwn/IN/ebrochure/2012_EON_ebrochure_1509590304235.PDF

@@ -95,7 +95,7 @@ public class DeliveryPickupCustomer extends AppCompatActivity implements Respons
     public boolean boolean_count;
 
     private Button btn_submit;
-    private TextView txt_oveal_total1, txt_oveal_total2, txt_oveal_total, txt_oveal_count;
+    private TextView txt_oveal_total1, txt_oveal_total, txt_oveal_count;
     private double over_all_total = 0.0;
     private ImageView img_1, img_2, img_3;
     private File destination, destination2, destination3;
@@ -125,7 +125,7 @@ public class DeliveryPickupCustomer extends AppCompatActivity implements Respons
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         txt_product = (TextView) findViewById(R.id.txt_product);
         txt_oveal_total1 = (TextView) findViewById(R.id.txt_oveal_total1);
-        txt_oveal_total2 = (TextView) findViewById(R.id.txt_oveal_total2);
+//        txt_oveal_total2 = (TextView) findViewById(R.id.txt_oveal_total2);
         txt_oveal_total = (TextView) findViewById(R.id.txt_oveal_total3);
         edtDiscount = (EditText) findViewById(R.id.edtDiscount);
         getSupportActionBar().setTitle("Pricing-List");
@@ -198,9 +198,9 @@ public class DeliveryPickupCustomer extends AppCompatActivity implements Respons
                             allowChange = true;
                         } else {
                             sum = initialTotalSum - discount;
-                            double percentage = ((sum * 18) / 100);
-                            txt_oveal_total2.setText(percentage + " GST 18%");
-                            sum = sum + percentage;
+//                            double percentage = ((sum * 18) / 100);
+//                            txt_oveal_total2.setText(percentage + " GST 18%");
+//                            sum = sum + percentage;
                             txt_oveal_total.setText("" + sum);
                             txt_oveal_count.setText(item_sum + "");
 
@@ -764,9 +764,9 @@ public class DeliveryPickupCustomer extends AppCompatActivity implements Respons
                             int discount = Integer.valueOf(sdiscount);
                             sum = initialTotalSum - discount;
                         }
-                        double percentage = ((sum * 18) / 100);
-                        txt_oveal_total2.setText(percentage + " GST 18%");
-                        sum = sum + percentage;
+//                        double percentage = ((sum * 18) / 100);
+//                        txt_oveal_total2.setText(percentage + " GST 18%");
+//                        sum = sum + percentage;
                         txt_oveal_total.setText("" + sum);
                         txt_oveal_count.setText(item_sum + "");
 
@@ -880,9 +880,9 @@ public class DeliveryPickupCustomer extends AppCompatActivity implements Respons
                                         int discount = Integer.valueOf(sdiscount);
                                         sum = initialTotalSum - discount;
                                     }
-                                    double percentage = ((sum * 18) / 100);
-                                    txt_oveal_total2.setText(percentage + " GST 18%");
-                                    sum = sum + percentage;
+//                                    double percentage = ((sum * 18) / 100);
+//                                    txt_oveal_total2.setText(percentage + " GST 18%");
+//                                    sum = sum + percentage;
                                     txt_oveal_total.setText("" + sum);
                                     txt_oveal_count.setText(item_sum + "");
 

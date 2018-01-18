@@ -103,6 +103,8 @@ public class AdapterReport extends BaseAdapter {
         mViewHolder.txt_locality.setText(hashMapArrayList.get(posistion).get("locality"));
         mViewHolder.txt_address.setText(hashMapArrayList.get(posistion).get("address"));
         mViewHolder.txt_mobile.setText(hashMapArrayList.get(posistion).get("mobile"));
+        mViewHolder.txt_name.setText(hashMapArrayList.get(posistion).get("customer_name"));
+        mViewHolder.txt_amount.setText(hashMapArrayList.get(posistion).get("overall_total"));
 
         if (hashMapArrayList.get(posistion).get("completion").equals("25")) {
             mViewHolder.txt_cancel.setVisibility(View.VISIBLE);
@@ -615,7 +617,7 @@ public class AdapterReport extends BaseAdapter {
         private final TextView txt_date;
         private final TextView txt_unique_code;
         private final TextView txt_time, txt_assign, txt_city, txt_locality, txt_address, txt_mobile;
-        private final TextView txt_cancel;
+        private final TextView txt_cancel, txt_name, txt_amount;
 
         public MyViewHolder(View item) {
             txt_unique_code = (TextView) item.findViewById(R.id.txt_unique_code);
@@ -627,6 +629,8 @@ public class AdapterReport extends BaseAdapter {
             txt_address = (TextView) item.findViewById(R.id.txt_address);
             txt_mobile = (TextView) item.findViewById(R.id.txt_mobile);
             txt_cancel = (TextView) item.findViewById(R.id.txt_cancel);
+            txt_name = (TextView) item.findViewById(R.id.txt_name);
+            txt_amount = (TextView) item.findViewById(R.id.txt_amount);
 
 
         }

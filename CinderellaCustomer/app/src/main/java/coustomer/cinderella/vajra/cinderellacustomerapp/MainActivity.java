@@ -631,7 +631,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected Void doInBackground(Void... voids) {
 
-            sendSMS();
+//            sendSMS();
             return null;
         }
     }

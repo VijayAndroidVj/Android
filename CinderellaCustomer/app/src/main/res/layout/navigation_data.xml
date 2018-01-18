@@ -30,13 +30,17 @@
             android:textStyle="bold" />
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/black_overlay" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/pressed"
         android:clickable="true"
         android:orientation="horizontal"
-
         android:visibility="gone">
 
         <TextView
@@ -44,7 +48,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:drawableLeft="@mipmap/schedule_icon3"
-
             android:padding="10dp" />
 
         <TextView
@@ -55,12 +58,8 @@
             android:gravity="center_vertical"
             android:paddingLeft="15dp"
             android:text="Schedule My Pickup"
-
             android:textAllCaps="false"
-
-
             android:textColor="@color/nav_txt"
-
             android:textStyle="bold" />
 
         <View
@@ -121,13 +120,17 @@
                 </View>
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/black_overlay" />
+
             <LinearLayout
                 android:id="@+id/txt_pricing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/pressed"
                 android:clickable="true"
-
                 android:orientation="horizontal">
 
                 <TextView
@@ -135,7 +138,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:drawableLeft="@mipmap/rupee_icon1"
-
                     android:padding="10dp" />
 
                 <TextView
@@ -145,12 +147,8 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="15dp"
                     android:text="Pricing"
-
                     android:textAllCaps="false"
-
-
                     android:textColor="@color/nav_txt"
-
                     android:textStyle="bold" />
 
                 <View
@@ -161,13 +159,17 @@
                 </View>
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/black_overlay" />
+
             <LinearLayout
                 android:id="@+id/linear_profile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/pressed"
                 android:clickable="true"
-
                 android:orientation="horizontal">
 
                 <TextView
@@ -175,7 +177,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:drawableLeft="@mipmap/profile_icon2"
-
                     android:padding="10dp" />
 
                 <TextView
@@ -186,12 +187,8 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="15dp"
                     android:text="My Profile"
-
                     android:textAllCaps="false"
-
-
                     android:textColor="@color/nav_txt"
-
                     android:textStyle="bold" />
 
                 <View
@@ -201,6 +198,7 @@
 
                 </View>
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -215,7 +213,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:drawableLeft="@mipmap/not_icon2"
-
                     android:padding="10dp" />
 
                 <TextView
@@ -226,21 +223,16 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="15dp"
                     android:text="Notifications"
-
                     android:textAllCaps="false"
-
-
                     android:textColor="@color/nav_txt"
-
                     android:textStyle="bold" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.9dp"
-                    android:background="@color/hint_2">
-
-                </View>
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/black_overlay" />
 
             <LinearLayout
                 android:id="@+id/txt_offer"
@@ -248,7 +240,6 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/pressed"
                 android:clickable="true"
-
                 android:orientation="horizontal">
 
                 <TextView
@@ -256,7 +247,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:drawableLeft="@mipmap/offer"
-
                     android:padding="10dp" />
 
                 <TextView
@@ -266,12 +256,8 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="15dp"
                     android:text="Offers"
-
                     android:textAllCaps="false"
-
-
                     android:textColor="@color/nav_txt"
-
                     android:textStyle="bold" />
 
                 <View
@@ -282,13 +268,17 @@
                 </View>
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/black_overlay" />
+
             <LinearLayout
                 android:id="@+id/linear_learn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/pressed"
                 android:clickable="true"
-
                 android:orientation="horizontal">
 
                 <TextView
@@ -296,7 +286,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:drawableLeft="@mipmap/refer_earn"
-
                     android:padding="10dp" />
 
                 <TextView
@@ -307,12 +296,8 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="15dp"
                     android:text="Refer &amp; Earn"
-
                     android:textAllCaps="false"
-
-
                     android:textColor="@color/nav_txt"
-
                     android:textStyle="bold" />
 
                 <View
@@ -322,6 +307,11 @@
 
                 </View>
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/black_overlay" />
 
             <LinearLayout
                 android:id="@+id/liner_terms"
@@ -347,12 +337,8 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="15dp"
                     android:text="Terms &amp; Conditions"
-
                     android:textAllCaps="false"
-
-
                     android:textColor="@color/nav_txt"
-
                     android:textStyle="bold" />
 
                 <View
@@ -362,6 +348,11 @@
 
                 </View>
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/black_overlay" />
 
             <LinearLayout
                 android:id="@+id/linear_feedback"
@@ -388,12 +379,8 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="15dp"
                     android:text="Feedback"
-
                     android:textAllCaps="false"
-
-
                     android:textColor="@color/nav_txt"
-
                     android:textStyle="bold" />
 
                 <View
@@ -403,6 +390,11 @@
 
                 </View>
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/black_overlay" />
 
             <LinearLayout
                 android:id="@+id/linear_contact"
@@ -429,12 +421,8 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="15dp"
                     android:text="Contact Us"
-
                     android:textAllCaps="false"
-
-
                     android:textColor="@color/nav_txt"
-
                     android:textStyle="bold" />
 
                 <View
@@ -444,6 +432,11 @@
 
                 </View>
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/black_overlay" />
 
             <LinearLayout
                 android:id="@+id/lineare_about"
@@ -470,21 +463,20 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="15dp"
                     android:text="About Us"
-
                     android:textAllCaps="false"
-
-
                     android:textColor="@color/nav_txt"
-
                     android:textStyle="bold" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.9dp"
-                    android:background="@color/hint_2">
-
-                </View>
+                    android:background="@color/hint_2"></View>
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/black_overlay" />
 
             <LinearLayout
                 android:id="@+id/linear_share"
@@ -493,7 +485,6 @@
                 android:background="@drawable/pressed"
                 android:clickable="true"
                 android:gravity="center_vertical"
-
                 android:orientation="horizontal">
 
                 <TextView
@@ -501,7 +492,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:drawableLeft="@drawable/ic_menu_share"
-
                     android:padding="10dp" />
 
                 <TextView
@@ -512,12 +502,8 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="25dp"
                     android:text="Share"
-
                     android:textAllCaps="false"
-
-
                     android:textColor="@color/nav_txt"
-
                     android:textStyle="bold" />
 
                 <View
@@ -528,6 +514,10 @@
                 </View>
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/black_overlay" />
 
             <LinearLayout
                 android:id="@+id/linear_logout"
@@ -535,7 +525,6 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/pressed"
                 android:clickable="true"
-
                 android:orientation="horizontal">
 
                 <TextView
@@ -543,7 +532,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:drawableLeft="@mipmap/logou"
-
                     android:padding="10dp" />
 
                 <TextView
@@ -554,12 +542,8 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="15dp"
                     android:text="Logout"
-
                     android:textAllCaps="false"
-
-
                     android:textColor="@color/nav_txt"
-
                     android:textStyle="bold" />
 
                 <View

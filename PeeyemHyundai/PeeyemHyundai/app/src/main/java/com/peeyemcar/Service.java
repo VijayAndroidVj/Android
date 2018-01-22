@@ -3,38 +3,48 @@ package com.peeyemcar;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.creativityapps.gmailbackgroundlibrary.BackgroundMail;
+import com.peeyem.app.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
-import com.peeyem.app.R;
 
 public class Service extends AppCompatActivity {
     String str = "my string \n my other string";
     Spinner serviceType, carModel;
     EditText regNum, mileage, serviceDate, fullName, mobNum, emailID, state, city, description;
     CheckBox home_pickup;
-    RelativeLayout submit, reset;
+    View submit, reset;
     Calendar myCalendar;
     DatePickerDialog.OnDateSetListener date;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_service);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-         myCalendar = Calendar.getInstance();
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle("Service");
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setElevation(0);
+
+        myCalendar = Calendar.getInstance();
         date = new DatePickerDialog.OnDateSetListener() {
 
             @Override
@@ -49,23 +59,23 @@ public class Service extends AppCompatActivity {
 
         };
 
-        regNum = (EditText) findViewById(R.id.reg_number);
-        mileage = (EditText) findViewById(R.id.mileage);
-        serviceDate = (EditText) findViewById(R.id.service_date);
-        fullName = (EditText) findViewById(R.id.full_name);
-        mobNum = (EditText) findViewById(R.id.mobile_num);
-        emailID = (EditText) findViewById(R.id.email_id);
-        state = (EditText) findViewById(R.id.state);
-        city = (EditText) findViewById(R.id.city);
-        description = (EditText) findViewById(R.id.description);
+        regNum = findViewById(R.id.reg_number);
+        mileage = findViewById(R.id.mileage);
+        serviceDate = findViewById(R.id.service_date);
+        fullName = findViewById(R.id.full_name);
+        mobNum = findViewById(R.id.mobile_num);
+        emailID = findViewById(R.id.email_id);
+        state = findViewById(R.id.state);
+        city = findViewById(R.id.city);
+        description = findViewById(R.id.description);
 
-        serviceType = (Spinner) findViewById(R.id.service_type);
-        carModel = (Spinner) findViewById(R.id.car_model);
+        serviceType = findViewById(R.id.service_type);
+        carModel = findViewById(R.id.car_model);
 
-        home_pickup = (CheckBox) findViewById(R.id.home_pick);
+        home_pickup = findViewById(R.id.home_pick);
 
-        submit = (RelativeLayout) findViewById(R.id.submit_rl);
-        reset = (RelativeLayout) findViewById(R.id.reset_rl);
+        submit = findViewById(R.id.submit_rl);
+        reset = findViewById(R.id.reset_rl);
         serviceDate.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -95,9 +105,19 @@ public class Service extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void resetForm() {
-        Intent in =new Intent(Service.this,Service.class);
-                startActivity(in);
+        Intent in = new Intent(Service.this, Service.class);
+        startActivity(in);
         finish();
     }
 
@@ -107,6 +127,7 @@ public class Service extends AppCompatActivity {
 
         serviceDate.setText(sdf.format(myCalendar.getTime()));
     }
+
     private void checkFieldInForm() {
         String HOME_PICK;
         if (regNum.getText().length() > 0 && mileage.getText().length() > 0 && serviceDate.getText().length() > 0 && fullName.getText().length() > 0 && mobNum.getText().length() > 0 && emailID.getText().length() > 0 && state.getText().length() > 0 && city.getText().length() > 0 && description.getText().length() > 0 && !serviceType.getSelectedItem().toString().contains("Service Type") && !carModel.getSelectedItem().toString().contains("Car Model")) {
@@ -130,26 +151,37 @@ public class Service extends AppCompatActivity {
             sendTestEmail();
         } else if (serviceType.getSelectedItem().toString().contains("Service Type")) {
             ((TextView) serviceType.getSelectedView()).setError("Please select Value");
+            regNum.requestFocus();
         } else if (carModel.getSelectedItem().toString().contains("Car Model")) {
             ((TextView) carModel.getSelectedView()).setError("Please select Value");
+            regNum.requestFocus();
         } else if (regNum.getText().length() < 1) {
             regNum.setError("Please fill out this field");
+            regNum.requestFocus();
         } else if (mileage.getText().length() < 1) {
             mileage.setError("Please fill out this field");
+            mileage.requestFocus();
         } else if (serviceDate.getText().length() < 1) {
             serviceDate.setError("Please fill out this field");
+            serviceDate.requestFocus();
         } else if (fullName.getText().length() < 1) {
             fullName.setError("Please fill out this field");
+            fullName.requestFocus();
         } else if (mobNum.getText().length() < 1) {
             mobNum.setError("Please fill out this field");
+            mobNum.requestFocus();
         } else if (emailID.getText().length() < 1) {
             emailID.setError("Please fill out this field");
+            emailID.requestFocus();
         } else if (state.getText().length() < 1) {
             state.setError("Please fill out this field");
+            state.requestFocus();
         } else if (city.getText().length() < 1) {
             city.setError("Please fill out this field");
+            city.requestFocus();
         } else if (description.getText().length() < 1) {
             description.setError("Please fill out this field");
+            description.requestFocus();
         }
     }
 

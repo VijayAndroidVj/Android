@@ -9,7 +9,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +43,7 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.apache.commons.io.IOUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -239,7 +243,7 @@ public class PhotoFragment extends Fragment {
         }
     }
 
-    public void onVideoCaptureSuccess(Context context, Uri uri) throws URISyntaxException {
+    public void onVideoCaptureSuccess(Context context, final Uri uri) throws URISyntaxException {
         String sourceFilePath = getRealPathFromURI(context, uri);
         if (sourceFilePath == null)
             sourceFilePath = getVidPath(uri);
@@ -254,16 +258,32 @@ public class PhotoFragment extends Fragment {
             // thumbFilePath = Uri.fromFile(thumbFile).toString();
             dur = getDuration(context, uri);
             if (allowVideo) {
-                Toast.makeText(activity, "Video duration " + dur + " sec", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(activity, "Video duration " + dur + " sec", Toast.LENGTH_SHORT).show();
 
                 AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(activity);
                 myAlertDialog.setTitle(getString(R.string.app_name));
-                myAlertDialog.setMessage("Are sure want to post this video?");
+                myAlertDialog.setMessage("Are sure want to post this video? \n " + filePath);
                 myAlertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface arg0, int arg1) {
                         // do something when the OK button is clicked
-                        beginUpload(filePath);
+
+                        String ext = ".mp4";
+                        try {
+                            ext = filePath.substring(filePath.lastIndexOf("."));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        File destination = new File(Environment.getExternalStorageDirectory(),
+                                getString(R.string.app_name) + "/" + System.currentTimeMillis() + ext);
+                        try {
+                            copy(new File(filePath), destination);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        beginUpload(destination.getAbsolutePath());
                     }
                 });
                 myAlertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -320,7 +340,7 @@ public class PhotoFragment extends Fragment {
         File file = new File(locaPath);
         try {
             if (CommonUtil.isNetworkAvailable(activity)) {
-                initProgress("Processing...");
+                initProgress("Uploading please wait...");
                 ApiInterface apiService =
                         ApiClient.getClient().create(ApiInterface.class);
                 RequestBody requestFile =
@@ -338,9 +358,22 @@ public class PhotoFragment extends Fragment {
                 // MultipartBody.Part is used to send also the actual file name
                 MultipartBody.Part image =
                         MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+                MultipartBody.Part fileType =
+                        MultipartBody.Part.createFormData("fileType", "2");
+
+
+//                byte[] data = file.getAbsolutePath().getBytes("UTF-8");
+//                String base64 = Base64.encodeToString(data, Base64.DEFAULT);
+                Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(file.getAbsolutePath(), MediaStore.Images.Thumbnails.MINI_KIND);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+                byte[] b = baos.toByteArray();
+                String base64 = Base64.encodeToString(b, Base64.DEFAULT);
+                MultipartBody.Part videoThumb =
+                        MultipartBody.Part.createFormData("videoThumb", base64);
 
                 // finally, execute the request
-                Call<EventResponse> call = apiService.insta_posts(description, image, user_mail);
+                Call<EventResponse> call = apiService.insta_posts(description, image, fileType, videoThumb, user_mail);
                 call.enqueue(new Callback<EventResponse>() {
                     @Override
                     public void onResponse(Call<EventResponse> call, retrofit2.Response<EventResponse> response) {
@@ -384,6 +417,13 @@ public class PhotoFragment extends Fragment {
             e.printStackTrace();
         }
     }
+
+    public byte[] getBytesFromBitmap(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
+        return stream.toByteArray();
+    }
+
 
     private boolean allowVideo = false;
 

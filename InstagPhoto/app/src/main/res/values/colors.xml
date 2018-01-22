@@ -7,6 +7,7 @@
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="grey">#808080</color>
+    <color name="grey1">#908080</color>
     <color name="litgrey">#80808080</color>
     <color name="blue">#334CFF</color>
     <color name="red">#F40A03</color>
@@ -15,4 +16,11 @@
     <color name="bg_button">#FF0000</color>
     <color name="bg_button_pressed">#500883C7</color>
     <color name="bg_login_banner">#FF0000</color>
+
+    <color name="green">#2E8B57</color>
+    <color name="participant_view_selected">#27AF81</color>
+    <color name="participant_view_unselected">#808080</color>
+    <color name="button_background">#009AE0</color>
+    <color name="button_pressed_background">#502199E2</color>
+
 </resources>

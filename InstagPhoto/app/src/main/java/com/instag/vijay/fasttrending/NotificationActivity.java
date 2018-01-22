@@ -1,6 +1,7 @@
 package com.instag.vijay.fasttrending;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -17,7 +18,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.instag.vijay.fasttrending.adapter.MeetingAdapter;
 import com.instag.vijay.fasttrending.adapter.NotificationAdapter;
 import com.instag.vijay.fasttrending.model.Notification;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
@@ -25,6 +25,7 @@ import com.instag.vijay.fasttrending.retrofit.ApiInterface;
 
 import java.util.ArrayList;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -111,6 +112,7 @@ public class NotificationActivity extends AppCompatActivity {
         }
     }
 
+    private NotificationAdapter logAdapter;
 
     public void setList() {
         try {
@@ -118,7 +120,7 @@ public class NotificationActivity extends AppCompatActivity {
             viewInfo.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
 
-            NotificationAdapter logAdapter = new NotificationAdapter(activity, list);
+            logAdapter = new NotificationAdapter(activity, list);
             recyclerView.setAdapter(logAdapter);
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(activity);
             recyclerView.setLayoutManager(mLayoutManager);
@@ -130,10 +132,103 @@ public class NotificationActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
                 viewInfo.setVisibility(View.GONE);
             }
+
+            recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
+                    recyclerView, new ClickListener() {
+                @Override
+                public void onClick(View view, final int position) {
+                    //Values are passing to activity & to fragment as well
+
+                }
+
+                @Override
+                public void onLongClick(View view, final int position) {
+                    new SweetAlertDialog(activity, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+                            .setTitleText("Delete Comment")
+                            .setContentText("Are you sure want to delete this comment?")
+//                .setCustomImage(R.drawable.app_logo_back)
+                            .setCancelText("No").setConfirmText("Yes")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    deleteNotification(list.get(position));
+                                    sDialog.dismissWithAnimation();
+                                }
+                            })
+                            .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismissWithAnimation();
+                                }
+                            })
+                            .show();
+                }
+            }));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+    }
+
+    private ProgressDialog progressDoalog;
+
+    private void initProgress(String title) {
+        if (progressDoalog == null) {
+            progressDoalog = new ProgressDialog(activity);
+            progressDoalog.setMax(100);
+            progressDoalog.setMessage(title);
+            progressDoalog.setTitle(activity.getString(R.string.app_name));
+            progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDoalog.show();
+        } else {
+            progressDoalog.hide();
+            progressDoalog = null;
+        }
+    }
+
+    private void closeProgress() {
+        if (progressDoalog != null && progressDoalog.isShowing())
+            progressDoalog.hide();
+        progressDoalog = null;
+    }
+
+
+    private void deleteNotification(final Notification notification) {
+        if (CommonUtil.isNetworkAvailable(activity)) {
+            initProgress("Deleting....");
+            ApiInterface service =
+                    ApiClient.getClient().create(ApiInterface.class);
+            Call<EventResponse> call = service.deleteNotification(notification.getNotificationid());
+            call.enqueue(new Callback<EventResponse>() {
+                @Override
+                public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
+                    EventResponse patientDetails = response.body();
+                    Log.i("patientDetails", response.toString());
+                    if (patientDetails != null && patientDetails.getResult().equalsIgnoreCase("success")) {
+                        list.remove(notification);
+                        logAdapter.notifyDataSetChanged();
+                        closeProgress();
+
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<EventResponse> call, Throwable t) {
+                    // Log error here since request failed
+                    String message = t.getMessage();
+                    if (message.contains("Failed to")) {
+                        message = "Failed to Connect";
+                    } else {
+                        message = "Failed";
+                    }
+                    closeProgress();
+                    Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Toast.makeText(activity, "Check your internet connection!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void showView(int item, String text) {

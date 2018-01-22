@@ -2,26 +2,38 @@ package com.peeyemcar;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
+
 import com.peeyem.app.R;
 
 
 public class ViewPDFActivity extends AppCompatActivity {
     WebView webview;
-ProgressDialog progressBar;
+    ProgressDialog progressBar;
     String newString;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_pdf);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle("Offer");
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setElevation(0);
 
         webview = (WebView) findViewById(R.id.webview);
 
@@ -33,10 +45,9 @@ ProgressDialog progressBar;
         webview.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
 
 
-
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
 
-        progressBar = ProgressDialog.show(ViewPDFActivity.this, "Showing ProgressDialog", "Loading...");
+        progressBar = ProgressDialog.show(ViewPDFActivity.this, "Showing Offer", "Loading...");
 
         webview.setWebViewClient(new WebViewClient() {
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -44,12 +55,24 @@ ProgressDialog progressBar;
                 return true;
             }
 
+            @Override
             public void onPageFinished(WebView view, String url) {
+
+                Log.d("onRenderProcessGone ", "aaaa");
+                super.onPageFinished(view, url);
                 if (progressBar.isShowing()) {
                     progressBar.dismiss();
                 }
+
+                webview.loadUrl("javascript:(function() { " +
+                        "document.getElementsByClassName('dropMenu')[0].style.display='none'; })()");
+                // hide element by id
+                webview.loadUrl("javascript:(function() { " +
+                        "document.getElementsByClassName('topMenu')[0].style.display='none';})()");
+
             }
 
+            @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 Toast.makeText(ViewPDFActivity.this, "Oh no! " + description, Toast.LENGTH_SHORT).show();
                 alertDialog.setTitle("Error");
@@ -58,6 +81,25 @@ ProgressDialog progressBar;
             }
         });
 
-        webview.loadUrl("http://www.hyundai.com/wcm/idc/groups/sgvehiclecontent/@in/documents/sitecontent/mdaw/mte1/~edisp/in_sploff_05122017_dtl.jpg");
+        webview.loadUrl("http://m.hyundai.co.in/mobile/special-offer.aspx");
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (webview != null && webview.canGoBack()) {
+            webview.goBack();
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

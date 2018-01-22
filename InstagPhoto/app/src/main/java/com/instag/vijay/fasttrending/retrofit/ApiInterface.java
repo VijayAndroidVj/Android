@@ -72,7 +72,10 @@ public interface ApiInterface {
     Call<EventResponse> insta_posts(
             @Part MultipartBody.Part description,
             @Part MultipartBody.Part image,
+            @Part MultipartBody.Part fileType,
+            @Part MultipartBody.Part videoThumb,
             @Part MultipartBody.Part user_mail
+
     );
 
     @Multipart
@@ -104,6 +107,10 @@ public interface ApiInterface {
     @POST("delete_post.php")
     @FormUrlEncoded
     Call<EventResponse> delete_post(@Field("useremail") String useremail, @Field("post_id") String post_id);
+
+    @POST("deleteNotification.php")
+    @FormUrlEncoded
+    Call<EventResponse> deleteNotification(@Field("notificationid") String post_id);
 
     @POST("delete_my_account.php")
     @FormUrlEncoded

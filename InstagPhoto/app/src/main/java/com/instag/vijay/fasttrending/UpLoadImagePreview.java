@@ -145,8 +145,10 @@ public class UpLoadImagePreview extends AppCompatActivity {
                 MultipartBody.Part image =
                         MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
+                MultipartBody.Part fileType =
+                        MultipartBody.Part.createFormData("fileType", "2");
                 // finally, execute the request
-                Call<EventResponse> call = apiService.insta_posts(description, image, user_mail);
+                Call<EventResponse> call = apiService.insta_posts(description, image, fileType, null, user_mail);
                 call.enqueue(new Callback<EventResponse>() {
                     @Override
                     public void onResponse(Call<EventResponse> call, retrofit2.Response<EventResponse> response) {

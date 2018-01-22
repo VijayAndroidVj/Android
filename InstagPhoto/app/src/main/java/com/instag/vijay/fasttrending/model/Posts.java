@@ -17,6 +17,9 @@ public class Posts implements Parcelable {
     @SerializedName("image")
     private String image;
 
+    @SerializedName("fileType")
+    private String fileType;
+
     @SerializedName("username")
     private String username;
 
@@ -38,9 +41,14 @@ public class Posts implements Parcelable {
     @SerializedName("liked")
     private boolean liked;
 
+    @SerializedName("videoThumb")
+    private String videoThumb;
+
+
     protected Posts(Parcel in) {
         post_id = in.readString();
         image = in.readString();
+        fileType = in.readString();
         username = in.readString();
         profile_image = in.readString();
         created_date = in.readString();
@@ -48,6 +56,7 @@ public class Posts implements Parcelable {
         description = in.readString();
         total_likes = in.readInt();
         liked = in.readByte() != 0;
+        videoThumb = in.readString();
     }
 
     public static final Creator<Posts> CREATOR = new Creator<Posts>() {
@@ -134,6 +143,23 @@ public class Posts implements Parcelable {
         this.postmail = postmail;
     }
 
+    public String getVideoThumb() {
+        return videoThumb;
+    }
+
+    public void setVideoThumb(String videoThumb) {
+        this.videoThumb = videoThumb;
+    }
+
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -143,6 +169,7 @@ public class Posts implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(post_id);
         parcel.writeString(image);
+        parcel.writeString(fileType);
         parcel.writeString(username);
         parcel.writeString(profile_image);
         parcel.writeString(created_date);
@@ -150,5 +177,6 @@ public class Posts implements Parcelable {
         parcel.writeString(description);
         parcel.writeInt(total_likes);
         parcel.writeByte((byte) (liked ? 1 : 0));
+        parcel.writeString(videoThumb);
     }
 }

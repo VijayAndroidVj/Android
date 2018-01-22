@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:layout_gravity="center"
     android:orientation="vertical">
 
     <TextView
@@ -9,20 +11,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@color/colorPrimary"
+        android:background="@color/white"
         android:gravity="center"
-        android:padding="15dp"
+        android:padding="5dp"
         android:text="@string/app_name"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/_5dp"
+        android:background="@drawable/border_bg_prescription_list" />
 
     <TextView
         android:id="@+id/dialog_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:padding="18dp"
+        android:padding="10dp"
         android:text="Coming Soon..."
         android:textStyle="bold" />
 
@@ -32,27 +40,29 @@
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
         android:gravity="center"
-        android:padding="10dp">
+        android:padding="5dp">
 
         <Button
             android:id="@+id/customDialogOk"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginEnd="15dp"
             android:layout_marginRight="15dp"
-            android:background="@drawable/round_corner_rect_blue"
+            android:background="@color/colorPrimary"
             android:text="Ok"
+            android:textAllCaps="false"
             android:textColor="@color/white" />
 
         <Button
             android:id="@+id/customDialogCancel"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginEnd="15dp"
             android:layout_marginRight="15dp"
             android:layout_toRightOf="@+id/customDialogOk"
-            android:background="@drawable/round_corner_rect_blue"
+            android:background="@color/colorPrimary"
             android:text="Cancel"
+            android:textAllCaps="false"
             android:textColor="@color/white" />
 
     </RelativeLayout>

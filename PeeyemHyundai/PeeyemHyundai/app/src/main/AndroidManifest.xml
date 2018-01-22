@@ -21,7 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.peeyemcar.MainActivity" />
+        <activity
+            android:name="com.peeyemcar.MainActivity"
+            android:theme="@style/AppTheme1" />
 
         <activity
             android:name="com.peeyemcar.WebViewActivity"
@@ -75,15 +77,15 @@
         <activity
             android:name="com.peeyemcar.Service"
             android:label="@string/title_activity_service"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.peeyemcar.TestDrive"
             android:label="@string/title_activity_testdrive"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.peeyemcar.ContactUs"
             android:label="Contact Us"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
 
         <meta-data

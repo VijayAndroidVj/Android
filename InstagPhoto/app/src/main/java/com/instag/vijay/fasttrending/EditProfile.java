@@ -16,7 +16,6 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -25,15 +24,12 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -57,6 +53,7 @@ import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -167,7 +164,7 @@ public class EditProfile extends AppCompatActivity {
         findViewById(R.id.btn_delete_account).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showAlert("Are you sure want to delete your account? Please note that this action cannot be undone and all your data(including photos, comments,likes) will be deleted.", true);
+                showAlert("Delete Account", "Are you sure want to delete your account? Please note that this action cannot be undone and all your data(including photos, comments,likes) will be deleted.", true);
             }
         });
 
@@ -175,7 +172,7 @@ public class EditProfile extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                showAlert("Are you sure want to logout?", false);
+                showAlert("Logout", "Are you sure want to logout?", false);
             }
         });
     }
@@ -330,8 +327,37 @@ public class EditProfile extends AppCompatActivity {
     }
 
 
-    public void showAlert(final String title, final boolean isAccountDelete) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
+    public void showAlert(final String title, final String message, final boolean isAccountDelete) {
+
+        new SweetAlertDialog(activity, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+                .setTitleText(title)
+                .setContentText(message)
+//                .setCustomImage(R.drawable.app_logo_back)
+                .setCancelText("No").setConfirmText("Yes")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        if (isAccountDelete) {
+                            deleteMyAccount();
+                        } else {
+                            preferenceUtil.logout();
+                            Intent intent = new Intent(activity, SplashScreen.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            finish();
+                        }
+                        sDialog.dismissWithAnimation();
+                    }
+                })
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismissWithAnimation();
+                    }
+                })
+                .show();
+
+       /* AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
         LayoutInflater inflater = activity.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.custom_ok_dialog_, null);
         alertDialogBuilder.setView(dialogView);
@@ -368,7 +394,7 @@ public class EditProfile extends AppCompatActivity {
             }
         });
 
-        alertDialog.show();
+        alertDialog.show();*/
     }
 
     private void deleteMyAccount() {

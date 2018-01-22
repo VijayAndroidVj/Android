@@ -2,14 +2,12 @@ package com.instag.vijay.fasttrending.adapter;
 
 import android.app.Activity;
 import android.graphics.Typeface;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,6 +25,7 @@ import com.instag.vijay.fasttrending.retrofit.ApiInterface;
 
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,7 +50,28 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
 
 
     public void showMeetingtAlert(Activity activity, final Comments comments) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
+
+        new SweetAlertDialog(activity, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+                .setTitleText("Delete Comment")
+                .setContentText("Are you sure want to delete this comment?")
+//                .setCustomImage(R.drawable.app_logo_back)
+                .setCancelText("No").setConfirmText("Yes")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        deleteComment(comments);
+                        sDialog.dismissWithAnimation();
+                    }
+                })
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismissWithAnimation();
+                    }
+                })
+                .show();
+
+       /* AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
         LayoutInflater inflater = activity.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.custom_ok_dialog_, null);
         alertDialogBuilder.setView(dialogView);
@@ -80,7 +100,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
             }
         });
 
-        alertDialog.show();
+        alertDialog.show();*/
     }
 
     private void deleteComment(final Comments comments) {

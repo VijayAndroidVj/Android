@@ -3,17 +3,17 @@ package com.instag.vijay.fasttrending;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,10 +21,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.instag.vijay.fasttrending.activity.VideoViewActivity;
 import com.instag.vijay.fasttrending.model.Posts;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,6 +45,7 @@ public class PostView extends AppCompatActivity implements View.OnClickListener 
     private ImageView likePost, commentPost;
     private PreferenceUtil preferenceUtil;
     Posts posts;
+    private View ibPlay;
     private String postId;
 
     @Override
@@ -69,6 +72,7 @@ public class PostView extends AppCompatActivity implements View.OnClickListener 
         likePost = findViewById(R.id.likePost);
         txtCreatedDate = findViewById(R.id.txtCreatedDate);
         commentPost = findViewById(R.id.commentPost);
+        ibPlay = findViewById(R.id.ibPlay);
         try {
             postId = getIntent().getStringExtra("postId");
             if (!TextUtils.isEmpty(postId))
@@ -128,70 +132,93 @@ public class PostView extends AppCompatActivity implements View.OnClickListener 
     }
 
     private void setPostValue(Posts post) {
-        if (TextUtils.isEmpty(post.getUsername())) {
-            txtMeetingName.setText("");
-        } else {
-            txtMeetingName.setText(post.getUsername());
-        }
+        try {
+            if (TextUtils.isEmpty(post.getUsername())) {
+                txtMeetingName.setText("");
+            } else {
+                txtMeetingName.setText(post.getUsername());
+            }
 
-        if (TextUtils.isEmpty(post.getDescription())) {
-            txtPostDescription.setText("");
-        } else {
-            txtPostDescription.setText(post.getDescription());
-        }
+            if (TextUtils.isEmpty(post.getDescription())) {
+                txtPostDescription.setText("");
+            } else {
+                txtPostDescription.setText(post.getDescription());
+            }
 
-        txtPostLikesCount.setText(post.getTotal_likes() + " likes");
-
-
-        if (post.isLiked()) {
-            likePost.setImageResource(R.drawable.ic_favorite_black);
-        } else {
-            likePost.setImageResource(R.drawable.ic_favorite_border_black);
-        }
-        if (post.getCreated_date() != null && !post.getCreated_date().isEmpty()) {
-            txtCreatedDate.setVisibility(View.VISIBLE);
-            txtCreatedDate.setText(post.getCreated_date());
-        } else {
-            txtCreatedDate.setVisibility(View.GONE);
-        }
+            txtPostLikesCount.setText(post.getTotal_likes() + " likes");
 
 
-        likePost.setTag(post);
-        commentPost.setTag(post);
-        txtPostLikesCount.setTag(post);
-        likePost.setOnClickListener(this);
-        commentPost.setOnClickListener(this);
-        txtPostLikesCount.setOnClickListener(this);
+            if (post.isLiked()) {
+                likePost.setImageResource(R.drawable.ic_favorite_black);
+            } else {
+                likePost.setImageResource(R.drawable.ic_favorite_border_black);
+            }
+            if (post.getCreated_date() != null && !post.getCreated_date().isEmpty()) {
+                txtCreatedDate.setVisibility(View.VISIBLE);
+                txtCreatedDate.setText(post.getCreated_date());
+            } else {
+                txtCreatedDate.setVisibility(View.GONE);
+            }
 
-        if (post.getPostmail() != null && post.getPostmail().equalsIgnoreCase(preferenceUtil.getUserMailId())) {
-            btnpostDelete.setTag(post);
-            btnpostDelete.setOnClickListener(this);
-            btnpostDelete.setVisibility(View.VISIBLE);
-        } else {
-            btnpostDelete.setVisibility(GONE);
-        }
 
-        if (post.getImage() != null && !post.getImage().isEmpty()) {
+            likePost.setTag(post);
+            commentPost.setTag(post);
+            txtPostLikesCount.setTag(post);
+            likePost.setOnClickListener(this);
+            commentPost.setOnClickListener(this);
+            txtPostLikesCount.setOnClickListener(this);
 
-            Glide.with(activity).load(post.getImage()).centerCrop()
-                    .thumbnail(0.5f)
-                    .crossFade()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(postImage);
-        }
+            if (post.getPostmail() != null && post.getPostmail().equalsIgnoreCase(preferenceUtil.getUserMailId())) {
+                btnpostDelete.setTag(post);
+                btnpostDelete.setOnClickListener(this);
+                btnpostDelete.setVisibility(View.VISIBLE);
+            } else {
+                btnpostDelete.setVisibility(GONE);
+            }
 
-        if (post.getProfile_image() != null && !post.getProfile_image().isEmpty()) {
+            if (post.getImage() != null && !post.getImage().isEmpty()) {
 
-            Glide.with(activity).load(post.getProfile_image()).asBitmap().centerCrop()
-                    .thumbnail(0.5f)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(ivProfile);
+                if (post.getFileType().equalsIgnoreCase("2")) {
+                    if (post.getVideoThumb() != null && !post.getVideoThumb().isEmpty()) {
+                        byte[] decodedString = Base64.decode(post.getVideoThumb(), Base64.DEFAULT);
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        if (bitmap != null)
+                            postImage.setImageBitmap(bitmap);
+                    }
+                    ibPlay.setVisibility(View.VISIBLE);
+                    ibPlay.setTag(post);
+                    ibPlay.setOnClickListener(this);
+                } else {
+                    ibPlay.setVisibility(View.GONE);
+                    Glide.with(activity).load(post.getImage()).centerCrop()
+                            .thumbnail(0.5f)
+                            .crossFade()
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(postImage);
+                }
+            }
+
+            if (post.getProfile_image() != null && !post.getProfile_image().isEmpty() && !activity.isFinishing()) {
+                Glide.with(activity).load(post.getProfile_image()).asBitmap().centerCrop()
+                        .thumbnail(0.5f)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(ivProfile);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.ibPlay:
+                Posts posts = (Posts) view.getTag();
+                Intent myIntent = new Intent(activity,
+                        VideoViewActivity.class);
+                myIntent.putExtra("post", posts);
+                startActivity(myIntent);
+                break;
             case R.id.btnpostDelete:
                 Object object = view.getTag();
                 if (object instanceof Posts) {
@@ -279,7 +306,27 @@ public class PostView extends AppCompatActivity implements View.OnClickListener 
 
 
     private void showMeetingtAlert(Activity activity, String title, String message, final Posts post) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
+        new SweetAlertDialog(activity, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+                .setTitleText("Delete Comment")
+                .setContentText("Are you sure want to delete this comment?")
+//                .setCustomImage(R.drawable.app_logo_back)
+                .setCancelText("No").setConfirmText("Yes")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        deletePost(post);
+                        sDialog.dismissWithAnimation();
+                    }
+                })
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismissWithAnimation();
+                    }
+                })
+                .show();
+
+        /*AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
         LayoutInflater inflater = activity.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.custom_ok_dialog_, null);
         alertDialogBuilder.setView(dialogView);
@@ -309,7 +356,7 @@ public class PostView extends AppCompatActivity implements View.OnClickListener 
             }
         });
 
-        alertDialog.show();
+        alertDialog.show();*/
     }
 
     private void deletePost(final Posts post) {

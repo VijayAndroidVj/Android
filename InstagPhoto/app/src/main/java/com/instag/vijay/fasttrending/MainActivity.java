@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.support.annotation.IdRes;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
@@ -19,9 +18,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +31,7 @@ import com.instag.vijay.fasttrending.retrofit.ApiInterface;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -56,15 +54,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ActionBar.LayoutParams.WRAP_CONTENT,
                 ActionBar.LayoutParams.MATCH_PARENT,
                 Gravity.CENTER);
-        actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setHomeButtonEnabled(false);
         View view = LayoutInflater.from(this).inflate(R.layout.actionbar, null);
         final TextView name = (TextView) view.findViewById(R.id.txtAppName);
         view.findViewById(R.id.iv_actionbar_noti).setOnClickListener(this);
         iv_actionbar_settings = view.findViewById(R.id.iv_actionbar_settings);
         searchEditText = (EditText) view.findViewById(R.id.searchview);
-        searchEditText.setTextColor(getResources().getColor(R.color.white));
-        searchEditText.setHintTextColor(getResources().getColor(R.color.white));
+        searchEditText.setTextColor(getResources().getColor(R.color.black));
+        searchEditText.setHintTextColor(getResources().getColor(R.color.grey1));
         iv_actionbar_settings.setOnClickListener(this);
         searchEditText.clearFocus();
 
@@ -100,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     name.setText(getString(R.string.app_name));
                     if (position == 4) {
                         PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
-                        name.setText(preferenceUtil.getUserName());
+                        name.setText(preferenceUtil.getUserMailId().split("@")[0]);
                         iv_actionbar_settings.setVisibility(View.VISIBLE);
                     }
 
@@ -276,7 +275,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void showMeetingtAlert(final Activity activity) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
+
+        new SweetAlertDialog(activity, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+                .setTitleText("Logout")
+                .setContentText("Are you sure want to logout?")
+//                .setCustomImage(R.drawable.app_logo_back)
+                .setCancelText("No").setConfirmText("Yes")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
+                        preferenceUtil.logout();
+                        Intent in = new Intent(activity, SplashScreen.class);
+                        in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(in);
+                        finish();
+                        sDialog.dismissWithAnimation();
+                    }
+                })
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismissWithAnimation();
+                    }
+                })
+                .show();
+
+       /* AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
         LayoutInflater inflater = activity.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.custom_ok_dialog_, null);
         alertDialogBuilder.setView(dialogView);
@@ -312,7 +339,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        alertDialog.show();
+        alertDialog.show();*/
     }
 
 

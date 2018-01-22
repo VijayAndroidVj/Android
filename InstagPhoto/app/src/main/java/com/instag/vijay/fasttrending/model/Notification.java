@@ -23,6 +23,12 @@ public class Notification {
     @SerializedName("postimage")
     private String postimage;
 
+    @SerializedName("videoThumb")
+    private String videoThumb;
+
+    @SerializedName("fileType")
+    private String fileType;
+
     @SerializedName("profile_image")
     private String profile_image;
 
@@ -94,5 +100,21 @@ public class Notification {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getVideoThumb() {
+        return videoThumb;
+    }
+
+    public void setVideoThumb(String videoThumb) {
+        this.videoThumb = videoThumb;
+    }
+
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
     }
 }

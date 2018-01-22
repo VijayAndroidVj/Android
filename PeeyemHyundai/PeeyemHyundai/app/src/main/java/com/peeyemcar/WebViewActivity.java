@@ -233,6 +233,16 @@ public class WebViewActivity extends AppCompatActivity {
             mContext = c;
         }
 
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (webView != null && webView.canGoBack()) {
+            webView.goBack();
+            return;
+        }
+        super.onBackPressed();
     }
 
     @Override

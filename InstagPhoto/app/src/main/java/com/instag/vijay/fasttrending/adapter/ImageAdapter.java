@@ -3,10 +3,11 @@ package com.instag.vijay.fasttrending.adapter;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Typeface;
+import android.graphics.Point;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -242,13 +243,16 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
 
     private Activity activity;
     private LayoutInflater layoutInflater;
-    private Typeface font;
+    int width;
 
     public ImageAdapter(Activity activity, List<Posts> moviesList) {
         this.originalList = moviesList;
         this.activity = activity;
         layoutInflater = LayoutInflater.from(activity);
-        font = Typeface.createFromAsset(activity.getAssets(), "fontawesome-webfont.ttf");
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        width = size.x;
     }
 
     @Override
@@ -260,6 +264,8 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Posts post = originalList.get(position);
+        holder.rlgrid.getLayoutParams().width = width / 3;
+        holder.postImage.getLayoutParams().width = width / 3;
         holder.rlgrid.setOnClickListener(this);
         holder.rlgrid.setTag(post);
         if (post.getImage() != null && !post.getImage().isEmpty()) {

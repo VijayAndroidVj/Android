@@ -3,15 +3,16 @@ package com.instag.vijay.fasttrending.adapter;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,6 +34,7 @@ import com.instag.vijay.fasttrending.retrofit.ApiInterface;
 
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,11 +47,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.ibPlay:
             case R.id.btnpostDelete:
                 Object object = v.getTag();
                 if (object instanceof Posts) {
                     Posts post = (Posts) object;
-                    showMeetingtAlert(activity, activity.getString(R.string.app_name), "Are you sure want to delete this post?", post);
+                    showMeetingtAlert(activity, "Delete Post", "Are you sure want to delete this post?", post);
                 }
                 break;
             case R.id.likePost:
@@ -147,7 +150,28 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
 
 
     private void showMeetingtAlert(Activity activity, String title, String message, final Posts post) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
+
+        new SweetAlertDialog(activity, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+                .setTitleText(title)
+                .setContentText(message)
+//                .setCustomImage(R.drawable.app_logo_back)
+                .setCancelText("No").setConfirmText("Yes")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        deletePost(post);
+                        sDialog.dismissWithAnimation();
+                    }
+                })
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismissWithAnimation();
+                    }
+                })
+                .show();
+
+       /* AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
         LayoutInflater inflater = activity.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.custom_ok_dialog_, null);
         alertDialogBuilder.setView(dialogView);
@@ -177,7 +201,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
             }
         });
 
-        alertDialog.show();
+        alertDialog.show();*/
     }
 
     private void deletePost(final Posts post) {
@@ -246,7 +270,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         private Button btnpostDelete;
         private ImageView postImage, ivProfile;
         private ImageView likePost, commentPost;
-        private View rlParentMeeting, rlMeeting1;
+        private View rlParentMeeting, rlMeeting1, ibPlay;
 
         private MyViewHolder(View view) {
             super(view);
@@ -262,6 +286,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
             rlParentMeeting = view.findViewById(R.id.rlParentMeeting);
             rlMeeting1 = view.findViewById(R.id.rlMeeting1);
             txtCreatedDate = view.findViewById(R.id.txtCreatedDate);
+            ibPlay = view.findViewById(R.id.ibPlay);
         }
     }
 
@@ -289,7 +314,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         holder.rlParentMeeting.setTag(post);
         holder.rlParentMeeting.setOnClickListener(this);
         holder.rlMeeting1.setTag(post);
+        holder.ibPlay.setTag(post);
         holder.rlMeeting1.setOnClickListener(this);
+        holder.ibPlay.setOnClickListener(this);
 
         if (TextUtils.isEmpty(post.getUsername())) {
             holder.txtMeetingName.setText("");
@@ -334,15 +361,26 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
             holder.txtCreatedDate.setVisibility(View.GONE);
         }
 
+        if (post.getFileType().equalsIgnoreCase("2")) {
+            if (post.getVideoThumb() != null && !post.getVideoThumb().isEmpty()) {
+                byte[] decodedString = Base64.decode(post.getVideoThumb().getBytes(), Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                if (bitmap != null)
+                    holder.postImage.setImageBitmap(bitmap);
 
-        if (post.getImage() != null && !post.getImage().isEmpty()) {
-
-            Glide.with(activity).load(post.getImage()).centerCrop()
-                    .thumbnail(0.5f)
-                    .crossFade()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(holder.postImage);
+            }
+            holder.ibPlay.setVisibility(View.VISIBLE);
+        } else {
+            holder.ibPlay.setVisibility(View.GONE);
+            if (post.getImage() != null && !post.getImage().isEmpty()) {
+                Glide.with(activity).load(post.getImage()).centerCrop()
+                        .thumbnail(0.5f)
+                        .crossFade()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(holder.postImage);
+            }
         }
+
 
         if (post.getProfile_image() != null && !post.getProfile_image().isEmpty()) {
 

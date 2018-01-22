@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="/home/vijay/Android Projects/Android/PeeyemHonda/gmailbackgroundlibrary/build/intermediates/intermediate-jars/release/classes.jar"
+        jumboMode="false"
+        min-sdk-version="15"
+        optimize="true"
+        revision="27.0.1"
+        sha1="fc859974bc1181946d5668634961dfc4d01c32a2">
+        <dex dex="/home/vijay/Android Projects/Android/PeeyemHonda/app/build/intermediates/transforms/preDex/release/75.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vijay/Android Projects/Android/PeeyemHonda/library/build/intermediates/intermediate-jars/release/classes.jar"
+        jumboMode="false"
+        min-sdk-version="15"
+        optimize="true"
+        revision="27.0.1"
+        sha1="f3c0fcbfd7aa951dd087da3737bef8146c84c742">
+        <dex dex="/home/vijay/Android Projects/Android/PeeyemHonda/app/build/intermediates/transforms/preDex/release/74.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vijay/Android Projects/Android/PeeyemHonda/gmailbackgroundlibrary/libs/additionnal.jar"
+        jumboMode="false"
+        min-sdk-version="15"
+        optimize="true"
+        revision="27.0.1"
+        sha1="bd9e8dc422bb8c8405359947fe9f4282b49f57f4">
+        <dex dex="/home/vijay/Android Projects/Android/PeeyemHonda/app/build/intermediates/transforms/preDex/release/26.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vijay/Android Projects/Android/PeeyemHonda/gmailbackgroundlibrary/libs/mail.jar"
+        jumboMode="false"
+        min-sdk-version="15"
+        optimize="true"
+        revision="27.0.1"
+        sha1="428e267abff0d10802ccde86b915da2c20471160">
+        <dex dex="/home/vijay/Android Projects/Android/PeeyemHonda/app/build/intermediates/transforms/preDex/release/24.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/vijay/Android Projects/Android/PeeyemHonda/gmailbackgroundlibrary/libs/activation.jar"
+        jumboMode="false"
+        min-sdk-version="15"
+        optimize="true"
+        revision="27.0.1"
+        sha1="d1257cbff6faa44c1f325ae0d9413522d4644383">
+        <dex dex="/home/vijay/Android Projects/Android/PeeyemHonda/app/build/intermediates/transforms/preDex/release/25.jar" />
+    </item>
+
+</items>

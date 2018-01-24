@@ -186,8 +186,8 @@ public class Service extends AppCompatActivity {
 
     private void sendTestEmail() {
         BackgroundMail.newBuilder(this)
-                .withUsername("peeyamhyundai@gmail.com")
-                .withPassword("pmhyundai2017")
+                .withUsername("peeyemhonda2017@gmail.com")
+                .withPassword("pmhonda2017")
                 .withMailto("customercare@honda2wheelersindia.com")
                 .withSubject("Book A Service")
                 .withBody(str)

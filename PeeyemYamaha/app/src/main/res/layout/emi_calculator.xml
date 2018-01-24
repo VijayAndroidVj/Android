@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/applayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/applayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <LinearLayout
+                    android:id="@+id/llEmi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- <RelativeLayout
+                         android:id="@+id/rlModel"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:padding="15dp">
+
+                         <ImageView
+                             android:id="@+id/ivcar"
+                             android:layout_width="25dp"
+                             android:layout_height="25dp"
+                             android:src="@drawable/car"
+                             android:tint="@color/colorPrimary" />
+
+                         <Spinner
+                             android:id="@+id/spinner"
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:layout_toRightOf="@+id/ivcar"
+                             android:gravity="center"
+                             android:padding="5dp"
+                             android:visibility="visible" />
+
+                     </RelativeLayout>
+
+
+                     <RelativeLayout
+                         android:id="@+id/rlVarient"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:padding="15dp">
+
+                         <ImageView
+                             android:id="@+id/ivVarient"
+                             android:layout_width="25dp"
+                             android:layout_height="25dp"
+                             android:src="@drawable/cars"
+                             android:tint="@color/colorPrimary" />
+
+                         <Spinner
+                             android:id="@+id/spinner2"
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:layout_toRightOf="@+id/ivVarient"
+                             android:gravity="center"
+                             android:padding="5dp"
+                             android:visibility="visible" />
+
+                     </RelativeLayout>
+
+                     <RelativeLayout
+                         android:id="@+id/rlOnRoadPrice"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:padding="15dp">
+
+                         <ImageView
+                             android:id="@+id/ivOnRoadPrice"
+                             android:layout_width="25dp"
+                             android:layout_height="25dp"
+                             android:src="@drawable/road"
+                             android:tint="@color/colorPrimary" />
+
+                         <TextView
+                             android:id="@+id/txt_OnRoadPrice"
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:layout_toLeftOf="@+id/ivOnRoadPricedownarrow"
+                             android:layout_toRightOf="@+id/ivOnRoadPrice"
+                             android:gravity="center"
+                             android:hint="On Road Price"
+                             android:padding="5dp"
+                             android:textColor="@color/black" />
+
+                         <ImageView
+                             android:id="@+id/ivOnRoadPricedownarrow"
+                             android:layout_width="25dp"
+                             android:layout_height="25dp"
+                             android:layout_alignParentRight="true"
+                             android:padding="5dp"
+                             android:src="@drawable/downarrow"
+                             android:tint="@color/colorPrimary"
+                             android:visibility="invisible" />
+                     </RelativeLayout>
+ -->
+                    <RelativeLayout
+                        android:id="@+id/rlLoanAmount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp">
+
+                        <ImageView
+                            android:id="@+id/ivLoanAmount"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/rupee"
+                            android:tint="@color/colorPrimary" />
+
+                        <EditText
+                            android:id="@+id/txt_LoanAmount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_toLeftOf="@+id/ivLoanAmountdownarrow"
+                            android:layout_toRightOf="@+id/ivLoanAmount"
+                            android:gravity="center"
+                            android:hint="Loan Amount"
+                            android:inputType="number"
+                            android:maxLength="8"
+                            android:padding="10dp"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+
+                        <ImageView
+                            android:id="@+id/ivLoanAmountdownarrow"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_alignParentRight="true"
+                            android:padding="5dp"
+                            android:src="@drawable/downarrow"
+                            android:tint="@color/colorPrimary"
+                            android:visibility="invisible" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rlInterest"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp">
+
+                        <ImageView
+                            android:id="@+id/ivInterest"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/percent"
+                            android:tint="@color/colorPrimary" />
+
+                        <EditText
+                            android:id="@+id/txt_Interest"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_toLeftOf="@+id/ivInterestdownarrow"
+                            android:layout_toRightOf="@+id/ivInterest"
+                            android:gravity="center"
+                            android:hint="Rate of Interest"
+                            android:inputType="number"
+                            android:padding="10dp"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+
+                        <ImageView
+                            android:id="@+id/ivInterestdownarrow"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_alignParentRight="true"
+                            android:padding="5dp"
+                            android:src="@drawable/downarrow"
+                            android:tint="@color/colorPrimary"
+                            android:visibility="invisible" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rlTenure"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp">
+
+                        <ImageView
+                            android:id="@+id/ivTenure"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/calendar"
+                            android:tint="@color/colorPrimary" />
+
+                        <Spinner
+                            android:id="@+id/spinner3"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:layout_toRightOf="@+id/ivTenure"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:textAlignment="center"
+                            android:visibility="visible" />
+                    </RelativeLayout>
+
+                    <!--
+                                        <RelativeLayout
+                                            android:id="@+id/rlDownPayment"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:padding="15dp">
+
+                                            <ImageView
+                                                android:id="@+id/ivDownPayment"
+                                                android:layout_width="25dp"
+                                                android:layout_height="25dp"
+                                                android:src="@drawable/money"
+                                                android:tint="@color/colorPrimary" />
+
+                                            <EditText
+                                                android:id="@+id/txt_DownPayment"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginLeft="20dp"
+                                                android:layout_marginRight="20dp"
+                                                android:layout_toLeftOf="@+id/ivDownPaymentdownarrow"
+                                                android:layout_toRightOf="@+id/ivDownPayment"
+                                                android:gravity="center"
+                                                android:hint="Down Payment"
+                                                android:inputType="number"
+                                                android:padding="10dp"
+                                                android:textColor="@color/black"
+                                                android:textSize="12sp" />
+
+                                            <ImageView
+                                                android:id="@+id/ivDownPaymentdownarrow"
+                                                android:layout_width="25dp"
+                                                android:layout_height="25dp"
+                                                android:layout_alignParentRight="true"
+                                                android:padding="5dp"
+                                                android:src="@drawable/downarrow"
+                                                android:tint="@color/colorPrimary"
+                                                android:visibility="invisible" />
+                                        </RelativeLayout>
+                    -->
+
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/card_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:padding="5dp"
+                        android:visibility="visible"
+                        card_view:cardCornerRadius="15dp"
+                        card_view:cardElevation="5dp"
+                        card_view:cardUseCompatPadding="true">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="Calculated EMI is"
+                                android:textColor="@color/black"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="5dp">
+
+                                <TextView
+                                    android:id="@+id/txtrs2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="@string/Rs"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/txtEMI"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_toEndOf="@+id/txtrs2"
+                                    android:layout_toRightOf="@+id/txtrs2"
+                                    android:text="0.00"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold" />
+                            </RelativeLayout>
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="20dp"
+                                android:text="Total Interest Payable"
+                                android:textColor="@color/black"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="5dp">
+
+                                <TextView
+                                    android:id="@+id/txtrs1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="@string/Rs"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/txtTotalInterest"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_toEndOf="@+id/txtrs1"
+                                    android:layout_toRightOf="@+id/txtrs1"
+                                    android:text="0.00"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold" />
+                            </RelativeLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="20dp"
+                                android:text="Total Payment"
+                                android:textColor="@color/black"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="5dp">
+
+                                <TextView
+                                    android:id="@+id/txtrs"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="@string/Rs"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/txtTotalPayment"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_toEndOf="@+id/txtrs"
+                                    android:layout_toRightOf="@+id/txtrs"
+                                    android:text="0.00"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold" />
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnClear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorPrimary"
+        android:text="Clear"
+        android:textColor="@color/white" />
+</RelativeLayout>

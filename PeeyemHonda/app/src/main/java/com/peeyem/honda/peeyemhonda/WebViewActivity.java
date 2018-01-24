@@ -113,9 +113,20 @@ public class WebViewActivity extends AppCompatActivity {
 
                     Log.d("onRenderProcessGone ", "aaaa");
                     super.onPageFinished(view, url);
+                    webView.loadUrl("javascript:(function() { " +
+                            "document.getElementsByClassName('public-notice col-md-12 col-xs-12 col-sm-12')[0].style.display='none';})()");
+                    webView.loadUrl("javascript:(function() { " +
+                            "document.getElementsByClassName('morediv')[0].style.display='none';})()");
+
+                    webView.loadUrl("javascript:(function() { " +
+                            "document.getElementsByClassName('panel-group')[0].style.display='none';})()");
+
+                    webView.loadUrl("javascript:(function() { " +
+                            "document.getElementsByClassName('col-md-12 col-xs-12 col-sm-12')[0].style.display='none';})()");
 
                     webView.loadUrl("javascript:(function() { " +
                             "document.getElementsByClassName('innerHeader')[0].style.display='none'; })()");
+
                     // hide element by id
                     webView.loadUrl("javascript:(function() { " +
                             "document.getElementsByClassName('topHeader')[0].style.display='none';})()");
@@ -185,6 +196,31 @@ public class WebViewActivity extends AppCompatActivity {
         @Override
         public void onProgressChanged(WebView view, final int newProgress) {
             super.onProgressChanged(view, newProgress);
+
+            if (newProgress > 50) {
+                webView.loadUrl("javascript:(function() { " +
+                        "document.getElementsByClassName('public-notice col-md-12 col-xs-12 col-sm-12')[0].style.display='none';})()");
+                webView.loadUrl("javascript:(function() { " +
+                        "document.getElementsByClassName('navbar navbar-default col-md-8')[0].style.display='none';})()");
+                webView.loadUrl("javascript:(function() { " +
+                        "document.getElementsByClassName('honda_power_logo')[0].style.display='none';})()");
+                webView.loadUrl("javascript:(function() { " +
+                        "document.getElementsByClassName('morediv')[0].style.display='none';})()");
+
+                webView.loadUrl("javascript:(function() { " +
+                        "document.getElementsByClassName('panel-group')[0].style.display='none';})()");
+
+                webView.loadUrl("javascript:(function() { " +
+                        "document.getElementsByClassName('col-md-12 col-xs-12 col-sm-12')[0].style.display='none';})()");
+
+                webView.loadUrl("javascript:(function() { " +
+                        "document.getElementsByClassName('innerHeader')[0].style.display='none'; })()");
+
+                // hide element by id
+                webView.loadUrl("javascript:(function() { " +
+                        "document.getElementsByClassName('topHeader')[0].style.display='none';})()");
+
+            }
             if (newProgress == 100) {
                 Log.i("WEbview :", "onProgressChanged : " + newProgress + "");
                 new Handler().postDelayed(new Runnable() {
@@ -192,12 +228,6 @@ public class WebViewActivity extends AppCompatActivity {
                     public void run() {
                         progressBar.setVisibility(View.GONE);
                         // hide element by class name
-                        webView.loadUrl("javascript:(function() { " +
-                                "document.getElementsByClassName('dropMenu')[0].style.display='none'; })()");
-                        // hide element by id
-                        webView.loadUrl("javascript:(function() { " +
-                                "document.getElementsByClassName('topMenu')[0].style.display='none';})()");
-
 
                     }
                 }, 1000);

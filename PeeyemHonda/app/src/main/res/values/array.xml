@@ -7,20 +7,30 @@
     </string-array>
 
     <string-array name="carModel">
-        <item>Car Model*</item>
-        <item>EON</item>
-        <item>i10</item>
-        <item>Grand i10</item>
-        <item>Xcent</item>
+        <item>Select Bike Model*</item>
+        <item>CB HORNET 160R</item>
+        <item>UNICORN 160</item>
+        <item>UNICORN</item>
+        <item>SHINESP</item>
 
-        <item>Elite i20</item>
-        <item>i20 Active</item>
-        <item>Verna</item>
-        <item>All New Elantra</item>
+        <item>CB SHINE</item>
+        <item>LIVA</item>
+        <item>DREAM YUGA</item>
+        <item>DREAM NEO</item>
 
-        <item>Creta</item>
-        <item>Tucson</item>
-        <item>Santa Fe</item>
+        <item>CD110</item>
+        <item>Grazia</item>
+        <item>DIO</item>
+        <item>AVIATOR</item>
+        <item>ACTIVA-I</item>
+        <item>ACTIVA125</item>
+        <item>CLIQ</item>
+        <item>GOLDWING</item>
+        <item>CBR-1000RR</item>
+        <item>CBR-1000R</item>
+        <item>CBR-650F</item>
+        <item>AFRICAN TWIN</item>
+        <item>NAVI</item>
     </string-array>
 
     <string-array name="state">

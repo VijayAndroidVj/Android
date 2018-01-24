@@ -1,0 +1,55 @@
+<resources>
+    <string-array name="serviceType">
+        <item>Service Type*</item>
+        <item>Free Service</item>
+        <item>Paid Service</item>
+        <item>Running Repair</item>
+    </string-array>
+
+    <string-array name="carModel">
+        <item>Select Bike Model*</item>
+        <item>YZF R1</item>
+        <item>MT-09</item>
+
+        <item>FAZER25</item>
+        <item>FZ25</item>
+
+        <item>YZF R15 VER 2.0</item>
+        <item>YZF R15s</item>
+        <item>FAZER-FI</item>
+        <item>FZS-FI</item>
+
+        <item>FZ-FI</item>
+        <item>SZ-RR VER 2.0</item>
+        <item>SALUTO DISK BRAKE</item>
+
+        <item>SALUTO</item>
+        <item>SALUTO RX</item>
+
+
+        <item>FASCINO</item>
+        <item>ALPHA</item>
+        <item>RAY-Z</item>
+        <item>RAY ZR</item>
+
+
+    </string-array>
+
+    <string-array name="state">
+        <item>Select State*</item>
+        <item>kerala</item>
+
+    </string-array>
+
+    <string-array name="city">
+        <item>Select City*</item>
+        <item>TelliCherry</item>
+
+    </string-array>
+
+    <string-array name="dealerLocation">
+        <item>Dealer Location*</item>
+        <item>Peeyem, Thalassery, Tellicherry</item>
+
+    </string-array>
+</resources>

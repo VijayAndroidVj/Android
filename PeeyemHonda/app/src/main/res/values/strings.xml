@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Peeyem Honda</string>
+    <string name="app_name">Peeyem Bikes</string>
     <string name="title_activity_about_us">AboutUs</string>
     <string name="title_activity_product">Product List</string>
     <string name="title_activity_download">Download List</string>

@@ -444,7 +444,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
                     startActivity(in);
                     break;
                 case 3:
-                    String phone = "1800 103 3434 ";
+                    String phone = "1800 103 3434";
                     Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
                     startActivity(intent);
                     break;
@@ -472,7 +472,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
                     startActivity(Intent.createChooser(getShareIntent(), getResources().getString(R.string.send_to)));
                     break;
                 case 9:
-                    phone = "1800 103 3434 ";
+                    phone = "1800 103 3434";
                     intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
                     startActivity(intent);
                     break;

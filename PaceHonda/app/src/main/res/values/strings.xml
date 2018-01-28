@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Pace Honda</string>
+    <string name="title_activity_about_us">AboutUs</string>
+    <string name="title_activity_product">Product List</string>
+    <string name="title_activity_download">Download List</string>
+    <string name="title_activity_view_pdf">Offer Detail</string>
+    <string name="title_activity_service">Service</string>
+    <string name="title_activity_testdrive">Test Drive</string>
+    <string name="send_to">Share Pace Honda App</string>
+    <string name="Rs">\u20B9</string>
+    <string name="hint_phone_number">Phone Number</string>
+    <string name="hint_otpphone_number">Enter Code</string>
+    <string name="terms"> By signing up for an account you agree to our Terms and Conditions</string>
+    <string name="signup">Register</string>
+    <string name="signin">SignIn</string>
+    <string name="name">Name*</string>
+    <string name="username">Username*</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+    <string name="email">Email*</string>
+    <string name="password">Password*</string>
+    <string name="facebook_app_id">1561734583874549</string>
+    <string name="fb_login_protocol_scheme">fb1561734583874549</string>
+
+    <string name="products">Products</string>
+    <string name="service">Service</string>
+    <string name="test_drive">Test Drive</string>
+    <string name="breakdown">BreakDown</string>
+    <string name="emi">Emi Calculator</string>
+    <string name="car_used">Car Used</string>
+    <string name="offer">Offer</string>
+    <string name="about">About us</string>
+    <string name="locateus">Locate us</string>
+    <string name="share">Share</string>
+    <string name="help">Help</string>
+    <string name="logout">Logout</string>
+
+    <string name="contactus_click_email_address">Click on the email address to reach us</string>
+</resources>

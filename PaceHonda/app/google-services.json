@@ -1,0 +1,294 @@
+{
+  "project_info": {
+    "project_number": "789721664367",
+    "firebase_url": "https://pioneer-c85bc.firebaseio.com",
+    "project_id": "pioneer-c85bc",
+    "storage_bucket": "pioneer-c85bc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:789721664367:android:7a785680f24816e0",
+        "android_client_info": {
+          "package_name": "com.ionic.pioneer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "789721664367-atjtckv333ods6j2ue4sp3i15pmttnfs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ionic.pioneer",
+            "certificate_hash": "08fcc3e15982a27d7d5e404ac4230477a08651b5"
+          }
+        },
+        {
+          "client_id": "789721664367-14iledm13h0umrgi1vqmuknep4ccr4bk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjXgzTsNafzEHNFf8f4Boow9SvLrKS0-E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "789721664367-14iledm13h0umrgi1vqmuknep4ccr4bk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:789721664367:android:2a0a4eba35991a2c",
+        "android_client_info": {
+          "package_name": "io.ionic.pioneer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "789721664367-14iledm13h0umrgi1vqmuknep4ccr4bk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjXgzTsNafzEHNFf8f4Boow9SvLrKS0-E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:789721664367:android:dddc9d9cc331582b",
+        "android_client_info": {
+          "package_name": "com.peeyem.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "789721664367-am26jcjrqt0h1d6u66f1bs3gc0295hre.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.peeyem.app",
+            "certificate_hash": "91644d62a29a7dc0d2d0d2ef56fb2e91ee08fd04"
+          }
+        },
+        {
+          "client_id": "789721664367-ua8khut4542jjbr94odo22njv3c06bcs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.peeyem.app",
+            "certificate_hash": "08fcc3e15982a27d7d5e404ac4230477a08651b5"
+          }
+        },
+        {
+          "client_id": "789721664367-14iledm13h0umrgi1vqmuknep4ccr4bk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjXgzTsNafzEHNFf8f4Boow9SvLrKS0-E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "789721664367-14iledm13h0umrgi1vqmuknep4ccr4bk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:789721664367:android:9e2eacb8baba7724",
+        "android_client_info": {
+          "package_name": "com.peeyem.honda.peeyemhonda"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "789721664367-madbsmf6ik91912in31abmeeu4em0cob.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.peeyem.honda.peeyemhonda",
+            "certificate_hash": "08fcc3e15982a27d7d5e404ac4230477a08651b5"
+          }
+        },
+        {
+          "client_id": "789721664367-nps4c9gne5h6lk92l1m43523s45ed95g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.peeyem.honda.peeyemhonda",
+            "certificate_hash": "91644d62a29a7dc0d2d0d2ef56fb2e91ee08fd04"
+          }
+        },
+        {
+          "client_id": "789721664367-14iledm13h0umrgi1vqmuknep4ccr4bk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjXgzTsNafzEHNFf8f4Boow9SvLrKS0-E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "789721664367-14iledm13h0umrgi1vqmuknep4ccr4bk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:789721664367:android:a93024cea3a42722",
+        "android_client_info": {
+          "package_name": "com.peeyem.honda.peeyamyamaha"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "789721664367-njat8637l9uo00uekhflhm84m5uo97gp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.peeyem.honda.peeyamyamaha",
+            "certificate_hash": "91644d62a29a7dc0d2d0d2ef56fb2e91ee08fd04"
+          }
+        },
+        {
+          "client_id": "789721664367-kfadvtmodg4nd1lk0011esq42g8j8ta8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.peeyem.honda.peeyamyamaha",
+            "certificate_hash": "08fcc3e15982a27d7d5e404ac4230477a08651b5"
+          }
+        },
+        {
+          "client_id": "789721664367-14iledm13h0umrgi1vqmuknep4ccr4bk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjXgzTsNafzEHNFf8f4Boow9SvLrKS0-E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "789721664367-14iledm13h0umrgi1vqmuknep4ccr4bk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:789721664367:android:846dbcd035a9648a",
+        "android_client_info": {
+          "package_name": "com.pace.honda.pacehonda"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "789721664367-9rn6d2g5idc0nitp28ec91di7km16mid.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pace.honda.pacehonda",
+            "certificate_hash": "91644d62a29a7dc0d2d0d2ef56fb2e91ee08fd04"
+          }
+        },
+        {
+          "client_id": "789721664367-60c2oid3l9pm3ve2pfjjo5jg5hb4a3uf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pace.honda.pacehonda",
+            "certificate_hash": "08fcc3e15982a27d7d5e404ac4230477a08651b5"
+          }
+        },
+        {
+          "client_id": "789721664367-14iledm13h0umrgi1vqmuknep4ccr4bk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjXgzTsNafzEHNFf8f4Boow9SvLrKS0-E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "789721664367-14iledm13h0umrgi1vqmuknep4ccr4bk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

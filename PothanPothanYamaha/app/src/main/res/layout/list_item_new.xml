@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rlCarItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/txtCarModel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="Honda SAN XG"
+        android:textColor="@color/black" />
+
+    <ImageView
+        android:id="@+id/ivCar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/txtCarModel"
+        android:layout_margin="5dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtCarModel"
+        android:layout_margin="5dp"
+        android:layout_toRightOf="@+id/ivCar"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/txtCarkms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="KMS RUN : 55487"
+            android:textColor="@color/black" />
+
+
+        <TextView
+            android:id="@+id/txtCaryear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="YEAR : 2004"
+            android:textColor="@color/black" />
+
+
+        <TextView
+            android:id="@+id/txtCarprice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="PRICE : 2,00,000"
+            android:textColor="@color/black" />
+
+
+    </LinearLayout>
+
+</RelativeLayout>

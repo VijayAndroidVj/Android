@@ -1,0 +1,53 @@
+<resources>
+    <string-array name="serviceType">
+        <item>Service Type*</item>
+        <item>Free Service</item>
+        <item>Paid Service</item>
+        <item>Running Repair</item>
+    </string-array>
+
+    <string-array name="carModel">
+        <item>Select Bike Model*</item>
+        <item>CB HORNET 160R</item>
+        <item>UNICORN 160</item>
+        <item>UNICORN</item>
+        <item>SHINESP</item>
+
+        <item>CB SHINE</item>
+        <item>LIVA</item>
+        <item>DREAM YUGA</item>
+        <item>DREAM NEO</item>
+
+        <item>CD110</item>
+        <item>Grazia</item>
+        <item>DIO</item>
+        <item>AVIATOR</item>
+        <item>ACTIVA-I</item>
+        <item>ACTIVA125</item>
+        <item>CLIQ</item>
+        <item>GOLDWING</item>
+        <item>CBR-1000RR</item>
+        <item>CBR-1000R</item>
+        <item>CBR-650F</item>
+        <item>AFRICAN TWIN</item>
+        <item>NAVI</item>
+    </string-array>
+
+    <string-array name="state">
+        <item>Select State*</item>
+        <item>kerala</item>
+
+    </string-array>
+
+    <string-array name="city">
+        <item>Select City*</item>
+        <item>TelliCherry</item>
+
+    </string-array>
+
+    <string-array name="dealerLocation">
+        <item>Dealer Location*</item>
+        <item>Pace, Thalassery, Tellicherry</item>
+
+    </string-array>
+</resources>

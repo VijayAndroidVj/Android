@@ -184,10 +184,18 @@ public class PostView extends AppCompatActivity implements View.OnClickListener 
                         Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                         if (bitmap != null)
                             postImage.setImageBitmap(bitmap);
+                        ibPlay.setVisibility(View.VISIBLE);
+                        ibPlay.setTag(post);
+                        ibPlay.setOnClickListener(this);
+                    } else if (post.getImage() != null && !post.getImage().isEmpty()) {
+                        ibPlay.setVisibility(View.GONE);
+                        Glide.with(activity).load(post.getImage()).centerCrop()
+                                .thumbnail(0.5f)
+                                .crossFade()
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .into(postImage);
                     }
-                    ibPlay.setVisibility(View.VISIBLE);
-                    ibPlay.setTag(post);
-                    ibPlay.setOnClickListener(this);
+
                 } else {
                     ibPlay.setVisibility(View.GONE);
                     Glide.with(activity).load(post.getImage()).centerCrop()

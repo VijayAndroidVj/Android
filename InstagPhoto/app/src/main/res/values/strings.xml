@@ -12,8 +12,8 @@
         <item>@string/gallery</item>
         <item>@string/remove</item>
     </string-array>
-    <string name="followers">Followers</string>
-    <string name="following">Following</string>
+    <string name="followers">followers</string>
+    <string name="following">following</string>
     <string name="follow">Follow</string>
     <string name="delete">Delete Post</string>
     <string name="unfollow">UnFollow</string>

@@ -75,11 +75,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setCustomView(view, params);
         actionBar.setElevation(0);
-        final BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        final BottomBar bottomBar = findViewById(R.id.bottomBar);
+        final ViewPager viewPager = findViewById(R.id.pager);
         final PagerAdapter adapter = new PagerAdapter
                 (getSupportFragmentManager(), 5);
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(4);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

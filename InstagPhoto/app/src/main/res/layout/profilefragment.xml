@@ -19,11 +19,11 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:elevation="@dimen/_5dp">
+                android:layout_height="wrap_content">
 
 
                 <RelativeLayout
+                    android:id="@+id/topHeadview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -38,6 +38,7 @@
                             android:id="@+id/ivProfile1"
                             android:layout_width="80dp"
                             android:layout_height="80dp"
+                            android:layout_centerInParent="true"
                             android:background="@drawable/round_back_black"
                             android:padding="10dp"
                             android:scaleType="centerCrop"
@@ -51,17 +52,7 @@
                             app:sriv_right_bottom_corner_radius="16dip"
                             app:sriv_right_top_corner_radius="0dip" />
 
-                        <TextView
-                            android:id="@+id/txtUsername"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/ivProfile1"
-                            android:layout_centerHorizontal="true"
-                            android:gravity="center"
-                            android:text="fsfsfs"
-                            android:textColor="@color/black"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
+
                     </RelativeLayout>
 
                     <TableLayout
@@ -87,7 +78,7 @@
                                 android:gravity="center"
                                 android:text="0"
                                 android:textColor="@color/black"
-                                android:textSize="14sp"
+                                android:textSize="20sp"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -98,7 +89,7 @@
                                 android:gravity="center"
                                 android:text="0"
                                 android:textColor="@color/black"
-                                android:textSize="14sp"
+                                android:textSize="20sp"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -109,7 +100,7 @@
                                 android:gravity="center"
                                 android:text="0"
                                 android:textColor="@color/black"
-                                android:textSize="14sp"
+                                android:textSize="20sp"
                                 android:textStyle="bold" />
                         </TableRow>
 
@@ -123,7 +114,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="Posts"
+                                android:text="posts"
                                 android:textColor="@color/grey1"
                                 android:textSize="12sp"
                                 android:textStyle="normal" />
@@ -160,19 +151,14 @@
                             android:gravity="center"
                             android:text="Edit Profile"
                             android:textAllCaps="false"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:textSize="12sp" />
 
 
                     </TableLayout>
 
-                </RelativeLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp"
-                    android:layout_alignParentBottom="true"
-                    android:background="@drawable/border_bg_prescription_list" />
+                </RelativeLayout>
 
             </RelativeLayout>
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -189,6 +175,40 @@
             android:layout_height="match_parent"
             android:focusableInTouchMode="true"
             android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="left"
+                android:padding="@dimen/_3dp"
+                android:text="Vijay"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtBiography"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="left"
+                android:maxLength="150"
+                android:padding="@dimen/_3dp"
+                android:text="Vijay dglds sdds gl sddjg dsjg dsg dsj gds gs"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:textStyle="normal"
+                android:visibility="visible" />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="@dimen/_2dp"
+                android:background="@color/greyline" />
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -220,13 +240,15 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:background="@drawable/border_bg_prescription_list" />
+                android:layout_height="0.5dp"
+                android:layout_marginBottom="@dimen/_3dp"
+                android:background="@color/greyline" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerviewContact"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/_3dp"
                 android:scrollbars="vertical"
                 android:visibility="gone" />
 

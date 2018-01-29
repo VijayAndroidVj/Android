@@ -44,7 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rl_logo"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:padding="5dp"
         android:visibility="visible"
         card_view:cardCornerRadius="15dp"
@@ -58,11 +58,9 @@
             <RelativeLayout
                 android:id="@+id/rlUsername"
                 android:layout_width="match_parent"
-
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp"
                 android:gravity="bottom"
                 android:visibility="visible">
 
@@ -155,11 +153,40 @@
         android:textAllCaps="false"
         android:textColor="@android:color/white" />
 
+    <RelativeLayout
+        android:id="@+id/rllogin_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_sigin"
+        android:gravity="center">
+
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:drawablePadding="@dimen/_5dp"
+            android:gravity="center"
+            android:text="SignUp with Facebook"
+            android:textSize="@dimen/_16dp" />
+
+        <com.twitter.sdk.android.core.identity.TwitterLoginButton
+            android:id="@+id/twitter_login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/login_button"
+            android:layout_gravity="center_horizontal" />
+
+    </RelativeLayout>
+
+
     <TextView
         android:id="@+id/link_signup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btn_sigin"
+        android:layout_below="@+id/rllogin_button"
         android:layout_centerHorizontal="true"
         android:layout_margin="10dp"
         android:gravity="center"

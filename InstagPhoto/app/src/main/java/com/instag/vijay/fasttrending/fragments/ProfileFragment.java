@@ -80,6 +80,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     }
 
     private SelectableRoundedImageView ivProfile1;
+    private TextView txtUsername, txtBiography;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -92,7 +93,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         activity = getActivity();
         collapsingToolbarLayout = (CollapsingToolbarLayout) view.findViewById(R.id.collapsing_toolbar);
         collapsingToolbarLayout.setTitle(getResources().getString(R.string.app_name));
-        TextView txtUsername = view.findViewById(R.id.txtUsername);
+        txtUsername = view.findViewById(R.id.txtUsername);
+        txtBiography = view.findViewById(R.id.txtBiography);
         txtPostsCount = view.findViewById(R.id.txtPostsCount);
         txtFollowersCount = view.findViewById(R.id.txtFollowersCount);
         txtFolloweringCount = view.findViewById(R.id.txtFolloweringCount);
@@ -233,6 +235,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                         .asBitmap()
                         .into(ivProfile1);
             }
+            txtUsername.setText(preferenceUtil.getUserName());
+            txtBiography.setText(preferenceUtil.getUserAboutMe());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -429,8 +433,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                         Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                         if (bitmap != null)
                             postImg.setImageBitmap(bitmap);
+                        ibPlay.setVisibility(View.VISIBLE);
+                    } else if (post.getImage() != null && !post.getImage().isEmpty()) {
+                        ibPlay.setVisibility(View.GONE);
+                        Glide.with(activity).load(post.getImage()).centerCrop()
+                                .thumbnail(0.5f)
+                                .crossFade()
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .into(postImg);
                     }
-                    ibPlay.setVisibility(View.VISIBLE);
+
                 } else {
                     ibPlay.setVisibility(View.GONE);
                     if (post.getImage() != null && !post.getImage().isEmpty()) {

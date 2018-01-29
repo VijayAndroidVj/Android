@@ -231,7 +231,7 @@
                         android:hint="Biography"
                         android:imeOptions="actionDone"
                         android:inputType="textMultiLine"
-                        android:maxLength="300"
+                        android:maxLength="150"
                         android:padding="10dp"
                         android:text=""
                         android:textSize="16sp" />
@@ -329,8 +329,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/viewline1"
                 android:layout_margin="10dp"
-                android:background="#5F9EA0"
-                android:text="UPDATE PROFILE" />
+                android:background="@color/participant_view_selected"
+                android:text="UPDATE PROFILE"
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/btn_delete_account"
@@ -338,8 +339,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/btn_save"
                 android:layout_margin="10dp"
-                android:background="#5F9EA0"
-                android:text="DELETE MYACCOUNT" />
+                android:background="@color/participant_view_selected"
+                android:text="DELETE MYACCOUNT"
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/btn_logout"
@@ -347,8 +349,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/btn_delete_account"
                 android:layout_margin="10dp"
-                android:background="#5F9EA0"
-                android:text="LOGOUT" />
+                android:background="@color/participant_view_selected"
+                android:text="LOGOUT"
+                android:textColor="@color/white" />
 
         </RelativeLayout>
     </ScrollView>

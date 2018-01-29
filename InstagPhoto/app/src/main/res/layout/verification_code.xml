@@ -49,7 +49,7 @@
                 android:layout_below="@+id/tvLabel"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
-                android:text="We have dent code to "
+                android:text="We have sent code to "
                 android:textColor="@android:color/background_dark"
                 android:textSize="16sp"
                 android:textStyle="normal" />

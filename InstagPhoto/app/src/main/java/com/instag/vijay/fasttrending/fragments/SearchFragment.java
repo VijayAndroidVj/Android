@@ -67,6 +67,47 @@ public class SearchFragment extends Fragment {
             }
         });
 
+        refreshItems();
+
+    }
+
+    private void refreshItems() {
+        if (CommonUtil.isNetworkAvailable(activity)) {
+            progressBar.setVisibility(View.VISIBLE);
+            PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
+            ApiInterface apiService =
+                    ApiClient.getClient().create(ApiInterface.class);
+            Call<ArrayList<FavModel>> call = apiService.follow_followers(preferenceUtil.getUserMailId(), false);
+            call.enqueue(new Callback<ArrayList<FavModel>>() {
+                @Override
+                public void onResponse(Call<ArrayList<FavModel>> call, Response<ArrayList<FavModel>> response) {
+                    Log.d("", "response: " + response.body());
+                    swipeRefreshLayout.setRefreshing(false);
+                    progressBar.setVisibility(View.GONE);
+                    ArrayList<FavModel> sigInResponse = response.body();
+                    if (sigInResponse != null) {
+                        ilist = sigInResponse;
+                        setList();
+                    } else {
+                        Toast.makeText(activity, "Could not connect to server.", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<ArrayList<FavModel>> call, Throwable t) {
+                    // Log error here since request failed
+                    Log.e("", t.toString());
+                    progressBar.setVisibility(View.GONE);
+                    swipeRefreshLayout.setRefreshing(false);
+                    Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            progressBar.setVisibility(View.GONE);
+            swipeRefreshLayout.setRefreshing(false);
+            Toast.makeText(activity, "Check your internet connection!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private Activity activity;

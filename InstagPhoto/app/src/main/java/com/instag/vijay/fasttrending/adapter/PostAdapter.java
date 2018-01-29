@@ -367,9 +367,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
                 Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                 if (bitmap != null)
                     holder.postImage.setImageBitmap(bitmap);
+                holder.ibPlay.setVisibility(View.VISIBLE);
 
+            } else if (post.getImage() != null && !post.getImage().isEmpty()) {
+                holder.ibPlay.setVisibility(View.GONE);
+                Glide.with(activity).load(post.getImage()).centerCrop()
+                        .thumbnail(0.5f)
+                        .crossFade()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(holder.postImage);
             }
-            holder.ibPlay.setVisibility(View.VISIBLE);
+
         } else {
             holder.ibPlay.setVisibility(View.GONE);
             if (post.getImage() != null && !post.getImage().isEmpty()) {

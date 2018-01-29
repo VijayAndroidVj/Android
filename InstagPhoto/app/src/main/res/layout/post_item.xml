@@ -139,7 +139,9 @@
                 android:layout_toEndOf="@+id/commentPost"
                 android:layout_toRightOf="@+id/commentPost"
                 android:gravity="right"
-                android:text="" />
+                android:text=""
+                android:textColor="@color/grey"
+                android:textSize="10sp" />
         </RelativeLayout>
 
         <View

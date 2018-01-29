@@ -146,7 +146,7 @@ public class UpLoadImagePreview extends AppCompatActivity {
                         MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
                 MultipartBody.Part fileType =
-                        MultipartBody.Part.createFormData("fileType", "2");
+                        MultipartBody.Part.createFormData("fileType", "1");
                 // finally, execute the request
                 Call<EventResponse> call = apiService.insta_posts(description, image, fileType, null, user_mail);
                 call.enqueue(new Callback<EventResponse>() {

@@ -12,7 +12,7 @@
     </item>
     <item>
         <shape>
-            <padding android:bottom="1dp" />
+            <padding android:bottom="0dp" />
 
             <solid android:color="#10CCCCCC" />
 
@@ -20,7 +20,7 @@
     </item>
     <item>
         <shape>
-            <padding android:bottom="2dp" />
+            <padding android:bottom="0dp" />
 
             <solid android:color="#20CCCCCC" />
 

@@ -34,7 +34,7 @@ public class UltraPagerAdapter extends PagerAdapter {
         return view == object;
     }
 
-    public String[] colors = new String[]{"#E91E63", "#9C27B0", "#F44336", "#3F51B5", "#2196F3", "#673AB7", "#00BCD4", "#009688", "#03A9F4", "#4CAF50", "#FFC107"};
+    public String[] colors = new String[]{"#E91E63", "#9C27B0", "#F44336", "#3F51B5", "#2196F3", "#673AB7", "#00BCD4", "#009688", "#03A9F4", "#4CAF50", "#733f55", "#FFC107"};
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
@@ -117,6 +117,10 @@ public class UltraPagerAdapter extends PagerAdapter {
             case 10:
                 ivDashBoard.setBackgroundResource(R.drawable.help);
                 txtTle.setText("Help");
+                break;
+            case 11:
+                ivDashBoard.setBackgroundResource(R.drawable.feedback);
+                txtTle.setText("FeedBack");
                 break;
         }
         container.addView(linearLayout);

@@ -25,6 +25,8 @@ import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.instag.vijay.fasttrending.adapter.PagerAdapter;
+import com.instag.vijay.fasttrending.fragments.NewsfeedFragment;
+import com.instag.vijay.fasttrending.fragments.ProfileFragment;
 import com.instag.vijay.fasttrending.fragments.SearchFragment;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
@@ -41,12 +43,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static EditText searchEditText;
     private Activity activity;
     private View iv_actionbar_settings;
+    public static MainActivity mainActivity;
+    private PagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         activity = this;
+        mainActivity = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -77,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         actionBar.setElevation(0);
         final BottomBar bottomBar = findViewById(R.id.bottomBar);
         final ViewPager viewPager = findViewById(R.id.pager);
-        final PagerAdapter adapter = new PagerAdapter
+        adapter = new PagerAdapter
                 (getSupportFragmentManager(), 5);
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(4);
@@ -99,8 +104,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     searchEditText.setVisibility(View.GONE);
                     name.setText(getString(R.string.app_name));
                     if (position == 4) {
-                        PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
-                        name.setText(preferenceUtil.getUserMailId().split("@")[0]);
+//                        PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
+                        name.setText("My Profile");
                         iv_actionbar_settings.setVisibility(View.VISIBLE);
                     }
 
@@ -355,6 +360,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             back_pressed = System.currentTimeMillis();
             Toast.makeText(getBaseContext(), "Press once again to exit!",
                     Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void refresh() {
+        try {
+            NewsfeedFragment newsfeedFragment = (NewsfeedFragment) adapter.getItem(0);
+            ProfileFragment profileFragment = (ProfileFragment) adapter.getItem(4);
+            newsfeedFragment.refreshItems();
+            profileFragment.getMyPosts();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

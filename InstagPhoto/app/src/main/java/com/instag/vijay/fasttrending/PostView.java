@@ -26,6 +26,10 @@ import com.instag.vijay.fasttrending.model.Posts;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -136,12 +140,18 @@ public class PostView extends AppCompatActivity implements View.OnClickListener 
             if (TextUtils.isEmpty(post.getUsername())) {
                 txtMeetingName.setText("");
             } else {
-                txtMeetingName.setText(post.getUsername());
+                if (post.getFileType() != null && post.getFileType().equalsIgnoreCase("3")) {
+                    txtMeetingName.setText(post.getUsername() + " updated profile");
+                } else {
+                    txtMeetingName.setText(post.getUsername());
+                }
             }
 
             if (TextUtils.isEmpty(post.getDescription())) {
                 txtPostDescription.setText("");
+                txtPostDescription.setVisibility(View.GONE);
             } else {
+                txtPostDescription.setVisibility(View.VISIBLE);
                 txtPostDescription.setText(post.getDescription());
             }
 
@@ -155,7 +165,16 @@ public class PostView extends AppCompatActivity implements View.OnClickListener 
             }
             if (post.getCreated_date() != null && !post.getCreated_date().isEmpty()) {
                 txtCreatedDate.setVisibility(View.VISIBLE);
-                txtCreatedDate.setText(post.getCreated_date());
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss", Locale.getDefault());
+                SimpleDateFormat formatter = new SimpleDateFormat("MMM dd,yyyy hh:mm a", Locale.getDefault());
+                try {
+                    Date testDate = sdf.parse(post.getCreated_date());
+                    String newFormat = formatter.format(testDate);
+                    txtCreatedDate.setText(newFormat);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    txtCreatedDate.setText(post.getCreated_date());
+                }
             } else {
                 txtCreatedDate.setVisibility(View.GONE);
             }

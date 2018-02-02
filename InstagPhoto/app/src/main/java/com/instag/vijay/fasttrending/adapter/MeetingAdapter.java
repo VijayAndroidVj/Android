@@ -176,6 +176,7 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
         FavModel userModel = originalList.get(position);
         holder.txtMeetingName.setVisibility(View.GONE);
         holder.txtMeetingComments.setVisibility(View.VISIBLE);
+        holder.txtMeetingComments.setTypeface(font);
         holder.rlParentMeeting.setOnClickListener(this);
         holder.rlParentMeeting.setTag(userModel);
         if (TextUtils.isEmpty(userModel.getUserName())) {
@@ -194,6 +195,7 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
             holder.btnMeetingJoin.setVisibility(View.GONE);
         } else {
             holder.btnMeetingJoin.setVisibility(View.VISIBLE);
+            holder.btnMeetingJoin.setTypeface(font);
             if (userModel.isFollowing()) {
                 holder.btnMeetingJoin.setText(activity.getString(R.string.unfollow));
             } else {

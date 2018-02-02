@@ -21,337 +21,241 @@
                 android:layout_margin="10dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/user"
-                app:sriv_border_color="@color/colorPrimaryDark"
-                app:sriv_border_width="2dip"
                 app:sriv_left_bottom_corner_radius="48dip"
                 app:sriv_left_top_corner_radius="16dip"
                 app:sriv_oval="true"
                 app:sriv_right_bottom_corner_radius="16dip"
                 app:sriv_right_top_corner_radius="0dip" />
 
-
-            <LinearLayout
-                android:id="@+id/rlsex"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/lblechanagephoto"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ivProfile1"
                 android:layout_centerHorizontal="true"
-                android:layout_marginLeft="35dp"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="10dp">
+                android:layout_marginTop="@dimen/_5dp"
+                android:text="Change Photo" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lblechanagephoto"
+                android:layout_marginLeft="@dimen/_10dp"
+                android:layout_marginRight="@dimen/_10dp"
+                android:layout_marginTop="@dimen/_15dp"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/txtgender"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="Gender : "
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:padding="@dimen/_5dp"
+                    android:text="UserName"
+                    android:textColor="@color/grey"
+                    android:textSize="14sp" />
 
-                <RadioGroup
-                    android:id="@+id/radioSex"
+                <EditText
+                    android:id="@+id/input_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/_5dp"
-                    android:layout_toRightOf="@+id/txtgender"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <RadioButton
-                        android:id="@+id/radioMale"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checked="true"
-                        android:text="@string/radio_male" />
-
-                    <RadioButton
-                        android:id="@+id/radioFemale"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/radio_female" />
-
-                </RadioGroup>
-
-            </LinearLayout>
-
-            <RelativeLayout
-                android:id="@+id/rlusername"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/rlsex"
-                android:layout_margin="10dp">
-
-                <ImageView
-                    android:id="@+id/usernameiv"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_margin="15dp"
-                    android:background="@drawable/ic_account_circle_black_24dp"
-                    android:backgroundTint="@color/black"
-                    android:padding="5dp"
-                    android:tint="@color/white" />
-
-                <com.instag.vijay.fasttrending.NoChangingBackgroundTextInputLayout
-                    android:id="@+id/til_signin_username"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/usernameiv"
-                    app:errorEnabled="true">
-
-                    <EditText
-                        android:id="@+id/input_username"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/edt_bg"
-                        android:hint="@string/username"
-                        android:imeOptions="actionNext"
-                        android:maxLines="1"
-                        android:padding="10dp"
-                        android:singleLine="true"
-                        android:text=""
-                        android:textSize="16sp" />
-                </com.instag.vijay.fasttrending.NoChangingBackgroundTextInputLayout>
-
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rlemail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/rlusername"
-                android:layout_margin="10dp">
-
-                <ImageView
-                    android:id="@+id/useremailiv"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_margin="15dp"
-                    android:background="@drawable/ic_email_black_24dp"
-                    android:backgroundTint="@color/black"
-                    android:tint="@color/white" />
-
-                <com.instag.vijay.fasttrending.NoChangingBackgroundTextInputLayout
-                    android:id="@+id/til_signin_usermail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/useremailiv"
-                    app:errorEnabled="true">
-
-                    <EditText
-                        android:id="@+id/input_usermail"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/edt_bg"
-                        android:editable="false"
-                        android:hint="@string/email"
-                        android:imeOptions="actionNext"
-                        android:inputType="none"
-                        android:padding="10dp"
-                        android:text=""
-                        android:textSize="16sp" />
-                </com.instag.vijay.fasttrending.NoChangingBackgroundTextInputLayout>
-
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rlpassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/rlemail"
-                android:layout_margin="10dp">
-
-                <ImageView
-                    android:id="@+id/userpasswordiv"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_margin="15dp"
-                    android:background="@drawable/ic_security_black_24dp"
-                    android:backgroundTint="@color/black"
-                    android:padding="5dp"
-                    android:tint="@color/white" />
-
-                <com.instag.vijay.fasttrending.NoChangingBackgroundTextInputLayout
-                    android:id="@+id/til_signin_userpassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/userpasswordiv"
-                    app:errorEnabled="true">
-
-                    <EditText
-                        android:id="@+id/input_userpassword"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/edt_bg"
-                        android:hint="@string/password"
-                        android:imeOptions="actionNext"
-                        android:inputType="textPassword"
-                        android:padding="10dp"
-                        android:text=""
-                        android:textSize="16sp" />
-                </com.instag.vijay.fasttrending.NoChangingBackgroundTextInputLayout>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rlaboutme"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/rlpassword"
-                android:layout_margin="10dp">
-
-                <ImageView
-                    android:id="@+id/useraboutmeiv"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_margin="15dp"
-                    android:background="@drawable/ic_store_black_24dp"
-                    android:backgroundTint="@color/black"
-                    android:padding="5dp"
-                    android:tint="@color/white" />
-
-                <com.instag.vijay.fasttrending.NoChangingBackgroundTextInputLayout
-                    android:id="@+id/til_signin_useraboutme"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/useraboutmeiv"
-                    app:errorEnabled="true">
-
-                    <EditText
-                        android:id="@+id/input_useraboutme"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/edt_bg"
-                        android:hint="Biography"
-                        android:imeOptions="actionDone"
-                        android:inputType="textMultiLine"
-                        android:maxLength="150"
-                        android:padding="10dp"
-                        android:text=""
-                        android:textSize="16sp" />
-                </com.instag.vijay.fasttrending.NoChangingBackgroundTextInputLayout>
-
-            </RelativeLayout>
-
-
-            <View
-                android:id="@+id/viewline0"
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:layout_below="@+id/rlaboutme"
-                android:layout_marginTop="10dp"
-                android:background="@color/grey" />
-
-            <RelativeLayout
-                android:id="@+id/rlstate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/viewline0"
-                android:layout_margin="10dp">
+                    android:background="@drawable/edt_bg"
+                    android:hint="@string/username"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapWords"
+                    android:maxLines="1"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="10dp"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/titleState"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:padding="@dimen/_5dp"
+                    android:text="Email"
+                    android:textColor="@color/grey"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/input_useremail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edt_bg"
+                    android:hint="@string/email"
+                    android:imeOptions="actionNext"
+                    android:inputType="textEmailAddress"
+                    android:maxLength="50"
+                    android:maxLines="1"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="10dp"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:padding="@dimen/_5dp"
+                    android:text="Password"
+                    android:textColor="@color/grey"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/input_userpassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edt_bg"
+                    android:hint="@string/password"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="10dp"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10dp"
+                    android:padding="@dimen/_5dp"
+                    android:text="Gender"
+                    android:textColor="@color/grey"
+                    android:textSize="14sp" />
+
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:padding="@dimen/_5dp"
+                    android:text="Biography"
+                    android:textColor="@color/grey"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/input_userbiography"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edt_bg"
+                    android:hint="biography"
+                    android:imeOptions="actionNext"
+                    android:inputType="textMultiLine"
+                    android:maxLength="150"
+                    android:maxLines="4"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="10dp"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:padding="@dimen/_5dp"
                     android:text="State"
-                    android:textStyle="bold" />
+                    android:textColor="@color/grey"
+                    android:textSize="14sp" />
 
                 <EditText
                     android:id="@+id/input_userstate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/titleState"
                     android:background="@drawable/edt_bg"
                     android:hint="state"
-                    android:imeOptions="actionDone"
-                    android:inputType="textMultiLine"
-                    android:padding="10dp"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:maxLength="50"
+                    android:maxLines="1"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="10dp"
+                    android:singleLine="true"
                     android:text=""
                     android:textSize="16sp" />
 
-            </RelativeLayout>
-
-            <View
-                android:id="@+id/viewline"
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:layout_below="@+id/rlstate"
-                android:layout_marginTop="10dp"
-                android:background="@color/grey" />
-
-
-            <RelativeLayout
-                android:id="@+id/rlcountry"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/viewline"
-                android:layout_margin="10dp">
-
                 <TextView
-                    android:id="@+id/titleCountry"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:padding="@dimen/_5dp"
                     android:text="Country"
-                    android:textStyle="bold" />
+                    android:textColor="@color/grey"
+                    android:textSize="14sp" />
 
                 <EditText
                     android:id="@+id/input_usercountry"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/titleCountry"
                     android:background="@drawable/edt_bg"
                     android:hint="country"
-                    android:imeOptions="actionDone"
-                    android:inputType="textMultiLine"
-                    android:padding="10dp"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:maxLength="100"
+                    android:maxLines="1"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="10dp"
+                    android:singleLine="true"
                     android:text=""
                     android:textSize="16sp" />
 
-            </RelativeLayout>
 
-            <View
-                android:id="@+id/viewline1"
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:layout_below="@+id/rlcountry"
-                android:layout_marginTop="10dp"
-                android:background="@color/grey" />
+                <View
+                    android:id="@+id/viewline1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/grey" />
 
-            <Button
-                android:id="@+id/btn_save"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/viewline1"
-                android:layout_margin="10dp"
-                android:background="@color/participant_view_selected"
-                android:text="UPDATE PROFILE"
-                android:textColor="@color/white" />
+                <Button
+                    android:id="@+id/btn_save"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@color/participant_view_selected"
+                    android:text="Update Profile"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white" />
 
-            <Button
-                android:id="@+id/btn_delete_account"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/btn_save"
-                android:layout_margin="10dp"
-                android:background="@color/participant_view_selected"
-                android:text="DELETE MYACCOUNT"
-                android:textColor="@color/white" />
+                <Button
+                    android:id="@+id/btn_delete_account"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@color/participant_view_selected"
+                    android:text="Delete MyAccount"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white" />
 
-            <Button
-                android:id="@+id/btn_logout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/btn_delete_account"
-                android:layout_margin="10dp"
-                android:background="@color/participant_view_selected"
-                android:text="LOGOUT"
-                android:textColor="@color/white" />
+                <Button
+                    android:id="@+id/btn_logout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@color/participant_view_selected"
+                    android:text="Logout"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
 
         </RelativeLayout>
     </ScrollView>

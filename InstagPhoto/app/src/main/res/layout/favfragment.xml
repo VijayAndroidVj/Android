@@ -21,7 +21,8 @@
             android:id="@+id/viewUpcoming"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="@drawable/left_round_corner_rect_blue">
 
             <TextView
                 android:id="@+id/txtUpcoming"
@@ -41,6 +42,7 @@
             android:layout_width="0.5dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
+            android:visibility="gone"
             android:background="@color/colorPrimaryTransparent" />
 
 

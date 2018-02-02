@@ -21,12 +21,17 @@ public interface ApiInterface {
 
     @POST("customer_signup.php")
     @FormUrlEncoded
-    Call<EventResponse> register(@Field("aid") String aid, @Field("mobile") String mobile, @Field("name") String name, @Field("email") String email, @Field("password") String password);
+    Call<EventResponse> register(@Field("aid") String aid, @Field("mobile") String mobile, @Field("name") String name, @Field("email") String email, @Field("password") String password, @Field("userVehicleType") String userVehicleType, @Field("userVehicleNumber") String userVehicleNumber);
 
 
     @POST("customer_login.php")
     @FormUrlEncoded
-    Call<EventResponse> login(@Field("email") String email, @Field("password") String password);
+    Call<EventResponse> login(@Field("email") String email, @Field("password") String password, @Field("userVehicleType") String userVehicleType, @Field("userVehicleNumber") String userVehicleNumber);
+
+
+    @POST("post_feedback.php")
+    @FormUrlEncoded
+    Call<EventResponse> post_feedback(@Field("aid") String aid, @Field("email") String email, @Field("service_quality") Float service_quality, @Field("service_initiation") Float service_initiation, @Field("service_advisor") Float service_advisor, @Field("service_facility") Float service_facility, @Field("remarks") String remarks);
 
 
 }

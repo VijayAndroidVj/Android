@@ -3,10 +3,10 @@
     <solid android:color="@color/colorPrimary" />
 
     <stroke
-        android:width="3dp"
+        android:width="1dp"
         android:color="@color/colorPrimary" />
 
-    <padding android:right="1dp" />
+    <padding android:right="0dp" />
 
     <corners
         android:bottomLeftRadius="7dp"

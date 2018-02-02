@@ -25,11 +25,11 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -74,6 +74,7 @@ public class EditProfile extends AppCompatActivity {
     public final static int PICK_IMAGE_REQUEST_PAN = 3;
     String imagePath;
     boolean removePhoto;
+    Spinner spinner;
 
     public void launchCameraIntent(int code) {
         if (showPopup != null) {
@@ -94,7 +95,6 @@ public class EditProfile extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(galleryIntent, "Select Image"), code);
     }
 
-    private RadioGroup radioSexGroup;
     ProgressBar progressBar;
 
     @Override
@@ -110,14 +110,14 @@ public class EditProfile extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDefaultDisplayHomeAsUpEnabled(true);
         progressBar = findViewById(R.id.progressBar_cyclic);
+        spinner = findViewById(R.id.spinner);
         input_username = findViewById(R.id.input_username);
-        input_usermail = findViewById(R.id.input_usermail);
+        input_usermail = findViewById(R.id.input_useremail);
         input_userpassword = findViewById(R.id.input_userpassword);
-        input_aboutme = findViewById(R.id.input_useraboutme);
+        input_aboutme = findViewById(R.id.input_userbiography);
         input_state = findViewById(R.id.input_userstate);
         input_country = findViewById(R.id.input_usercountry);
         ivProfile1 = findViewById(R.id.ivProfile1);
-        radioSexGroup = (RadioGroup) findViewById(R.id.radioSex);
         input_username.setText(preferenceUtil.getUserName());
         input_usermail.setText(preferenceUtil.getUserMailId());
         input_userpassword.setText(preferenceUtil.getUserPassword());
@@ -125,13 +125,15 @@ public class EditProfile extends AppCompatActivity {
         input_aboutme.setText(preferenceUtil.getUserAboutMe());
         input_state.setText(preferenceUtil.getUserState());
         input_country.setText(preferenceUtil.getUserCountry());
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.gender_array, R.layout.spinner_item);
+        spinner.setAdapter(adapter);
 
-        RadioButton radioButtonmale = findViewById(R.id.radioMale);
-        RadioButton radioButtonfemale = findViewById(R.id.radioFemale);
         if (preferenceUtil.getUserGender().equalsIgnoreCase("male")) {
-            radioButtonmale.setChecked(true);
+//            radioButtonmale.setChecked(true);
+            spinner.setSelection(0);
         } else {
-            radioButtonfemale.setChecked(true);
+            spinner.setSelection(1);
+//            radioButtonfemale.setChecked(true);
         }
 
         String profileImage = preferenceUtil.getMyProfile();
@@ -145,7 +147,16 @@ public class EditProfile extends AppCompatActivity {
         }
         input_username.clearFocus();
         input_userpassword.clearFocus();
+
         ivProfile1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CropImage.activity()
+                        .setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(16, 9)
+                        .start(activity);
+            }
+        });
+        findViewById(R.id.lblechanagephoto).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 CropImage.activity()
@@ -231,9 +242,8 @@ public class EditProfile extends AppCompatActivity {
         final String userName1 = input_username.getText().toString().trim();
         final String password1 = input_userpassword.getText().toString().trim();
 
-        int selectedId = radioSexGroup.getCheckedRadioButtonId();
 
-        final String gender = selectedId == R.id.radioMale ? "male" : "female";
+        final String gender = spinner.getSelectedItemPosition() == 0 ? "male" : "female";
 
         final String aboutme = input_aboutme.getText().toString().trim();
         final String state = input_state.getText().toString().trim();
@@ -304,6 +314,9 @@ public class EditProfile extends AppCompatActivity {
                             preferenceUtil.putString(Keys.COUNTRY, country);
 //                            preferenceUtil.putString(Keys.PROFILE_IMAGE, imagePath);
                             preferenceUtil.putString(Keys.PROFILE_IMAGE, sigInResponse.getServerimage());
+                            if (!TextUtils.isEmpty(imagePath) && MainActivity.mainActivity != null) {
+                                MainActivity.mainActivity.refresh();
+                            }
                         } else {
                             Toast.makeText(activity, sigInResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }

@@ -395,6 +395,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
             navigation_items.add(getString(R.string.locateus));
             navigation_items.add(getString(R.string.share));
             navigation_items.add(getString(R.string.help));
+            navigation_items.add(getString(R.string.feedback));
             if (!TextUtils.isEmpty(preferenceUtil.getUserName())) {
                 txtProfileName.setText(preferenceUtil.getUserName());
                 navigation_items.add(getString(R.string.logout));
@@ -402,7 +403,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
 
             int[] drawer_icons;
             drawer_icons = new int[]{R.drawable.products,
-                    R.drawable.service, R.drawable.testdrive, R.drawable.breakdown, R.drawable.emi, R.drawable.usedcar, R.drawable.offer, R.drawable.aboutus, R.drawable.locateus, R.drawable.share, R.drawable.help, R.drawable.logout};
+                    R.drawable.service, R.drawable.testdrive, R.drawable.breakdown, R.drawable.emi, R.drawable.usedcar, R.drawable.offer, R.drawable.aboutus, R.drawable.locateus, R.drawable.share, R.drawable.help, R.drawable.feedback, R.drawable.logout};
             ListView lv_drawer = findViewById(R.id.lv_drawer);
             DrawerListAdapter drawerListAdapter = new DrawerListAdapter(MainActivity.this, navigation_items, drawer_icons);
             lv_drawer.setAdapter(drawerListAdapter);
@@ -442,6 +443,9 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
                         } else if (navigation_items.get(position).equalsIgnoreCase("Help")) {
                             moveToActivity(10);
 
+                        } else if (navigation_items.get(position).equalsIgnoreCase("FeedBack")) {
+                            moveToActivity(11);
+
                         } else if (navigation_items.get(position).equalsIgnoreCase(getString(R.string.logout))) {
 
                             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
@@ -471,7 +475,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
                                 @Override
                                 public void onClick(View v) {
                                     alertDialog.dismiss();
-                                    moveToActivity(11);
+                                    moveToActivity(12);
                                     // if this button is clicked, close
                                     // current activity
 
@@ -585,6 +589,10 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
                     startActivity(intent);
                     break;
                 case 11:
+                    in = new Intent(MainActivity.this, FeedBackActivity.class);
+                    startActivity(in);
+                    break;
+                case 12:
                     PreferenceUtil preferenceUtil = new PreferenceUtil(MainActivity.this);
                     preferenceUtil.logout();
                     in = new Intent(MainActivity.this, SplashActivity.class);

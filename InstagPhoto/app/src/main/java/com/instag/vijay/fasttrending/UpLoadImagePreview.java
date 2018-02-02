@@ -160,6 +160,7 @@ public class UpLoadImagePreview extends AppCompatActivity {
                                     Toast.makeText(activity, sigInResponse.getMessage(), Toast.LENGTH_SHORT).show();
 
                                 MainActivity.dismissProgress();
+                                MainActivity.mainActivity.refresh();
                                 Intent intent = new Intent();
                                 setResult(Activity.RESULT_OK, intent);
                                 finish();

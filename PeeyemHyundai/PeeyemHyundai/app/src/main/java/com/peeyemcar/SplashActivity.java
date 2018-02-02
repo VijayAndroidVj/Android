@@ -50,11 +50,11 @@ public class SplashActivity extends Activity {
                     startActivity(homeIntent);
                     finish();
                 } else if (TextUtils.isEmpty(preferenceUtil.getString(Keys.PHONE, ""))) {
-                    Intent homeIntent = new Intent(SplashActivity.this, MmSignInActivity.class);
+                    Intent homeIntent = new Intent(SplashActivity.this, SelectMyVehicle.class);
                     startActivity(homeIntent);
                     finish();
                 } else {
-                    Intent homeIntent = new Intent(SplashActivity.this, MmSignUpActivity.class);
+                    Intent homeIntent = new Intent(SplashActivity.this, SelectMyVehicle.class);
                     homeIntent.putExtra("mobile", preferenceUtil.getString(Keys.PHONE, ""));
                     startActivity(homeIntent);
                     finish();

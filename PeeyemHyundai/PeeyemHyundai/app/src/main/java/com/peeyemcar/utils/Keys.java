@@ -10,6 +10,8 @@ public interface Keys {
     String USERNAME = "username";
     String PASSWORD = "password";
     String PHONE = "PHONE";
+    String vehiclenumber = "vehiclenumber";
+    String vehicletype = "vehicletype";
     /**
      * Preference keys
      */

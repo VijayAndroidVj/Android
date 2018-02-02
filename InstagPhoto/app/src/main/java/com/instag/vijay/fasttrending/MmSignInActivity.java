@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -23,20 +24,24 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.TwitterAuthProvider;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
 import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterApiClient;
-import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
-import com.twitter.sdk.android.core.models.User;
 
 import org.json.JSONObject;
 
@@ -54,19 +59,21 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
     TextInputLayout til_signin_username;
     TextInputLayout til_signin_password;
     private Activity activity;
-
+    private FirebaseAuth mAuth;
     private String firstName, lastName, email, birthday, gender;
     private String userId;
     private CallbackManager callbackManager;
     TwitterLoginButton twitterLoginButton;
     private ProgressDialog mProgressDialog;
     private LoginButton loginButton;
+    private boolean isFbClicked;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mobile_signin);
         activity = this;
+        mAuth = FirebaseAuth.getInstance();
         loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setReadPermissions("public_profile email");
 
@@ -76,35 +83,7 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
             // If the login is successful...//
             public void success(final Result<TwitterSession> result) {
                 Log.d(TAG, "twitterLogin" + result);
-                Result<TwitterSession> twitterSession = result;
-
-                TwitterApiClient twitterApiClient = TwitterCore.getInstance().getApiClient();
-                Call<User> user = twitterApiClient.getAccountService().verifyCredentials(true, true);
-                user.enqueue(new com.twitter.sdk.android.core.Callback<User>() {
-                    @Override
-                    public void success(Result<User> userResult) {
-
-                    }
-
-                    @Override
-                    public void failure(TwitterException e) {
-                        e.printStackTrace();
-                    }
-                });
-                TwitterAuthClient authClient = new TwitterAuthClient();
-                authClient.requestEmail(twitterSession.data, new com.twitter.sdk.android.core.Callback<String>() {
-                    @Override
-                    public void success(Result<String> result) {
-//                        input_email.setText(result.data);
-                        // Do something with the result, which provides the email address
-                    }
-
-                    @Override
-                    public void failure(TwitterException exception) {
-                        // Do something on failure
-                        exception.printStackTrace();
-                    }
-                });
+                handleTwitterSession(result.data, result);
 
             }
 
@@ -119,47 +98,52 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile"));
-                loginButton.registerCallback(callbackManager,
-                        new FacebookCallback<LoginResult>() {
-                            String facebook_id, f_name, m_name, l_name, gender, profile_image, full_name, email_id = "";
-
-                            @Override
-                            public void onSuccess(LoginResult loginResult) {
-                                if (AccessToken.getCurrentAccessToken() != null) {
-                                    RequestData();
-                                    Profile profile = Profile.getCurrentProfile();
-                                    if (profile != null) {
-
-                                        facebook_id = profile.getId();
-                                        Log.e("facebook_id", facebook_id);
-                                        f_name = profile.getFirstName();
-                                        Log.e("f_name", f_name);
-//                                        input_name.setText(f_name);
-                                        m_name = profile.getMiddleName();
-                                        Log.e("m_name", m_name);
-                                        l_name = profile.getLastName();
-                                        Log.e("l_name", l_name);
-                                        full_name = profile.getName();
-                                        Log.e("full_name", full_name);
-                                        profile_image = profile.getProfilePictureUri(400, 400).toString();
-                                        Log.e("profile_image", profile_image);
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onCancel() {
-                                // App code
-                            }
-
-                            @Override
-                            public void onError(FacebookException exception) {
-                                // App code
-                            }
-                        });
+                Log.e("l_name", "");
+                isFbClicked = true;
             }
         });
+        LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile"));
+        loginButton.registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+//                            String facebook_id, f_name, m_name, l_name, gender, profile_image, full_name, email_id = "";
+
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        handleFacebookAccessToken(loginResult.getAccessToken());
+//                                if (AccessToken.getCurrentAccessToken() != null) {
+//                                    RequestData();
+//                                    Profile profile = Profile.getCurrentProfile();
+//                                    if (profile != null) {
+//
+//                                        facebook_id = profile.getId();
+//                                        Log.e("facebook_id", facebook_id);
+//                                        f_name = profile.getFirstName();
+//                                        Log.e("f_name", f_name);
+////                                        input_name.setText(f_name);
+//                                        m_name = profile.getMiddleName();
+//                                        Log.e("m_name", m_name);
+//                                        l_name = profile.getLastName();
+//                                        Log.e("l_name", l_name);
+//                                        full_name = profile.getName();
+//                                        Log.e("full_name", full_name);
+//                                        profile_image = profile.getProfilePictureUri(400, 400).toString();
+//                                        Log.e("profile_image", profile_image);
+//                                    }
+//                                }
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        // App code
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        // App code
+                    }
+                });
+//            }
+//        });
 
 
         input_password = (EditText) findViewById(R.id.input_password);
@@ -212,6 +196,132 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
+    private void handleFacebookAccessToken(AccessToken token) {
+        if (isFbClicked) {
+            Log.d(TAG, "handleFacebookAccessToken:" + token);
+
+            AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+            mAuth.signInWithCredential(credential)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d(TAG, "signInWithCredential:success");
+                                FirebaseUser user = mAuth.getCurrentUser();
+//                            updateUI(user);
+                                if (user == null)
+                                    user = FirebaseAuth.getInstance().getCurrentUser();
+                                if (user != null) {
+                                    // Name, email address, and profile photo Url
+                                    String name = user.getDisplayName();
+                                    String email = user.getEmail();
+                                    LoginManager.getInstance().logOut();
+                                    if (email != null) {
+                                        submitForm(email);
+                                    }
+//                                Uri photoUrl = user.getPhotoUrl();
+
+                                    // Check if user's email is verified
+                                    boolean emailVerified = user.isEmailVerified();
+
+                                    // The user's ID, unique to the Firebase project. Do NOT use this value to
+                                    // authenticate with your backend server, if you have one. Use
+                                    // FirebaseUser.getToken() instead.
+                                    String uid = user.getUid();
+                                }
+                                FirebaseAuth.getInstance().signOut();
+
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w(TAG, "signInWithCredential:failure", task.getException());
+                                Toast.makeText(activity, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+//                            updateUI(null);
+                                LoginManager.getInstance().logOut();
+                                FirebaseAuth.getInstance().signOut();
+                            }
+
+                            // ...
+                        }
+                    });
+        } else {
+            LoginManager.getInstance().logOut();
+
+        }
+    }
+
+
+    private void handleTwitterSession(TwitterSession session, final Result<TwitterSession> twitterSession) {
+        Log.d(TAG, "handleTwitterSession:" + session);
+        AuthCredential credential = TwitterAuthProvider.getCredential(
+                session.getAuthToken().token,
+                session.getAuthToken().secret);
+
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithCredential:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+//                            updateUI(user);
+                            if (user == null)
+                                user = FirebaseAuth.getInstance().getCurrentUser();
+                            if (user != null) {
+                                // Name, email address, and profile photo Url
+                                String name = user.getDisplayName();
+                                String email = user.getEmail();
+                                if (email == null) {
+                                    TwitterAuthClient authClient = new TwitterAuthClient();
+                                    authClient.requestEmail(twitterSession.data, new com.twitter.sdk.android.core.Callback<String>() {
+                                        @Override
+                                        public void success(Result<String> result) {
+//                                            input_email.setText(result.data);
+                                            String email = result.data;
+                                            if (email != null) {
+                                                submitForm(email);
+
+                                            }
+                                            Log.i("", email);
+                                            // Do something with the result, which provides the email address
+                                        }
+
+                                        @Override
+                                        public void failure(TwitterException exception) {
+                                            // Do something on failure
+                                            exception.printStackTrace();
+                                        }
+                                    });
+                                } else {
+                                    submitForm(email);
+                                }
+
+                                // Check if user's email is verified
+                                boolean emailVerified = user.isEmailVerified();
+
+                                // The user's ID, unique to the Firebase project. Do NOT use this value to
+                                // authenticate with your backend server, if you have one. Use
+                                // FirebaseUser.getToken() instead.
+                                String uid = user.getUid();
+                            }
+                            FirebaseAuth.getInstance().signOut();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            Toast.makeText(activity, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+//                            updateUI(null);
+                            FirebaseAuth.getInstance().signOut();
+                        }
+
+                        // ...
+                    }
+                });
+    }
+
+
     public void RequestData() {
         GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
             @Override
@@ -251,10 +361,16 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         try {
-            if (requestCode == 64206)
-                callbackManager.onActivityResult(requestCode, resultCode, data);
-            else
+
+            if (requestCode == 64206) {
+                if (isFbClicked) {
+                    MainActivity.showProgress(MmSignInActivity.this);
+                    callbackManager.onActivityResult(requestCode, resultCode, data);
+                }
+            } else {
+                MainActivity.showProgress(MmSignInActivity.this);
                 twitterLoginButton.onActivityResult(requestCode, resultCode, data);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -302,13 +418,13 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
      * Validating form
      */
 
-    private void submitForm() {
+    private void submitForm(String email) {
 
-        if (!validUsername()) {
+        if (TextUtils.isEmpty(email) && !validUsername()) {
             return;
         }
 
-        if (!validPassword()) {
+        if (TextUtils.isEmpty(email) && !validPassword()) {
             return;
         }
 
@@ -316,10 +432,11 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
         final String password = input_password.getText().toString().trim();
 
         if (CommonUtil.isNetworkAvailable(MmSignInActivity.this)) {
-            MainActivity.showProgress(MmSignInActivity.this);
+            if (TextUtils.isEmpty(email))
+                MainActivity.showProgress(MmSignInActivity.this);
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
-            Call<EventResponse> call = apiService.login(username, password);
+            Call<EventResponse> call = apiService.login(username, password, email);
             call.enqueue(new Callback<EventResponse>() {
                 @Override
                 public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
@@ -438,7 +555,7 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
         switch (v.getId()) {
 
             case R.id.btn_sigin:
-                submitForm();
+                submitForm("");
                 break;
             case R.id.link_signup:
             case R.id.btn_signup:

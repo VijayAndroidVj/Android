@@ -108,6 +108,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerviewContact);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar_cyclic);
         recyclerView.setVisibility(View.VISIBLE);
+        gridView.setVisibility(View.GONE);
         preferenceUtil = new PreferenceUtil(getActivity());
         txtUsername.setText(preferenceUtil.getUserName());
         ivProfile1 = view.findViewById(R.id.ivProfile1);
@@ -125,7 +126,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         getMyPosts();
     }
 
-    private void getMyPosts() {
+    public void getMyPosts() {
         try {
             if (CommonUtil.isNetworkAvailable(activity)) {
                 ApiInterface service =

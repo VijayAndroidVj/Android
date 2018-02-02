@@ -8,7 +8,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:layout_margin="5dp"
         android:gravity="start">
 
         <android.support.v4.widget.SwipeRefreshLayout

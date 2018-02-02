@@ -43,7 +43,7 @@ public interface ApiInterface {
 
     @POST("login.php")
     @FormUrlEncoded
-    Call<EventResponse> login(@Field("username") String username, @Field("password") String password);
+    Call<EventResponse> login(@Field("username") String username, @Field("password") String password, @Field("email") String email);
 
 
     @POST("add_follow.php")

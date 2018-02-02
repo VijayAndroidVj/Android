@@ -35,12 +35,12 @@ public class PreferenceUtil {
         editor.apply();
     }
 
-    public String getUserPassword() {
-        return getString(Keys.PASSWORD, "");
+    public String getUserVehicleType() {
+        return getString(Keys.vehicletype, "");
     }
 
-    public String getUserMailId() {
-        return getString(Keys.EmailID, "");
+    public String getUserVehicleNumber() {
+        return getString(Keys.vehiclenumber, "");
     }
 
     public String getUserPhone() {
@@ -69,6 +69,8 @@ public class PreferenceUtil {
         editor.putString(Keys.EmailID, "");
         editor.putString(Keys.USERNAME, "");
         editor.putString(Keys.PHONE, "");
+        editor.putString(Keys.vehiclenumber, "");
+        editor.putString(Keys.vehicletype, "");
         editor.putString(Keys.PASSWORD, "");
         editor.apply();
     }

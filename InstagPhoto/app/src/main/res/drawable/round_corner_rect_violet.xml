@@ -4,7 +4,7 @@
 
     <stroke
         android:width="0.5dp"
-        android:color="@color/invite_title" />
+        android:color="@color/grey2" />
 
     <padding
         android:bottom="1dp"

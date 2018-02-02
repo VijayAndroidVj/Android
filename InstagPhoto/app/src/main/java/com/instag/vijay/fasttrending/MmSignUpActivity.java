@@ -74,6 +74,7 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
     private RadioGroup radioSexGroup;
     private RadioButton male, female;
     private String country;
+    private boolean isFbClicked;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -279,47 +280,48 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile"));
-                loginButton.registerCallback(callbackManager,
-                        new FacebookCallback<LoginResult>() {
-                            String facebook_id, f_name, m_name, l_name, gender, profile_image, full_name, email_id = "";
-
-                            @Override
-                            public void onSuccess(LoginResult loginResult) {
-                                if (AccessToken.getCurrentAccessToken() != null) {
-                                    RequestData();
-                                    Profile profile = Profile.getCurrentProfile();
-                                    if (profile != null) {
-
-                                        facebook_id = profile.getId();
-                                        Log.e("facebook_id", facebook_id);
-                                        f_name = profile.getFirstName();
-                                        Log.e("f_name", f_name);
-                                        input_name.setText(f_name);
-                                        m_name = profile.getMiddleName();
-                                        Log.e("m_name", m_name);
-                                        l_name = profile.getLastName();
-                                        Log.e("l_name", l_name);
-                                        full_name = profile.getName();
-                                        Log.e("full_name", full_name);
-                                        profile_image = profile.getProfilePictureUri(400, 400).toString();
-                                        Log.e("profile_image", profile_image);
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onCancel() {
-                                // App code
-                            }
-
-                            @Override
-                            public void onError(FacebookException exception) {
-                                // App code
-                            }
-                        });
+                isFbClicked = true;
             }
         });
+        LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile"));
+        loginButton.registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    String facebook_id, f_name, m_name, l_name, gender, profile_image, full_name, email_id = "";
+
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        if (isFbClicked && AccessToken.getCurrentAccessToken() != null) {
+                            RequestData();
+                            Profile profile = Profile.getCurrentProfile();
+                            if (profile != null) {
+
+                                facebook_id = profile.getId();
+                                Log.e("facebook_id", facebook_id);
+                                f_name = profile.getFirstName();
+                                Log.e("f_name", f_name);
+                                input_name.setText(f_name);
+                                m_name = profile.getMiddleName();
+                                Log.e("m_name", m_name);
+                                l_name = profile.getLastName();
+                                Log.e("l_name", l_name);
+                                full_name = profile.getName();
+                                Log.e("full_name", full_name);
+                                profile_image = profile.getProfilePictureUri(400, 400).toString();
+                                Log.e("profile_image", profile_image);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        // App code
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        // App code
+                    }
+                });
 
 
     }
@@ -363,9 +365,10 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         try {
-            if (requestCode == 64206)
-                callbackManager.onActivityResult(requestCode, resultCode, data);
-            else
+            if (requestCode == 64206) {
+                if (isFbClicked)
+                    callbackManager.onActivityResult(requestCode, resultCode, data);
+            } else
                 twitterLoginButton.onActivityResult(requestCode, resultCode, data);
         } catch (Exception e) {
             e.printStackTrace();
@@ -553,6 +556,8 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.link_signin:
+                PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
+                preferenceUtil.putString(Keys.COUNTRY, "");
                 Intent intent = new Intent(MmSignUpActivity.this, MmSignInActivity.class);
                 startActivity(intent);
                 finish();

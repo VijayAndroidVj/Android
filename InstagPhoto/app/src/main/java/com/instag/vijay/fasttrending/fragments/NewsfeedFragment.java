@@ -77,7 +77,7 @@ public class NewsfeedFragment extends Fragment {
 
     }
 
-    private void refreshItems() {
+    public void refreshItems() {
 
         try {
             if (CommonUtil.isNetworkAvailable(activity)) {

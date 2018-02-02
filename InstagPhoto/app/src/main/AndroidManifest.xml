@@ -94,7 +94,7 @@
             android:name="com.instag.vijay.fasttrending.UpLoadImagePreview"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme1"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name="com.instag.vijay.fasttrending.PostView"
             android:theme="@style/AppTheme"

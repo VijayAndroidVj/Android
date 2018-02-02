@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.instag.vijay.fasttrending.CommonUtil;
 import com.instag.vijay.fasttrending.EventResponse;
+import com.instag.vijay.fasttrending.MainActivity;
 import com.instag.vijay.fasttrending.PermissionCheck;
 import com.instag.vijay.fasttrending.PreferenceUtil;
 import com.instag.vijay.fasttrending.R;
@@ -383,6 +384,7 @@ public class PhotoFragment extends Fragment {
                             if (sigInResponse.getResult().equals("success")) {
                                 if (!TextUtils.isEmpty(sigInResponse.getMessage()))
                                     Toast.makeText(activity, sigInResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                MainActivity.mainActivity.refresh();
                             } else {
                                 Toast.makeText(activity, sigInResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }

@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
@@ -32,7 +33,10 @@ import com.instag.vijay.fasttrending.model.Posts;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
@@ -293,6 +297,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     private Activity activity;
     private LayoutInflater layoutInflater;
     private Typeface font;
+    private SimpleDateFormat sdf;
+    private SimpleDateFormat formatter;
 
     public PostAdapter(Activity activity, List<Posts> moviesList) {
         this.originalList = moviesList;
@@ -300,6 +306,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         layoutInflater = LayoutInflater.from(activity);
         preferenceUtil = new PreferenceUtil(activity);
         font = Typeface.createFromAsset(activity.getAssets(), "fontawesome-webfont.ttf");
+        sdf = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss", Locale.getDefault());
+        formatter = new SimpleDateFormat("MMM dd,yyyy hh:mm a", Locale.getDefault());
     }
 
     @Override
@@ -321,12 +329,24 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         if (TextUtils.isEmpty(post.getUsername())) {
             holder.txtMeetingName.setText("");
         } else {
-            holder.txtMeetingName.setText(post.getUsername());
+            if (post.getFileType() != null && post.getFileType().equalsIgnoreCase("3")) {
+                String name = post.getUsername();
+                if (preferenceUtil.getUserMailId().equalsIgnoreCase(post.getPostmail())) {
+                    name = "You";
+                }
+//                holder.txtMeetingName.setText(name + " updated profile");
+                holder.txtMeetingName.setText(Html.fromHtml(" <b><font color='#000000'>" + name + "</font></b>  <n>updated profile</n>"));
+            } else {
+                holder.txtMeetingName.setText(post.getUsername());
+            }
+
         }
 
         if (TextUtils.isEmpty(post.getDescription())) {
             holder.txtPostDescription.setText("");
+            holder.txtPostDescription.setVisibility(View.GONE);
         } else {
+            holder.txtPostDescription.setVisibility(View.VISIBLE);
             holder.txtPostDescription.setText(post.getDescription());
         }
 
@@ -356,7 +376,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
 
         if (post.getCreated_date() != null && !post.getCreated_date().isEmpty()) {
             holder.txtCreatedDate.setVisibility(View.VISIBLE);
-            holder.txtCreatedDate.setText(post.getCreated_date());
+            try {
+                Date testDate = null;
+                testDate = sdf.parse(post.getCreated_date());
+                String newFormat = formatter.format(testDate);
+                holder.txtCreatedDate.setText(newFormat);
+            } catch (Exception e) {
+                e.printStackTrace();
+                holder.txtCreatedDate.setText(post.getCreated_date());
+            }
+
         } else {
             holder.txtCreatedDate.setVisibility(View.GONE);
         }

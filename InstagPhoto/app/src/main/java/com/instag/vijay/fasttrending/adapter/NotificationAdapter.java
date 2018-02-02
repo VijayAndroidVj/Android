@@ -5,14 +5,14 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,6 +28,7 @@ import com.instag.vijay.fasttrending.R;
 import com.instag.vijay.fasttrending.model.Notification;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
+import com.joooonho.SelectableRoundedImageView;
 
 import java.util.List;
 
@@ -44,11 +45,61 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     private List<Notification> originalList;
 
+    private void followUser(final Notification meetingItem) {
+        if (CommonUtil.isNetworkAvailable(activity)) {
+            ApiInterface service =
+                    ApiClient.getClient().create(ApiInterface.class);
+            PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
+
+            String usermail = preferenceUtil.getUserMailId();
+            String followermail = meetingItem.getFrom_email();
+
+            if (!TextUtils.isEmpty(followermail)) {
+                Call<EventResponse> call = service.add_follow(usermail, followermail, !meetingItem.getFollowing());
+                call.enqueue(new Callback<EventResponse>() {
+                    @Override
+                    public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
+                        EventResponse patientDetails = response.body();
+                        Log.i("patientDetails", response.toString());
+                        if (patientDetails != null && patientDetails.getResult().equalsIgnoreCase("success")) {
+                            meetingItem.setFollowing(!meetingItem.getFollowing());
+                            notifyDataSetChanged();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<EventResponse> call, Throwable t) {
+                        // Log error here since request failed
+                        String message = t.getMessage();
+                        if (message.contains("Failed to")) {
+                            message = "Failed to Connect";
+                        } else {
+                            message = "Failed";
+                        }
+                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                Toast.makeText(activity, "UserModel not found", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(activity, "Check your internet connection!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btnpostDelete:
+            case R.id.bfollow:
                 Object object = v.getTag();
+                if (object instanceof Notification) {
+                    Notification userModel = (Notification) object;
+                    followUser(userModel);
+                }
+                break;
+            case R.id.btnpostDelete:
+                object = v.getTag();
                 if (object instanceof Notification) {
                     Notification post = (Notification) object;
                     showMeetingtAlert(activity, activity.getString(R.string.app_name), "Are you sure want to delete this post?", post);
@@ -192,17 +243,21 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView txtUsername, txtTitle, txtPostDescription;
-        private ImageView postImage;
+        private TextView txtUsername;
+        private SelectableRoundedImageView ivImage;
+        private ImageView pimageg;
         private View rlnotification;
+        private View llrightoption;
+        private Button bfollow;
 
         private MyViewHolder(View view) {
             super(view);
             txtUsername = view.findViewById(R.id.username);
-            txtTitle = view.findViewById(R.id.title);
-            txtPostDescription = view.findViewById(R.id.description);
-            postImage = view.findViewById(R.id.ivImage);
+            ivImage = view.findViewById(R.id.ivImage);
+            pimageg = view.findViewById(R.id.pimageg);
             rlnotification = view.findViewById(R.id.rlnotification);
+            llrightoption = view.findViewById(R.id.llrightoption);
+            bfollow = view.findViewById(R.id.bfollow);
         }
     }
 
@@ -226,29 +281,48 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         Notification post = originalList.get(position);
         holder.rlnotification.setOnClickListener(this);
         holder.rlnotification.setTag(post);
-        holder.txtUsername.setText(post.getUsername());
-        holder.txtTitle.setText(post.getTitle());
-        holder.txtPostDescription.setText(post.getDescription());
-        if (post.getPostimage() != null && !post.getPostimage().isEmpty()) {
-            if (post.getFileType().equalsIgnoreCase("2")) {
-                byte[] decodedString = Base64.decode(post.getVideoThumb(), Base64.DEFAULT);
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                if (decodedByte != null) {
-                    holder.postImage.setImageBitmap(decodedByte);
-                }
+//        holder.txtUsername.setText(post.getUsername());
+//        holder.txtTitle.setText(post.getTitle());
+//        holder.txtPostDescription.setText(post.getDescription());
+        if (post.getType().equalsIgnoreCase("follow")) {
+            holder.bfollow.setVisibility(View.VISIBLE);
+            if (post.getFollowing()) {
+                holder.bfollow.setText("Unfollow");
             } else {
-                Glide.with(activity).load(post.getPostimage()).centerCrop()
-                        .thumbnail(0.5f)
-                        .crossFade()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(holder.postImage);
+                holder.bfollow.setText("follow");
             }
-        } else if (post.getProfile_image() != null && !post.getProfile_image().isEmpty()) {
-            Glide.with(activity).load(post.getProfile_image()).centerCrop()
-                    .thumbnail(0.5f)
-                    .crossFade()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(holder.postImage);
+            holder.bfollow.setOnClickListener(this);
+            holder.pimageg.setVisibility(View.GONE);
+            holder.txtUsername.setText(Html.fromHtml("<b><font color='#000000'>" + post.getUsername() + "</font></b><n> started following you.</n>"));
+        } else {
+            holder.bfollow.setVisibility(View.GONE);
+            holder.pimageg.setVisibility(View.VISIBLE);
+            if (post.getType().equalsIgnoreCase("like")) {
+                holder.txtUsername.setText(Html.fromHtml("<b><font color='#000000'>" + post.getUsername() + "</font></b><n> liked your post.</n>"));
+            } else {
+                holder.txtUsername.setText(Html.fromHtml("<b><font color='#000000'>" + post.getUsername() + "</font></b><n> commented your post.</n>"));
+            }
+            holder.pimageg.setImageBitmap(null);
+            if (post.getPostimage() != null && !post.getPostimage().isEmpty()) {
+                if (post.getFileType().equalsIgnoreCase("2")) {
+                    byte[] decodedString = Base64.decode(post.getVideoThumb(), Base64.DEFAULT);
+                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    if (decodedByte != null) {
+                        holder.pimageg.setImageBitmap(decodedByte);
+                    }
+                } else {
+                    Glide.with(activity).load(post.getPostimage()).centerCrop()
+                            .thumbnail(0.5f)
+                            .crossFade()
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(holder.pimageg);
+                }
+            }
+        }
+        if (post.getProfile_image() != null && !post.getProfile_image().isEmpty()) {
+            Glide.with(activity).load(post.getProfile_image())
+                    .asBitmap()
+                    .into(holder.ivImage);
         }
 
     }

@@ -3,6 +3,7 @@ package com.instag.vijay.fasttrending;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -159,9 +160,13 @@ public class PostView extends AppCompatActivity implements View.OnClickListener 
 
 
             if (post.isLiked()) {
-                likePost.setImageResource(R.drawable.ic_favorite_black);
+                ColorStateList selectedColorStateList = CommonUtil.getColorStateList(activity, R.color.red);
+                likePost.setImageTintList(selectedColorStateList);
+                likePost.setImageResource(R.drawable.like_filled);
             } else {
-                likePost.setImageResource(R.drawable.ic_favorite_border_black);
+                ColorStateList unselectedColorStateList = CommonUtil.getColorStateList(activity, R.color.black);
+                likePost.setImageResource(R.drawable.like);
+                likePost.setImageTintList(unselectedColorStateList);
             }
             if (post.getCreated_date() != null && !post.getCreated_date().isEmpty()) {
                 txtCreatedDate.setVisibility(View.VISIBLE);

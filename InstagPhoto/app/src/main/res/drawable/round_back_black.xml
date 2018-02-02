@@ -6,11 +6,11 @@
     <item>
         <shape android:shape="oval">
             <!-- transparent stroke = larger_circle_size - smaller_circle_size -->
-            <stroke android:width="10dp" />
+            <stroke android:width="3dp" />
             <solid android:color="@color/black" />
             <size
-                android:width="25dp"
-                android:height="25dp" />
+                android:width="50dp"
+                android:height="50dp" />
         </shape>
 
     </item>

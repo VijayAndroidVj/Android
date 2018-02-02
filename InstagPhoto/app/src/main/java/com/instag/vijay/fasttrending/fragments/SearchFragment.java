@@ -1,7 +1,6 @@
 package com.instag.vijay.fasttrending.fragments;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,22 +8,22 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.instag.vijay.fasttrending.CommonUtil;
-import com.instag.vijay.fasttrending.FavModel;
-import com.instag.vijay.fasttrending.MainActivity;
 import com.instag.vijay.fasttrending.PreferenceUtil;
 import com.instag.vijay.fasttrending.R;
-import com.instag.vijay.fasttrending.adapter.MeetingAdapter;
+import com.instag.vijay.fasttrending.adapter.SearchPostAdapter;
+import com.instag.vijay.fasttrending.model.PostModelMain;
+import com.instag.vijay.fasttrending.model.Posts;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
 
@@ -77,16 +76,16 @@ public class SearchFragment extends Fragment {
             PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
-            Call<ArrayList<FavModel>> call = apiService.follow_followers(preferenceUtil.getUserMailId(), false);
-            call.enqueue(new Callback<ArrayList<FavModel>>() {
+            Call<PostModelMain> call = apiService.getsearchpost(preferenceUtil.getUserMailId());
+            call.enqueue(new Callback<PostModelMain>() {
                 @Override
-                public void onResponse(Call<ArrayList<FavModel>> call, Response<ArrayList<FavModel>> response) {
+                public void onResponse(Call<PostModelMain> call, Response<PostModelMain> response) {
                     Log.d("", "response: " + response.body());
                     swipeRefreshLayout.setRefreshing(false);
                     progressBar.setVisibility(View.GONE);
-                    ArrayList<FavModel> sigInResponse = response.body();
+                    PostModelMain sigInResponse = response.body();
                     if (sigInResponse != null) {
-                        ilist = sigInResponse;
+                        ilist = sigInResponse.getPostsArrayList();
                         setList();
                     } else {
                         Toast.makeText(activity, "Could not connect to server.", Toast.LENGTH_SHORT).show();
@@ -95,7 +94,7 @@ public class SearchFragment extends Fragment {
                 }
 
                 @Override
-                public void onFailure(Call<ArrayList<FavModel>> call, Throwable t) {
+                public void onFailure(Call<PostModelMain> call, Throwable t) {
                     // Log error here since request failed
                     Log.e("", t.toString());
                     progressBar.setVisibility(View.GONE);
@@ -117,60 +116,40 @@ public class SearchFragment extends Fragment {
             activity = getActivity();
         }
         if (CommonUtil.isNetworkAvailable(activity)) {
-            if (MainActivity.searchEditText != null && MainActivity.searchEditText.getText().toString().length() > 0) {
-                progressBar.setVisibility(View.VISIBLE);
-                viewInfo.setVisibility(View.GONE);
-                recyclerView.setVisibility(View.VISIBLE);
-                PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
-                String searchquery = "";
-                if (TextUtils.isEmpty(query)) {
-                    searchquery = MainActivity.searchEditText.getText().toString();
-                } else {
-                    searchquery = query;
+            progressBar.setVisibility(View.VISIBLE);
+            viewInfo.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+            PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
+
+            ApiInterface apiService =
+                    ApiClient.getClient().create(ApiInterface.class);
+            Call<PostModelMain> call = apiService.getsearchpost(preferenceUtil.getUserMailId());
+            call.enqueue(new Callback<PostModelMain>() {
+                @Override
+                public void onResponse(Call<PostModelMain> call, Response<PostModelMain> response) {
+                    Log.d("", "response: " + response.body());
+
+                    swipeRefreshLayout.setRefreshing(false);
+                    progressBar.setVisibility(View.GONE);
+                    PostModelMain sigInResponse = response.body();
+                    if (sigInResponse != null) {
+                        ilist = sigInResponse.getPostsArrayList();
+                        setList();
+                    } else {
+                        Toast.makeText(activity, "Could not connect to server.", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
-                ApiInterface apiService =
-                        ApiClient.getClient().create(ApiInterface.class);
-                Call<ArrayList<FavModel>> call = apiService.search_user(preferenceUtil.getUserMailId(), searchquery);
-                call.enqueue(new Callback<ArrayList<FavModel>>() {
-                    @Override
-                    public void onResponse(Call<ArrayList<FavModel>> call, Response<ArrayList<FavModel>> response) {
-                        Log.d("", "response: " + response.body());
-                        MainActivity.searchEditText.clearFocus();
-                        try {
-                            if (MainActivity.searchEditText != null) {
-                                InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                                imm.hideSoftInputFromWindow(MainActivity.searchEditText.getWindowToken(), 0);
-                            }
-                            InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                            inputManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        swipeRefreshLayout.setRefreshing(false);
-                        progressBar.setVisibility(View.GONE);
-                        ArrayList<FavModel> sigInResponse = response.body();
-                        if (sigInResponse != null) {
-                            ilist = sigInResponse;
-                            setList();
-                        } else {
-                            Toast.makeText(activity, "Could not connect to server.", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<ArrayList<FavModel>> call, Throwable t) {
-                        // Log error here since request failed
-                        Log.e("", t.toString());
-                        progressBar.setVisibility(View.GONE);
-                        swipeRefreshLayout.setRefreshing(false);
-                        Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            } else if (!TextUtils.isEmpty(query)) {
-                Toast.makeText(activity, "Type something to search", Toast.LENGTH_SHORT).show();
-            }
+                @Override
+                public void onFailure(Call<PostModelMain> call, Throwable t) {
+                    // Log error here since request failed
+                    Log.e("", t.toString());
+                    progressBar.setVisibility(View.GONE);
+                    swipeRefreshLayout.setRefreshing(false);
+                    Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
         } else {
             progressBar.setVisibility(View.GONE);
             swipeRefreshLayout.setRefreshing(false);
@@ -211,17 +190,16 @@ public class SearchFragment extends Fragment {
         }
     }
 
-    public ArrayList<FavModel> ilist = new ArrayList<>();
+    public ArrayList<Posts> ilist = new ArrayList<>();
 
     public void setList() {
         try {
             //ilist = getMeetingList(isPast ? PAST : UPCOMING);
             viewInfo.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
-
-            MeetingAdapter logAdapter = new MeetingAdapter(activity, ilist);
+            SearchPostAdapter logAdapter = new SearchPostAdapter(activity, ilist);
             recyclerView.setAdapter(logAdapter);
-            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(activity);
+            StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL);
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
 //        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext(), R.drawable.list_item_background));

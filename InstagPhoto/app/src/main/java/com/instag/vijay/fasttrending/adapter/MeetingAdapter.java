@@ -174,21 +174,21 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         FavModel userModel = originalList.get(position);
-        holder.txtMeetingName.setVisibility(View.GONE);
-        holder.txtMeetingComments.setVisibility(View.VISIBLE);
-        holder.txtMeetingComments.setTypeface(font);
+        holder.txtMeetingName.setVisibility(View.VISIBLE);
+        holder.txtMeetingComments.setVisibility(View.GONE);
+//        holder.txtMeetingName.setTypeface(font);
         holder.rlParentMeeting.setOnClickListener(this);
         holder.rlParentMeeting.setTag(userModel);
         if (TextUtils.isEmpty(userModel.getUserName())) {
             if (!TextUtils.isEmpty(userModel.getWhom()) && userModel.getWhom().contains("@")) {
                 String[] name = userModel.getWhom().split("@");
-                holder.txtMeetingComments.setText(name[0]);
+                holder.txtMeetingName.setText(name[0]);
             } else {
-                holder.txtMeetingComments.setText("");
+                holder.txtMeetingName.setText("");
             }
 
         } else {
-            holder.txtMeetingComments.setText(userModel.getUserName());
+            holder.txtMeetingName.setText(userModel.getUserName());
         }
 
         if (preferenceUtil.getUserMailId().equalsIgnoreCase(userModel.getWho()) && preferenceUtil.getUserMailId().equalsIgnoreCase(userModel.getWhom())) {

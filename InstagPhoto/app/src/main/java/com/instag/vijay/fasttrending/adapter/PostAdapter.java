@@ -3,6 +3,7 @@ package com.instag.vijay.fasttrending.adapter;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
@@ -299,10 +300,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     private Typeface font;
     private SimpleDateFormat sdf;
     private SimpleDateFormat formatter;
+    private ColorStateList selectedColorStateList;
+    private ColorStateList unselectedColorStateList;
 
     public PostAdapter(Activity activity, List<Posts> moviesList) {
         this.originalList = moviesList;
         this.activity = activity;
+        selectedColorStateList = CommonUtil.getColorStateList(activity, R.color.red);
+        unselectedColorStateList = CommonUtil.getColorStateList(activity, R.color.black);
         layoutInflater = LayoutInflater.from(activity);
         preferenceUtil = new PreferenceUtil(activity);
         font = Typeface.createFromAsset(activity.getAssets(), "fontawesome-webfont.ttf");
@@ -354,9 +359,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
 
 
         if (post.isLiked()) {
-            holder.likePost.setImageResource(R.drawable.ic_favorite_black);
+            holder.likePost.setImageResource(R.drawable.like_filled);
+            holder.likePost.setImageTintList(selectedColorStateList);
         } else {
-            holder.likePost.setImageResource(R.drawable.ic_favorite_border_black);
+            holder.likePost.setImageTintList(unselectedColorStateList);
+            holder.likePost.setImageResource(R.drawable.like);
         }
 
 

@@ -38,6 +38,39 @@ public class Notification {
     @SerializedName("type")
     private String type;
 
+    @SerializedName("following")
+    private boolean following;
+
+    @SerializedName("from_email")
+    private String from_email;
+
+    @SerializedName("created_date")
+    private String created_date;
+
+    public String getCreated_date() {
+        return created_date;
+    }
+
+    public void setCreated_date(String created_date) {
+        this.created_date = created_date;
+    }
+
+    public boolean getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(boolean following) {
+        this.following = following;
+    }
+
+    public String getFrom_email() {
+        return from_email;
+    }
+
+    public void setFrom_email(String from_email) {
+        this.from_email = from_email;
+    }
+
     public String getType() {
         return type;
     }

@@ -19,11 +19,11 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.instag.vijay.fasttrending.activity.SearchActivity;
 import com.instag.vijay.fasttrending.adapter.PagerAdapter;
 import com.instag.vijay.fasttrending.fragments.NewsfeedFragment;
 import com.instag.vijay.fasttrending.fragments.ProfileFragment;
@@ -40,7 +40,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public static EditText searchEditText;
+    public static TextView searchEditText;
     private Activity activity;
     private View iv_actionbar_settings;
     public static MainActivity mainActivity;
@@ -66,9 +66,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final TextView name = (TextView) view.findViewById(R.id.txtAppName);
         view.findViewById(R.id.iv_actionbar_noti).setOnClickListener(this);
         iv_actionbar_settings = view.findViewById(R.id.iv_actionbar_settings);
-        searchEditText = (EditText) view.findViewById(R.id.searchview);
-        searchEditText.setTextColor(getResources().getColor(R.color.black));
-        searchEditText.setHintTextColor(getResources().getColor(R.color.grey1));
+        searchEditText = view.findViewById(R.id.searchview);
+//        searchEditText.setTextColor(getResources().getColor(R.color.black));
+//        searchEditText.setHintTextColor(getResources().getColor(R.color.grey1));
         iv_actionbar_settings.setOnClickListener(this);
         searchEditText.clearFocus();
 
@@ -99,6 +99,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (position == 1) {
                     name.setVisibility(View.GONE);
                     searchEditText.setVisibility(View.VISIBLE);
+                    searchEditText.setClickable(true);
+                    searchEditText.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(activity, SearchActivity.class);
+                            activity.startActivity(intent);
+                        }
+                    });
                 } else {
                     name.setVisibility(View.VISIBLE);
                     searchEditText.setVisibility(View.GONE);

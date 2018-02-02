@@ -99,6 +99,11 @@ public interface ApiInterface {
     @FormUrlEncoded
     Call<PostModelMain> getmynewsfeed(@Field("useremail") String useremail);
 
+    @POST("getsearchpost.php")
+    @FormUrlEncoded
+    Call<PostModelMain> getsearchpost(@Field("useremail") String useremail);
+
+
     @POST("getcomments.php")
     @FormUrlEncoded
     Call<ArrayList<Comments>> getcomments(@Field("post_id") String post_id);

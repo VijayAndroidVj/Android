@@ -78,6 +78,9 @@
             android:name="com.instag.vijay.fasttrending.EditProfile"
             android:theme="@style/AppTheme" />
         <activity
+            android:name="com.instag.vijay.fasttrending.activity.SearchActivity"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name="com.instag.vijay.fasttrending.NotificationActivity"
             android:theme="@style/AppTheme" />
         <activity

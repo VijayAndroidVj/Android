@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.DimenRes;
 import android.support.annotation.NonNull;
@@ -237,6 +238,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                         .into(ivProfile1);
             }
             txtUsername.setText(preferenceUtil.getUserName());
+            Typeface font = Typeface.createFromAsset(activity.getAssets(), "fontawesome-webfont.ttf");
+            txtBiography.setTypeface(font);
             txtBiography.setText(preferenceUtil.getUserAboutMe());
 
         } catch (Exception e) {

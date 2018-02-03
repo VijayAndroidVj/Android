@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -11,7 +12,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -42,6 +42,7 @@ public class Comment extends AppCompatActivity {
     private ProgressBar progressBar;
     private Activity activity;
     private String post_id;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,7 +55,7 @@ public class Comment extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(getString(R.string.app_name));
+        actionBar.setTitle("Comments");
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setElevation(0);
 
@@ -68,6 +69,15 @@ public class Comment extends AppCompatActivity {
             post_id = getIntent().getStringExtra("post_id");
             getComments(post_id);
         }
+
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Refresh items
+                getComments(post_id);
+            }
+        });
 
         findViewById(R.id.btnCommentSend).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,6 +166,7 @@ public class Comment extends AppCompatActivity {
     private void getComments(String post_id) {
         try {
             if (CommonUtil.isNetworkAvailable(activity)) {
+                progressBar.setVisibility(View.VISIBLE);
                 ApiInterface service =
                         ApiClient.getClient().create(ApiInterface.class);
                 Call<ArrayList<Comments>> call = service.getcomments(post_id);
@@ -176,10 +187,12 @@ public class Comment extends AppCompatActivity {
                             message = "Failed";
                         }
                         progressBar.setVisibility(View.GONE);
+                        viewInfo.setText(message);
                         Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                     }
                 });
             } else {
+                viewInfo.setText("Check your network");
                 progressBar.setVisibility(View.GONE);
                 Toast.makeText(activity, "Check your internet connection!", Toast.LENGTH_SHORT).show();
             }
@@ -195,9 +208,7 @@ public class Comment extends AppCompatActivity {
     public void setList() {
         try {
             //ilist = getMeetingList(isPast ? PAST : UPCOMING);
-            viewInfo.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
-
             commentsAdapter = new CommentsAdapter(activity, commentsArrayList);
             recyclerView.setAdapter(commentsAdapter);
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(activity);
@@ -210,6 +221,7 @@ public class Comment extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
                 viewInfo.setVisibility(View.GONE);
             }
+            swipeRefreshLayout.setRefreshing(false);
         } catch (Exception e) {
             e.printStackTrace();
         }

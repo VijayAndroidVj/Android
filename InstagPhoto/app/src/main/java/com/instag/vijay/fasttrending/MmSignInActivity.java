@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -56,8 +55,6 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
     private EditText input_password, input_username;
     private static final String TAG = MmSignInActivity.class.getSimpleName();
     Button bt_clear_username;
-    TextInputLayout til_signin_username;
-    TextInputLayout til_signin_password;
     private Activity activity;
     private FirebaseAuth mAuth;
     private String firstName, lastName, email, birthday, gender;
@@ -149,8 +146,6 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
         input_password = (EditText) findViewById(R.id.input_password);
         input_username = (EditText) findViewById(R.id.input_username);
         bt_clear_username = (Button) findViewById(R.id.bt_clear_username);
-        til_signin_username = (TextInputLayout) findViewById(R.id.til_signin_username);
-        til_signin_password = (TextInputLayout) findViewById(R.id.til_signin_password);
 
         input_password.addTextChangedListener(new MyTextWatcher(input_password));
         input_username.addTextChangedListener(new MyTextWatcher(input_username));
@@ -488,15 +483,15 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
     private boolean validPassword() {
         String pass = input_password.getText().toString().trim();
         if (pass.isEmpty()) {
-            til_signin_password.setError("Invalid Password");
+            input_password.setError("Invalid Password");
             requestFocus(input_password);
             return false;
         } else if (pass.length() < 6) {
-            til_signin_password.setError("Password must be greater than 6 character");
+            input_password.setError("Password must be greater than 6 character");
             requestFocus(input_password);
             return false;
         } else {
-            til_signin_password.setError(null);
+            input_password.setError(null);
         }
 
         return true;
@@ -506,11 +501,11 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
         String email = input_username.getText().toString().trim();
 
         if (email.isEmpty()) {
-            til_signin_username.setError("Enter valid Username id");
+            input_username.setError("Enter valid Username id");
             requestFocus(input_username);
             return false;
         } else {
-            til_signin_username.setError(null);
+            input_username.setError(null);
         }
 
         return true;

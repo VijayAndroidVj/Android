@@ -23,7 +23,10 @@ import com.instag.vijay.fasttrending.model.Comments;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
@@ -141,13 +144,14 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView txtMeetingName, txtMeetingComments, txtMeetingTime;
+        private TextView txtMeetingName, txtMeetingComments, txtMeetingTime, txtMeetingDate;
         private Button btnMeetingJoin;
         private ImageView menuComments, ivProfile;
 
         private MyViewHolder(View view) {
             super(view);
             txtMeetingName = view.findViewById(R.id.txtMeetingName);
+            txtMeetingDate = view.findViewById(R.id.txtMeetingDate);
 //            txtMeetingName.setTypeface(font, Typeface.BOLD);
             btnMeetingJoin = view.findViewById(R.id.btnMeetingJoin);
             ivProfile = view.findViewById(R.id.ivProfile);
@@ -156,6 +160,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
             txtMeetingComments.setVisibility(View.VISIBLE);
             menuComments = view.findViewById(R.id.menuComments);
             menuComments.setVisibility(View.VISIBLE);
+            txtMeetingDate.setVisibility(View.VISIBLE);
         }
     }
 
@@ -163,12 +168,16 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
     private LayoutInflater layoutInflater;
     private Typeface font;
     private PreferenceUtil preferenceUtil;
+    private SimpleDateFormat sdf;
+    private SimpleDateFormat formatter;
 
     public CommentsAdapter(Activity activity, List<Comments> moviesList) {
         this.originalList = moviesList;
         this.activity = activity;
         preferenceUtil = new PreferenceUtil(activity);
         layoutInflater = LayoutInflater.from(activity);
+        sdf = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss", Locale.getDefault());
+        formatter = new SimpleDateFormat("MMM dd,yyyy hh:mm a", Locale.getDefault());
         font = Typeface.createFromAsset(activity.getAssets(), "fontawesome-webfont.ttf");
     }
 
@@ -194,6 +203,20 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         } else {
             holder.txtMeetingComments.setText(comment.getComment());
         }
+        if (TextUtils.isEmpty(comment.getCreated_date())) {
+            holder.txtMeetingTime.setText("");
+        } else {
+            holder.txtMeetingTime.setVisibility(View.VISIBLE);
+            try {
+                Date testDate;
+                testDate = sdf.parse(comment.getCreated_date());
+                String newFormat = formatter.format(testDate);
+                holder.txtMeetingTime.setText(newFormat);
+            } catch (Exception e) {
+                e.printStackTrace();
+                holder.txtMeetingTime.setText(comment.getCreated_date());
+            }
+        }
 
         if (comment.getUser_email() != null && comment.getUser_email().equalsIgnoreCase(preferenceUtil.getUserMailId())) {
             holder.menuComments.setOnClickListener(this);
@@ -203,14 +226,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
             holder.menuComments.setVisibility(View.GONE);
         }
         holder.btnMeetingJoin.setVisibility(View.GONE);
-
-
-        if (comment.getCreated_date() != null && !comment.getCreated_date().isEmpty()) {
-            holder.txtMeetingTime.setVisibility(View.VISIBLE);
-            holder.txtMeetingTime.setText(comment.getCreated_date());
-        } else {
-            holder.txtMeetingTime.setVisibility(View.GONE);
-        }
+        holder.txtMeetingDate.setVisibility(View.GONE);
 
 
         if (comment.getProfile_image() != null && !comment.getProfile_image().isEmpty()) {

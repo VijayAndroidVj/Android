@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,6 +66,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
                     likePost(post);
                 }
                 break;
+            case R.id.txtViewAllComments:
             case R.id.commentPost:
                 object = v.getTag();
                 if (object instanceof Posts) {
@@ -272,7 +272,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView txtMeetingName, txtPostDescription, txtPostLikesCount, txtCreatedDate;
-        private Button btnpostDelete;
+        private TextView txtViewAllComments;
+        private ImageView btnpostDelete;
         private ImageView postImage, ivProfile;
         private ImageView likePost, commentPost;
         private View rlParentMeeting, rlMeeting1, ibPlay;
@@ -280,6 +281,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         private MyViewHolder(View view) {
             super(view);
             txtPostLikesCount = view.findViewById(R.id.txtPostLikesCount);
+            txtViewAllComments = view.findViewById(R.id.txtViewAllComments);
             txtMeetingName = view.findViewById(R.id.txtMeetingName);
             txtPostDescription = view.findViewById(R.id.txtPostDescription);
             postImage = view.findViewById(R.id.postImage);
@@ -330,6 +332,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         holder.ibPlay.setTag(post);
         holder.rlMeeting1.setOnClickListener(this);
         holder.ibPlay.setOnClickListener(this);
+        holder.txtViewAllComments.setOnClickListener(this);
 
         if (TextUtils.isEmpty(post.getUsername())) {
             holder.txtMeetingName.setText("");
@@ -354,6 +357,26 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
             holder.txtPostDescription.setVisibility(View.VISIBLE);
             holder.txtPostDescription.setText(post.getDescription());
         }
+        if (TextUtils.isEmpty(post.getTotalComments())) {
+            holder.txtViewAllComments.setText("");
+            holder.txtViewAllComments.setVisibility(View.GONE);
+        } else {
+            holder.txtViewAllComments.setVisibility(View.VISIBLE);
+            int total = 0;
+            try {
+                total = Integer.valueOf(post.getTotalComments());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (total > 1) {
+                holder.txtViewAllComments.setText("View all " + post.getTotalComments() + " comments");
+            } else if (total == 1) {
+                holder.txtViewAllComments.setText("View " + post.getTotalComments() + " comment");
+            } else {
+                holder.txtViewAllComments.setText("");
+                holder.txtViewAllComments.setVisibility(View.GONE);
+            }
+        }
 
         holder.txtPostLikesCount.setText(post.getTotal_likes() + " likes");
 
@@ -368,6 +391,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
 
 
         holder.likePost.setTag(post);
+        holder.txtViewAllComments.setTag(post);
         holder.commentPost.setTag(post);
         holder.txtPostLikesCount.setTag(post);
         holder.likePost.setOnClickListener(this);

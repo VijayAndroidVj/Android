@@ -46,10 +46,13 @@
                 android:layout_toLeftOf="@+id/btnCommentSend"
                 android:layout_toStartOf="@+id/btnCommentSend"
                 android:background="@drawable/border_bg_prescription_list"
+                android:hint="type your comment..."
                 android:maxLength="150"
                 android:maxLines="2"
+                android:paddingLeft="@dimen/_5dp"
+                android:paddingStart="@dimen/_5dp"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
 
             <ImageView
                 android:id="@+id/btnCommentSend"

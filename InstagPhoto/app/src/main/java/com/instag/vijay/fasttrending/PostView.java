@@ -15,7 +15,6 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,8 +43,8 @@ import static android.view.View.GONE;
 
 public class PostView extends AppCompatActivity implements View.OnClickListener {
     private Activity activity;
-    private TextView txtMeetingName, txtPostDescription, txtPostLikesCount, txtCreatedDate;
-    private Button btnpostDelete;
+    private TextView txtMeetingName, txtPostDescription, txtPostLikesCount, txtCreatedDate, txtViewAllComments;
+    private ImageView btnpostDelete;
     private ImageView postImage, ivProfile;
     private ImageView likePost, commentPost;
     private PreferenceUtil preferenceUtil;
@@ -71,6 +70,7 @@ public class PostView extends AppCompatActivity implements View.OnClickListener 
         txtMeetingName = findViewById(R.id.txtMeetingName);
         txtPostDescription = findViewById(R.id.txtPostDescription);
         txtPostLikesCount = findViewById(R.id.txtPostLikesCount);
+        txtViewAllComments = findViewById(R.id.txtViewAllComments);
         postImage = findViewById(R.id.postImage);
         ivProfile = findViewById(R.id.ivProfile);
         btnpostDelete = findViewById(R.id.btnpostDelete);
@@ -185,9 +185,33 @@ public class PostView extends AppCompatActivity implements View.OnClickListener 
             }
 
 
+            if (TextUtils.isEmpty(post.getTotalComments())) {
+                txtViewAllComments.setText("");
+                txtViewAllComments.setVisibility(View.GONE);
+            } else {
+                txtViewAllComments.setVisibility(View.VISIBLE);
+                int total = 0;
+                try {
+                    total = Integer.valueOf(post.getTotalComments());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (total > 1) {
+                    txtViewAllComments.setText("View all " + post.getTotalComments() + " comments");
+                } else if (total == 1) {
+                    txtViewAllComments.setText("View " + post.getTotalComments() + " comment");
+                } else {
+                    txtViewAllComments.setText("");
+                    txtViewAllComments.setVisibility(View.GONE);
+                }
+            }
+
+
             likePost.setTag(post);
             commentPost.setTag(post);
+            txtViewAllComments.setTag(post);
             txtPostLikesCount.setTag(post);
+            txtViewAllComments.setOnClickListener(this);
             likePost.setOnClickListener(this);
             commentPost.setOnClickListener(this);
             txtPostLikesCount.setOnClickListener(this);
@@ -265,6 +289,7 @@ public class PostView extends AppCompatActivity implements View.OnClickListener 
                     likePost(post);
                 }
                 break;
+            case R.id.txtViewAllComments:
             case R.id.commentPost:
                 object = view.getTag();
                 if (object instanceof Posts) {

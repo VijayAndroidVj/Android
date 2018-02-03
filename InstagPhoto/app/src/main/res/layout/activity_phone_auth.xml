@@ -33,13 +33,33 @@
                 android:background="@mipmap/ic_launcher"
                 android:contentDescription="@string/app_name" />
 
+            <TextView
+                android:id="@+id/enterlabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ivlogo"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="bottom"
+                android:layout_marginEnd="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="@dimen/_5dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:padding="@dimen/_5dp"
+                android:singleLine="true"
+                android:text="Enter Your Number"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <RelativeLayout
                 android:id="@+id/phone_auth_fields"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/ivlogo"
-                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/enterlabel"
+                android:layout_marginBottom="@dimen/_45dp"
                 android:orientation="vertical"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp">
@@ -49,9 +69,7 @@
                     android:id="@+id/llnumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:layout_margin="15dp"
-                    android:gravity="center"
                     android:orientation="vertical">
 
                     <com.rilixtech.CountryCodePicker
@@ -68,11 +86,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_margin="25dp"
+                        android:layout_margin="20dp"
                         android:gravity="center"
                         android:hint="@string/hint_phone_number"
                         android:inputType="phone"
-                        android:padding="20dp"
+                        android:maxLength="20"
+                        android:padding="15dp"
                         android:textColor="@android:color/black"
                         android:textSize="14sp" />
 
@@ -92,14 +111,14 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/llnumber"
                     android:layout_gravity="center"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="5dp"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:weightSum="3.0">
 
                     <Button
                         android:id="@+id/button_verify"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1.0"
                         android:background="@drawable/bg_button"

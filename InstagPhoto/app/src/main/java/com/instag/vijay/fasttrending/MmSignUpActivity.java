@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -61,11 +60,7 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
     private TextInputEditText input_password;
     private Button bt_clear_name;
     private Button bt_clear_email;
-    private TextInputLayout til_signup_name;
-    private TextInputLayout til_signup_email;
-    private TextInputLayout til_signup_password;
     private TextInputEditText input_userName;
-    private TextInputLayout til_signup_userName;
     private LoginButton loginButton;
     private TextView txtusravailable;
     private CallbackManager callbackManager;
@@ -159,11 +154,7 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
         input_name = findViewById(R.id.input_name);
         input_email = findViewById(R.id.input_email);
         input_password = findViewById(R.id.input_password);
-        til_signup_name = findViewById(R.id.til_signup_name);
-        til_signup_email = findViewById(R.id.til_signup_email);
         input_userName = findViewById(R.id.input_userName);
-        til_signup_userName = (TextInputLayout) findViewById(R.id.til_signup_userName);
-        til_signup_password = (TextInputLayout) findViewById(R.id.til_signup_password);
         bt_clear_name = (Button) findViewById(R.id.bt_clear_name);
         bt_clear_email = (Button) findViewById(R.id.bt_clear_email);
         input_userName.addTextChangedListener(new TextWatcher() {
@@ -179,7 +170,7 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
 
             @Override
             public void afterTextChanged(Editable editable) {
-                til_signup_userName.setError(null);
+                input_userName.setError(null);
                 if (input_userName.getText().toString().trim().length() > 0) {
                     ApiInterface apiService =
                             ApiClient.getClient().create(ApiInterface.class);
@@ -193,7 +184,7 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
                                 if (sigInResponse.getResult().equalsIgnoreCase("failed")) {
                                     txtusravailable.setVisibility(View.GONE);
                                     txtusravailable.setText(sigInResponse.getMessage());
-                                    til_signup_userName.setError("Username Not available");
+                                    input_userName.setError("Username Not available");
                                     requestFocus(input_userName);
                                     isNameAailable = false;
                                 } else {
@@ -410,7 +401,7 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
         }
 
         if (!isNameAailable) {
-            til_signup_userName.setError("Username Not available");
+            input_userName.setError("Username Not available");
             requestFocus(input_userName);
             return;
         }
@@ -482,11 +473,11 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
     private boolean validateUsername() {
         String username = input_userName.getText().toString().trim();
         if (username.isEmpty()) {
-            til_signup_userName.setError("Invalid username");
+            input_userName.setError("Invalid username");
             requestFocus(input_userName);
             return false;
         } else {
-            til_signup_userName.setError(null);
+            input_userName.setError(null);
         }
         return true;
     }
@@ -494,15 +485,15 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
     private boolean validName() {
         String pass = input_name.getText().toString().trim();
         if (pass.isEmpty()) {
-            til_signup_name.setError("Invalid name");
+            input_name.setError("Invalid name");
             requestFocus(input_name);
             return false;
         } else if (pass.length() < 3) {
-            til_signup_name.setError("Name must be greater than 3 character");
+            input_name.setError("Name must be greater than 3 character");
             requestFocus(input_name);
             return false;
         } else {
-            til_signup_name.setError(null);
+            input_name.setError(null);
         }
 
         return true;
@@ -512,11 +503,11 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
         String email = input_email.getText().toString().trim();
 
         if (email.isEmpty() || !isValidEmail(email)) {
-            til_signup_email.setError("Enter valid Email id");
+            input_email.setError("Enter valid Email id");
             requestFocus(input_email);
             return false;
         } else {
-            til_signup_email.setError(null);
+            input_email.setError(null);
         }
 
         return true;
@@ -537,15 +528,15 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
         String pass = input_password.getText().toString().trim();
 
         if (pass.isEmpty()) {
-            til_signup_password.setError("Enter Password");
+            input_password.setError("Enter Password");
             requestFocus(input_password);
             return false;
         } else if (pass.length() < 6) {
-            til_signup_password.setError("Minimum 6 characters");
+            input_password.setError("Minimum 6 characters");
             requestFocus(input_password);
             return false;
         } else {
-            til_signup_password.setError(null);
+            input_password.setError(null);
         }
 
         return true;

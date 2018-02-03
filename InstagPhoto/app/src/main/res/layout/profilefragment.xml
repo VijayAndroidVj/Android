@@ -1,7 +1,8 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -173,6 +174,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/white"
             android:focusableInTouchMode="true"
             android:orientation="vertical">
 
@@ -186,42 +188,42 @@
                 android:padding="@dimen/_5dp"
                 android:text="Vijay"
                 android:textColor="@color/black"
-                android:textSize="13sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtBiography"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_10dp"
                 android:layout_marginLeft="@dimen/_5dp"
                 android:layout_marginRight="@dimen/_5dp"
                 android:background="@color/white"
                 android:gravity="left"
                 android:maxLength="150"
-                android:paddingBottom="@dimen/_5dp"
+                android:paddingBottom="@dimen/_20dp"
                 android:paddingLeft="@dimen/_5dp"
                 android:paddingRight="@dimen/_5dp"
                 android:text="Vijay dglds s dgdf fhdfhdfh fdh dfhfd hdfhfd f dfhdfh fd fffh fhfdh fdhdfh hfd hfd hfd hfdh dfhdfh fdh fdh dfhfdh df hdfh dfhdds gl sddjg dsjg dsg dsj gds gs"
                 android:textColor="@color/black"
-                android:textSize="13sp"
+                android:textSize="14sp"
                 android:textStyle="normal"
                 android:visibility="visible" />
 
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginTop="@dimen/_2dp"
-                android:background="@color/greyline" />
-
+            <!-- <View
+                 android:layout_width="match_parent"
+                 android:layout_height="0.5dp"
+                 android:layout_marginTop="@dimen/_2dp"
+                 android:background="@color/greyline" />
+ -->
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:background="@color/white"
-                android:gravity="center">
+                android:background="@drawable/bottomtopline"
+                android:gravity="center"
+                android:padding="@dimen/_5dp">
 
                 <ImageView
                     android:id="@+id/btnGrid"
@@ -229,7 +231,7 @@
                     android:layout_height="40dp"
                     android:layout_alignParentLeft="true"
                     android:layout_centerHorizontal="true"
-                    android:padding="10dp"
+                    android:padding="5dp"
                     android:src="@drawable/gridview"
                     android:tint="@color/button_background" />
 
@@ -244,17 +246,18 @@
 
             </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginBottom="@dimen/_3dp"
-                android:background="@color/greyline" />
-
+            <!--  <View
+                  android:layout_width="match_parent"
+                  android:layout_height="0.5dp"
+                  android:layout_marginBottom="@dimen/_3dp"
+                  android:background="@color/greyline" />
+  -->
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerviewContact"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/_3dp"
+                android:background="@color/white"
                 android:scrollbars="vertical"
                 android:visibility="gone" />
 
@@ -264,6 +267,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
+                android:background="@color/white"
                 android:horizontalSpacing="1dp"
                 android:numColumns="3"
                 android:padding="0dp"

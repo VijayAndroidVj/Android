@@ -141,6 +141,7 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
         private Button btnMeetingJoin;
         private ImageView ivProfile;
         private View rlParentMeeting;
+        private View menuComments;
 
         private MyViewHolder(View view) {
             super(view);
@@ -150,6 +151,7 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
             btnMeetingJoin = view.findViewById(R.id.btnMeetingJoin);
             ivProfile = view.findViewById(R.id.ivProfile);
             rlParentMeeting = view.findViewById(R.id.rlParentMeeting);
+            menuComments = view.findViewById(R.id.menuComments);
         }
     }
 
@@ -176,6 +178,7 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
         FavModel userModel = originalList.get(position);
         holder.txtMeetingName.setVisibility(View.VISIBLE);
         holder.txtMeetingComments.setVisibility(View.GONE);
+        holder.menuComments.setVisibility(View.GONE);
 //        holder.txtMeetingName.setTypeface(font);
         holder.rlParentMeeting.setOnClickListener(this);
         holder.rlParentMeeting.setTag(userModel);

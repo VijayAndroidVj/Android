@@ -4,12 +4,14 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center">
+    android:layout_gravity="center"
+    android:background="@color/white">
 
     <LinearLayout
         android:id="@+id/rlParentMeeting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -60,20 +62,20 @@
                 app:sriv_right_top_corner_radius="0dip" />
 
 
-            <Button
+            <ImageView
                 android:id="@+id/btnpostDelete"
                 android:layout_width="wrap_content"
-                android:layout_height="25dp"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:background="@drawable/button_style"
-                android:padding="3dp"
-                android:text="@string/delete"
-                android:textAllCaps="false"
-                android:textColor="#686868"
-                android:textSize="10sp"
-                android:textStyle="bold" />
+                android:layout_gravity="right"
+                android:layout_marginEnd="@dimen/_10dp"
+                android:layout_marginRight="@dimen/_10dp"
+                android:src="@drawable/ic_more_vert_black"
+                android:tint="@color/grey"
+                android:visibility="visible" />
+
         </RelativeLayout>
 
         <FrameLayout
@@ -104,7 +106,7 @@
                 android:id="@+id/likePost"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_margin="5dp"
+                android:layout_margin="3dp"
                 android:contentDescription="@string/name"
                 android:src="@drawable/like"
                 android:tint="@color/black1" />
@@ -113,7 +115,7 @@
                 android:id="@+id/commentPost"
                 android:layout_width="29dp"
                 android:layout_height="29dp"
-                android:layout_margin="5dp"
+                android:layout_margin="3dp"
                 android:layout_toEndOf="@+id/likePost"
                 android:layout_toRightOf="@+id/likePost"
                 android:contentDescription="@string/name"
@@ -127,7 +129,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_margin="5dp"
+                android:layout_margin="3dp"
                 android:layout_toEndOf="@+id/commentPost"
                 android:layout_toRightOf="@+id/commentPost"
                 android:gravity="right|center"
@@ -148,7 +150,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="5dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:gravity="left|center"
@@ -166,11 +167,23 @@
             android:layout_marginRight="5dp"
             android:maxLines="3"
             android:padding="5dp"
-            android:text=""
-            android:textColor="@color/grey"
+            android:text="mbhbkjkjbkkbk"
+            android:textColor="@color/black"
             android:textSize="14sp"
             android:textStyle="normal" />
 
+        <TextView
+            android:id="@+id/txtViewAllComments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:maxLines="3"
+            android:padding="5dp"
+            android:text="View all comments"
+            android:textColor="@color/grey"
+            android:textSize="14sp"
+            android:textStyle="normal" />
     </LinearLayout>
 
 </RelativeLayout>

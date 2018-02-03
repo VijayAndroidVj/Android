@@ -44,6 +44,9 @@ public class Posts implements Parcelable {
     @SerializedName("videoThumb")
     private String videoThumb;
 
+    @SerializedName("totalComments")
+    private String totalComments;
+
 
     protected Posts(Parcel in) {
         post_id = in.readString();
@@ -57,6 +60,7 @@ public class Posts implements Parcelable {
         total_likes = in.readInt();
         liked = in.readByte() != 0;
         videoThumb = in.readString();
+        totalComments = in.readString();
     }
 
     public static final Creator<Posts> CREATOR = new Creator<Posts>() {
@@ -105,6 +109,14 @@ public class Posts implements Parcelable {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getTotalComments() {
+        return totalComments;
+    }
+
+    public void setTotalComments(String totalComments) {
+        this.totalComments = totalComments;
     }
 
     public void setDescription(String description) {
@@ -178,5 +190,6 @@ public class Posts implements Parcelable {
         parcel.writeInt(total_likes);
         parcel.writeByte((byte) (liked ? 1 : 0));
         parcel.writeString(videoThumb);
+        parcel.writeString(totalComments);
     }
 }

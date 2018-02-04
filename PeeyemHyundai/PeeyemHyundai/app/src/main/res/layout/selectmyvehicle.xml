@@ -37,7 +37,7 @@
         android:id="@+id/bselect"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/link_Try_app"
         android:background="@color/colorPrimaryDark"
         android:gravity="center"
         android:padding="@dimen/_10dp"
@@ -45,4 +45,18 @@
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/link_Try_app"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="Try App"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="16sp"
+        android:visibility="visible" />
 </RelativeLayout>

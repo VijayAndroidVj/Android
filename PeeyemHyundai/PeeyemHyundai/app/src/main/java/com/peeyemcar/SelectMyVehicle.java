@@ -77,6 +77,14 @@ public class SelectMyVehicle extends AppCompatActivity implements BaseSliderView
                 finish();
             }
         });
+        findViewById(R.id.link_Try_app).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent homeIntent = new Intent(SelectMyVehicle.this, MainActivity.class);
+                startActivity(homeIntent);
+                finish();
+            }
+        });
     }
 
     @Override

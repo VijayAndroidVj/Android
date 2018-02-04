@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
@@ -14,13 +15,21 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.creativityapps.gmailbackgroundlibrary.BackgroundMail;
 import com.peeyem.app.R;
+import com.peeyemcar.models.EventResponse;
+import com.peeyemcar.retrofit.ApiClient;
+import com.peeyemcar.retrofit.ApiInterface;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class TestDrive extends AppCompatActivity {
@@ -132,8 +141,6 @@ public class TestDrive extends AppCompatActivity {
 
     private void checkFieldInForm() {
         if (preferredDate.getText().length() > 0 && fullName.getText().length() > 0 && mobNum.getText().length() > 0 && emailID.getText().length() > 0 && !dealerLocation.getSelectedItem().toString().contains("Dealer Location") && !state.getSelectedItem().toString().contains("Select State") && !city.getSelectedItem().toString().contains("Select City") && comment.getText().length() > 0 && !carModel.getSelectedItem().toString().contains("Car Model")) {
-
-
             str =
                     "Car Model : " + carModel.getSelectedItem().toString() + "\n"
                             + "Preferred Date : " + preferredDate.getText().toString() + "\n"
@@ -143,10 +150,59 @@ public class TestDrive extends AppCompatActivity {
                             + "E-Mail ID : " + emailID.getText().toString() + "\n"
                             + "State : " + state.getSelectedItem().toString() + "\n"
                             + "City : " + city.getSelectedItem().toString() + "\n"
-                            + "Dealer Location : " + city.getSelectedItem().toString() + "\n"
+                            + "Dealer Location : " + dealerLocation.getSelectedItem().toString() + "\n"
                             + "Current Vehicle : " + currentVehicle.getText().toString() + "\n"
                             + "Comment : " + comment.getText().toString() + "\n";
-            sendTestEmail();
+            if (CommonUtil.isNetworkAvailable(TestDrive.this)) {
+                MainActivity.showProgress(TestDrive.this);
+                ApiInterface apiService =
+                        ApiClient.getClient().create(ApiInterface.class);
+                Call<EventResponse> call = apiService.customer_testdrive("2", ((RadioButton) findViewById(rg.getCheckedRadioButtonId())).getText().toString(),
+                        carModel.getSelectedItem().toString(),
+                        preferredDate.getText().toString(),
+                        fullName.getText().toString(),
+                        mobNum.getText().toString(),
+                        emailID.getText().toString(),
+                        state.getSelectedItem().toString(),
+                        city.getSelectedItem().toString(),
+                        dealerLocation.getSelectedItem().toString(),
+                        currentVehicle.getText().toString(),
+                        comment.getText().toString());
+
+                call.enqueue(new Callback<EventResponse>() {
+                    @Override
+                    public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
+                        Log.d("", "Number of movies received: " + response.body());
+                        MainActivity.dismissProgress();
+                        EventResponse sigInResponse = response.body();
+                        if (sigInResponse != null) {
+                            if (sigInResponse.getResult().equalsIgnoreCase("success")) {
+                                try {
+                                    sendTestEmail();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                onBackPressed();
+                            }
+                            Toast.makeText(TestDrive.this, sigInResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(TestDrive.this, "Could not connect to server.", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<EventResponse> call, Throwable t) {
+                        // Log error here since request failed
+                        Log.e("", t.toString());
+                        MainActivity.dismissProgress();
+                        Toast.makeText(TestDrive.this, "Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                Toast.makeText(TestDrive.this, "Check your internet connection!", Toast.LENGTH_SHORT).show();
+            }
+
         } else if (carModel.getSelectedItem().toString().contains("Car Model")) {
             ((TextView) carModel.getSelectedView()).setError("Please select Value");
             preferredDate.requestFocus();

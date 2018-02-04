@@ -256,6 +256,18 @@ public class PhoneNumberAuthentication extends AppCompatActivity implements
                     return;
                 }
                 String mobile = ccp.getSelectedCountryCodeWithPlus() + ccp.getPhoneNumber().getNationalNumber();
+
+//                intent = new Intent(PhoneNumberAuthentication.this, MmSignInActivity.class);
+//                intent.putExtra("vehiclenumber", vehiclenumber);
+//                intent.putExtra("vehicletype", vehicletype);
+//                intent.putExtra("mobile", ccp.getPhoneNumber().getNationalNumber());
+//                intent.putExtra("country", ccp.getSelectedCountryCodeWithPlus());
+//                PreferenceUtil preferenceUtil = new PreferenceUtil(PhoneNumberAuthentication.this);
+//                preferenceUtil.putString(Keys.PHONE, mobile);
+//                preferenceUtil.putString(Keys.vehiclenumber, vehiclenumber);
+//                preferenceUtil.putString(Keys.vehicletype, vehicletype);
+//                startActivity(intent);
+
                 startPhoneNumberVerification(mobile);
                 break;
         }

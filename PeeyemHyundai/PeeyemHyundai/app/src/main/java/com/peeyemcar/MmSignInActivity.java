@@ -104,9 +104,9 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
             return;
         }
 
-        if (!validPassword()) {
-            return;
-        }
+//        if (!validPassword()) {
+//            return;
+//        }
 
         final String username = input_username.getText().toString().trim();
         final String password = input_password.getText().toString().trim();
@@ -116,7 +116,7 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
             PreferenceUtil preferenceUtil = new PreferenceUtil(MmSignInActivity.this);
-            Call<EventResponse> call = apiService.login(username, password, preferenceUtil.getUserVehicleType(), preferenceUtil.getUserVehicleNumber());
+            Call<EventResponse> call = apiService.login("2", username, password, preferenceUtil.getUserVehicleType(), preferenceUtil.getUserVehicleNumber());
             call.enqueue(new Callback<EventResponse>() {
                 @Override
                 public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
@@ -130,6 +130,8 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
                             PreferenceUtil preferenceUtil = new PreferenceUtil(MmSignInActivity.this);
                             preferenceUtil.putBoolean(Keys.IS_ALREADY_REGISTERED, true);
                             preferenceUtil.putString(Keys.EmailID, sigInResponse.getEmail());
+                            preferenceUtil.putString(Keys.aid, sigInResponse.getAid());
+                            preferenceUtil.putString(Keys.ReferId, sigInResponse.getReferid());
                             preferenceUtil.putString(Keys.USERNAME, sigInResponse.getName());
                             preferenceUtil.putString(Keys.PHONE, sigInResponse.getMobile());
                             preferenceUtil.putString(Keys.PASSWORD, sigInResponse.getPassword());

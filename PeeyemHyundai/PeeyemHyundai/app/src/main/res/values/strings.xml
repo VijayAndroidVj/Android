@@ -23,6 +23,8 @@
     <string name="fb_login_protocol_scheme">fb1561734583874549</string>
 
     <string name="products">Products</string>
+    <string name="myvechile">MyVehicle</string>
+    <string name="referearn">Refer and Earn</string>
     <string name="service">Service</string>
     <string name="test_drive">Test Drive</string>
     <string name="breakdown">BreakDown</string>

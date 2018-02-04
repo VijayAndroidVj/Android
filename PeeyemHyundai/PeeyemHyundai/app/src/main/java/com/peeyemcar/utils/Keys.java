@@ -7,6 +7,8 @@ package com.peeyemcar.utils;
 public interface Keys {
 
     String EmailID = "emailID";
+    String ReferId = "ReferId";
+    String aid = "aid";
     String USERNAME = "username";
     String PASSWORD = "password";
     String PHONE = "PHONE";

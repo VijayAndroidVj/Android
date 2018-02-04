@@ -47,6 +47,18 @@ public class PreferenceUtil {
         return getString(Keys.PHONE, "");
     }
 
+    public String getUserEmail() {
+        return getString(Keys.EmailID, "");
+    }
+
+    public String getUserReferId() {
+        return getString(Keys.ReferId, "");
+    }
+
+    public String getAid() {
+        return getString(Keys.aid, "");
+    }
+
     public String getUserName() {
         return getString(Keys.USERNAME, "");
     }

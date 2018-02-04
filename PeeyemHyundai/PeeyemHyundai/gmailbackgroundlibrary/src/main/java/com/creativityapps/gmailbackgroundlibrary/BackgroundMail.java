@@ -56,7 +56,7 @@ public class BackgroundMail {
         this.mContext = context;
         this.sendingMessage = context.getString(R.string.msg_sending_email);
         this.sendingMessageSuccess = context.getString(R.string.msg_email_sent_successfully);
-        this.sendingMessageError=context.getString(R.string.msg_error_sending_email);
+        this.sendingMessageError = context.getString(R.string.msg_error_sending_email);
     }
 
     private BackgroundMail(Builder builder) {
@@ -221,7 +221,7 @@ public class BackgroundMail {
         this.attachments.addAll(attachments);
     }
 
-    public void addAttachments(String...attachments) {
+    public void addAttachments(String... attachments) {
         this.attachments.addAll(Arrays.asList(attachments));
     }
 
@@ -298,23 +298,29 @@ public class BackgroundMail {
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
-            if (processVisibility) {
-                progressDialog.dismiss();
-                if (result) {
-                    if (!TextUtils.isEmpty(sendingMessageSuccess)) {
-                        Toast.makeText(mContext, sendingMessageSuccess, Toast.LENGTH_SHORT).show();
-                    }
-                    if (onSuccessCallback != null) {
-                        onSuccessCallback.onSuccess();
-                    }
-                }else {
-                    if (!TextUtils.isEmpty(sendingMessageError)) {
-                        Toast.makeText(mContext, sendingMessageError, Toast.LENGTH_SHORT).show();
-                    }
-                    if (onFailCallback != null) {
-                        onFailCallback.onFail();
+            try {
+                
+                if (processVisibility) {
+                    if (progressDialog != null && progressDialog.isShowing())
+                        progressDialog.dismiss();
+                    if (result) {
+                        if (!TextUtils.isEmpty(sendingMessageSuccess)) {
+                            Toast.makeText(mContext, sendingMessageSuccess, Toast.LENGTH_SHORT).show();
+                        }
+                        if (onSuccessCallback != null) {
+                            onSuccessCallback.onSuccess();
+                        }
+                    } else {
+                        if (!TextUtils.isEmpty(sendingMessageError)) {
+                            Toast.makeText(mContext, sendingMessageError, Toast.LENGTH_SHORT).show();
+                        }
+                        if (onFailCallback != null) {
+                            onFailCallback.onFail();
+                        }
                     }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -339,7 +345,7 @@ public class BackgroundMail {
             this.context = context;
             this.sendingMessage = context.getString(R.string.msg_sending_email);
             this.sendingMessageSuccess = context.getString(R.string.msg_email_sent_successfully);
-            this.sendingMessageError=context.getString(R.string.msg_error_sending_email);
+            this.sendingMessageError = context.getString(R.string.msg_error_sending_email);
         }
 
         public Builder withUsername(@NonNull String username) {
@@ -408,7 +414,7 @@ public class BackgroundMail {
             return this;
         }
 
-        public Builder withAttachments(String...attachments) {
+        public Builder withAttachments(String... attachments) {
             this.attachments.addAll(Arrays.asList(attachments));
             return this;
         }

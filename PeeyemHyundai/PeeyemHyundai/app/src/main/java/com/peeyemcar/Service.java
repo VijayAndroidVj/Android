@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
@@ -13,13 +14,21 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.creativityapps.gmailbackgroundlibrary.BackgroundMail;
 import com.peeyem.app.R;
+import com.peeyemcar.models.EventResponse;
+import com.peeyemcar.retrofit.ApiClient;
+import com.peeyemcar.retrofit.ApiInterface;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Service extends AppCompatActivity {
     String str = "my string \n my other string";
@@ -148,7 +157,58 @@ public class Service extends AppCompatActivity {
                     + "State : " + state.getText().toString() + "\n"
                     + "City : " + city.getText().toString() + "\n"
                     + "Description : " + description.getText().toString() + "\n";
-            sendTestEmail();
+
+            if (CommonUtil.isNetworkAvailable(Service.this)) {
+                MainActivity.showProgress(Service.this);
+                ApiInterface apiService =
+                        ApiClient.getClient().create(ApiInterface.class);
+                Call<EventResponse> call = apiService.book_service("2", serviceType.getSelectedItem().toString(),
+                        carModel.getSelectedItem().toString(),
+                        regNum.getText().toString(),
+                        mileage.getText().toString(),
+                        serviceDate.getText().toString(),
+                        home_pickup.isChecked() ? "Yes" : "No",
+                        fullName.getText().toString(),
+                        mobNum.getText().toString(),
+                        emailID.getText().toString(),
+                        state.getText().toString(),
+                        city.getText().toString(),
+                        description.getText().toString());
+
+                call.enqueue(new Callback<EventResponse>() {
+                    @Override
+                    public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
+                        Log.d("", "Number of movies received: " + response.body());
+                        MainActivity.dismissProgress();
+                        EventResponse sigInResponse = response.body();
+                        if (sigInResponse != null) {
+                            if (sigInResponse.getResult().equalsIgnoreCase("success")) {
+                                try {
+                                    sendTestEmail();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                onBackPressed();
+                            }
+                            Toast.makeText(Service.this, sigInResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(Service.this, "Could not connect to server.", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<EventResponse> call, Throwable t) {
+                        // Log error here since request failed
+                        Log.e("", t.toString());
+                        MainActivity.dismissProgress();
+                        Toast.makeText(Service.this, "Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                Toast.makeText(Service.this, "Check your internet connection!", Toast.LENGTH_SHORT).show();
+            }
+
         } else if (serviceType.getSelectedItem().toString().contains("Service Type")) {
             ((TextView) serviceType.getSelectedView()).setError("Please select Value");
             regNum.requestFocus();

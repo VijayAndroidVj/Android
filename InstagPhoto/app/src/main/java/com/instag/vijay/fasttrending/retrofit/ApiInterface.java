@@ -82,10 +82,12 @@ public interface ApiInterface {
     @POST("update_profile.php")
     Call<EventResponse> update_profile(
             @Part MultipartBody.Part uploadimage,
+            @Part MultipartBody.Part uploadCoverimage,
             @Part MultipartBody.Part username,
             @Part MultipartBody.Part email,
             @Part MultipartBody.Part password,
             @Part MultipartBody.Part profile_image,
+            @Part MultipartBody.Part cover_image,
             @Part MultipartBody.Part aboutmemul,
             @Part MultipartBody.Part statemul,
             @Part MultipartBody.Part countrymul,

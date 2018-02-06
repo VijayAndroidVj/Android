@@ -28,6 +28,7 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -73,8 +74,11 @@ public class EditProfile extends AppCompatActivity {
     public final static int CAMERA_REQUEST_PAN = 2;
     public final static int PICK_IMAGE_REQUEST_PAN = 3;
     String imagePath;
+    String coverimagePath;
     boolean removePhoto;
     Spinner spinner;
+    ImageView ivCoverPhoto;
+    boolean isCoverPhoto;
 
     public void launchCameraIntent(int code) {
         if (showPopup != null) {
@@ -112,6 +116,7 @@ public class EditProfile extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar_cyclic);
         spinner = findViewById(R.id.spinner);
         input_username = findViewById(R.id.input_username);
+        ivCoverPhoto = findViewById(R.id.ivCoverPhoto);
         input_usermail = findViewById(R.id.input_useremail);
         input_userpassword = findViewById(R.id.input_userpassword);
         input_aboutme = findViewById(R.id.input_userbiography);
@@ -145,20 +150,38 @@ public class EditProfile extends AppCompatActivity {
                     .asBitmap()
                     .into(ivProfile1);
         }
+        String coverImage = preferenceUtil.getMyCoverPhoto();
+        if (!TextUtils.isEmpty(coverImage) && coverImage.contains("http://")) {
+            Glide.with(activity)
+                    .load(coverImage)
+                    .asBitmap()
+                    .into(ivCoverPhoto);
+        }
         input_username.clearFocus();
         input_userpassword.clearFocus();
 
         ivProfile1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                isCoverPhoto = false;
                 CropImage.activity()
-                        .setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(16, 9)
+                        .setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(16, 16)
                         .start(activity);
             }
         });
         findViewById(R.id.lblechanagephoto).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                isCoverPhoto = false;
+                CropImage.activity()
+                        .setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(16, 16)
+                        .start(activity);
+            }
+        });
+        findViewById(R.id.edtCover).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isCoverPhoto = true;
                 CropImage.activity()
                         .setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(16, 9)
                         .start(activity);
@@ -276,9 +299,8 @@ public class EditProfile extends AppCompatActivity {
                     MultipartBody.Part.createFormData("email", preferenceUtil.getUserMailId());
             MultipartBody.Part password =
                     MultipartBody.Part.createFormData("password", password1);
-            MultipartBody.Part profile_image = null;
-            if (!removePhoto)
-                profile_image = MultipartBody.Part.createFormData("profile_image", preferenceUtil.getMyProfile());
+            MultipartBody.Part profile_image = MultipartBody.Part.createFormData("profile_image", preferenceUtil.getMyProfile());
+            MultipartBody.Part cover_image = MultipartBody.Part.createFormData("cover_image", preferenceUtil.getMyCoverPhoto());
 
             // MultipartBody.Part is used to send also the actual file name
             MultipartBody.Part uploadimage = null;
@@ -293,10 +315,22 @@ public class EditProfile extends AppCompatActivity {
                     uploadimage = MultipartBody.Part.createFormData("uploadimage", file.getName(), requestFile);
                 }
             }
+            MultipartBody.Part uploadCoverimage = null;
+            if (coverimagePath != null) {
+                File file = new File(coverimagePath);
+                if (file.exists()) {
+                    RequestBody requestFile =
+                            RequestBody.create(
+                                    null,
+                                    file
+                            );
+                    uploadCoverimage = MultipartBody.Part.createFormData("uploadCoverimage", file.getName(), requestFile);
+                }
+            }
 
 
             // finally, execute the request
-            Call<EventResponse> call = apiService.update_profile(uploadimage, userName, email, password, profile_image, aboutmemul, statemul, countrymul, gendermul);
+            Call<EventResponse> call = apiService.update_profile(uploadimage, uploadCoverimage, userName, email, password, profile_image, cover_image, aboutmemul, statemul, countrymul, gendermul);
             call.enqueue(new Callback<EventResponse>() {
                 @Override
                 public void onResponse(Call<EventResponse> call, retrofit2.Response<EventResponse> response) {
@@ -314,7 +348,11 @@ public class EditProfile extends AppCompatActivity {
                             preferenceUtil.putString(Keys.COUNTRY, country);
 //                            preferenceUtil.putString(Keys.PROFILE_IMAGE, imagePath);
                             preferenceUtil.putString(Keys.PROFILE_IMAGE, sigInResponse.getServerimage());
+                            preferenceUtil.putString(Keys.COVER_IMAGE, sigInResponse.getCoverimage());
                             if (!TextUtils.isEmpty(imagePath) && MainActivity.mainActivity != null) {
+                                MainActivity.mainActivity.refresh();
+                            }
+                            if (!TextUtils.isEmpty(coverimagePath) && MainActivity.mainActivity != null) {
                                 MainActivity.mainActivity.refresh();
                             }
                         } else {
@@ -465,7 +503,7 @@ public class EditProfile extends AppCompatActivity {
             showPopup = PopupWindow.getPopup(activity);
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View popupView = inflater.inflate(R.layout.upload_picker_layout, null);
-            menuGrid = (GridView) popupView.findViewById(R.id.grid_layout);
+            menuGrid = popupView.findViewById(R.id.grid_layout);
             UploadPickerPopUp adapter = new UploadPickerPopUp(this, menuText, images);
             menuGrid.setAdapter(adapter);
             showPopup.setContentView(popupView);
@@ -498,12 +536,21 @@ public class EditProfile extends AppCompatActivity {
                         File destination = new File(Environment.getExternalStorageDirectory(),
                                 getString(R.string.app_name) + "/" + System.currentTimeMillis() + ".jpg");
                         copy(new File(filePath), destination);
-                        imagePath = destination.getPath();
-                        Glide.with(activity)
-                                .load(new File(imagePath))
-                                .asBitmap()
-                                .into(ivProfile1);
-                        removePhoto = false;
+                        if (isCoverPhoto) {
+                            coverimagePath = destination.getPath();
+                            Glide.with(activity)
+                                    .load(new File(coverimagePath))
+                                    .asBitmap()
+                                    .into(ivCoverPhoto);
+                        } else {
+                            imagePath = destination.getPath();
+                            Glide.with(activity)
+                                    .load(new File(imagePath))
+                                    .asBitmap()
+                                    .into(ivProfile1);
+                            removePhoto = false;
+                        }
+
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

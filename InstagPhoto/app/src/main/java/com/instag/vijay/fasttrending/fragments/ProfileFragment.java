@@ -72,6 +72,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private PreferenceUtil preferenceUtil;
     private ImageView imgGrid;
     private ImageView btnlist;
+    private View llGender;
+    private View llState;
+    private View llCountry;
+    private TextView txtGenderValue;
+    private TextView txtStateValue;
+    private TextView txtCountryValue;
 
     public static ProfileFragment getInstance() {
         if (profileFragment == null) {
@@ -81,6 +87,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     }
 
     private SelectableRoundedImageView ivProfile1;
+    private ImageView ivCoverPhoto;
     private TextView txtUsername, txtBiography;
 
     @Override
@@ -99,6 +106,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         txtPostsCount = view.findViewById(R.id.txtPostsCount);
         txtFollowersCount = view.findViewById(R.id.txtFollowersCount);
         txtFolloweringCount = view.findViewById(R.id.txtFolloweringCount);
+        llGender = view.findViewById(R.id.llGender);
+        llState = view.findViewById(R.id.llState);
+        llCountry = view.findViewById(R.id.llCountry);
+        txtGenderValue = view.findViewById(R.id.txtGenderValue);
+        txtStateValue = view.findViewById(R.id.txtStateValue);
+        txtCountryValue = view.findViewById(R.id.txtCountryValue);
         imgGrid = view.findViewById(R.id.btnGrid);
         btnlist = view.findViewById(R.id.btnlist);
         imgGrid.setOnClickListener(this);
@@ -113,12 +126,21 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         preferenceUtil = new PreferenceUtil(getActivity());
         txtUsername.setText(preferenceUtil.getUserName());
         ivProfile1 = view.findViewById(R.id.ivProfile1);
+        ivCoverPhoto = view.findViewById(R.id.ivCoverPhoto);
         String profileImage = preferenceUtil.getMyProfile();
         if (!TextUtils.isEmpty(profileImage) && profileImage.contains("http://")) {
             Glide.with(activity)
                     .load(profileImage)
                     .asBitmap()
                     .into(ivProfile1);
+        }
+
+        String coverimage = preferenceUtil.getMyCoverPhoto();
+        if (!TextUtils.isEmpty(coverimage) && coverimage.contains("http://")) {
+            Glide.with(activity)
+                    .load(coverimage)
+                    .asBitmap()
+                    .into(ivCoverPhoto);
         }
 
 //        dynamicToolbarColor();
@@ -237,10 +259,39 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                         .asBitmap()
                         .into(ivProfile1);
             }
+            String coverimage = preferenceUtil.getMyCoverPhoto();
+            if (!TextUtils.isEmpty(coverimage) && coverimage.contains("http://")) {
+                Glide.with(activity)
+                        .load(coverimage)
+                        .asBitmap()
+                        .into(ivCoverPhoto);
+            }
             txtUsername.setText(preferenceUtil.getUserName());
             Typeface font = Typeface.createFromAsset(activity.getAssets(), "fontawesome-webfont.ttf");
             txtBiography.setTypeface(font);
             txtBiography.setText(preferenceUtil.getUserAboutMe());
+            if (TextUtils.isEmpty(preferenceUtil.getUserGender())) {
+                llGender.setVisibility(View.GONE);
+            } else {
+                llGender.setVisibility(View.VISIBLE);
+                String caps = preferenceUtil.getUserGender().substring(0, 1).toUpperCase() + preferenceUtil.getUserGender().substring(1, preferenceUtil.getUserGender().length());
+                txtGenderValue.setText(caps);
+            }
+
+            if (TextUtils.isEmpty(preferenceUtil.getUserState())) {
+                llState.setVisibility(View.GONE);
+            } else {
+                llState.setVisibility(View.VISIBLE);
+                txtStateValue.setText(preferenceUtil.getUserState());
+            }
+
+
+            if (TextUtils.isEmpty(preferenceUtil.getUserCountry())) {
+                llCountry.setVisibility(View.GONE);
+            } else {
+                llCountry.setVisibility(View.VISIBLE);
+                txtCountryValue.setText(preferenceUtil.getUserCountry());
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

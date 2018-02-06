@@ -85,7 +85,12 @@ public class PreferenceUtil {
         editor.putString(Keys.ABOUTME, "");
         editor.putString(Keys.COUNTRY, "");
         editor.putString(Keys.PROFILE_IMAGE, "");
+        editor.putString(Keys.COVER_IMAGE, "");
         editor.apply();
+    }
+
+    public String getMyCoverPhoto() {
+        return getString(Keys.COVER_IMAGE, "");
     }
 
     public String getMyProfile() {

@@ -41,6 +41,17 @@ public class EventResponse {
     @SerializedName("serverimage")
     private String serverimage;
 
+    @SerializedName("cover_image")
+    private String coverimage;
+
+    public String getCoverimage() {
+        return coverimage;
+    }
+
+    public void setCoverimage(String coverimage) {
+        this.coverimage = coverimage;
+    }
+
     public String getGender() {
         return gender;
     }

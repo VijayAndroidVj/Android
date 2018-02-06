@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="@string/nav_home" />
+        <item
+            android:id="@+id/nav_aboutus"
+            android:icon="@drawable/ic_people_black_24dp"
+            android:title="@string/nav_aboutus" />
+        <item
+            android:id="@+id/nav_mission"
+            android:icon="@drawable/ic_gps_fixed_black_24dp"
+            android:title="@string/nav_mission_vission" />
+
+        <item
+            android:id="@+id/nav_products"
+            android:icon="@drawable/ic_add_shopping_cart_black_24dp"
+            android:title="@string/nav_products" />
+
+        <item
+            android:id="@+id/nav_contactus"
+            android:icon="@drawable/ic_contact_phone_black_24dp"
+            android:title="@string/nav_contactus" />
+        <item
+            android:id="@+id/nav_enquiry"
+            android:icon="@drawable/ic_assignment_black_24dp"
+            android:title="@string/nav_enquiry" />
+
+        <item
+            android:id="@+id/nav_catelog"
+            android:icon="@drawable/ic_import_contacts_black_24dp"
+            android:title="@string/nav_download_catelog" />
+    </group>
+
+
+</menu>

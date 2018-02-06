@@ -455,6 +455,7 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
                             preferenceUtil.putString(Keys.USERNAME, sigInResponse.getUsername());
                             preferenceUtil.putString(Keys.PASSWORD, sigInResponse.getPassword());
                             preferenceUtil.putString(Keys.PROFILE_IMAGE, sigInResponse.getServerimage());
+                            preferenceUtil.putString(Keys.COVER_IMAGE, sigInResponse.getCoverimage());
                             Intent intent = new Intent(MmSignInActivity.this, MainActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);

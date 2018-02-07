@@ -2,22 +2,15 @@ package com.mcmount.vijay.mcmount;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,8 +23,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.mcmount.vijay.mcmount.MainActivity.dismissProgress;
-import static com.mcmount.vijay.mcmount.MainActivity.showProgress;
 
 /**
  * Created by vijay on 23/9/17.
@@ -74,7 +65,6 @@ public class ModelActivity extends BaseActivity implements ListItemClickListener
 
     private void getModelProducts() {
         if (CommonUtil.isNetworkAvailable(activity)) {
-            showProgress(activity);
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
             Call<CategoryListModel> call = apiService.model(categoryId);
@@ -101,7 +91,6 @@ public class ModelActivity extends BaseActivity implements ListItemClickListener
                         Toast.makeText(activity, "Could not connect to server.", Toast.LENGTH_SHORT).show();
                     }
 
-                    dismissProgress();
 
                 }
 
@@ -109,7 +98,6 @@ public class ModelActivity extends BaseActivity implements ListItemClickListener
                 public void onFailure(Call<CategoryListModel> call, Throwable t) {
                     // Log error here since request failed
                     Log.e("", t.toString());
-                    dismissProgress();
                     if (t.getMessage() != null && t.getMessage().contains("Expected BEGIN_OBJECT but was BEGIN_ARRAY")) {
                         txtLabel.setVisibility(View.VISIBLE);
                         txtLabel.setText("Products not available");

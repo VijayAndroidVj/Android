@@ -46,6 +46,10 @@
             android:name=".BrandActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".RegisterComplaint"
+            android:screenOrientation="portrait" />
+
 
         <activity
             android:name=".ModelActivity"

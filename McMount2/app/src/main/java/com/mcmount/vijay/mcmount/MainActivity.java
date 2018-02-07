@@ -5,12 +5,13 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,8 @@ public class MainActivity extends BaseActivity implements ListItemClickListener 
 
     private ArrayList<BannerModel> bannerModelArrayList = new ArrayList<>();
     TextView txtLabel;
+    private ProgressBar progressBar;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,8 @@ public class MainActivity extends BaseActivity implements ListItemClickListener 
         setContentView(R.layout.activity_main);
         txtLabel = (TextView) findViewById(R.id.txtLabel);
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar_cyclic);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(mLayoutManager);
         initNavigationDrawer();
@@ -61,6 +66,13 @@ public class MainActivity extends BaseActivity implements ListItemClickListener 
 
 //        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Refresh items
+                getCategories();
+            }
+        });
         getCategories();
     }
 
@@ -87,7 +99,7 @@ public class MainActivity extends BaseActivity implements ListItemClickListener 
 
     private void getCategories() {
         if (CommonUtil.isNetworkAvailable(MainActivity.this)) {
-            showProgress(MainActivity.this);
+            progressBar.setVisibility(View.VISIBLE);
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
             Call<CategoryListModel> call = apiService.category();
@@ -95,7 +107,8 @@ public class MainActivity extends BaseActivity implements ListItemClickListener 
                 @Override
                 public void onResponse(Call<CategoryListModel> call, Response<CategoryListModel> response) {
                     Log.d("", "response: " + response.body());
-
+                    swipeRefreshLayout.setRefreshing(false);
+                    progressBar.setVisibility(View.GONE);
                     CategoryListModel categoryListModel = response.body();
                     if (categoryListModel != null) {
                         if (categoryListModel.getCategory_name() == null || categoryListModel.getCategory_name().size() == 0) {
@@ -112,18 +125,22 @@ public class MainActivity extends BaseActivity implements ListItemClickListener 
                         Toast.makeText(MainActivity.this, "Could not connect to server.", Toast.LENGTH_SHORT).show();
                     }
 
-                    dismissProgress();
-
                 }
 
                 @Override
                 public void onFailure(Call<CategoryListModel> call, Throwable t) {
                     // Log error here since request failed
                     Log.e("", t.toString());
-                    dismissProgress();
+                    swipeRefreshLayout.setRefreshing(false);
+                    progressBar.setVisibility(View.GONE);
+
                     if (t.getMessage() != null && t.getMessage().contains("Expected BEGIN_OBJECT but was BEGIN_ARRAY")) {
                         Toast.makeText(MainActivity.this, "Products not Found", Toast.LENGTH_SHORT).show();
+                        txtLabel.setVisibility(View.VISIBLE);
+                        txtLabel.setText("Products not Found");
                     } else {
+                        txtLabel.setVisibility(View.VISIBLE);
+                        txtLabel.setText("Could not connect to server");
                         Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                     }
                 }

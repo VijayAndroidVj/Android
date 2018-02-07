@@ -36,12 +36,25 @@ public interface ApiInterface {
     @GET("api/api-model.php")
     Call<CategoryListModel> model(@Query("model_id") String model_id);
 
-    @POST("api/mc-login/register.php")
+    @POST("api/change_password.php")
     @FormUrlEncoded
-    Call<EventResponse> register(@Field("name") String name, @Field("email") String email, @Field("password") String password, @Field("mobile") String mobile);
+    Call<EventResponse> change_password(@Field("oldpass") String oldpass, @Field("newpass") String newpass, @Field("userlogin") String userlogin);
 
-
-    @POST("api/mc-login/login.php")
+    @POST("api/register.php")
     @FormUrlEncoded
-    Call<EventResponse> login(@Field("email") String email, @Field("password") String password);
+    Call<EventResponse> register(@Field("name") String name, @Field("email") String email, @Field("userlogin") String userlogin, @Field("mobile") String mobile, @Field("state") String state, @Field("pin") String pin, @Field("city") String city, @Field("address") String address);
+
+    //    http://mcmount.com/api/login.php?name=9790187922&pass=841138
+    @GET("api/login.php")
+    Call<EventResponse> login(@Query("name") String name, @Query("pass") String pass);
+
+    //    http://mcmount.com/api/api-login-otp.php?mobile=9790187922
+    @POST("api/api-login-otp.php")
+    @FormUrlEncoded
+    Call<EventResponse> login_otp(@Field("mobile") String mobile);
+
+    //    http://mcmount.com/api/api-check-otp.php?mobile=9790187922&otp=6801
+    @POST("api/api-check-otp.php")
+    @FormUrlEncoded
+    Call<EventResponse> check_otp(@Field("mobile") String mobile, @Field("otp") String otp);
 }

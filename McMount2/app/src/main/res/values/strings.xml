@@ -51,4 +51,13 @@
     <string name="consultation">Consultation</string>
     <string name="logout1">Logout</string>
 
+    <string-array name="spinnerState_array">
+        <item>Select State</item>
+        <item>TamilNadu</item>
+    </string-array>
+    <string-array name="spinnerCity_array">
+        <item>Select City</item>
+        <item>Coimbatore</item>
+        <item>Erode</item>
+    </string-array>
 </resources>

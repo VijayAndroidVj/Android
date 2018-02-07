@@ -119,9 +119,10 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
         bt_clear_email = (Button) findViewById(R.id.bt_clear_email);
         til_registration_email = (TextInputLayout) findViewById(R.id.til_registration_email);
         til_registration_password = (TextInputLayout) findViewById(R.id.til_registration_password);
-
+        inputEmail.setText("9790187922");
+        input_password.setText("841138");
         input_password.addTextChangedListener(new MyTextWatcher(input_password));
-        inputEmail.addTextChangedListener(new MyTextWatcher(inputEmail));
+//        inputEmail.addTextChangedListener(new MyTextWatcher(inputEmail));
 //        findViewById(R.id.btn_signup).setOnClickListener(this);
         findViewById(R.id.link_signup).setOnClickListener(this);
         findViewById(R.id.btn_signin).setOnClickListener(this);
@@ -237,7 +238,7 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
         showProgressDialog();
         ApiInterface apiService =
                 ApiClient.getClient().create(ApiInterface.class);
-        Call<EventResponse> call = apiService.register(name, email, email, "");
+        Call<EventResponse> call = apiService.register(name, email, email, "", "", "", "", "");
         call.enqueue(new Callback<EventResponse>() {
             @Override
             public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
@@ -415,9 +416,9 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
 
     private void submitForm() {
 
-        if (!validateEmail()) {
-            return;
-        }
+//        if (!validateEmail()) {
+//            return;
+//        }
 
         if (!validPassword()) {
             return;

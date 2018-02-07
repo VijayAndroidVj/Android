@@ -5,6 +5,7 @@
     <color name="colorPrimaryDark">#D50000</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#ffffff</color>
+    <color name="whitetrans">#80ffffff</color>
     <color name="black">#000000</color>
     <color name="blackdark">#00000a</color>
     <color name="black1">#80000000</color>

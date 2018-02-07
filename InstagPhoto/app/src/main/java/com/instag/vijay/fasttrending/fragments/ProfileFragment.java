@@ -44,7 +44,6 @@ import com.instag.vijay.fasttrending.model.PostModelMain;
 import com.instag.vijay.fasttrending.model.Posts;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
-import com.joooonho.SelectableRoundedImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +85,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         return profileFragment;
     }
 
-    private SelectableRoundedImageView ivProfile1;
+    private ImageView ivProfile1;
     private ImageView ivCoverPhoto;
     private TextView txtUsername, txtBiography;
 
@@ -275,22 +274,21 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             } else {
                 llGender.setVisibility(View.VISIBLE);
                 String caps = preferenceUtil.getUserGender().substring(0, 1).toUpperCase() + preferenceUtil.getUserGender().substring(1, preferenceUtil.getUserGender().length());
-                txtGenderValue.setText(caps);
+                txtGenderValue.setText(": " + caps);
             }
 
             if (TextUtils.isEmpty(preferenceUtil.getUserState())) {
                 llState.setVisibility(View.GONE);
             } else {
                 llState.setVisibility(View.VISIBLE);
-                txtStateValue.setText(preferenceUtil.getUserState());
+                txtStateValue.setText(": " + preferenceUtil.getUserState());
             }
-
 
             if (TextUtils.isEmpty(preferenceUtil.getUserCountry())) {
                 llCountry.setVisibility(View.GONE);
             } else {
                 llCountry.setVisibility(View.VISIBLE);
-                txtCountryValue.setText(preferenceUtil.getUserCountry());
+                txtCountryValue.setText(": " + preferenceUtil.getUserCountry());
             }
 
         } catch (Exception e) {

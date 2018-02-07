@@ -22,19 +22,25 @@
                 <ImageView
                     android:id="@+id/ivCoverPhoto"
                     android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:scaleType="fitXY" />
+                    android:layout_height="200dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/default_cover_photo" />
 
-                <ImageView
+                <TextView
                     android:id="@+id/edtCover"
-                    android:layout_width="@dimen/_35dp"
-                    android:layout_height="@dimen/_35dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:layout_margin="@dimen/_15dp"
-                    android:background="@color/participant_view_unselected"
+                    android:background="@drawable/edit_box_border"
+                    android:drawablePadding="@dimen/_5dp"
+                    android:drawableRight="@drawable/ic_camera_black"
+                    android:drawableTint="@color/black"
+                    android:gravity="center"
                     android:padding="@dimen/_5dp"
-                    android:src="@drawable/ic_mode_edit_black_24dp"
-                    android:tint="@color/white" />
+                    android:text="EDIT"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -42,13 +48,13 @@
 
                     <com.joooonho.SelectableRoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/ivProfile1"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
                         android:layout_centerHorizontal="true"
+                        android:layout_centerInParent="true"
                         android:layout_gravity="center"
-                        android:layout_margin="10dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/user"
+                        android:src="@drawable/default_profile_photo"
                         app:sriv_left_bottom_corner_radius="48dip"
                         app:sriv_left_top_corner_radius="16dip"
                         app:sriv_oval="true"
@@ -61,16 +67,16 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/ivProfile1"
                         android:layout_centerHorizontal="true"
-                        android:layout_gravity="bottom|center"
+                        android:layout_marginBottom="@dimen/_5dp"
                         android:layout_marginTop="@dimen/_5dp"
-                        android:background="@color/participant_view_unselected"
+                        android:background="@drawable/edit_box_border"
                         android:drawablePadding="@dimen/_5dp"
-                        android:drawableRight="@drawable/ic_mode_edit_black_24dp"
-                        android:drawableTint="@color/white"
+                        android:drawableRight="@drawable/ic_camera_black"
+                        android:drawableTint="@color/black"
                         android:gravity="center"
-                        android:textColor="@color/white"
                         android:padding="@dimen/_5dp"
-                        android:text="Change Profile Photo"
+                        android:text="EDIT"
+                        android:textColor="@color/black"
                         android:textSize="12sp" />
                 </RelativeLayout>
             </FrameLayout>

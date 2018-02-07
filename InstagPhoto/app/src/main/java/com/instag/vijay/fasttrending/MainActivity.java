@@ -97,6 +97,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 bottomBar.selectTabAtPosition(position);
                 iv_actionbar_settings.setVisibility(View.GONE);
                 if (position == 1) {
+                    SearchFragment searchFragment = (SearchFragment) adapter.getItem(1);
+                    searchFragment.refreshItems();
                     name.setVisibility(View.GONE);
                     searchEditText.setVisibility(View.VISIBLE);
                     searchEditText.setClickable(true);

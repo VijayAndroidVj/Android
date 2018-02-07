@@ -66,11 +66,9 @@ public class SearchFragment extends Fragment {
             }
         });
 
-        refreshItems();
-
     }
 
-    private void refreshItems() {
+    public void refreshItems() {
         if (CommonUtil.isNetworkAvailable(activity)) {
             progressBar.setVisibility(View.VISIBLE);
             PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
@@ -98,8 +96,17 @@ public class SearchFragment extends Fragment {
                     // Log error here since request failed
                     Log.e("", t.toString());
                     progressBar.setVisibility(View.GONE);
+                    String message = t.getMessage();
                     swipeRefreshLayout.setRefreshing(false);
-                    Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
+                    if (message.contains("Failed to")) {
+                        message = "Failed to Connect";
+                    } else if (message.contains("Expected")) {
+                        message = "No List available";
+                    } else {
+                        message = "Failed";
+                    }
+                    setList();
+                    Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                 }
             });
         } else {

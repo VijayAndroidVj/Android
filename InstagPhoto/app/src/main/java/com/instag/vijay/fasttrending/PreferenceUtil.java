@@ -86,6 +86,7 @@ public class PreferenceUtil {
         editor.putString(Keys.COUNTRY, "");
         editor.putString(Keys.PROFILE_IMAGE, "");
         editor.putString(Keys.COVER_IMAGE, "");
+        editor.putBoolean(Keys.PRIVACY_SETTINGS, false);
         editor.apply();
     }
 
@@ -95,5 +96,9 @@ public class PreferenceUtil {
 
     public String getMyProfile() {
         return getString(Keys.PROFILE_IMAGE, "");
+    }
+
+    public boolean getMyPrivacySettings() {
+        return getBoolean(Keys.PRIVACY_SETTINGS, false);
     }
 }

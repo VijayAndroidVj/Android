@@ -133,10 +133,10 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
         holder.postImage.getLayoutParams().width = width / 3;
         holder.rlgrid.setOnClickListener(this);
         holder.rlgrid.setTag(post);
-        holder.cname.setTag(post.getItemname());
-        if (post.getItem_image_path() != null && !post.getItem_image_path().isEmpty()) {
+        holder.cname.setTag(post.getItem_name());
+        if (post.getImage_path() != null && !post.getImage_path().isEmpty()) {
 
-            Glide.with(activity).load(post.getItem_image_path()).centerCrop()
+            Glide.with(activity).load(post.getImage_path()).centerCrop()
                     .thumbnail(0.5f)
                     .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)

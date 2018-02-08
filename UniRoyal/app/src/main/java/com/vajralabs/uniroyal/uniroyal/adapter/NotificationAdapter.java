@@ -90,12 +90,12 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         CategoryModel post = originalList.get(position);
-        holder.categoryName.setText(post.getCategoryname());
+        holder.categoryName.setText(post.getCategory_name());
 //        holder.txtTitle.setText(post.getTitle());
 //        holder.txtPostDescription.setText(post.getDescription());
         holder.gridView.setVisibility(View.VISIBLE);
-        holder.gridView.setNumColumns(post.getCategoryItems().size());
-        MyAdapter imageAdapter = new MyAdapter(activity, post.getCategoryItems());
+        holder.gridView.setNumColumns(post.getCategory_item_lists().size());
+        MyAdapter imageAdapter = new MyAdapter(activity, post.getCategory_item_lists());
         holder.gridView.setAdapter(imageAdapter);
         setDynamicWidth(holder.gridView);
 
@@ -172,11 +172,11 @@ class MyAdapter extends BaseAdapter implements View.OnClickListener {
             postImg.getLayoutParams().width = width / 2;
             CategoryItem post = originalList.get(position);
             rlgrid.setOnClickListener(this);
-            cname.setText(post.getItemname());
+            cname.setText(post.getItem_name());
             rlgrid.setTag(post);
-            if (post.getItem_image_path() != null && !post.getItem_image_path().isEmpty()) {
+            if (post.getImage_path() != null && !post.getImage_path().isEmpty()) {
 
-                Glide.with(c).load(post.getItem_image_path()).centerCrop()
+                Glide.with(c).load(post.getImage_path()).centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(postImg);
             }

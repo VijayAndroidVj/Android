@@ -83,6 +83,7 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
         transitive = true;
     }
+    compile 'com.zcw:togglebutton-library:1.0.0'
 
 }
 apply plugin: 'com.google.gms.google-services'

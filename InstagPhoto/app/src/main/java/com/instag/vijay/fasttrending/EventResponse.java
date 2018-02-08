@@ -38,11 +38,22 @@ public class EventResponse {
     @SerializedName("message")
     private String message;
 
+    @SerializedName("privacyOn")
+    private String privacyOn;
+
     @SerializedName("serverimage")
     private String serverimage;
 
     @SerializedName("cover_image")
     private String coverimage;
+
+    public String getPrivacyOn() {
+        return privacyOn;
+    }
+
+    public void setPrivacyOn(String privacyOn) {
+        this.privacyOn = privacyOn;
+    }
 
     public String getCoverimage() {
         return coverimage;

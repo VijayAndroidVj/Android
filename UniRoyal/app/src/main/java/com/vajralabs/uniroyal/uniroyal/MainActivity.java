@@ -35,7 +35,7 @@ import com.vajralabs.uniroyal.uniroyal.activity.Enquiry;
 import com.vajralabs.uniroyal.uniroyal.activity.Mission;
 import com.vajralabs.uniroyal.uniroyal.adapter.CustomPagerAdapter;
 import com.vajralabs.uniroyal.uniroyal.adapter.NotificationAdapter;
-import com.vajralabs.uniroyal.uniroyal.model.CategoryItem;
+import com.vajralabs.uniroyal.uniroyal.model.BannerModel;
 import com.vajralabs.uniroyal.uniroyal.model.CategoryModel;
 import com.vajralabs.uniroyal.uniroyal.retrofit.ApiClient;
 import com.vajralabs.uniroyal.uniroyal.retrofit.ApiInterface;
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     public static String CURRENT_TAG = TAG_HOME;
     private CustomPagerAdapter customPagerAdapter;
     private ViewPager mViewPager;
-    private ArrayList<String> list = new ArrayList<>();
+    private ArrayList<BannerModel> list = new ArrayList<>();
     // toolbar titles respected to selected nav menu item
     private String[] activityTitles;
 
@@ -129,15 +129,53 @@ public class MainActivity extends AppCompatActivity {
             CURRENT_TAG = TAG_HOME;
             loadHomeFragment();
         }
-        list.add("https://thumbs.dreamstime.com/z/banner-image-blog-blue-keywords-29080904.jpg");
-        list.add("https://news.fiu.edu/wp-content/uploads/Banner-Image.JPG");
-        list.add("http://sr-jobs.in/wp-content/uploads/2016/07/banner-image-home.jpg");
+//        list.add("https://thumbs.dreamstime.com/z/banner-image-blog-blue-keywords-29080904.jpg");
+//        list.add("https://news.fiu.edu/wp-content/uploads/Banner-Image.JPG");
+//        list.add("http://sr-jobs.in/wp-content/uploads/2016/07/banner-image-home.jpg");
+        getBannerLists();
+        setBannerList();
 
+    }
+
+    private void getBannerLists() {
+        try {
+            if (CommonUtil.isNetworkAvailable(activity)) {
+                ApiInterface apiService =
+                        ApiClient.getClient().create(ApiInterface.class);
+                Call<ArrayList<BannerModel>> call = apiService.get_banners();
+                call.enqueue(new Callback<ArrayList<BannerModel>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<BannerModel>> call, Response<ArrayList<BannerModel>> response) {
+                        Log.d("", "response: " + response.body());
+                        ArrayList<BannerModel> sigInResponse = response.body();
+                        if (sigInResponse != null) {
+                            list = sigInResponse;
+                            setBannerList();
+                        } else {
+                            Toast.makeText(activity, "Could not connect to server.", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<BannerModel>> call, Throwable t) {
+                        // Log error here since request failed
+                        Log.e("", t.toString());
+                        Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                Toast.makeText(activity, "Check your internet connection!", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setBannerList() {
         customPagerAdapter = new CustomPagerAdapter(this, list);
-
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(customPagerAdapter);
-
     }
 
     /***
@@ -147,8 +185,8 @@ public class MainActivity extends AppCompatActivity {
      */
     private void loadNavHeader() {
         // name, website
-        txtName.setText("Ravi Tamada");
-        txtWebsite.setText("www.androidhive.info");
+        txtName.setText(getString(R.string.app_name));
+        txtWebsite.setText("");
 
         // loading header background image
         Glide.with(this).load(urlNavHeaderBg)
@@ -157,9 +195,8 @@ public class MainActivity extends AppCompatActivity {
                 .into(imgNavHeaderBg);
 
         // Loading profile image
-        Glide.with(this).load(urlProfileImg)
+        Glide.with(this).load(R.drawable.uniroyallogo)
                 .crossFade()
-                .thumbnail(0.5f)
                 .bitmapTransform(new CircleTransform(this))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imgProfile);
@@ -224,60 +261,58 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 // Refresh items
-//                getcategoryLists();
+                getBannerLists();
+                getcategoryLists();
                 swipeRefreshLayout.setRefreshing(false);
-                setList();
+                //setList();
             }
         });
-//        getcategoryLists();
-        setList();
+        getcategoryLists();
+//        setList();
     }
 
 
     private void getcategoryLists() {
         try {
-            try {
-                if (CommonUtil.isNetworkAvailable(activity)) {
-                    progressBar.setVisibility(View.VISIBLE);
-                    ApiInterface apiService =
-                            ApiClient.getClient().create(ApiInterface.class);
-                    Call<ArrayList<CategoryModel>> call = apiService.getcategoryList();
-                    call.enqueue(new Callback<ArrayList<CategoryModel>>() {
-                        @Override
-                        public void onResponse(Call<ArrayList<CategoryModel>> call, Response<ArrayList<CategoryModel>> response) {
-                            Log.d("", "response: " + response.body());
-                            swipeRefreshLayout.setRefreshing(false);
-                            progressBar.setVisibility(View.GONE);
-                            ArrayList<CategoryModel> sigInResponse = response.body();
-                            if (sigInResponse != null) {
-                                categoryArrayList = sigInResponse;
-                                setList();
-                            } else {
-                                Toast.makeText(activity, "Could not connect to server.", Toast.LENGTH_SHORT).show();
-                            }
-
+            if (CommonUtil.isNetworkAvailable(activity)) {
+                progressBar.setVisibility(View.VISIBLE);
+                ApiInterface apiService =
+                        ApiClient.getClient().create(ApiInterface.class);
+                Call<ArrayList<CategoryModel>> call = apiService.getcategoryList();
+                call.enqueue(new Callback<ArrayList<CategoryModel>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<CategoryModel>> call, Response<ArrayList<CategoryModel>> response) {
+                        Log.d("", "response: " + response.body());
+                        swipeRefreshLayout.setRefreshing(false);
+                        progressBar.setVisibility(View.GONE);
+                        ArrayList<CategoryModel> sigInResponse = response.body();
+                        if (sigInResponse != null) {
+                            categoryArrayList = sigInResponse;
+                            setList();
+                        } else {
+                            Toast.makeText(activity, "Could not connect to server.", Toast.LENGTH_SHORT).show();
                         }
 
-                        @Override
-                        public void onFailure(Call<ArrayList<CategoryModel>> call, Throwable t) {
-                            // Log error here since request failed
-                            Log.e("", t.toString());
-                            progressBar.setVisibility(View.GONE);
-                            swipeRefreshLayout.setRefreshing(false);
-                            Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                } else {
-                    progressBar.setVisibility(View.GONE);
-                    swipeRefreshLayout.setRefreshing(false);
-                    Toast.makeText(activity, "Check your internet connection!", Toast.LENGTH_SHORT).show();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<CategoryModel>> call, Throwable t) {
+                        // Log error here since request failed
+                        Log.e("", t.toString());
+                        progressBar.setVisibility(View.GONE);
+                        swipeRefreshLayout.setRefreshing(false);
+                        Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                progressBar.setVisibility(View.GONE);
+                swipeRefreshLayout.setRefreshing(false);
+                Toast.makeText(activity, "Check your internet connection!", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
 
@@ -318,102 +353,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void setList() {
         try {
-            ArrayList<CategoryItem> categoryItemArrayList = new ArrayList<>();
-            CategoryItem categoryItem = new CategoryItem();
-            categoryItem.setItem_id("1");
-            categoryItem.setItemname("Chicken whole (900-1400 Gm)");
-            categoryItem.setItem_image_path("https://recipethis.com/wp-content/uploads/Whole-30-Friendly-Airfryer-Whole-Chicken.jpg");
-            categoryItemArrayList.add(categoryItem);
-
-            categoryItem = new CategoryItem();
-            categoryItem.setItem_id("2");
-            categoryItem.setItemname("Chicken Breast");
-            categoryItem.setItem_image_path("https://afoodcentriclife.com/wp-content/uploads/2014/06/Grilled-Lemon-Mint-Chicken-3101.jpg");
-            categoryItemArrayList.add(categoryItem);
-
-            categoryItem = new CategoryItem();
-            categoryItem.setItem_id("3");
-            categoryItem.setItemname("Chicken Leg Boneless");
-            categoryItem.setItem_image_path("https://s3.amazonaws.com/product-images.imshopping.com/nimblebuy/50-off-chicken-legs-723322-regular.jpg");
-            categoryItemArrayList.add(categoryItem);
-
-
-            categoryItem = new CategoryItem();
-            categoryItem.setItem_id("4");
-            categoryItem.setItemname("Chicken Whole Leg");
-            categoryItem.setItem_image_path("https://sc01.alicdn.com/kf/UT8Y7gIXsVaXXagOFbXl/Frozen-Chicken-Whole-Leg.jpg");
-            categoryItemArrayList.add(categoryItem);
-
-
-            categoryItem = new CategoryItem();
-            categoryItem.setItem_id("5");
-            categoryItem.setItemname("Chicken Thigh Boneless");
-            categoryItem.setItem_image_path("https://www.abelandcole.co.uk/media/1112_12934_z.jpg");
-            categoryItemArrayList.add(categoryItem);
-
-
-            categoryItem = new CategoryItem();
-            categoryItem.setItem_id("6");
-            categoryItem.setItemname("Chicken Inner Fillets");
-            categoryItem.setItem_image_path("http://p.globalsources.com/IMAGES/PDT/BIG/283/B1052405283.jpg");
-            categoryItemArrayList.add(categoryItem);
-
-            CategoryModel categoryModel = new CategoryModel();
-            categoryModel.setCategory_id("a");
-            categoryModel.setCategoryname("Chicken Products");
-            categoryModel.setCategoryItems(categoryItemArrayList);
-            categoryArrayList.add(categoryModel);
-
-
-            ///////////////////////////////////////////////////////
-
-            categoryItemArrayList = new ArrayList<>();
-            categoryItem = new CategoryItem();
-            categoryItem.setItem_id("1");
-            categoryItem.setItemname("Beef Ribeye");
-            categoryItem.setItem_image_path("https://images-na.ssl-images-amazon.com/images/I/51LKRP4w1kL._SX355_.jpg");
-            categoryItemArrayList.add(categoryItem);
-
-            categoryItem = new CategoryItem();
-            categoryItem.setItem_id("2");
-            categoryItem.setItemname("Angus Stripilion");
-            categoryItem.setItem_image_path("http://knollcrestfarm.com/images/2016/12-27-16/KCF-Bennett-Fortress-12-2016.jpg");
-            categoryItemArrayList.add(categoryItem);
-
-            categoryItem = new CategoryItem();
-            categoryItem.setItem_id("3");
-            categoryItem.setItemname("Beef Tenderloin");
-            categoryItem.setItem_image_path("http://www.seriouseats.com/recipes/images/2014/12/20141217-tenderloin-roast-recipe-food-lab-primary-1500x1125.jpg");
-            categoryItemArrayList.add(categoryItem);
-
-
-            categoryItem = new CategoryItem();
-            categoryItem.setItem_id("4");
-            categoryItem.setItemname("Beef Chunk");
-            categoryItem.setItem_image_path("https://cdn.shopify.com/s/files/1/0206/9470/products/chuck_steak_1024x1024.jpg?v=1473916200");
-            categoryItemArrayList.add(categoryItem);
-
-
-            categoryItem = new CategoryItem();
-            categoryItem.setItem_id("5");
-            categoryItem.setItemname("Beef Topside");
-            categoryItem.setItem_image_path("http://trolley.ae/image/cache/data/products/AUSTRALIAN_Beef_Topside_Roast-500x500.jpg");
-            categoryItemArrayList.add(categoryItem);
-
-
-            categoryItem = new CategoryItem();
-            categoryItem.setItem_id("6");
-            categoryItem.setItemname("Beef Sausage");
-            categoryItem.setItem_image_path("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq7_dVOUNz-DlLD7HgV62xTVu2dDg9gHaPeO1defOuDzAvcqS5vg");
-            categoryItemArrayList.add(categoryItem);
-
-            categoryModel = new CategoryModel();
-            categoryModel.setCategory_id("b");
-            categoryModel.setCategoryname("Beef Products");
-            categoryModel.setCategoryItems(categoryItemArrayList);
-            categoryArrayList.add(categoryModel);
-
-            ///////////////////////////////////////////////////////
             //ilist = getMeetingList(isPast ? PAST : UPCOMING);
             viewInfo.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);

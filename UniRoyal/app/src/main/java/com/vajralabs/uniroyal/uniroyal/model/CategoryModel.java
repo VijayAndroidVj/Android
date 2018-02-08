@@ -11,36 +11,36 @@ import java.util.ArrayList;
 public class CategoryModel {
 
 
-    @SerializedName("categoryname")
-    private String categoryname;
+    @SerializedName("parent_id")
+    private String parent_id;
 
-    @SerializedName("category_id")
-    private String category_id;
+    @SerializedName("category_name")
+    private String category_name;
 
-    @SerializedName("categoryItems")
-    private ArrayList<CategoryItem> categoryItems = new ArrayList<>();
+    @SerializedName("category_item_lists")
+    private ArrayList<CategoryItem> category_item_lists = new ArrayList<>();
 
-    public String getCategoryname() {
-        return categoryname;
+    public String getParent_id() {
+        return parent_id;
     }
 
-    public void setCategoryname(String categoryname) {
-        this.categoryname = categoryname;
+    public void setParent_id(String parent_id) {
+        this.parent_id = parent_id;
     }
 
-    public String getCategory_id() {
-        return category_id;
+    public String getCategory_name() {
+        return category_name;
     }
 
-    public void setCategory_id(String category_id) {
-        this.category_id = category_id;
+    public void setCategory_name(String category_name) {
+        this.category_name = category_name;
     }
 
-    public ArrayList<CategoryItem> getCategoryItems() {
-        return categoryItems;
+    public ArrayList<CategoryItem> getCategory_item_lists() {
+        return category_item_lists;
     }
 
-    public void setCategoryItems(ArrayList<CategoryItem> categoryItems) {
-        this.categoryItems = categoryItems;
+    public void setCategory_item_lists(ArrayList<CategoryItem> category_item_lists) {
+        this.category_item_lists = category_item_lists;
     }
 }

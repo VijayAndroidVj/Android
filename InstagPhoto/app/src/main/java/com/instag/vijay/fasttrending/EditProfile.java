@@ -40,6 +40,7 @@ import com.instag.vijay.fasttrending.retrofit.ApiInterface;
 import com.joooonho.SelectableRoundedImageView;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+import com.zcw.togglebutton.ToggleButton;
 
 import org.apache.commons.io.IOUtils;
 
@@ -100,6 +101,8 @@ public class EditProfile extends AppCompatActivity {
     }
 
     ProgressBar progressBar;
+    ToggleButton tglPrivacySettings;
+    boolean isPrivacyOn;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -118,6 +121,7 @@ public class EditProfile extends AppCompatActivity {
         input_username = findViewById(R.id.input_username);
         ivCoverPhoto = findViewById(R.id.ivCoverPhoto);
         input_usermail = findViewById(R.id.input_useremail);
+        tglPrivacySettings = findViewById(R.id.tglPrivacySettings);
         input_userpassword = findViewById(R.id.input_userpassword);
         input_aboutme = findViewById(R.id.input_userbiography);
         input_state = findViewById(R.id.input_userstate);
@@ -140,7 +144,18 @@ public class EditProfile extends AppCompatActivity {
             spinner.setSelection(1);
 //            radioButtonfemale.setChecked(true);
         }
+        if (preferenceUtil.getMyPrivacySettings()) {
+            tglPrivacySettings.setToggleOn();
+        } else {
+            tglPrivacySettings.setToggleOff();
+        }
 
+        tglPrivacySettings.setOnToggleChanged(new ToggleButton.OnToggleChanged() {
+            @Override
+            public void onToggle(boolean on) {
+                isPrivacyOn = on;
+            }
+        });
         String profileImage = preferenceUtil.getMyProfile();
         if (!TextUtils.isEmpty(profileImage) && profileImage.contains("http://")) {
 //            imagePath = profileImage;
@@ -289,6 +304,8 @@ public class EditProfile extends AppCompatActivity {
 
             MultipartBody.Part countrymul =
                     MultipartBody.Part.createFormData("country", country);
+            MultipartBody.Part privacyOn =
+                    MultipartBody.Part.createFormData("privacyOn", String.valueOf(isPrivacyOn));
 
 
             MultipartBody.Part userName =
@@ -330,7 +347,7 @@ public class EditProfile extends AppCompatActivity {
 
 
             // finally, execute the request
-            Call<EventResponse> call = apiService.update_profile(uploadimage, uploadCoverimage, userName, email, password, profile_image, cover_image, aboutmemul, statemul, countrymul, gendermul);
+            Call<EventResponse> call = apiService.update_profile(uploadimage, uploadCoverimage, userName, email, password, profile_image, cover_image, aboutmemul, statemul, countrymul, gendermul, privacyOn);
             call.enqueue(new Callback<EventResponse>() {
                 @Override
                 public void onResponse(Call<EventResponse> call, retrofit2.Response<EventResponse> response) {
@@ -346,7 +363,7 @@ public class EditProfile extends AppCompatActivity {
                             preferenceUtil.putString(Keys.GENDER, gender);
                             preferenceUtil.putString(Keys.STATE, state);
                             preferenceUtil.putString(Keys.COUNTRY, country);
-//                            preferenceUtil.putString(Keys.PROFILE_IMAGE, imagePath);
+                            preferenceUtil.putBoolean(Keys.PRIVACY_SETTINGS, isPrivacyOn);
                             preferenceUtil.putString(Keys.PROFILE_IMAGE, sigInResponse.getServerimage());
                             preferenceUtil.putString(Keys.COVER_IMAGE, sigInResponse.getCoverimage());
                             if (!TextUtils.isEmpty(imagePath) && MainActivity.mainActivity != null) {

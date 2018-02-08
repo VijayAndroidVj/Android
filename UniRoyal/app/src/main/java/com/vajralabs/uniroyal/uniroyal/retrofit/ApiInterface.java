@@ -1,8 +1,8 @@
 package com.vajralabs.uniroyal.uniroyal.retrofit;
 
 
+import com.vajralabs.uniroyal.uniroyal.model.BannerModel;
 import com.vajralabs.uniroyal.uniroyal.model.CategoryModel;
-import com.vajralabs.uniroyal.uniroyal.model.Comments;
 import com.vajralabs.uniroyal.uniroyal.model.EventResponse;
 import com.vajralabs.uniroyal.uniroyal.model.PostModelMain;
 import com.vajralabs.uniroyal.uniroyal.model.Posts;
@@ -88,9 +88,8 @@ public interface ApiInterface {
     Call<PostModelMain> getsearchpost(@Field("useremail") String useremail);
 
 
-    @POST("getcomments.php")
-    @FormUrlEncoded
-    Call<ArrayList<Comments>> getcomments(@Field("post_id") String post_id);
+    @POST("get_banners.php")
+    Call<ArrayList<BannerModel>> get_banners();
 
 
     @POST("delete_post.php")
@@ -105,21 +104,17 @@ public interface ApiInterface {
     @FormUrlEncoded
     Call<EventResponse> delete_my_account(@Field("useremail") String useremail);
 
-
     @POST("post_like.php")
     @FormUrlEncoded
     Call<EventResponse> post_like(@Field("useremail") String useremail, @Field("username") String username, @Field("post_id") String post_id, @Field("like") boolean like);
-
 
     @POST("post_comments.php")
     @FormUrlEncoded
     Call<EventResponse> post_comments(@Field("user_email") String user_email, @Field("username") String username, @Field("post_id") String post_id, @Field("comment") String comment);
 
-
     @POST("delete_comment.php")
     @FormUrlEncoded
     Call<EventResponse> delete_comment(@Field("useremail") String useremail, @Field("comment_id") String comment_id);
-
 
     @POST("register_fcm.php")
     @FormUrlEncoded
@@ -129,8 +124,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     Call<Posts> getpostbyid(@Field("postId") String postId, @Field("email") String email);
 
-    @POST("getcategoryList.php")
-    @FormUrlEncoded
+    @POST("getallcategories.php")
     Call<ArrayList<CategoryModel>> getcategoryList();
 }
 

@@ -91,7 +91,8 @@ public interface ApiInterface {
             @Part MultipartBody.Part aboutmemul,
             @Part MultipartBody.Part statemul,
             @Part MultipartBody.Part countrymul,
-            @Part MultipartBody.Part gendermul);
+            @Part MultipartBody.Part gendermul,
+            @Part MultipartBody.Part privacyOn);
 
     @POST("getposts.php")
     @FormUrlEncoded

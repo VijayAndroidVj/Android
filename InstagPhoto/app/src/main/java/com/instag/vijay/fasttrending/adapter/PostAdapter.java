@@ -456,6 +456,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
                     .thumbnail(0.5f)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.ivProfile);
+        } else {
+            Glide.with(activity).load(R.drawable.profile)
+                    .into(holder.ivProfile);
         }
 
 

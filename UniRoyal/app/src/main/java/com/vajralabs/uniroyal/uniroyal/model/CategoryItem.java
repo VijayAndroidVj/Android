@@ -8,36 +8,36 @@ import com.google.gson.annotations.SerializedName;
 
 public class CategoryItem {
 
-    @SerializedName("itemname")
-    private String itemname;
+    @SerializedName("parent_id")
+    private String parent_id;
 
-    @SerializedName("item_id")
-    private String item_id;
+    @SerializedName("item_name")
+    private String item_name;
 
-    @SerializedName("item_image_path")
-    private String item_image_path;
+    @SerializedName("image_path")
+    private String image_path;
 
-    public String getItemname() {
-        return itemname;
+    public String getParent_id() {
+        return parent_id;
     }
 
-    public void setItemname(String itemname) {
-        this.itemname = itemname;
+    public void setParent_id(String parent_id) {
+        this.parent_id = parent_id;
     }
 
-    public String getItem_id() {
-        return item_id;
+    public String getItem_name() {
+        return item_name;
     }
 
-    public void setItem_id(String item_id) {
-        this.item_id = item_id;
+    public void setItem_name(String item_name) {
+        this.item_name = item_name;
     }
 
-    public String getItem_image_path() {
-        return item_image_path;
+    public String getImage_path() {
+        return image_path;
     }
 
-    public void setItem_image_path(String item_image_path) {
-        this.item_image_path = item_image_path;
+    public void setImage_path(String image_path) {
+        this.image_path = image_path;
     }
 }

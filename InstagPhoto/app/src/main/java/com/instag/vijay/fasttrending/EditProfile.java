@@ -68,7 +68,7 @@ import retrofit2.Response;
 
 public class EditProfile extends AppCompatActivity {
 
-    EditText input_username, input_usermail, input_userpassword, input_aboutme, input_state, input_country;
+    EditText input_username, input_profilename, input_usermail, input_userpassword, input_aboutme, input_state, input_country;
     SelectableRoundedImageView ivProfile1;
     Activity activity;
     PreferenceUtil preferenceUtil;
@@ -119,6 +119,7 @@ public class EditProfile extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar_cyclic);
         spinner = findViewById(R.id.spinner);
         input_username = findViewById(R.id.input_username);
+        input_profilename = findViewById(R.id.input_profilename);
         ivCoverPhoto = findViewById(R.id.ivCoverPhoto);
         input_usermail = findViewById(R.id.input_useremail);
         tglPrivacySettings = findViewById(R.id.tglPrivacySettings);
@@ -127,6 +128,7 @@ public class EditProfile extends AppCompatActivity {
         input_state = findViewById(R.id.input_userstate);
         input_country = findViewById(R.id.input_usercountry);
         ivProfile1 = findViewById(R.id.ivProfile1);
+        input_profilename.setText(preferenceUtil.getProfileName());
         input_username.setText(preferenceUtil.getUserName());
         input_usermail.setText(preferenceUtil.getUserMailId());
         input_userpassword.setText(preferenceUtil.getUserPassword());
@@ -173,6 +175,7 @@ public class EditProfile extends AppCompatActivity {
                     .into(ivCoverPhoto);
         }
         input_username.clearFocus();
+        input_profilename.clearFocus();
         input_userpassword.clearFocus();
 
         ivProfile1.setOnClickListener(new View.OnClickListener() {
@@ -243,6 +246,23 @@ public class EditProfile extends AppCompatActivity {
         return true;
     }
 
+    private boolean validProfileNameName() {
+        String pass = input_profilename.getText().toString().trim();
+        if (pass.isEmpty()) {
+            input_profilename.setError("Invalid profile name");
+            requestFocus(input_profilename);
+            return false;
+        } else if (pass.length() < 3) {
+            input_profilename.setError("Name must be greater than 3 character");
+            requestFocus(input_profilename);
+            return false;
+        } else {
+            input_profilename.setError(null);
+        }
+
+        return true;
+    }
+
     private void requestFocus(View view) {
         if (view.requestFocus()) {
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -269,6 +289,9 @@ public class EditProfile extends AppCompatActivity {
 
     private void updateProfile() {
 
+        if (!validProfileNameName()) {
+            return;
+        }
         if (!validName()) {
             return;
         }
@@ -278,6 +301,7 @@ public class EditProfile extends AppCompatActivity {
         }
 
         final String userName1 = input_username.getText().toString().trim();
+        final String profileName1 = input_profilename.getText().toString().trim();
         final String password1 = input_userpassword.getText().toString().trim();
 
 
@@ -308,6 +332,8 @@ public class EditProfile extends AppCompatActivity {
                     MultipartBody.Part.createFormData("privacyOn", String.valueOf(isPrivacyOn));
 
 
+            final MultipartBody.Part profileName =
+                    MultipartBody.Part.createFormData("profileName", profileName1);
             MultipartBody.Part userName =
                     MultipartBody.Part.createFormData("username", userName1);
 
@@ -347,7 +373,7 @@ public class EditProfile extends AppCompatActivity {
 
 
             // finally, execute the request
-            Call<EventResponse> call = apiService.update_profile(uploadimage, uploadCoverimage, userName, email, password, profile_image, cover_image, aboutmemul, statemul, countrymul, gendermul, privacyOn);
+            Call<EventResponse> call = apiService.update_profile(uploadimage, uploadCoverimage, profileName, userName, email, password, profile_image, cover_image, aboutmemul, statemul, countrymul, gendermul, privacyOn);
             call.enqueue(new Callback<EventResponse>() {
                 @Override
                 public void onResponse(Call<EventResponse> call, retrofit2.Response<EventResponse> response) {
@@ -359,6 +385,7 @@ public class EditProfile extends AppCompatActivity {
                                 Toast.makeText(activity, sigInResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             preferenceUtil.putString(Keys.PASSWORD, password1);
                             preferenceUtil.putString(Keys.USERNAME, userName1);
+                            preferenceUtil.putString(Keys.NAME, profileName1);
                             preferenceUtil.putString(Keys.ABOUTME, aboutme);
                             preferenceUtil.putString(Keys.GENDER, gender);
                             preferenceUtil.putString(Keys.STATE, state);

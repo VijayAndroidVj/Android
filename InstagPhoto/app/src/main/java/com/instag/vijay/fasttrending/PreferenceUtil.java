@@ -62,6 +62,10 @@ public class PreferenceUtil {
         return getString(Keys.USERNAME, "");
     }
 
+    public String getProfileName() {
+        return getString(Keys.NAME, "");
+    }
+
     public String getString(String key, String defaultValue) {
         return sharedpreferences.getString(key, defaultValue);
     }
@@ -79,6 +83,7 @@ public class PreferenceUtil {
         editor.putBoolean(Keys.IS_ALREADY_REGISTERED, false);
         editor.putString(Keys.EmailID, "");
         editor.putString(Keys.USERID, "");
+        editor.putString(Keys.NAME, "");
         editor.putString(Keys.USERNAME, "");
         editor.putString(Keys.PASSWORD, "");
         editor.putString(Keys.STATE, "");

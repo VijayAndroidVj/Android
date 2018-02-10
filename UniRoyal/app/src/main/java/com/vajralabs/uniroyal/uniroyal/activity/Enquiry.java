@@ -1,19 +1,18 @@
 package com.vajralabs.uniroyal.uniroyal.activity;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.vajralabs.uniroyal.uniroyal.CommonUtil;
@@ -22,10 +21,7 @@ import com.vajralabs.uniroyal.uniroyal.model.EventResponse;
 import com.vajralabs.uniroyal.uniroyal.retrofit.ApiClient;
 import com.vajralabs.uniroyal.uniroyal.retrofit.ApiInterface;
 
-import java.io.File;
-
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -35,25 +31,11 @@ import retrofit2.Callback;
 
 public class Enquiry extends AppCompatActivity {
 
-    EditText input_username, input_usermail, input_userpassword, input_aboutme, input_state, input_country;
+    EditText input_username, input_usermail, input_mobile, input_enquiry;
     Activity activity;
-    public final static int CAMERA_REQUEST_PAN = 2;
-    public final static int PICK_IMAGE_REQUEST_PAN = 3;
-    String imagePath;
-    boolean removePhoto;
-    Spinner spinner;
-
-    public void launchCameraIntent(int code) {
-        if (showPopup != null) {
-            showPopup.dismiss();
-        }
-
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(cameraIntent, code);
-    }
 
 
-    ProgressBar progressBar;
+    ProgressBar progressBar1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,11 +48,10 @@ public class Enquiry extends AppCompatActivity {
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         input_username = findViewById(R.id.input_username);
+        progressBar1 = findViewById(R.id.progressBar_cyclic);
         input_usermail = findViewById(R.id.input_useremail);
-        input_aboutme = findViewById(R.id.input_userbiography);
-        input_state = findViewById(R.id.input_userstate);
-        input_country = findViewById(R.id.input_usercountry);
-
+        input_mobile = findViewById(R.id.input_userbiography);
+        input_enquiry = findViewById(R.id.input_userstate);
 
         findViewById(R.id.btn_save).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,96 +86,126 @@ public class Enquiry extends AppCompatActivity {
         }
     }
 
-    private boolean validatePassword() {
-        String pass = input_userpassword.getText().toString().trim();
+    private boolean validateMobile() {
+        String pass = input_mobile.getText().toString().trim();
 
         if (pass.isEmpty()) {
-            input_userpassword.setError("Enter Password");
-            requestFocus(input_userpassword);
+            input_mobile.setError("Enter Password");
+            requestFocus(input_mobile);
             return false;
         } else if (pass.length() < 6) {
-            input_userpassword.setError("Minimum 6 characters");
-            requestFocus(input_userpassword);
+            input_mobile.setError("Minimum 10 digit");
+            requestFocus(input_mobile);
             return false;
         } else {
-            input_userpassword.setError(null);
+            input_mobile.setError(null);
         }
 
         return true;
     }
 
-    private void updateProfile() {
+    private boolean validateEnquiry() {
+        String pass = input_enquiry.getText().toString().trim();
 
+        if (pass.isEmpty()) {
+            input_enquiry.setError("Enter Enquiry");
+            requestFocus(input_enquiry);
+            return false;
+        } else {
+            input_enquiry.setError(null);
+        }
+
+        return true;
+    }
+
+
+    private boolean validateEmail() {
+        String pass = input_usermail.getText().toString().trim();
+
+        if (TextUtils.isEmpty(pass)) {
+            input_usermail.setError("Please add email");
+            requestFocus(input_usermail);
+            return false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(pass).matches()) {
+            input_usermail.setError("Please enter valid email");
+            requestFocus(input_usermail);
+            return false;
+        } else {
+            input_usermail.setError(null);
+        }
+
+        return true;
+    }
+
+    ProgressDialog progressBar;
+
+    private void showProgress() {
+        progressBar = new ProgressDialog(this);
+        progressBar.setCancelable(true);//you can cancel it by pressing back button
+        progressBar.setMessage("Submitting ...");
+        progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressBar.setProgress(0);//initially progress is 0
+        progressBar.setMax(100);//sets the maximum value 100
+        progressBar.show();//displays the progress bar
+    }
+
+    private void hideProgress() {
+        if (progressBar != null && progressBar.isShowing()) {
+            progressBar.dismiss();
+            progressBar = null;
+        }
+    }
+
+    private void updateProfile() {
         if (!validName()) {
             return;
         }
 
-        if (!validatePassword()) {
+        if (!validateEmail()) {
+            return;
+        }
+        if (!validateMobile()) {
+            return;
+        }
+        if (!validateEnquiry()) {
             return;
         }
 
         final String userName1 = input_username.getText().toString().trim();
-        final String password1 = input_userpassword.getText().toString().trim();
-
-
-        final String gender = spinner.getSelectedItemPosition() == 0 ? "male" : "female";
-
-        final String aboutme = input_aboutme.getText().toString().trim();
-        final String state = input_state.getText().toString().trim();
-        final String country = input_country.getText().toString().trim();
+        final String email = input_usermail.getText().toString().trim();
+        final String mobile = input_mobile.getText().toString().trim();
+        final String enquiry = input_enquiry.getText().toString().trim();
 
         if (CommonUtil.isNetworkAvailable(activity)) {
-            progressBar.setVisibility(View.VISIBLE);
+            progressBar1.setVisibility(View.VISIBLE);
+            showProgress();
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
 
-            MultipartBody.Part aboutmemul =
-                    MultipartBody.Part.createFormData("aboutme", aboutme);
-
-            MultipartBody.Part statemul =
-                    MultipartBody.Part.createFormData("state", state);
-
-            MultipartBody.Part gendermul =
-                    MultipartBody.Part.createFormData("gender", gender);
-
-
-            MultipartBody.Part countrymul =
-                    MultipartBody.Part.createFormData("country", country);
-
-
-            MultipartBody.Part userName =
-                    MultipartBody.Part.createFormData("username", userName1);
-
-            MultipartBody.Part email =
-                    MultipartBody.Part.createFormData("email", input_usermail.getText().toString());
-            MultipartBody.Part password =
-                    MultipartBody.Part.createFormData("password", password1);
-            MultipartBody.Part profile_image = null;
-
-            // MultipartBody.Part is used to send also the actual file name
-            MultipartBody.Part uploadimage = null;
-            if (imagePath != null) {
-                File file = new File(imagePath);
-                if (file.exists()) {
-                    RequestBody requestFile =
-                            RequestBody.create(
-                                    null,
-                                    file
-                            );
-                    uploadimage = MultipartBody.Part.createFormData("uploadimage", file.getName(), requestFile);
-                }
-            }
-
 
             // finally, execute the request
-            Call<EventResponse> call = apiService.update_profile(uploadimage, userName, email, password, profile_image, aboutmemul, statemul, countrymul, gendermul);
+            Call<EventResponse> call = apiService.customer_enquiry(userName1, email, mobile, enquiry);
             call.enqueue(new Callback<EventResponse>() {
                 @Override
                 public void onResponse(Call<EventResponse> call, retrofit2.Response<EventResponse> response) {
-                    progressBar.setVisibility(View.GONE);
+                    progressBar1.setVisibility(View.GONE);
+                    hideProgress();
                     EventResponse sigInResponse = response.body();
                     if (sigInResponse != null) {
                         if (sigInResponse.getResult().equals("success")) {
+                            new SweetAlertDialog(activity, SweetAlertDialog.SUCCESS_TYPE)
+                                    .setTitleText("Enquiry")
+                                    .setContentText("Enquiry send successfully")
+//                            .setCustomImage(R.drawable.app_logo_back)
+                                    .setConfirmText("Ok")
+                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sDialog) {
+                                            sDialog.dismissWithAnimation();
+                                            onBackPressed();
+                                        }
+                                    })
+                                    .show();
                             if (!TextUtils.isEmpty(sigInResponse.getMessage()))
                                 Toast.makeText(activity, sigInResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         } else {
@@ -208,12 +219,14 @@ public class Enquiry extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<EventResponse> call, Throwable t) {
-                    progressBar.setVisibility(View.GONE);
+                    progressBar1.setVisibility(View.GONE);
+                    hideProgress();
                     Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
-            progressBar.setVisibility(View.GONE);
+            hideProgress();
+            progressBar1.setVisibility(View.GONE);
             Toast.makeText(activity, "Check your internet connection!", Toast.LENGTH_SHORT).show();
         }
 

@@ -11,6 +11,9 @@ public class EventResponse {
     @SerializedName("username")
     private String username;
 
+    @SerializedName("profileName")
+    private String profileName;
+
     @SerializedName("password")
     private String password;
 
@@ -46,6 +49,14 @@ public class EventResponse {
 
     @SerializedName("cover_image")
     private String coverimage;
+
+    public String getProfileName() {
+        return profileName;
+    }
+
+    public void setProfileName(String profileName) {
+        this.profileName = profileName;
+    }
 
     public String getPrivacyOn() {
         return privacyOn;

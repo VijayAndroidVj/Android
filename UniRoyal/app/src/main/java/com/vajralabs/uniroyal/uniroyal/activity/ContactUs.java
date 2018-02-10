@@ -44,9 +44,10 @@ public class ContactUs extends AppCompatActivity {
 
     String TAG = ContactUs.class.getSimpleName();
     TextView email, address;
-    ImageView google_plus, facebook, twitter, map;
-    String twitterURL = "https://twitter.com/hyundaiindia";
-    String facebookURL = "https://www.facebook.com/HyundaiIndia";
+    TextView address1;
+    ImageView facebook, twitter, map;
+    String twitterURL = "https://twitter.com/uniroyalmaldivs";
+    String facebookURL = "https://www.facebook.com/UniRoyal-Maldives-Pvt-Ltd-1769188050064284";
     String googleURL = "https://plus.google.com/+hyundaiindia";
 
     @Override
@@ -64,12 +65,15 @@ public class ContactUs extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         address = findViewById(R.id.address);
+        address1 = findViewById(R.id.address1);
         address.setText(Html.fromHtml(StaticValus.address));
+        address1.setText(Html.fromHtml(StaticValus.address1));
         map = findViewById(R.id.map);
         map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String uri = "http://maps.google.com/maps?daddr=" + 11.7678609 + "," + 75.4738065 + " (" + "Peeyem Hyundai " + ")";
+
+                String uri = "http://maps.google.com/maps?daddr=" + 4.218576 + "," + 73.544130 + " (Uni Royal)";
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
                 intent.setPackage("com.google.android.apps.maps");
                 startActivity(intent);
@@ -98,9 +102,9 @@ public class ContactUs extends AppCompatActivity {
                     intent.setClassName(best.activityInfo.packageName, best.activityInfo.name);
                 }
 
-                intent.setData(Uri.parse("peeyemhyundaisales@pioneermotors.in"));
+                intent.setData(Uri.parse("uniroyal@uniroyal.com"));
                 intent.putExtra(Intent.EXTRA_SUBJECT, "My Query");
-                intent.putExtra(Intent.EXTRA_TEXT, "Hi Peeyem Hyundai Team");
+                intent.putExtra(Intent.EXTRA_TEXT, "Hi Uni Royal Team");
                 try {
                     startActivity(intent);
 
@@ -117,14 +121,14 @@ public class ContactUs extends AppCompatActivity {
                 startActivity(gmail);*/
             }
         });
-
-        google_plus = (ImageView) findViewById(R.id.google_plus);
-        google_plus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openSocialMedia(googleURL);
-            }
-        });
+//
+//        google_plus = (ImageView) findViewById(R.id.google_plus);
+//        google_plus.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                openSocialMedia(googleURL);
+//            }
+//        });
 
         facebook = (ImageView) findViewById(R.id.facebook);
         facebook.setOnClickListener(new View.OnClickListener() {

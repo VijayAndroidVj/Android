@@ -105,6 +105,33 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edt_bg"
+                    android:editable="false"
+                    android:enabled="false"
+                    android:hint="@string/username"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapWords"
+                    android:maxLines="1"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="10dp"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:padding="@dimen/_5dp"
+                    android:text="Profile Name"
+                    android:textColor="@color/grey"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/input_profilename"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edt_bg"
                     android:hint="@string/username"
                     android:imeOptions="actionNext"
                     android:inputType="textCapWords"
@@ -275,7 +302,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:padding="@dimen/_5dp"
-                        android:text="Privacy Settings"
+                        android:text="Private Account"
                         android:textColor="@color/grey"
                         android:textSize="14sp" />
 

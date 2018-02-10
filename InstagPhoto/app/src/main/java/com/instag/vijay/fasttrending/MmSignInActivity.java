@@ -453,6 +453,7 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
                             preferenceUtil.putBoolean(Keys.PRIVACY_SETTINGS, Boolean.valueOf(sigInResponse.getPrivacyOn()));
                             preferenceUtil.putString(Keys.EmailID, sigInResponse.getEmail());
                             preferenceUtil.putString(Keys.USERNAME, sigInResponse.getUsername());
+                            preferenceUtil.putString(Keys.NAME, sigInResponse.getProfileName());
                             preferenceUtil.putString(Keys.PASSWORD, sigInResponse.getPassword());
                             preferenceUtil.putString(Keys.PROFILE_IMAGE, sigInResponse.getServerimage());
                             preferenceUtil.putString(Keys.COVER_IMAGE, sigInResponse.getCoverimage());

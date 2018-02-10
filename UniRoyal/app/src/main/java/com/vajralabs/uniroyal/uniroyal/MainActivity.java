@@ -132,9 +132,29 @@ public class MainActivity extends AppCompatActivity {
 //        list.add("https://thumbs.dreamstime.com/z/banner-image-blog-blue-keywords-29080904.jpg");
 //        list.add("https://news.fiu.edu/wp-content/uploads/Banner-Image.JPG");
 //        list.add("http://sr-jobs.in/wp-content/uploads/2016/07/banner-image-home.jpg");
+
         getBannerLists();
         setBannerList();
 
+    }
+
+    private ProgressDialog progressBar1;
+
+    private void showProgress() {
+        progressBar1 = new ProgressDialog(this);
+        progressBar1.setCancelable(true);//you can cancel it by pressing back button
+        progressBar1.setMessage("Loading ...");
+        progressBar1.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressBar1.setProgress(0);//initially progress is 0
+        progressBar1.setMax(100);//sets the maximum value 100
+        progressBar1.show();//displays the progress bar
+    }
+
+    private void hideProgress() {
+        if (progressBar1 != null && progressBar1.isShowing()) {
+            progressBar1.dismiss();
+            progressBar1 = null;
+        }
     }
 
     private void getBannerLists() {
@@ -146,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
                 call.enqueue(new Callback<ArrayList<BannerModel>>() {
                     @Override
                     public void onResponse(Call<ArrayList<BannerModel>> call, Response<ArrayList<BannerModel>> response) {
+                        hideProgress();
                         Log.d("", "response: " + response.body());
                         ArrayList<BannerModel> sigInResponse = response.body();
                         if (sigInResponse != null) {
@@ -161,13 +182,16 @@ public class MainActivity extends AppCompatActivity {
                     public void onFailure(Call<ArrayList<BannerModel>> call, Throwable t) {
                         // Log error here since request failed
                         Log.e("", t.toString());
+                        hideProgress();
                         Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
                     }
                 });
             } else {
+                hideProgress();
                 Toast.makeText(activity, "Check your internet connection!", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
+            hideProgress();
             e.printStackTrace();
         }
     }
@@ -267,6 +291,7 @@ public class MainActivity extends AppCompatActivity {
                 //setList();
             }
         });
+        showProgress();
         getcategoryLists();
 //        setList();
     }
@@ -288,10 +313,10 @@ public class MainActivity extends AppCompatActivity {
                         ArrayList<CategoryModel> sigInResponse = response.body();
                         if (sigInResponse != null) {
                             categoryArrayList = sigInResponse;
-                            setList();
                         } else {
                             Toast.makeText(activity, "Could not connect to server.", Toast.LENGTH_SHORT).show();
                         }
+                        setList();
 
                     }
 
@@ -299,6 +324,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onFailure(Call<ArrayList<CategoryModel>> call, Throwable t) {
                         // Log error here since request failed
                         Log.e("", t.toString());
+                        setList();
                         progressBar.setVisibility(View.GONE);
                         swipeRefreshLayout.setRefreshing(false);
                         Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
@@ -307,6 +333,8 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 progressBar.setVisibility(View.GONE);
                 swipeRefreshLayout.setRefreshing(false);
+                viewInfo.setVisibility(View.VISIBLE);
+                viewInfo.setText("Check your internet connection!");
                 Toast.makeText(activity, "Check your internet connection!", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
@@ -365,7 +393,7 @@ public class MainActivity extends AppCompatActivity {
 //        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext(), R.drawable.list_item_background));
             logAdapter.notifyDataSetChanged();
             if (categoryArrayList.size() == 0) {
-                showView(1, "No notification available");
+                showView(1, "No Category available");
                 progressBar.setVisibility(View.GONE);
                 viewInfo.setVisibility(View.GONE);
             }

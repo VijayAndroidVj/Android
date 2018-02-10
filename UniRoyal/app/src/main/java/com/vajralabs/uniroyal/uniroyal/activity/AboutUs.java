@@ -14,6 +14,9 @@ import com.vajralabs.uniroyal.uniroyal.StaticValus;
 
 public class AboutUs extends AppCompatActivity {
     TextView aboutUS;
+    TextView about_us1;
+    TextView about_us2;
+    TextView about_us3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +31,13 @@ public class AboutUs extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         aboutUS = findViewById(R.id.about_us);
+        about_us1 = findViewById(R.id.about_us1);
+        about_us2 = findViewById(R.id.about_us2);
+        about_us3 = findViewById(R.id.about_us3);
         aboutUS.setText(Html.fromHtml(StaticValus.aboutUs));
+        about_us1.setText(Html.fromHtml(StaticValus.aboutUs1));
+        about_us2.setText(Html.fromHtml(StaticValus.aboutUs2));
+        about_us3.setText(Html.fromHtml(StaticValus.aboutUs3));
     }
 
     @Override

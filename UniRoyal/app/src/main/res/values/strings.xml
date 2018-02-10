@@ -14,6 +14,11 @@
     <string name="nav_contactus">Contact Us</string>
     <string name="nav_enquiry">Enquiry</string>
     <string name="nav_download_catelog">Download Catalogue</string>
+    <string name="download_catelog">The 2018
+UniRoyal Catalog
+is here!</string>
+    <string name="download_catelog2">Our new catalog is full of Fresh, affordable Seafood &amp; Meat Products.</string>
+    <string name="download_catelog3">Sign up to receive your digital version today.</string>
     <string name="contactus_click_email_address">Click on the email address to reach us</string>
     <!-- Toolbar titles when navigation menu item is selected -->
     <string-array name="nav_item_activity_titles">

@@ -1,0 +1,135 @@
+<resources>
+    <string name="app_name">Laundry</string>
+    <string name="app_video_consultation">Video Consultation</string>
+    <string name="enter_email">Enter your Email</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="enter_name">Enter your Name</string>
+    <string name="register">Register</string>
+    <string name="signin">Sign In</string>
+    <string name="signup">Sign Up</string>
+    <string name="auhid">Uhid*</string>
+    <string name="aname">Name*</string>
+    <string name="name">Name*</string>
+    <string name="email">Email*</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+    <string name="home">Home</string>
+    <string name="doctor">Doctor</string>
+    <string name="participants">Participants</string>
+    <string name="reports">Reports</string>
+    <string name="notes">Notes</string>
+    <string name="my_account">My Account</string>
+    <string name="add_appointment">Add Appointment</string>
+    <string name="add_invite">Add Invite</string>
+
+    <string name="phone">Phone</string>
+    <string name="date">Date*</string>
+    <string name="password">Password*</string>
+    <string name="cpassword">Confirm Password*</string>
+    <string name="relationship">Relationship</string>
+    <string name="department">Department*</string>
+    <string name="start">Start</string>
+    <string name="loading_please_wait">Loading please wait...</string>
+    <string name="no_list">No Event list available</string>
+    <string name="no_pres_list">No Prescription Available</string>
+    <string name="no_response">No Response from server</string>
+
+
+    <string name="fa_share">&#xf1e0;</string>
+    <string name="fa_reports">&#xf0f6;</string>
+    <string name="fa_notes">&#xf040;</string>
+    <string name="fa_my_account">&#xf2be;</string>
+    <string name="fa_home">&#xf015;</string>
+    <string name="fa_mic">&#xf130;</string>
+    <string name="fa_video">&#xf03d;</string>
+    <string name="fa_audio">&#xf028;</string>
+    <string name="fa_webview">&#xf15b;</string>
+    <string name="fa_logout">&#xf08b;</string>
+    <string name="fa_appointment">&#xf271;</string>
+    <string name="logout1">Logout</string>
+    <string name="exit">Exit</string>
+
+    <integer name="slide_animation_duration">500</integer>
+    <string name="app_name_title">Medcity</string>
+
+
+    <!--Razin-->
+    <string name="Appointment_filter">Appointment Filter</string>
+    <string name="Doctors_name">Doctor\'s name</string>
+    <string name="Department">Department</string>
+    <string name="Date_of_appointment">Date of Appointment</string>
+    <string name="UID">UID</string>
+    <string name="Apply">Apply</string>
+    <string name="Lab_reports">Lab Reports</string>
+    <string name="Mri_reports">Mri Reports</string>
+    <string name="Documents">Documents</string>
+    <string name="Snapshots">Snapshots</string>
+    <string name="Mri">Mri</string>
+    <string name="Please_wait">Please wait...</string>
+    <string name="Prescription">Prescription</string>
+
+    <string name="Name">Name:</string>
+    <string name="Dose">Dose:</string>
+    <string name="Duration">Duration:</string>
+    <string name="Frequency">Frequency:</string>
+    <string name="Remarks">Remarks:</string>
+
+    <string name="Name_of_medicine">Name of medicine</string>
+    <string name="start_date">Start date</string>
+    <string name="end_date">End date</string>
+    <string name="which_days">Which days?</string>
+    <string name="sunday">S</string>
+    <string name="monday">M</string>
+    <string name="tuesday">T</string>
+    <string name="wednesday">W</string>
+    <string name="thursday">T</string>
+    <string name="friday">F</string>
+    <string name="saturday">S</string>
+    <string name="duration">Duration</string>
+    <string name="remarks">Remarks</string>
+
+    <string name="frequency">Frequency</string>
+    <string name="sos">SOS</string>
+    <string name="alternate_days">Alternate Days</string>
+    <string name="every_day">Every Day</string>
+    <string name="specific_days">Specific Days</string>
+    <string name="Days">Days</string>
+    <string name="Day">Day</string>
+    <string name="upcoming_meetings">Upcoming</string>
+    <string name="past_meetings">Past</string>
+
+    <string name="Morning">Morning</string>
+    <string name="Afternoon">Afternoon</string>
+    <string name="Evening">Evening</string>
+
+    <string name="Add">Add</string>
+    <string name="Save">Save</string>
+    <string name="Add_prescription">Add Prescription</string>
+
+    <string name="Duration_error">Please provide duration for the medicine</string>
+    <string name="Medicine_name_error">Please provide medicine name</string>
+    <string name="Medicine_count_error">Please provide number of medicine</string>
+
+    <string name="Medicine_count_zero">0</string>
+    <string name="Medicine_count_half">0.5</string>
+    <string name="Medicine_count_one">1</string>
+    <string name="Medicine_count_two">2</string>
+
+    <string name="Pills">Pills</string>
+    <string name="cc">cc</string>
+    <string name="ml">ml</string>
+    <string name="gr">gr</string>
+    <string name="mg">mg</string>
+    <string name="Drops">Drops</string>
+    <string name="Pieces">Pieces</string>
+    <string name="Puffs">Puffs</string>
+    <string name="Units">Units</string>
+    <string name="teaspoon">teaspoon</string>
+    <string name="tablespoon">tablespoon</string>
+    <string name="patch">patch</string>
+    <string name="mcg">mcg</string>
+    <string name="iu">iu</string>
+    <string name="meq">meq</string>
+    <string name="Carton">Carton</string>
+    <string name="Spray">Spray</string>
+</resources>

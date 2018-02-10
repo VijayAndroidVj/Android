@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.xrsoftware.vijay.mylaundry.MainActivity">
+
+    <include
+        android:id="@+id/actionbarView"
+        layout="@layout/actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="0dp" />
+
+    <LinearLayout
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/actionbarView"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+        android:layout_marginTop="7dp"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+
+        <FrameLayout
+            android:id="@+id/viewUpcoming"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/bottomline">
+
+            <TextView
+                android:id="@+id/txtUpcoming"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="3dp"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="New Order"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+        </FrameLayout>
+
+
+        <FrameLayout
+            android:id="@+id/viewPast"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/txtPast"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="3dp"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="Delivery Orders"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+        </FrameLayout>
+    </LinearLayout>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titlebar"
+        android:padding="5dp"
+        android:visibility="visible"
+        card_view:cardCornerRadius="15dp"
+        card_view:cardElevation="5dp"
+        card_view:cardUseCompatPadding="true">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Services"
+                android:textSize="@dimen/_16dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15dp"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <FrameLayout
+                    android:layout_width="30dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/_20dp"
+                    android:layout_marginStart="@dimen/_20dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/circle"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/ivDress"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/shirt"
+                        android:backgroundTint="@color/white"
+                        android:tint="@color/white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|center"
+                        android:layout_marginBottom="@dimen/_12dp"
+                        android:text="Wash &amp; Iron"
+                        android:textColor="@color/white"
+                        android:textSize="10sp" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="30dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/_20dp"
+                    android:layout_marginStart="@dimen/_20dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/circleborder"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/ivDryClean"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/bucket" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|center"
+                        android:layout_marginBottom="@dimen/_12dp"
+                        android:text="Wash &amp; Iron"
+                        android:textSize="10sp" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="30dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/_20dp"
+                    android:layout_marginStart="@dimen/_20dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/circleborder"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/ivIron"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/electriciron" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|center"
+                        android:layout_marginBottom="@dimen/_12dp"
+                        android:text="Wash &amp; Iron"
+                        android:textSize="10sp" />
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_20dp"
+                android:text="Location"
+                android:textSize="@dimen/_16dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/rlTop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20dp"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <FrameLayout
+                    android:layout_width="30dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/_20dp"
+                    android:layout_marginStart="@dimen/_20dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/circle"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/ivHome"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/home"
+                        android:backgroundTint="@color/white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|center"
+                        android:layout_marginBottom="@dimen/_10dp"
+                        android:text="Home"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="30dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/_20dp"
+                    android:layout_marginStart="@dimen/_20dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/circleborder"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/ivOffice"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/office" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|center"
+                        android:layout_marginBottom="@dimen/_10dp"
+                        android:text="Office"
+                        android:textSize="12sp" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="30dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/_20dp"
+                    android:layout_marginStart="@dimen/_20dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/circleborder"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/ivLocation"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/placeholder" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|center"
+                        android:layout_marginBottom="@dimen/_10dp"
+                        android:text="Map"
+                        android:textSize="12sp" />
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20dp"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/pickuptime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="Pickup Time"
+                        android:textSize="@dimen/_14dp"
+                        android:textStyle="bold" />
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/pickuptime"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:padding="@dimen/_15dp">
+
+                        <ImageView
+                            android:id="@+id/ivpickup"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/stopwatch"
+                            android:tint="@color/white" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_5dp"
+                            android:layout_toRightOf="@+id/ivpickup"
+                            android:text="18 Jun 2017 \n 8am to 11am"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/deliverytime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="Delivery Time"
+                        android:textSize="@dimen/_14dp"
+                        android:textStyle="bold" />
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/deliverytime"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:padding="@dimen/_15dp">
+
+                        <ImageView
+                            android:id="@+id/ivdelivery"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/stopwatch"
+                            android:tint="@color/white" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_5dp"
+                            android:layout_toRightOf="@+id/ivdelivery"
+                            android:text="18 May 2017  \n 8pm to 11pm"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/nxt"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_gravity="center|right"
+                android:layout_margin="@dimen/_15dp"
+                android:drawablePadding="@dimen/_15dp"
+                android:drawableRight="@drawable/rightarrow"
+                android:drawableTint="@color/colorPrimary"
+                android:gravity="center"
+                android:padding="@dimen/_5dp"
+                android:text="Next"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/_18dp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</RelativeLayout>

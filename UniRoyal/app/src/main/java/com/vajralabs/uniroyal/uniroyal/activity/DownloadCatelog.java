@@ -1,18 +1,18 @@
 package com.vajralabs.uniroyal.uniroyal.activity;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.vajralabs.uniroyal.uniroyal.CommonUtil;
@@ -21,10 +21,7 @@ import com.vajralabs.uniroyal.uniroyal.model.EventResponse;
 import com.vajralabs.uniroyal.uniroyal.retrofit.ApiClient;
 import com.vajralabs.uniroyal.uniroyal.retrofit.ApiInterface;
 
-import java.io.File;
-
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -34,43 +31,26 @@ import retrofit2.Callback;
 
 public class DownloadCatelog extends AppCompatActivity {
 
-    EditText input_username, input_usermail, input_userpassword, input_aboutme, input_state, input_country;
+    EditText input_username, input_companyname, input_usermail, input_mobile;
     Activity activity;
-    public final static int CAMERA_REQUEST_PAN = 2;
-    public final static int PICK_IMAGE_REQUEST_PAN = 3;
-    String imagePath;
-    boolean removePhoto;
-    Spinner spinner;
 
-
-    public void launchGalleryIntent(int code) {
-        if (showPopup != null) {
-            showPopup.dismiss();
-        }
-        Intent galleryIntent = new Intent();
-        galleryIntent.setType("image/*");
-        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(galleryIntent, "Select Image"), code);
-    }
-
-    ProgressBar progressBar;
+    ProgressBar progressBar1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.edit_profile);
+        setContentView(R.layout.download_catelog);
         activity = this;
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(getString(R.string.nav_download_catelog));
+        actionBar.setTitle("Download Catalogue");
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         input_username = findViewById(R.id.input_username);
+        input_companyname = findViewById(R.id.input_companyname);
+        progressBar1 = findViewById(R.id.progressBar_cyclic);
         input_usermail = findViewById(R.id.input_useremail);
-        input_aboutme = findViewById(R.id.input_userbiography);
-        input_state = findViewById(R.id.input_userstate);
-        input_country = findViewById(R.id.input_usercountry);
-
+        input_mobile = findViewById(R.id.input_userbiography);
 
         findViewById(R.id.btn_save).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,25 +79,57 @@ public class DownloadCatelog extends AppCompatActivity {
         return true;
     }
 
+    private boolean validCompanyName() {
+        String pass = input_companyname.getText().toString().trim();
+        if (pass.isEmpty()) {
+            input_companyname.setError("Invalid company");
+            requestFocus(input_companyname);
+            return false;
+        } else {
+            input_companyname.setError(null);
+        }
+
+        return true;
+    }
+
     private void requestFocus(View view) {
         if (view.requestFocus()) {
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
     }
 
-    private boolean validatePassword() {
-        String pass = input_userpassword.getText().toString().trim();
+    private boolean validateMobile() {
+        String pass = input_mobile.getText().toString().trim();
 
         if (pass.isEmpty()) {
-            input_userpassword.setError("Enter Password");
-            requestFocus(input_userpassword);
+            input_mobile.setError("Enter Password");
+            requestFocus(input_mobile);
             return false;
         } else if (pass.length() < 6) {
-            input_userpassword.setError("Minimum 6 characters");
-            requestFocus(input_userpassword);
+            input_mobile.setError("Minimum 10 digit");
+            requestFocus(input_mobile);
             return false;
         } else {
-            input_userpassword.setError(null);
+            input_mobile.setError(null);
+        }
+
+        return true;
+    }
+
+
+    private boolean validateEmail() {
+        String pass = input_usermail.getText().toString().trim();
+
+        if (TextUtils.isEmpty(pass)) {
+            input_usermail.setError("Please add email");
+            requestFocus(input_usermail);
+            return false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(pass).matches()) {
+            input_usermail.setError("Please enter valid email");
+            requestFocus(input_usermail);
+            return false;
+        } else {
+            input_usermail.setError(null);
         }
 
         return true;
@@ -128,73 +140,53 @@ public class DownloadCatelog extends AppCompatActivity {
         if (!validName()) {
             return;
         }
-
-        if (!validatePassword()) {
+        if (!validCompanyName()) {
             return;
         }
 
+        if (!validateEmail()) {
+            return;
+        }
+        if (!validateMobile()) {
+            return;
+        }
+
+
         final String userName1 = input_username.getText().toString().trim();
-        final String password1 = input_userpassword.getText().toString().trim();
-
-
-        final String gender = spinner.getSelectedItemPosition() == 0 ? "male" : "female";
-
-        final String aboutme = input_aboutme.getText().toString().trim();
-        final String state = input_state.getText().toString().trim();
-        final String country = input_country.getText().toString().trim();
+        final String email = input_usermail.getText().toString().trim();
+        final String mobile = input_mobile.getText().toString().trim();
+        final String company = input_companyname.getText().toString().trim();
 
         if (CommonUtil.isNetworkAvailable(activity)) {
-            progressBar.setVisibility(View.VISIBLE);
+            progressBar1.setVisibility(View.VISIBLE);
+            showProgress();
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
 
-            MultipartBody.Part aboutmemul =
-                    MultipartBody.Part.createFormData("aboutme", aboutme);
-
-            MultipartBody.Part statemul =
-                    MultipartBody.Part.createFormData("state", state);
-
-            MultipartBody.Part gendermul =
-                    MultipartBody.Part.createFormData("gender", gender);
-
-
-            MultipartBody.Part countrymul =
-                    MultipartBody.Part.createFormData("country", country);
-
-
-            MultipartBody.Part userName =
-                    MultipartBody.Part.createFormData("username", userName1);
-
-            MultipartBody.Part email =
-                    MultipartBody.Part.createFormData("email", input_usermail.getText().toString());
-            MultipartBody.Part password =
-                    MultipartBody.Part.createFormData("password", password1);
-            MultipartBody.Part profile_image = null;
-
-            // MultipartBody.Part is used to send also the actual file name
-            MultipartBody.Part uploadimage = null;
-            if (imagePath != null) {
-                File file = new File(imagePath);
-                if (file.exists()) {
-                    RequestBody requestFile =
-                            RequestBody.create(
-                                    null,
-                                    file
-                            );
-                    uploadimage = MultipartBody.Part.createFormData("uploadimage", file.getName(), requestFile);
-                }
-            }
-
 
             // finally, execute the request
-            Call<EventResponse> call = apiService.update_profile(uploadimage, userName, email, password, profile_image, aboutmemul, statemul, countrymul, gendermul);
+            Call<EventResponse> call = apiService.download_catelog(userName1, company, email, mobile);
             call.enqueue(new Callback<EventResponse>() {
                 @Override
                 public void onResponse(Call<EventResponse> call, retrofit2.Response<EventResponse> response) {
-                    progressBar.setVisibility(View.GONE);
+                    progressBar1.setVisibility(View.GONE);
+                    hideProgress();
                     EventResponse sigInResponse = response.body();
                     if (sigInResponse != null) {
                         if (sigInResponse.getResult().equals("success")) {
+                            new SweetAlertDialog(activity, SweetAlertDialog.SUCCESS_TYPE)
+                                    .setTitleText("Download Catalogue")
+                                    .setContentText("Thanks for signing up. Our Latest Catalogue will be sent your mail Id. Happy Shopping.")
+//                            .setCustomImage(R.drawable.app_logo_back)
+                                    .setConfirmText("Ok")
+                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sDialog) {
+                                            sDialog.dismissWithAnimation();
+                                            onBackPressed();
+                                        }
+                                    })
+                                    .show();
                             if (!TextUtils.isEmpty(sigInResponse.getMessage()))
                                 Toast.makeText(activity, sigInResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         } else {
@@ -208,15 +200,36 @@ public class DownloadCatelog extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<EventResponse> call, Throwable t) {
-                    progressBar.setVisibility(View.GONE);
+                    progressBar1.setVisibility(View.GONE);
+                    hideProgress();
                     Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
-            progressBar.setVisibility(View.GONE);
+            progressBar1.setVisibility(View.GONE);
+            hideProgress();
             Toast.makeText(activity, "Check your internet connection!", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    ProgressDialog progressBar;
+
+    private void showProgress() {
+        progressBar = new ProgressDialog(this);
+        progressBar.setCancelable(true);//you can cancel it by pressing back button
+        progressBar.setMessage("Submitting ...");
+        progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressBar.setProgress(0);//initially progress is 0
+        progressBar.setMax(100);//sets the maximum value 100
+        progressBar.show();//displays the progress bar
+    }
+
+    private void hideProgress() {
+        if (progressBar != null && progressBar.isShowing()) {
+            progressBar.dismiss();
+            progressBar = null;
+        }
     }
 
 

@@ -83,6 +83,7 @@ public interface ApiInterface {
     Call<EventResponse> update_profile(
             @Part MultipartBody.Part uploadimage,
             @Part MultipartBody.Part uploadCoverimage,
+            @Part MultipartBody.Part profileName,
             @Part MultipartBody.Part username,
             @Part MultipartBody.Part email,
             @Part MultipartBody.Part password,

@@ -15,11 +15,15 @@
             android:icon="@drawable/ic_gps_fixed_black_24dp"
             android:title="@string/nav_mission_vission" />
 
-        <!-- <item
-             android:id="@+id/nav_products"
-             android:icon="@drawable/ic_add_shopping_cart_black_24dp"
-             android:title="@string/nav_products" />
- -->
+        <item
+            android:id="@+id/nav_products"
+            android:icon="@drawable/ic_add_shopping_cart_black_24dp"
+            android:title="@string/nav_products" />
+
+        <item
+            android:id="@+id/nav_gallery"
+            android:icon="@drawable/ic_collections_black_24dp"
+            android:title="@string/nav_gallery" />
         <item
             android:id="@+id/nav_contactus"
             android:icon="@drawable/ic_contact_phone_black_24dp"
@@ -33,6 +37,10 @@
             android:id="@+id/nav_catelog"
             android:icon="@drawable/ic_import_contacts_black_24dp"
             android:title="@string/nav_download_catelog" />
+        <item
+            android:id="@+id/nav_share"
+            android:icon="@drawable/ic_share_black_24dp"
+            android:title="@string/nav_share" />
     </group>
 
 

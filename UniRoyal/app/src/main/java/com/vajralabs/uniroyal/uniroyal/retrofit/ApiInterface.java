@@ -2,6 +2,7 @@ package com.vajralabs.uniroyal.uniroyal.retrofit;
 
 
 import com.vajralabs.uniroyal.uniroyal.model.BannerModel;
+import com.vajralabs.uniroyal.uniroyal.model.CategoryItem;
 import com.vajralabs.uniroyal.uniroyal.model.CategoryModel;
 import com.vajralabs.uniroyal.uniroyal.model.EventResponse;
 
@@ -31,6 +32,9 @@ public interface ApiInterface {
 
     @POST("getallcategories.php")
     Call<ArrayList<CategoryModel>> getcategoryList();
+
+    @POST("get_gallery.php")
+    Call<ArrayList<CategoryItem>> get_gallery();
 }
 
 

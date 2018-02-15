@@ -31,44 +31,235 @@
         <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/pager"
             android:layout_width="match_parent"
-            android:layout_height="230dp" />
+            android:layout_height="220dp" />
 
-
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefreshLayout"
+        <RelativeLayout
+            android:id="@+id/card_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/pager">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pager"
+            android:background="@drawable/bachi"
+            android:visibility="visible">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerviewContact"
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
-                android:scrollbars="vertical"
-                android:visibility="visible" />
-        </android.support.v4.widget.SwipeRefreshLayout>
-
-        <ProgressBar
-            android:id="@+id/progressBar_cyclic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:minHeight="50dp"
-            android:minWidth="50dp"
-            android:visibility="gone" />
+                android:orientation="vertical"
+                android:padding="@dimen/_5dp">
 
 
-        <TextView
-            android:id="@+id/txtContactInfo"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:layout_margin="5dp"
-            android:gravity="center"
-            android:text=""
-            android:visibility="gone" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_15dp"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_10dp">
+
+                    <FrameLayout
+                        android:id="@+id/flProducts"
+                        android:layout_width="30dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_20dp"
+                        android:layout_marginStart="@dimen/_20dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/circle"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/ivProducts"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/ic_add_shopping_cart_black_24dp"
+                            android:backgroundTint="@color/white"
+                            android:tint="@color/white" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|center"
+                            android:layout_marginBottom="@dimen/_12dp"
+                            android:text="Our Products"
+                            android:textColor="@color/white"
+                            android:textSize="10sp" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/flGallery"
+                        android:layout_width="30dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_20dp"
+                        android:layout_marginStart="@dimen/_20dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/circle"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/ivGallery"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/ic_collections_black_24dp"
+                            android:backgroundTint="@color/white"
+                            android:tint="@color/white" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|center"
+                            android:layout_marginBottom="@dimen/_12dp"
+                            android:text="Gallery"
+                            android:textColor="@color/white"
+                            android:textSize="10sp" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/flContactUs"
+                        android:layout_width="30dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_20dp"
+                        android:layout_marginStart="@dimen/_20dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/circle"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/ivContactUs"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/ic_contact_phone_black_24dp"
+                            android:backgroundTint="@color/white" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|center"
+                            android:layout_marginBottom="@dimen/_12dp"
+                            android:text="ContactUs"
+                            android:textColor="@color/white"
+                            android:textSize="10sp" />
+                    </FrameLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/rlTop2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_15dp"
+                    android:layout_marginLeft="@dimen/_15dp"
+                    android:layout_marginRight="@dimen/_15dp"
+                    android:layout_marginTop="@dimen/_10dp"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_10dp">
+
+                    <FrameLayout
+                        android:id="@+id/flEnquiry"
+                        android:layout_width="30dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_20dp"
+                        android:layout_marginStart="@dimen/_20dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/circle"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/ivEnquiry"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/ic_assignment_black_24dp"
+                            android:backgroundTint="@color/white" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|center"
+                            android:layout_marginBottom="@dimen/_10dp"
+                            android:text="Enquiry"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/flDownloaddCatelog"
+                        android:layout_width="30dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_20dp"
+                        android:layout_marginStart="@dimen/_20dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/circle"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/ivDownloaddCatelog"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/ic_import_contacts_black_24dp"
+                            android:backgroundTint="@color/white" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|center"
+                            android:layout_marginBottom="@dimen/_4dp"
+                            android:gravity="center"
+                            android:text="Download Catalogue"
+                            android:textColor="@color/white"
+                            android:textSize="10sp" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/flShare"
+                        android:layout_width="30dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_20dp"
+                        android:layout_marginStart="@dimen/_20dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/circle"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/ivShare"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/ic_share_black_24dp"
+                            android:backgroundTint="@color/white" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|center"
+                            android:layout_marginBottom="@dimen/_10dp"
+                            android:text="Share"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+                    </FrameLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@color/greytrans"
+                android:gravity="center"
+                android:padding="@dimen/_10dp"
+                android:text="welcome to UNIROYAL MALDIVES"
+                android:textColor="@color/colorPrimary" />
+        </RelativeLayout>
 
 
     </RelativeLayout>

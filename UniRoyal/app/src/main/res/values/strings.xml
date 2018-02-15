@@ -11,9 +11,11 @@
     <string name="nav_aboutus">About US</string>
     <string name="nav_mission_vission">Vision &amp; Mission</string>
     <string name="nav_products">Our Products</string>
+    <string name="nav_gallery">Gallery</string>
     <string name="nav_contactus">Contact Us</string>
     <string name="nav_enquiry">Enquiry</string>
     <string name="nav_download_catelog">Download Catalogue</string>
+    <string name="nav_share">Share</string>
     <string name="download_catelog">The 2018
 UniRoyal Catalog
 is here!</string>

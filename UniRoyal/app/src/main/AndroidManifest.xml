@@ -19,13 +19,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon,android:roundIcon, android:allowBackup">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".activity.OurProducts"
+            android:theme="@style/AppTheme1" />
+        <activity
+            android:name=".activity.Gallery"
+            android:theme="@style/AppTheme1" />
         <activity
             android:name=".activity.AboutUs"
             android:theme="@style/AppTheme.NoActionBar" />

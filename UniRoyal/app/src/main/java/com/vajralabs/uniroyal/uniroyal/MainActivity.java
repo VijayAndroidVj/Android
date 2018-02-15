@@ -9,20 +9,14 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,11 +26,11 @@ import com.vajralabs.uniroyal.uniroyal.activity.AboutUs;
 import com.vajralabs.uniroyal.uniroyal.activity.ContactUs;
 import com.vajralabs.uniroyal.uniroyal.activity.DownloadCatelog;
 import com.vajralabs.uniroyal.uniroyal.activity.Enquiry;
+import com.vajralabs.uniroyal.uniroyal.activity.Gallery;
 import com.vajralabs.uniroyal.uniroyal.activity.Mission;
+import com.vajralabs.uniroyal.uniroyal.activity.OurProducts;
 import com.vajralabs.uniroyal.uniroyal.adapter.CustomPagerAdapter;
-import com.vajralabs.uniroyal.uniroyal.adapter.NotificationAdapter;
 import com.vajralabs.uniroyal.uniroyal.model.BannerModel;
-import com.vajralabs.uniroyal.uniroyal.model.CategoryModel;
 import com.vajralabs.uniroyal.uniroyal.retrofit.ApiClient;
 import com.vajralabs.uniroyal.uniroyal.retrofit.ApiInterface;
 
@@ -48,12 +42,6 @@ import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity {
-    private Activity activity;
-    private TextView viewInfo;
-    private RecyclerView recyclerView;
-    private ProgressBar progressBar;
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private ArrayList<CategoryModel> categoryArrayList = new ArrayList<>();
 
     private NavigationView navigationView;
     private DrawerLayout drawer;
@@ -87,6 +75,13 @@ public class MainActivity extends AppCompatActivity {
     private boolean shouldLoadHomeFragOnBackPress = true;
     private Handler mHandler;
 
+    Activity activity;
+    View flProducts;
+    View flGallery;
+    View flContactUs;
+    View flEnquiry;
+    View flDownloaddCatelog;
+    View flShare;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
         // initializing navigation menu
         setUpNavigationView();
-
+        showProgress();
         if (savedInstanceState == null) {
             navItemIndex = 0;
             CURRENT_TAG = TAG_HOME;
@@ -198,8 +193,51 @@ public class MainActivity extends AppCompatActivity {
 
     private void setBannerList() {
         customPagerAdapter = new CustomPagerAdapter(this, list);
-        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager = findViewById(R.id.pager);
+        flProducts = findViewById(R.id.flProducts);
+        flGallery = findViewById(R.id.flGallery);
+        flContactUs = findViewById(R.id.flContactUs);
+        flEnquiry = findViewById(R.id.flEnquiry);
+        flDownloaddCatelog = findViewById(R.id.flDownloaddCatelog);
+        flShare = findViewById(R.id.flShare);
         mViewPager.setAdapter(customPagerAdapter);
+        flProducts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, OurProducts.class));
+            }
+        });
+        flGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, Gallery.class));
+            }
+        });
+        flContactUs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, ContactUs.class));
+            }
+        });
+        flEnquiry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, Enquiry.class));
+            }
+        });
+        flDownloaddCatelog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, DownloadCatelog.class));
+            }
+        });
+        flShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getShareIntent();
+            }
+        });
+
     }
 
     /***
@@ -277,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
         // refresh toolbar menu
         invalidateOptionsMenu();
 
-        viewInfo = (TextView) findViewById(R.id.txtContactInfo);
+        /*viewInfo = (TextView) findViewById(R.id.txtContactInfo);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerviewContact);
         progressBar = (ProgressBar) findViewById(R.id.progressBar_cyclic);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
@@ -291,118 +329,9 @@ public class MainActivity extends AppCompatActivity {
                 //setList();
             }
         });
-        showProgress();
-        getcategoryLists();
+
+        getcategoryLists();*/
 //        setList();
-    }
-
-
-    private void getcategoryLists() {
-        try {
-            if (CommonUtil.isNetworkAvailable(activity)) {
-                progressBar.setVisibility(View.VISIBLE);
-                ApiInterface apiService =
-                        ApiClient.getClient().create(ApiInterface.class);
-                Call<ArrayList<CategoryModel>> call = apiService.getcategoryList();
-                call.enqueue(new Callback<ArrayList<CategoryModel>>() {
-                    @Override
-                    public void onResponse(Call<ArrayList<CategoryModel>> call, Response<ArrayList<CategoryModel>> response) {
-                        Log.d("", "response: " + response.body());
-                        swipeRefreshLayout.setRefreshing(false);
-                        progressBar.setVisibility(View.GONE);
-                        ArrayList<CategoryModel> sigInResponse = response.body();
-                        if (sigInResponse != null) {
-                            categoryArrayList = sigInResponse;
-                        } else {
-                            Toast.makeText(activity, "Could not connect to server.", Toast.LENGTH_SHORT).show();
-                        }
-                        setList();
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<ArrayList<CategoryModel>> call, Throwable t) {
-                        // Log error here since request failed
-                        Log.e("", t.toString());
-                        setList();
-                        progressBar.setVisibility(View.GONE);
-                        swipeRefreshLayout.setRefreshing(false);
-                        Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            } else {
-                progressBar.setVisibility(View.GONE);
-                swipeRefreshLayout.setRefreshing(false);
-                viewInfo.setVisibility(View.VISIBLE);
-                viewInfo.setText("Check your internet connection!");
-                Toast.makeText(activity, "Check your internet connection!", Toast.LENGTH_SHORT).show();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
-    private NotificationAdapter logAdapter;
-
-
-    public void showView(int item, String text) {
-        try {
-            switch (item) {
-                case 0:
-                    progressBar.setVisibility(View.VISIBLE);
-                    viewInfo.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.VISIBLE);
-                    break;
-                case 1:
-                    if (progressBar != null) {
-                        progressBar.setVisibility(View.GONE);
-                        viewInfo.setVisibility(View.VISIBLE);
-                        recyclerView.setVisibility(View.GONE);
-                        if (TextUtils.isEmpty(text)) {
-                            viewInfo.setText("No notification available");
-                        } else {
-                            viewInfo.setText(text);
-                        }
-                    }
-                    break;
-                case 2:
-                    progressBar.setVisibility(View.GONE);
-                    viewInfo.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.VISIBLE);
-                    setList();
-                    break;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void setList() {
-        try {
-            //ilist = getMeetingList(isPast ? PAST : UPCOMING);
-            viewInfo.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.VISIBLE);
-
-            logAdapter = new NotificationAdapter(activity, categoryArrayList);
-            recyclerView.setAdapter(logAdapter);
-            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(activity);
-            recyclerView.setLayoutManager(mLayoutManager);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-//        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext(), R.drawable.list_item_background));
-            logAdapter.notifyDataSetChanged();
-            if (categoryArrayList.size() == 0) {
-                showView(1, "No Category available");
-                progressBar.setVisibility(View.GONE);
-                viewInfo.setVisibility(View.GONE);
-            }
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
     private ProgressDialog progressDoalog;
@@ -464,14 +393,20 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(new Intent(MainActivity.this, Mission.class));
                         drawer.closeDrawers();
                         break;
-                    /*case R.id.nav_products:
+                    case R.id.nav_products:
                         navItemIndex = 3;
                         CURRENT_TAG = TAG_NOTIFICATIONS;
-                        startActivity(new Intent(MainActivity.this, PrivacyPolicyActivity.class));
+                        startActivity(new Intent(MainActivity.this, OurProducts.class));
                         drawer.closeDrawers();
-                        break;*/
-                    case R.id.nav_contactus:
+                        break;
+                    case R.id.nav_gallery:
                         navItemIndex = 4;
+                        CURRENT_TAG = TAG_NOTIFICATIONS;
+                        startActivity(new Intent(MainActivity.this, Gallery.class));
+                        drawer.closeDrawers();
+                        break;
+                    case R.id.nav_contactus:
+                        navItemIndex = 5;
                         CURRENT_TAG = TAG_SETTINGS;
                         startActivity(new Intent(MainActivity.this, ContactUs.class));
                         drawer.closeDrawers();
@@ -484,6 +419,11 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_catelog:
                         // launch new intent instead of loading fragment
                         startActivity(new Intent(MainActivity.this, DownloadCatelog.class));
+                        drawer.closeDrawers();
+                        return true;
+                    case R.id.nav_share:
+                        // launch new intent instead of loading fragment
+                        getShareIntent();
                         drawer.closeDrawers();
                         return true;
                     default:
@@ -527,6 +467,16 @@ public class MainActivity extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
     }
 
+    public void getShareIntent() {
+        String playStoreLink = "https://play.google.com/store/apps/details?id=com.vajralabs.uniroyal.uniroyal&hl=en";
+        String sharedText = "Download This app ! It's free, easy and smart.\n\n" + playStoreLink;
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, sharedText);
+        startActivity(Intent.createChooser(shareIntent, "Send To"));
+    }
+
+
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -561,7 +511,7 @@ public class MainActivity extends AppCompatActivity {
 
         // when fragment is notifications, load the menu created for notifications
         if (navItemIndex == 3) {
-            getMenuInflater().inflate(R.menu.notifications, menu);
+//            getMenuInflater().inflate(R.menu.notifications, menu);
         }
         return true;
     }

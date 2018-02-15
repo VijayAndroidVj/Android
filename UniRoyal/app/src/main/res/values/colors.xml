@@ -13,4 +13,6 @@
     <color name="edittext_border">#c6c6c6</color>
     <color name="gray_1">#C0C0C0</color>
     <color name="black_overlay">#80000000</color>
+    <color name="blue">#1c90ec</color>
+    <color name="blueDark">#148eac</color>
 </resources>

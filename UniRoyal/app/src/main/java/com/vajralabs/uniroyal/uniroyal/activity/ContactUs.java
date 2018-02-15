@@ -72,8 +72,9 @@ public class ContactUs extends AppCompatActivity {
         map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                String uri = "http://maps.google.com/maps?daddr=" + 4.218576 + "," + 73.544130 + " (Uni Royal)";
+//4.218240, 73.543648
+                String uri = "http://maps.google.com/maps?q=loc:" + 4.218240 + "," + 73.543648 + " (" + getString(R.string.app_name) + ")";
+//                String uri = "http://maps.google.com/maps?daddr=" + 4.218240 + "," + 73.543648 + " (Hulhumale, Maldives)";
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
                 intent.setPackage("com.google.android.apps.maps");
                 startActivity(intent);

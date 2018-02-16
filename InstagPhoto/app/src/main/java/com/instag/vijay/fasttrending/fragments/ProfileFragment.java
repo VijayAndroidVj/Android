@@ -268,28 +268,41 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             txtUsername.setText(preferenceUtil.getUserName());
             Typeface font = Typeface.createFromAsset(activity.getAssets(), "fontawesome-webfont.ttf");
             txtBiography.setTypeface(font);
-            txtBiography.setText(preferenceUtil.getUserAboutMe());
+            if (TextUtils.isEmpty(preferenceUtil.getUserAboutMe())) {
+                txtBiography.setVisibility(View.GONE);
+            } else {
+                txtBiography.setVisibility(View.VISIBLE);
+                txtBiography.setText(preferenceUtil.getUserAboutMe());
+            }
             if (TextUtils.isEmpty(preferenceUtil.getUserGender())) {
                 llGender.setVisibility(View.GONE);
             } else {
                 llGender.setVisibility(View.VISIBLE);
                 String caps = preferenceUtil.getUserGender().substring(0, 1).toUpperCase() + preferenceUtil.getUserGender().substring(1, preferenceUtil.getUserGender().length());
-                txtGenderValue.setText(": " + caps);
+                txtGenderValue.setText(caps);
             }
 
             if (TextUtils.isEmpty(preferenceUtil.getUserState())) {
                 llState.setVisibility(View.GONE);
+                if (!TextUtils.isEmpty(preferenceUtil.getUserCountry())) {
+                    llState.setVisibility(View.VISIBLE);
+                    txtStateValue.setText(preferenceUtil.getUserCountry());
+                }
             } else {
                 llState.setVisibility(View.VISIBLE);
-                txtStateValue.setText(": " + preferenceUtil.getUserState());
+                if (TextUtils.isEmpty(preferenceUtil.getUserCountry())) {
+                    txtStateValue.setText(preferenceUtil.getUserState());
+                } else {
+                    txtStateValue.setText(preferenceUtil.getUserState() + ", " + preferenceUtil.getUserCountry());
+                }
             }
 
-            if (TextUtils.isEmpty(preferenceUtil.getUserCountry())) {
-                llCountry.setVisibility(View.GONE);
-            } else {
-                llCountry.setVisibility(View.VISIBLE);
-                txtCountryValue.setText(": " + preferenceUtil.getUserCountry());
-            }
+//            if (TextUtils.isEmpty(preferenceUtil.getUserCountry())) {
+            llCountry.setVisibility(View.GONE);
+//            } else {
+//                llCountry.setVisibility(View.VISIBLE);
+//                txtCountryValue.setText(preferenceUtil.getUserCountry());
+//            }
 
         } catch (Exception e) {
             e.printStackTrace();

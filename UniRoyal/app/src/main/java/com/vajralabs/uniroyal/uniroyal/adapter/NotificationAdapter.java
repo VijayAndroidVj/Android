@@ -64,10 +64,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView categoryName;
         private GridView gridView;
+        View ivGallery;
+        View cvGallery;
 
         private MyViewHolder(View view) {
             super(view);
             categoryName = view.findViewById(R.id.categoryName);
+            cvGallery = view.findViewById(R.id.cvGallery);
+            ivGallery = view.findViewById(R.id.ivGallery);
             gridView = view.findViewById(R.id.gridView);
         }
     }
@@ -94,6 +98,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 //        holder.txtTitle.setText(post.getTitle());
 //        holder.txtPostDescription.setText(post.getDescription());
         holder.gridView.setVisibility(View.VISIBLE);
+        holder.cvGallery.setVisibility(View.VISIBLE);
+        holder.ivGallery.setVisibility(View.GONE);
         holder.gridView.setNumColumns(post.getCategory_item_lists().size());
         MyAdapter imageAdapter = new MyAdapter(activity, post.getCategory_item_lists());
         holder.gridView.setAdapter(imageAdapter);

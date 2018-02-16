@@ -273,6 +273,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView txtMeetingName, txtPostDescription, txtPostLikesCount, txtCreatedDate;
         private TextView txtViewAllComments;
+        private TextView txtMeetingState;
         private ImageView btnpostDelete;
         private ImageView postImage, ivProfile;
         private ImageView likePost, commentPost;
@@ -283,6 +284,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
             txtPostLikesCount = view.findViewById(R.id.txtPostLikesCount);
             txtViewAllComments = view.findViewById(R.id.txtViewAllComments);
             txtMeetingName = view.findViewById(R.id.txtMeetingName);
+            txtMeetingState = view.findViewById(R.id.txtMeetingState);
             txtPostDescription = view.findViewById(R.id.txtPostDescription);
             postImage = view.findViewById(R.id.postImage);
             ivProfile = view.findViewById(R.id.ivProfile);
@@ -350,6 +352,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
 
         }
 
+        if (TextUtils.isEmpty(post.getState()) && TextUtils.isEmpty(post.getCountry())) {
+            holder.txtMeetingState.setText("");
+            holder.txtMeetingState.setVisibility(View.GONE);
+        } else if (TextUtils.isEmpty(post.getState())) {
+            holder.txtMeetingState.setText(post.getCountry());
+            holder.txtMeetingState.setVisibility(View.VISIBLE);
+        } else {
+            holder.txtMeetingState.setVisibility(View.VISIBLE);
+            holder.txtMeetingState.setText(post.getState() + ", " + post.getCountry());
+        }
         if (TextUtils.isEmpty(post.getDescription())) {
             holder.txtPostDescription.setText("");
             holder.txtPostDescription.setVisibility(View.GONE);

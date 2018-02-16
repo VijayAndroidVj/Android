@@ -19,9 +19,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/txtMeetingName"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_gravity="bottom"
@@ -30,14 +29,31 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_toEndOf="@+id/ivProfile"
-                android:layout_toRightOf="@+id/ivProfile"
-                android:gravity="center"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:text="Topic"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:layout_toRightOf="@+id/ivProfile">
 
+                <TextView
+                    android:id="@+id/txtMeetingName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:text="Topic"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtMeetingState"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtMeetingName"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textSize="14sp"
+                    android:textStyle="normal" />
+            </RelativeLayout>
 
             <com.joooonho.SelectableRoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/ivProfile"

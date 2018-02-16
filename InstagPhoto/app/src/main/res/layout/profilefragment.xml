@@ -29,14 +29,20 @@
                     android:background="@drawable/default_cover_photo"
                     android:scaleType="fitXY" />
 
-                <ImageView
+                <com.joooonho.SelectableRoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/ivProfile1"
                     android:layout_width="@dimen/_100dp"
                     android:layout_height="@dimen/_100dp"
                     android:layout_marginLeft="@dimen/_35dp"
                     android:layout_marginTop="100dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/default_profile_photo" />
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/default_profile_photo"
+                    app:sriv_left_bottom_corner_radius="48dip"
+                    app:sriv_left_top_corner_radius="16dip"
+                    app:sriv_oval="true"
+                    app:sriv_right_bottom_corner_radius="16dip"
+                    app:sriv_right_top_corner_radius="0dip" />
+
 
                 <RelativeLayout
                     android:id="@+id/topHeadview"
@@ -205,7 +211,8 @@
                 android:layout_height="match_parent"
                 android:background="@color/white"
                 android:focusableInTouchMode="true"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/_3dp">
 
                 <TextView
                     android:id="@+id/txtGender"
@@ -219,7 +226,8 @@
                     android:text="Gender"
                     android:textColor="@color/black"
                     android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/txtGenderValue"
@@ -244,9 +252,11 @@
                 android:id="@+id/llState"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/_5dp"
                 android:background="@color/white"
                 android:focusableInTouchMode="true"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/_3dp">
 
                 <TextView
                     android:id="@+id/txtState"
@@ -260,7 +270,8 @@
                     android:text="State"
                     android:textColor="@color/black"
                     android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/txtStateValue"
@@ -288,7 +299,9 @@
                 android:layout_marginBottom="@dimen/_5dp"
                 android:background="@color/white"
                 android:focusableInTouchMode="true"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/_3dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/txtCountry"
@@ -302,7 +315,8 @@
                     android:text="Country"
                     android:textColor="@color/black"
                     android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/txtCountryValue"

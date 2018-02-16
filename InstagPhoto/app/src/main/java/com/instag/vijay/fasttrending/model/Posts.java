@@ -23,6 +23,12 @@ public class Posts implements Parcelable {
     @SerializedName("username")
     private String username;
 
+    @SerializedName("state")
+    private String state;
+
+    @SerializedName("country")
+    private String country;
+
     @SerializedName("profile_image")
     private String profile_image;
 
@@ -53,6 +59,8 @@ public class Posts implements Parcelable {
         image = in.readString();
         fileType = in.readString();
         username = in.readString();
+        state = in.readString();
+        country = in.readString();
         profile_image = in.readString();
         created_date = in.readString();
         postmail = in.readString();
@@ -171,6 +179,21 @@ public class Posts implements Parcelable {
         this.fileType = fileType;
     }
 
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
 
     @Override
     public int describeContents() {
@@ -183,6 +206,8 @@ public class Posts implements Parcelable {
         parcel.writeString(image);
         parcel.writeString(fileType);
         parcel.writeString(username);
+        parcel.writeString(state);
+        parcel.writeString(country);
         parcel.writeString(profile_image);
         parcel.writeString(created_date);
         parcel.writeString(postmail);

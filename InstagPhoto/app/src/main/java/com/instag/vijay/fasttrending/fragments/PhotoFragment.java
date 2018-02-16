@@ -160,7 +160,7 @@ public class PhotoFragment extends Fragment {
 
     private void gelleryIntent() {
 
-        CropImage.activity()
+        CropImage.activity().setAspectRatio(4, 4)
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .start(getContext(), this);
 
@@ -187,6 +187,11 @@ public class PhotoFragment extends Fragment {
                         filePath = getFilePathFromURI(activity, selectedImageUri);
                     }
                     if (!TextUtils.isEmpty(filePath)) {
+                        File cFile = new File(Environment.getExternalStorageDirectory(),
+                                getString(R.string.app_name));
+                        if (!cFile.exists()) {
+                            cFile.mkdirs();
+                        }
                         File destination = new File(Environment.getExternalStorageDirectory(),
                                 getString(R.string.app_name) + "/" + System.currentTimeMillis() + ".jpg");
                         copy(new File(filePath), destination);
@@ -274,6 +279,11 @@ public class PhotoFragment extends Fragment {
                             ext = filePath.substring(filePath.lastIndexOf("."));
                         } catch (Exception e) {
                             e.printStackTrace();
+                        }
+                        File cFile = new File(Environment.getExternalStorageDirectory(),
+                                getString(R.string.app_name));
+                        if (!cFile.exists()) {
+                            cFile.mkdirs();
                         }
 
                         File destination = new File(Environment.getExternalStorageDirectory(),

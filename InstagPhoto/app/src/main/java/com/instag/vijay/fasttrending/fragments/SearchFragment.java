@@ -62,7 +62,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void onRefresh() {
                 // Refresh items
-                refreshItems("");
+                refreshItems();
             }
         });
 
@@ -117,53 +117,6 @@ public class SearchFragment extends Fragment {
     }
 
     private Activity activity;
-
-    public void refreshItems(final String query) {
-        if (activity == null) {
-            activity = getActivity();
-        }
-        if (CommonUtil.isNetworkAvailable(activity)) {
-            progressBar.setVisibility(View.VISIBLE);
-            viewInfo.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.VISIBLE);
-            PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
-
-            ApiInterface apiService =
-                    ApiClient.getClient().create(ApiInterface.class);
-            Call<PostModelMain> call = apiService.getsearchpost(preferenceUtil.getUserMailId());
-            call.enqueue(new Callback<PostModelMain>() {
-                @Override
-                public void onResponse(Call<PostModelMain> call, Response<PostModelMain> response) {
-                    Log.d("", "response: " + response.body());
-
-                    swipeRefreshLayout.setRefreshing(false);
-                    progressBar.setVisibility(View.GONE);
-                    PostModelMain sigInResponse = response.body();
-                    if (sigInResponse != null) {
-                        ilist = sigInResponse.getPostsArrayList();
-                        setList();
-                    } else {
-                        Toast.makeText(activity, "Could not connect to server.", Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-
-                @Override
-                public void onFailure(Call<PostModelMain> call, Throwable t) {
-                    // Log error here since request failed
-                    Log.e("", t.toString());
-                    progressBar.setVisibility(View.GONE);
-                    swipeRefreshLayout.setRefreshing(false);
-                    Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
-                }
-            });
-        } else {
-            progressBar.setVisibility(View.GONE);
-            swipeRefreshLayout.setRefreshing(false);
-            Toast.makeText(activity, "Check your internet connection!", Toast.LENGTH_SHORT).show();
-        }
-    }
-
 
     public void showView(int item, String text) {
         try {

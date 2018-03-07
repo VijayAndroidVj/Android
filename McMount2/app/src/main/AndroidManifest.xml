@@ -48,7 +48,8 @@
 
         <activity
             android:name=".RegisterComplaint"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme1" />
 
 
         <activity

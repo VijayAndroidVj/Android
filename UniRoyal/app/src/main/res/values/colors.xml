@@ -16,4 +16,10 @@
     <color name="blue">#1c90ec</color>
     <color name="blueDark">#148eac</color>
     <color name="blueDark1">#0288D1</color>
+    <color name="orangedark">#f4aa1d</color>
+    <color name="orangedark1">#bc7e09</color>
+    <color name="brown">#948260</color>
+    <color name="blue1">#1d3767</color>
+    <color name="greendark">#123b38</color>
+    <color name="blue2">#2d918b</color>
 </resources>

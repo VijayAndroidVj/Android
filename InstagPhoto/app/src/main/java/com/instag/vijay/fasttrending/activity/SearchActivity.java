@@ -1,7 +1,6 @@
 package com.instag.vijay.fasttrending.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,17 +9,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.inputmethod.InputMethodManager;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.instag.vijay.fasttrending.CommonUtil;
 import com.instag.vijay.fasttrending.FavModel;
-import com.instag.vijay.fasttrending.MainActivity;
 import com.instag.vijay.fasttrending.PreferenceUtil;
 import com.instag.vijay.fasttrending.R;
 import com.instag.vijay.fasttrending.adapter.MeetingAdapter;
@@ -50,15 +54,45 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.searchfragment);
+        setContentView(R.layout.searchactivity);
         activity = this;
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Search");
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDefaultDisplayHomeAsUpEnabled(true);
+        ActionBar.LayoutParams params = new ActionBar.LayoutParams(//Center the textview in the ActionBar !
+                ActionBar.LayoutParams.WRAP_CONTENT,
+                ActionBar.LayoutParams.MATCH_PARENT,
+                Gravity.CENTER);
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setHomeButtonEnabled(false);
+        View view = LayoutInflater.from(this).inflate(R.layout.actionbar, null);
+        view.findViewById(R.id.txtAppName).setVisibility(GONE);
+        view.findViewById(R.id.iv_actionbar_noti).setVisibility(GONE);
+        view.findViewById(R.id.searchview).setVisibility(GONE);
+        final EditText searchEditText = view.findViewById(R.id.edtsearchview);
+        searchEditText.setVisibility(VISIBLE);
+//        searchEditText.setTextColor(getResources().getColor(R.color.black));
+//        searchEditText.setHintTextColor(getResources().getColor(R.color.grey1));
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                refreshItems(searchEditText.getText().toString());
+            }
+        });
+
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(view, params);
+        actionBar.setElevation(0);
         viewInfo = (TextView) findViewById(R.id.txtContactInfo);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerviewContact);
         progressBar = (ProgressBar) findViewById(R.id.progressBar_cyclic);
@@ -67,7 +101,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 // Refresh items
-                refreshItems("");
+                refreshItems(searchEditText.getText().toString());
             }
         });
 
@@ -129,36 +163,21 @@ public class SearchActivity extends AppCompatActivity {
     public void refreshItems(final String query) {
 
         if (CommonUtil.isNetworkAvailable(activity)) {
-            if (MainActivity.searchEditText != null && MainActivity.searchEditText.getText().toString().length() > 0) {
+            if (TextUtils.isEmpty(query)) {
+                Toast.makeText(activity, "Please type something to search", Toast.LENGTH_SHORT).show();
+            } else {
                 progressBar.setVisibility(VISIBLE);
                 viewInfo.setVisibility(GONE);
                 recyclerView.setVisibility(VISIBLE);
                 PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
-                String searchquery = "";
-                if (TextUtils.isEmpty(query)) {
-                    searchquery = MainActivity.searchEditText.getText().toString();
-                } else {
-                    searchquery = query;
-                }
+
                 ApiInterface apiService =
                         ApiClient.getClient().create(ApiInterface.class);
-                Call<ArrayList<FavModel>> call = apiService.search_user(preferenceUtil.getUserMailId(), searchquery);
+                Call<ArrayList<FavModel>> call = apiService.search_user(preferenceUtil.getUserMailId(), query);
                 call.enqueue(new Callback<ArrayList<FavModel>>() {
                     @Override
                     public void onResponse(Call<ArrayList<FavModel>> call, Response<ArrayList<FavModel>> response) {
                         Log.d("", "response: " + response.body());
-                        MainActivity.searchEditText.clearFocus();
-                        try {
-                            if (MainActivity.searchEditText != null) {
-                                InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                                imm.hideSoftInputFromWindow(MainActivity.searchEditText.getWindowToken(), 0);
-                            }
-                            InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                            inputManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
                         swipeRefreshLayout.setRefreshing(false);
                         progressBar.setVisibility(GONE);
                         ArrayList<FavModel> sigInResponse = response.body();
@@ -180,8 +199,6 @@ public class SearchActivity extends AppCompatActivity {
                         Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
                     }
                 });
-            } else if (!TextUtils.isEmpty(query)) {
-                Toast.makeText(activity, "Type something to search", Toast.LENGTH_SHORT).show();
             }
         } else {
             progressBar.setVisibility(GONE);

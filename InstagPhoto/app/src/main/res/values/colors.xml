@@ -21,6 +21,9 @@
     <color name="bg_button">#FF0000</color>
     <color name="bg_button_pressed">#500883C7</color>
     <color name="bg_login_banner">#FF0000</color>
+    <color name="aspectRatioNotSelected">#757575</color>
+    <color name="aspectRatioText">#757575</color>
+    <color name="disabledOverlay">#3cffffff</color>
 
     <color name="green">#2E8B57</color>
     <color name="participant_view_selected">#27AF81</color>

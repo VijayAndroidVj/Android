@@ -31,7 +31,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.instag.vijay.fasttrending"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -79,7 +79,9 @@ dependencies {
     compile 'com.github.joielechong:countrycodepicker:2.1.5'
     compile 'com.theartofdev.edmodo:android-image-cropper:2.6.+'
     compile 'com.github.rafakob:DrawMe:0.1.6'
+    compile 'com.steelkiwi:cropiwa:1.0.3'
     compile 'com.github.f0ris.sweetalert:library:1.5.1'
+    compile 'com.yarolegovich:mp:1.0.5'
     compile('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
         transitive = true;
     }

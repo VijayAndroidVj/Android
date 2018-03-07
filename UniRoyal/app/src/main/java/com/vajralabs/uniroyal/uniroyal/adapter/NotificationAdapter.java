@@ -1,23 +1,14 @@
 package com.vajralabs.uniroyal.uniroyal.adapter;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.graphics.Point;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.vajralabs.uniroyal.uniroyal.R;
-import com.vajralabs.uniroyal.uniroyal.model.CategoryItem;
 import com.vajralabs.uniroyal.uniroyal.model.CategoryModel;
 
 import java.util.List;
@@ -39,40 +30,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     }
 
 
-    private ProgressDialog progressDoalog;
-
-    private void initProgress(String title) {
-        if (progressDoalog == null) {
-            progressDoalog = new ProgressDialog(activity);
-            progressDoalog.setMax(100);
-            progressDoalog.setMessage(title);
-            progressDoalog.setTitle(activity.getString(R.string.app_name));
-            progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progressDoalog.show();
-        } else {
-            progressDoalog.hide();
-            progressDoalog = null;
-        }
-    }
-
-    private void closeProgress() {
-        if (progressDoalog != null && progressDoalog.isShowing())
-            progressDoalog.hide();
-        progressDoalog = null;
-    }
-
     class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView categoryName;
-        private GridView gridView;
         View ivGallery;
-        View cvGallery;
+        RecyclerView recyclerView;
 
         private MyViewHolder(View view) {
             super(view);
-            categoryName = view.findViewById(R.id.categoryName);
-            cvGallery = view.findViewById(R.id.cvGallery);
             ivGallery = view.findViewById(R.id.ivGallery);
-            gridView = view.findViewById(R.id.gridView);
+            recyclerView = view.findViewById(R.id.recyclerviewContact);
         }
     }
 
@@ -94,33 +59,16 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         CategoryModel post = originalList.get(position);
-        holder.categoryName.setText(post.getCategory_name());
-//        holder.txtTitle.setText(post.getTitle());
-//        holder.txtPostDescription.setText(post.getDescription());
-        holder.gridView.setVisibility(View.VISIBLE);
-        holder.cvGallery.setVisibility(View.VISIBLE);
         holder.ivGallery.setVisibility(View.GONE);
-        holder.gridView.setNumColumns(post.getCategory_item_lists().size());
-        MyAdapter imageAdapter = new MyAdapter(activity, post.getCategory_item_lists());
-        holder.gridView.setAdapter(imageAdapter);
-        setDynamicWidth(holder.gridView);
+        holder.recyclerView.setVisibility(View.VISIBLE);
+        CategoryItemAdapter imageAdapter = new CategoryItemAdapter(activity, post.getCategory_item_lists(), post.getCategory_name());
+        holder.recyclerView.setAdapter(imageAdapter);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(activity);
+        holder.recyclerView.setLayoutManager(mLayoutManager);
+        holder.recyclerView.setItemAnimator(new DefaultItemAnimator());
+//        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext(), R.drawable.list_item_background));
+        imageAdapter.notifyDataSetChanged();
 
-    }
-
-    private void setDynamicWidth(GridView gridView) {
-        ListAdapter gridViewAdapter = gridView.getAdapter();
-        if (gridViewAdapter == null) {
-            return;
-        }
-        int totalWidth;
-        int items = gridViewAdapter.getCount();
-        View listItem = gridViewAdapter.getView(0, null, gridView);
-        listItem.measure(0, 0);
-        totalWidth = listItem.getMeasuredWidth();
-        totalWidth = totalWidth * items;
-        ViewGroup.LayoutParams params = gridView.getLayoutParams();
-        params.width = totalWidth;
-        gridView.setLayoutParams(params);
     }
 
     @Override
@@ -128,72 +76,4 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         return originalList == null ? 0 : originalList.size();
     }
 
-}
-
-class MyAdapter extends BaseAdapter implements View.OnClickListener {
-
-    private List<CategoryItem> originalList;
-    int width;
-    Activity c;
-
-    public MyAdapter(Activity c, List<CategoryItem> originalList) {
-        this.originalList = originalList;
-        Display display = c.getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        this.c = c;
-        width = size.x;
-    }
-
-    @Override
-    public int getCount() {
-        return originalList.size();
-    }
-
-    @Override
-    public CategoryItem getItem(int arg0) {
-        return originalList.get(arg0);
-    }
-
-    @Override
-    public long getItemId(int arg0) {
-        return arg0;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-
-        View grid = convertView;
-        if (originalList.size() > 0) {
-            if (grid == null) {
-                LayoutInflater inflater = c.getLayoutInflater();
-                grid = inflater.inflate(R.layout.grid_image_layout, parent, false);
-            }
-            ImageView postImg = grid.findViewById(R.id.postImg);
-            View rlgrid = grid.findViewById(R.id.rlgrid);
-            TextView cname = grid.findViewById(R.id.cname);
-            grid.getLayoutParams().width = width / 2;
-            rlgrid.getLayoutParams().width = width / 2;
-            postImg.getLayoutParams().width = width / 2;
-            CategoryItem post = originalList.get(position);
-            rlgrid.setOnClickListener(this);
-            cname.setText(post.getItem_name());
-            rlgrid.setTag(post);
-            if (post.getImage_path() != null && !post.getImage_path().isEmpty()) {
-
-                Glide.with(c).load(post.getImage_path()).centerCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(postImg);
-            }
-        }
-        return grid;
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-
-        }
-    }
 }

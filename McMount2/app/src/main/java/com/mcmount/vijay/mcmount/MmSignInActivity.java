@@ -439,6 +439,10 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
                     EventResponse sigInResponse = response.body();
                     if (sigInResponse != null) {
                         if (sigInResponse.getError()) {
+                            Intent intent = new Intent(MmSignInActivity.this, MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                            finish();
                             Toast.makeText(MmSignInActivity.this, sigInResponse.getError_msg(), Toast.LENGTH_SHORT).show();
                         } else {
                             PreferenceUtil preferenceUtil = new PreferenceUtil(MmSignInActivity.this);

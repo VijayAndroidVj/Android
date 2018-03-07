@@ -18,10 +18,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.instag.vijay.fasttrending.CommonUtil;
-import com.instag.vijay.fasttrending.FavModel;
 import com.instag.vijay.fasttrending.PreferenceUtil;
 import com.instag.vijay.fasttrending.R;
-import com.instag.vijay.fasttrending.adapter.MeetingAdapter;
+import com.instag.vijay.fasttrending.adapter.NotificationAdapter;
+import com.instag.vijay.fasttrending.model.Notification;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
 
@@ -88,24 +88,24 @@ public class FavFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    private boolean followers = false;
+    private boolean followers = true;
 
     private void refreshItems() {
         if (CommonUtil.isNetworkAvailable(activity)) {
             progressBar.setVisibility(View.VISIBLE);
-            PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
-            Call<ArrayList<FavModel>> call = apiService.follow_followers(preferenceUtil.getUserMailId(), followers);
-            call.enqueue(new Callback<ArrayList<FavModel>>() {
+            PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
+            Call<ArrayList<Notification>> call = apiService.getnotification(followers, preferenceUtil.getUserMailId());
+            call.enqueue(new Callback<ArrayList<Notification>>() {
                 @Override
-                public void onResponse(Call<ArrayList<FavModel>> call, Response<ArrayList<FavModel>> response) {
+                public void onResponse(Call<ArrayList<Notification>> call, Response<ArrayList<Notification>> response) {
                     Log.d("", "response: " + response.body());
                     swipeRefreshLayout.setRefreshing(false);
                     progressBar.setVisibility(View.GONE);
-                    ArrayList<FavModel> sigInResponse = response.body();
+                    ArrayList<Notification> sigInResponse = response.body();
                     if (sigInResponse != null) {
-                        ilist = sigInResponse;
+                        list = sigInResponse;
                         setList();
                     } else {
                         Toast.makeText(activity, "Could not connect to server.", Toast.LENGTH_SHORT).show();
@@ -114,7 +114,7 @@ public class FavFragment extends Fragment implements View.OnClickListener {
                 }
 
                 @Override
-                public void onFailure(Call<ArrayList<FavModel>> call, Throwable t) {
+                public void onFailure(Call<ArrayList<Notification>> call, Throwable t) {
                     // Log error here since request failed
                     Log.e("", t.toString());
                     progressBar.setVisibility(View.GONE);
@@ -165,7 +165,9 @@ public class FavFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public ArrayList<FavModel> ilist = new ArrayList<>();
+    public ArrayList<Notification> list = new ArrayList<>();
+
+    private NotificationAdapter logAdapter;
 
     public void setList() {
         try {
@@ -173,37 +175,32 @@ public class FavFragment extends Fragment implements View.OnClickListener {
             viewInfo.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
 
-            MeetingAdapter logAdapter = new MeetingAdapter(activity, ilist);
+            logAdapter = new NotificationAdapter(activity, list);
             recyclerView.setAdapter(logAdapter);
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(activity);
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
 //        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext(), R.drawable.list_item_background));
             logAdapter.notifyDataSetChanged();
-            if (ilist.size() == 0) {
-                if (followers) {
-                    showView(1, "No followers available");
-                } else {
-                    showView(1, "No one followed you");
-                }
-            } else {
+            if (list.size() == 0) {
+                showView(1, "No notification available");
                 progressBar.setVisibility(View.GONE);
                 viewInfo.setVisibility(View.GONE);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-
     @Override
     public void onClick(View view) {
         try {
             switch (view.getId()) {
                 case R.id.viewUpcoming:
-                    if (ilist != null) {
-                        ilist.clear();
+                    if (list != null) {
+                        list.clear();
                     }
                     progressBar.setVisibility(View.VISIBLE);
                     viewInfo.setVisibility(View.GONE);
@@ -213,19 +210,19 @@ public class FavFragment extends Fragment implements View.OnClickListener {
                     viewPast.setBackgroundResource(R.drawable.right_round_corner_rect_white);
                     txtUpcoming.setTextColor(CommonUtil.getColorWrapper(activity, R.color.white));
                     txtPast.setTextColor(CommonUtil.getColorWrapper(activity, R.color.black));
-                    followers = false;
+                    followers = true;
                     refreshItems();
                     break;
                 case R.id.viewPast:
-                    if (ilist != null) {
-                        ilist.clear();
+                    if (list != null) {
+                        list.clear();
                     }
 
                     progressBar.setVisibility(View.VISIBLE);
                     viewInfo.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);
 
-                    followers = true;
+                    followers = false;
                     viewPast.setBackgroundResource(R.drawable.right_round_corner_rect_blue);
                     viewUpcoming.setBackgroundResource(R.drawable.left_round_corner_rect_white);
                     txtUpcoming.setTextColor(CommonUtil.getColorWrapper(activity, R.color.black));

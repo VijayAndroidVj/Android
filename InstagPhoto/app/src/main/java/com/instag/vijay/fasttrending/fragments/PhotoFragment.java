@@ -10,6 +10,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.media.ExifInterface;
 import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
@@ -21,6 +26,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -37,22 +43,25 @@ import com.instag.vijay.fasttrending.PermissionCheck;
 import com.instag.vijay.fasttrending.PreferenceUtil;
 import com.instag.vijay.fasttrending.R;
 import com.instag.vijay.fasttrending.UpLoadImagePreview;
+import com.instag.vijay.fasttrending.activity.CropActivity;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
 import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.apache.commons.io.IOUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -72,7 +81,7 @@ public class PhotoFragment extends Fragment {
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int PICK_VIDEO_REQUEST = 2;
     private static final int UPLOAD = 3;
-
+    private Uri selectedImageUri;
     private static PhotoFragment photoFragment;
 
     public static PhotoFragment getInstance() {
@@ -97,7 +106,8 @@ public class PhotoFragment extends Fragment {
             public void onClick(View view) {
                 ArrayList<String> pendingPermissions = PermissionCheck.checkPermission(activity, PermissionCheck.getAllPermissions());
                 if (pendingPermissions.size() == 0) {
-                    gelleryIntent();
+                    //gelleryIntent();
+                    startDialog();
                 } else {
                     PermissionCheck.requestPermission(activity, pendingPermissions, PICK_IMAGE_REQUEST);
                 }
@@ -123,6 +133,109 @@ public class PhotoFragment extends Fragment {
 
     }
 
+    private void startDialog() {
+        AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(
+                getActivity());
+        myAlertDialog.setTitle("Upload Pictures Option");
+        myAlertDialog.setMessage("select image from?");
+
+        myAlertDialog.setPositiveButton("Gallery",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        gelleryIntent();
+
+                    }
+                });
+
+        myAlertDialog.setNegativeButton("Camera",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+
+                        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        // Ensure that there's a camera activity to handle the intent
+                        if (takePictureIntent.resolveActivity(activity.getPackageManager()) != null) {
+                            // Create the File where the photo should go
+                            File photoFile = null;
+                            try {
+                                photoFile = createImageFile();
+                            } catch (IOException ex) {
+                                // Error occurred while creating the File
+                            }
+                            // Continue only if the File was successfully created
+                            if (photoFile != null) {
+                                selectedImageUri = FileProvider.getUriForFile(activity,
+                                        "com.instag.vijay.fasttrending.fileprovider",
+                                        photoFile);
+                                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, selectedImageUri);
+                                startActivityForResult(takePictureIntent, REQUEST_CHOOSE_CAM);
+                            }
+                        }
+
+                       /* int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+                        if (currentapiVersion <= Build.VERSION_CODES.KITKAT) {
+                            String directory = Environment.getExternalStorageDirectory() + File.separator + getString(R.string.app_name) +
+                                    File.separator + "Images" + File.separator;
+                            if (new File(directory).exists() || new File(directory).mkdirs()) {
+                                Log.i("Directory Created", directory);
+                            }
+                            String file = directory + "Image-" + System.currentTimeMillis() + ".jpg";
+                            File newfile = new File(file);
+                            try {
+                                newfile.createNewFile();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            selectedImageUri = Uri.fromFile(newfile);
+
+                            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, selectedImageUri);
+                            startActivityForResult(cameraIntent, REQUEST_CHOOSE_CAM);
+                        } else {
+                            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            // Ensure that there's a camera activity to handle the intent
+                            if (takePictureIntent.resolveActivity(activity.getPackageManager()) != null) {
+                                // Create the File where the photo should go
+                                File photoFile = null;
+                                try {
+                                    photoFile = createImageFile();
+                                } catch (IOException ex) {
+                                    // Error occurred while creating the File
+                                }
+                                // Continue only if the File was successfully created
+                                if (photoFile != null) {
+                                    selectedImageUri = FileProvider.getUriForFile(activity,
+                                            "com.instag.vijay.fasttrending.provider",
+                                            photoFile);
+                                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, selectedImageUri);
+                                    startActivityForResult(takePictureIntent, REQUEST_CHOOSE_CAM);
+                                }
+                            }
+                        }*/
+
+                    }
+                });
+        myAlertDialog.show();
+    }
+
+    String mCurrentPhotoPath;
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
@@ -130,7 +243,7 @@ public class PhotoFragment extends Fragment {
                 // If request is cancelled, the result arrays are empty.
                 ArrayList<String> pendingPermissions = PermissionCheck.checkPermission(activity, PermissionCheck.getAllPermissions());
                 if (pendingPermissions.size() == 0) {
-                    gelleryIntent();
+                    startDialog();
                 } else {
                     PermissionCheck.requestPermission(activity, pendingPermissions, PICK_IMAGE_REQUEST);
                 }
@@ -158,11 +271,21 @@ public class PhotoFragment extends Fragment {
 
     }
 
+    private static final int REQUEST_CHOOSE_PHOTO = 1101;
+    private static final int REQUEST_CHOOSE_CAM = 1102;
+
     private void gelleryIntent() {
 
-        CropImage.activity().setAspectRatio(4, 4)
+       /* CropImage.activity().setAspectRatio(4, 4)
                 .setGuidelines(CropImageView.Guidelines.ON)
-                .start(getContext(), this);
+                .start(getContext(), this);*/
+
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/*");
+        intent = Intent.createChooser(intent, getString(R.string.title_choose_image));
+        startActivityForResult(intent, REQUEST_CHOOSE_PHOTO);
 
        /* Intent intent = new Intent();
 // Show only images, no videos or anything else
@@ -177,11 +300,14 @@ public class PhotoFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-                Uri selectedImageUri = result.getUri();
-                try {
+        try {
+            if (requestCode == REQUEST_CHOOSE_PHOTO && resultCode == Activity.RESULT_OK) {
+                startActivity(CropActivity.callingIntent(getContext(), data.getData()));
+            } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if (resultCode == RESULT_OK) {
+                    Uri selectedImageUri = result.getUri();
+
                     String filePath = getRealPathFromURI(activity, selectedImageUri);
                     if (filePath == null) {
                         filePath = getFilePathFromURI(activity, selectedImageUri);
@@ -200,52 +326,59 @@ public class PhotoFragment extends Fragment {
                         intent.putExtra("path", destination.getAbsolutePath());
                         startActivityForResult(intent, UPLOAD);
                     }
+
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Exception error = result.getError();
+                }
+            } else if (requestCode == REQUEST_CHOOSE_CAM && resultCode == RESULT_OK) {
+//            Intent intent = new Intent(activity, UpLoadImagePreview.class);
+//            intent.putExtra("path", destination.getAbsolutePath());
+//            startActivityForResult(intent, UPLOAD);
+
+                startActivity(CropActivity.callingIntent(getContext(), selectedImageUri));
+            } else if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+
+                Uri uri = data.getData();
+
+                try {
+                    // Log.d(TAG, String.valueOf(bitmap));
+
+                    String[] projection = {MediaStore.Images.Media.DATA};
+
+                    Cursor cursor = activity.getContentResolver().query(uri, projection, null, null, null);
+                    cursor.moveToFirst();
+
+                    Log.d("", DatabaseUtils.dumpCursorToString(cursor));
+
+                    int columnIndex = cursor.getColumnIndex(projection[0]);
+                    String picturePath = cursor.getString(columnIndex); // returns null
+                    cursor.close();
+                    if (!TextUtils.isEmpty(picturePath)) {
+                        File destination = new File(Environment.getExternalStorageDirectory(),
+                                getString(R.string.app_name) + "/" + System.currentTimeMillis() + ".jpg");
+                        copy(new File(picturePath), destination);
+
+                        Intent intent = new Intent(activity, UpLoadImagePreview.class);
+                        intent.putExtra("path", destination.getAbsolutePath());
+                        startActivityForResult(intent, UPLOAD);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = result.getError();
-            }
-        } else if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            } else if (requestCode == PICK_VIDEO_REQUEST && resultCode == RESULT_OK && data != null) {
 
-            Uri uri = data.getData();
+                Uri uri = data.getData();
 
-            try {
-                // Log.d(TAG, String.valueOf(bitmap));
-
-                String[] projection = {MediaStore.Images.Media.DATA};
-
-                Cursor cursor = activity.getContentResolver().query(uri, projection, null, null, null);
-                cursor.moveToFirst();
-
-                Log.d("", DatabaseUtils.dumpCursorToString(cursor));
-
-                int columnIndex = cursor.getColumnIndex(projection[0]);
-                String picturePath = cursor.getString(columnIndex); // returns null
-                cursor.close();
-                if (!TextUtils.isEmpty(picturePath)) {
-                    File destination = new File(Environment.getExternalStorageDirectory(),
-                            getString(R.string.app_name) + "/" + System.currentTimeMillis() + ".jpg");
-                    copy(new File(picturePath), destination);
-
-                    Intent intent = new Intent(activity, UpLoadImagePreview.class);
-                    intent.putExtra("path", destination.getAbsolutePath());
-                    startActivityForResult(intent, UPLOAD);
+                try {
+                    onVideoCaptureSuccess(activity, uri);
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+
+            } else if (requestCode == UPLOAD && resultCode == RESULT_OK && data != null) {
             }
-        } else if (requestCode == PICK_VIDEO_REQUEST && resultCode == RESULT_OK && data != null) {
-
-            Uri uri = data.getData();
-
-            try {
-                onVideoCaptureSuccess(activity, uri);
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
-
-        } else if (requestCode == UPLOAD && resultCode == RESULT_OK && data != null) {
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

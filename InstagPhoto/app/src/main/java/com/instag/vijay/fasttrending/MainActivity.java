@@ -40,7 +40,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public static TextView searchEditText;
+    public TextView searchEditText;
     private Activity activity;
     private View iv_actionbar_settings;
     public static MainActivity mainActivity;
@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        searchEditText.setTextColor(getResources().getColor(R.color.black));
 //        searchEditText.setHintTextColor(getResources().getColor(R.color.grey1));
         iv_actionbar_settings.setOnClickListener(this);
-        searchEditText.clearFocus();
 
         name.setVisibility(View.VISIBLE);
         searchEditText.setVisibility(View.GONE);
@@ -158,17 +157,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         bottomBar.selectTabAtPosition(0);
-        searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    SearchFragment searchFragment = (SearchFragment) adapter.getItem(1);
-                    searchFragment.refreshItems(searchEditText.getText().toString().trim());
-                    return true;
-                }
-                return false;
-            }
-        });
 
         String token = FirebaseInstanceId.getInstance().getToken();
         registerFcmToken(token, activity);

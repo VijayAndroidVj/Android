@@ -76,7 +76,7 @@ public class NotificationActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.VISIBLE);
                 ApiInterface apiService =
                         ApiClient.getClient().create(ApiInterface.class);
-                Call<ArrayList<Notification>> call = apiService.getnotification(preferenceUtil.getUserMailId());
+                Call<ArrayList<Notification>> call = apiService.getnotification(false, preferenceUtil.getUserMailId());
                 call.enqueue(new Callback<ArrayList<Notification>>() {
                     @Override
                     public void onResponse(Call<ArrayList<Notification>> call, Response<ArrayList<Notification>> response) {

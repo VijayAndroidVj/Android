@@ -35,6 +35,8 @@ import com.vajralabs.uniroyal.uniroyal.retrofit.ApiClient;
 import com.vajralabs.uniroyal.uniroyal.retrofit.ApiInterface;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     public static String CURRENT_TAG = TAG_HOME;
     private CustomPagerAdapter customPagerAdapter;
     private ViewPager mViewPager;
+    private int currentPage = 0;
     private ArrayList<BannerModel> list = new ArrayList<>();
     // toolbar titles respected to selected nav menu item
     private String[] activityTitles;
@@ -167,6 +170,23 @@ public class MainActivity extends AppCompatActivity {
                         if (sigInResponse != null) {
                             list = sigInResponse;
                             setBannerList();
+                            // Auto start of viewpager
+                            final Handler handler = new Handler();
+                            final Runnable Update = new Runnable() {
+                                public void run() {
+                                    if (currentPage == list.size()) {
+                                        currentPage = 0;
+                                    }
+                                    mViewPager.setCurrentItem(currentPage++, true);
+                                }
+                            };
+                            Timer swipeTimer = new Timer();
+                            swipeTimer.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    handler.post(Update);
+                                }
+                            }, 3000, 3000);
                         } else {
                             Toast.makeText(activity, "Could not connect to server.", Toast.LENGTH_SHORT).show();
                         }

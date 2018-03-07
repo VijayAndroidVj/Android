@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp">
 
-    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <android.support.v7.widget.CardView
         android:id="@+id/card_view"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        card_view:cardBackgroundColor="@color/invite_title"
         card_view:cardCornerRadius="4dp">
 
         <RelativeLayout
@@ -23,7 +23,8 @@
                 android:layout_height="50dp"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center"
-                android:contentDescription="@string/app_name" />
+                android:contentDescription="@string/app_name"
+                android:tint="@color/white" />
 
             <TextView
                 android:id="@+id/txtname"
@@ -36,6 +37,7 @@
                 android:maxLines="1"
                 android:singleLine="true"
                 android:text="@string/app_name"
+                android:textColor="@color/white"
                 android:textSize="10sp"
                 android:textStyle="bold" />
         </RelativeLayout>

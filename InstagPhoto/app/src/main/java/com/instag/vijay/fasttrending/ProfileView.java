@@ -74,7 +74,6 @@ public class ProfileView extends AppCompatActivity {
         actionBar.setTitle("Profile View");
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDefaultDisplayHomeAsUpEnabled(true);
 
         collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
@@ -116,20 +115,26 @@ public class ProfileView extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<PostModelMain> call, Response<PostModelMain> response) {
                         PostModelMain postModelMain = response.body();
-                        if (postModelMain != null) {
-                            postsArrayList = postModelMain.getPostsArrayList();
-                            txtPostsCount.setText(String.valueOf(postModelMain.getTotalposts()));
-                            txtFolloweringCount.setText(String.valueOf(postModelMain.getTotal_followering()));
-                            txtFollowersCount.setText(String.valueOf(postModelMain.getTotal_followers()));
-                            if (!TextUtils.isEmpty(postModelMain.getProfile_image()) && postModelMain.getProfile_image().contains("http://")) {
-                                Glide.with(activity)
-                                        .load(postModelMain.getProfile_image())
-                                        .asBitmap()
-                                        .into(ivProfile1);
+                        try {
+
+                            if (postModelMain != null) {
+                                postsArrayList = postModelMain.getPostsArrayList();
+                                txtPostsCount.setText(String.valueOf(postModelMain.getTotalposts()));
+                                txtFolloweringCount.setText(String.valueOf(postModelMain.getTotal_followering()));
+                                txtFollowersCount.setText(String.valueOf(postModelMain.getTotal_followers()));
+                                if (!TextUtils.isEmpty(postModelMain.getProfile_image()) && postModelMain.getProfile_image().contains("http://")) {
+                                    if (!activity.isFinishing())
+                                        Glide.with(activity)
+                                                .load(postModelMain.getProfile_image())
+                                                .asBitmap()
+                                                .into(ivProfile1);
+                                }
+                                txtUsername.setText(postModelMain.getUsername());
                             }
-                            txtUsername.setText(postModelMain.getUsername());
+                            setList();
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                        setList();
                     }
 
                     @Override

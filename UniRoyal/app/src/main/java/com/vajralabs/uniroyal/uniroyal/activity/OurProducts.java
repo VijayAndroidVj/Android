@@ -1,6 +1,7 @@
 package com.vajralabs.uniroyal.uniroyal.activity;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -19,12 +20,14 @@ import android.widget.Toast;
 
 import com.vajralabs.uniroyal.uniroyal.CommonUtil;
 import com.vajralabs.uniroyal.uniroyal.R;
-import com.vajralabs.uniroyal.uniroyal.adapter.NotificationAdapter;
+import com.vajralabs.uniroyal.uniroyal.adapter.CategoryItemAdapter;
+import com.vajralabs.uniroyal.uniroyal.model.CategoryItem;
 import com.vajralabs.uniroyal.uniroyal.model.CategoryModel;
 import com.vajralabs.uniroyal.uniroyal.retrofit.ApiClient;
 import com.vajralabs.uniroyal.uniroyal.retrofit.ApiInterface;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,6 +44,7 @@ public class OurProducts extends AppCompatActivity {
     private ProgressBar progressBar;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ArrayList<CategoryModel> categoryArrayList = new ArrayList<>();
+    ArrayList<CategoryItem> list = new ArrayList<>();
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -93,12 +97,22 @@ public class OurProducts extends AppCompatActivity {
                         Log.d("", "response: " + response.body());
                         swipeRefreshLayout.setRefreshing(false);
                         progressBar.setVisibility(View.GONE);
+                        String[] colors = new String[]{"#E91E63", "#4CAF50", "#9C27B0", "#F44336", "#3F51B5", "#2196F3", "#673AB7", "#00BCD4", "#009688", "#03A9F4", "#4CAF50", "#733f55", "#FFC107", "#4CAF50"};
                         ArrayList<CategoryModel> sigInResponse = response.body();
                         if (sigInResponse != null) {
                             categoryArrayList = sigInResponse;
                         } else {
                             Toast.makeText(activity, "Could not connect to server.", Toast.LENGTH_SHORT).show();
                         }
+
+                        for (CategoryModel categoryModel : categoryArrayList) {
+                            for (CategoryItem categoryItem : categoryModel.getCategory_item_lists()) {
+                                categoryItem.setCategory_name(categoryModel.getCategory_name());
+                                categoryItem.setColor(Color.parseColor(colors[new Random().nextInt(colors.length)]));
+                                list.add(categoryItem);
+                            }
+                        }
+
                         setList();
 
                     }
@@ -127,7 +141,7 @@ public class OurProducts extends AppCompatActivity {
     }
 
 
-    private NotificationAdapter logAdapter;
+    private CategoryItemAdapter logAdapter;
 
 
     public void showView(int item, String text) {
@@ -168,7 +182,7 @@ public class OurProducts extends AppCompatActivity {
             viewInfo.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
 
-            logAdapter = new NotificationAdapter(activity, categoryArrayList);
+            logAdapter = new CategoryItemAdapter(activity, list);
             recyclerView.setAdapter(logAdapter);
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(activity);
             recyclerView.setLayoutManager(mLayoutManager);

@@ -79,7 +79,7 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name="com.instag.vijay.fasttrending.activity.SearchActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme1" />
         <activity
             android:name="com.instag.vijay.fasttrending.NotificationActivity"
             android:theme="@style/AppTheme" />
@@ -120,6 +120,10 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
+            android:name=".activity.CropActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name="com.instag.vijay.fasttrending.Comment"
             android:theme="@style/AppTheme1"
             android:windowSoftInputMode="adjustResize" />
@@ -136,6 +140,17 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="91a5950c8f66ccb0512cd4ca3b82ff55e8c46e4e" />

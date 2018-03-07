@@ -14,6 +14,9 @@ public class Notification {
     @SerializedName("username")
     private String username;
 
+    @SerializedName("tousername")
+    private String tousername;
+
     @SerializedName("title")
     private String title;
 
@@ -32,6 +35,9 @@ public class Notification {
     @SerializedName("profile_image")
     private String profile_image;
 
+    @SerializedName("toprofile_image")
+    private String toprofile_image;
+
     @SerializedName("post_id")
     private String post_id;
 
@@ -44,8 +50,39 @@ public class Notification {
     @SerializedName("from_email")
     private String from_email;
 
+    @SerializedName("to_email")
+    private String to_email;
+
     @SerializedName("created_date")
     private String created_date;
+
+    public String getTo_email() {
+        return to_email;
+    }
+
+    public void setTo_email(String to_email) {
+        this.to_email = to_email;
+    }
+
+    public String getTousername() {
+        return tousername;
+    }
+
+    public void setTousername(String tousername) {
+        this.tousername = tousername;
+    }
+
+    public String getToprofile_image() {
+        return toprofile_image;
+    }
+
+    public void setToprofile_image(String toprofile_image) {
+        this.toprofile_image = toprofile_image;
+    }
+
+    public boolean isFollowing() {
+        return following;
+    }
 
     public String getCreated_date() {
         return created_date;

@@ -24,6 +24,7 @@ import com.instag.vijay.fasttrending.CommonUtil;
 import com.instag.vijay.fasttrending.EventResponse;
 import com.instag.vijay.fasttrending.PostView;
 import com.instag.vijay.fasttrending.PreferenceUtil;
+import com.instag.vijay.fasttrending.ProfileView;
 import com.instag.vijay.fasttrending.R;
 import com.instag.vijay.fasttrending.model.Notification;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
@@ -44,6 +45,7 @@ import retrofit2.Response;
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.MyViewHolder> implements View.OnClickListener {
 
     private List<Notification> originalList;
+    private PreferenceUtil preferenceUtil;
 
     private void followUser(final Notification meetingItem) {
         if (CommonUtil.isNetworkAvailable(activity)) {
@@ -91,8 +93,17 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.bfollow:
+            case R.id.rlivImage:
                 Object object = v.getTag();
+                if (object instanceof Notification) {
+                    Notification userModel = (Notification) object;
+                    Intent intent = new Intent(activity, ProfileView.class);
+                    intent.putExtra("profileId", userModel.getFrom_email());
+                    activity.startActivity(intent);
+                }
+                break;
+            case R.id.bfollow:
+                object = v.getTag();
                 if (object instanceof Notification) {
                     Notification userModel = (Notification) object;
                     followUser(userModel);
@@ -248,7 +259,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         private ImageView pimageg;
         private View rlnotification;
         private View llrightoption;
+        private View rlivImage;
         private Button bfollow;
+
 
         private MyViewHolder(View view) {
             super(view);
@@ -257,6 +270,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             pimageg = view.findViewById(R.id.pimageg);
             rlnotification = view.findViewById(R.id.rlnotification);
             llrightoption = view.findViewById(R.id.llrightoption);
+            rlivImage = view.findViewById(R.id.rlivImage);
             bfollow = view.findViewById(R.id.bfollow);
         }
     }
@@ -267,6 +281,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public NotificationAdapter(Activity activity, List<Notification> moviesList) {
         this.originalList = moviesList;
         this.activity = activity;
+        preferenceUtil = new PreferenceUtil(activity);
         layoutInflater = LayoutInflater.from(activity);
     }
 
@@ -280,27 +295,43 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Notification post = originalList.get(position);
         holder.rlnotification.setOnClickListener(this);
+        holder.rlivImage.setOnClickListener(this);
         holder.rlnotification.setTag(post);
+        holder.rlivImage.setTag(post);
 //        holder.txtUsername.setText(post.getUsername());
 //        holder.txtTitle.setText(post.getTitle());
 //        holder.txtPostDescription.setText(post.getDescription());
         if (post.getType().equalsIgnoreCase("follow")) {
-            holder.bfollow.setVisibility(View.VISIBLE);
-            if (post.getFollowing()) {
-                holder.bfollow.setText("Unfollow");
+            if (TextUtils.isEmpty(post.getTo_email()) || post.getTo_email().equalsIgnoreCase(preferenceUtil.getUserMailId())) {
+                holder.bfollow.setVisibility(View.VISIBLE);
+                holder.bfollow.setTag(post);
+                if (post.getFollowing()) {
+                    holder.bfollow.setText("Unfollow");
+                } else {
+                    holder.bfollow.setText("follow");
+                }
+                holder.bfollow.setOnClickListener(this);
+                holder.txtUsername.setText(Html.fromHtml("<b><font color='#000000'>" + post.getUsername() + "</font></b><n> started following you.</n>"));
             } else {
-                holder.bfollow.setText("follow");
+                holder.txtUsername.setText(Html.fromHtml("<b><font color='#000000'>" + post.getUsername() + "</font></b><n> started following " + post.getTousername() + ".</n>"));
+                holder.bfollow.setVisibility(View.GONE);
             }
-            holder.bfollow.setOnClickListener(this);
+
             holder.pimageg.setVisibility(View.GONE);
-            holder.txtUsername.setText(Html.fromHtml("<b><font color='#000000'>" + post.getUsername() + "</font></b><n> started following you.</n>"));
+
         } else {
             holder.bfollow.setVisibility(View.GONE);
             holder.pimageg.setVisibility(View.VISIBLE);
-            if (post.getType().equalsIgnoreCase("like")) {
-                holder.txtUsername.setText(Html.fromHtml("<b><font color='#000000'>" + post.getUsername() + "</font></b><n> liked your post.</n>"));
+            String name = "your";
+            if (TextUtils.isEmpty(post.getTo_email()) || post.getTo_email().equalsIgnoreCase(preferenceUtil.getUserMailId())) {
+                name = "your";
             } else {
-                holder.txtUsername.setText(Html.fromHtml("<b><font color='#000000'>" + post.getUsername() + "</font></b><n> commented your post.</n>"));
+                name = post.getTousername() + "'s";
+            }
+            if (post.getType().equalsIgnoreCase("like")) {
+                holder.txtUsername.setText(Html.fromHtml("<b><font color='#000000'>" + post.getUsername() + "</font></b><n> liked " + name + " post.</n>"));
+            } else {
+                holder.txtUsername.setText(Html.fromHtml("<b><font color='#000000'>" + post.getUsername() + "</font></b><n> commented " + name + " post.</n>"));
             }
             holder.pimageg.setImageBitmap(null);
             if (post.getPostimage() != null && !post.getPostimage().isEmpty()) {

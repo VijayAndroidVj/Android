@@ -2,18 +2,16 @@ package com.vajralabs.uniroyal.uniroyal.adapter;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.vajralabs.uniroyal.uniroyal.R;
+import com.vajralabs.uniroyal.uniroyal.activity.SpacePhotoActivity;
 import com.vajralabs.uniroyal.uniroyal.model.CategoryItem;
 
 import java.util.List;
@@ -58,17 +56,15 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHo
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView categoryName;
-        private GridView gridView;
         private ImageView ivGallery;
-        private View cvGallery;
+        private View recyclerviewContact;
+        private View topview;
 
         private MyViewHolder(View view) {
             super(view);
-            categoryName = view.findViewById(R.id.categoryName);
-            gridView = view.findViewById(R.id.gridView);
+            topview = view;
+            recyclerviewContact = view.findViewById(R.id.recyclerviewContact);
             ivGallery = view.findViewById(R.id.ivGallery);
-            cvGallery = view.findViewById(R.id.cvGallery);
         }
     }
 
@@ -89,40 +85,27 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.categoryName.setVisibility(View.GONE);
-        holder.cvGallery.setVisibility(View.GONE);
+        holder.recyclerviewContact.setVisibility(View.GONE);
         holder.ivGallery.setVisibility(View.VISIBLE);
-//        holder.txtTitle.setText(post.getTitle());
-//        holder.txtPostDescription.setText(post.getDescription());
-        holder.gridView.setVisibility(View.GONE);
-        //setDynamicWidth(holder.gridView);
 
         CategoryItem post = originalList.get(position);
-        if (post.getImage_path() != null && !post.getImage_path().isEmpty()) {
 
-            Glide.with(activity).load(post.getImage_path()).centerCrop()
-                    .thumbnail(0.5f)
-                    .crossFade()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+        if (post.getImage_path() != null && !post.getImage_path().isEmpty()) {
+            Glide.with(activity).load(post.getImage_path())
                     .into(holder.ivGallery);
         }
 
-    }
+        holder.topview.setTag(post);
+        holder.topview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CategoryItem categoryItem = (CategoryItem) view.getTag();
+                Intent intent = new Intent(activity, SpacePhotoActivity.class);
+                intent.putExtra(SpacePhotoActivity.EXTRA_SPACE_PHOTO, categoryItem);
+                activity.startActivity(intent);
+            }
+        });
 
-    private void setDynamicWidth(GridView gridView) {
-        ListAdapter gridViewAdapter = gridView.getAdapter();
-        if (gridViewAdapter == null) {
-            return;
-        }
-        int totalWidth;
-        int items = gridViewAdapter.getCount();
-        View listItem = gridViewAdapter.getView(0, null, gridView);
-        listItem.measure(0, 0);
-        totalWidth = listItem.getMeasuredWidth();
-        totalWidth = totalWidth * items;
-        ViewGroup.LayoutParams params = gridView.getLayoutParams();
-        params.width = totalWidth;
-        gridView.setLayoutParams(params);
     }
 
     @Override

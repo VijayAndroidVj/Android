@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -143,47 +145,38 @@ public class BrandActivity extends BaseActivity implements ListItemClickListener
 
         try {
             // Create custom dialog object
-            final Dialog dialog = new Dialog(activity);
-            // Include dialog.xml file
-            dialog.setContentView(R.layout.service_type_layout);
+//            AlertDialog.Builder dialog = new AlertDialog.Builder(mActivity);
+            final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            LayoutInflater inflater = this.getLayoutInflater();
+            final View dialogView = inflater.inflate(R.layout.service_type_layout, null);
+            dialog.setView(dialogView);
+
+
             // Set dialog title
-            dialog.setTitle("McMount");
-
+            final CheckBox checkBox = dialogView.findViewById(R.id.checkbox);
+            final CheckBox checkBox2 = dialogView.findViewById(R.id.checkbox2);
+            final CheckBox checkBox3 = dialogView.findViewById(R.id.checkbox3);
 // Inflate the custom layout/view
-
-            final CheckBox checkBox = dialog.findViewById(R.id.checkbox);
-            final CheckBox checkBox2 = dialog.findViewById(R.id.checkbox2);
-            final CheckBox checkBox3 = dialog.findViewById(R.id.checkbox3);
-            dialog.findViewById(R.id.btnServiceTypeNext).setOnClickListener(new View.OnClickListener() {
+            final AlertDialog b = dialog.create();
+            dialogView.findViewById(R.id.btnServiceTypeNext).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    dialog.dismiss();
-                    Intent intent = new Intent(activity, RegisterComplaint.class);
+
+                    if (checkBox.isChecked() || checkBox2.isChecked() || checkBox3.isChecked()) {
+                        b.dismiss();
+                        Intent intent = new Intent(activity, RegisterComplaint.class);
 //                    intent.putExtra("id", ((Cateegory) object).getBrand_id());
-                    startActivity(intent);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(activity, "Please select service type", Toast.LENGTH_SHORT).show();
+                    }
 //                    openRegisterComplaintDialog();
                 }
             });
-            dialog.show();
 
-            dialog.findViewById(R.id.card_view).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    checkBox.callOnClick();
-                }
-            });
-            dialog.findViewById(R.id.card_view2).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    checkBox2.callOnClick();
-                }
-            });
-            dialog.findViewById(R.id.card_view3).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    checkBox3.callOnClick();
-                }
-            });
+            b.show();
+
+
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {

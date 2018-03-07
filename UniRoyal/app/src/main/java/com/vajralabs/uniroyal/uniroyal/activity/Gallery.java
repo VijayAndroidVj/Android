@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -172,11 +171,14 @@ public class Gallery extends AppCompatActivity {
             //ilist = getMeetingList(isPast ? PAST : UPCOMING);
             viewInfo.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
-            recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(layoutManager);
+
             logAdapter = new GalleryAdapter(activity, categoryArrayList);
             recyclerView.setAdapter(logAdapter);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.addItemDecoration(new EqualSpacingItemDecoration(16));
+//            recyclerView.setItemAnimator(new DefaultItemAnimator());
+//            recyclerView.addItemDecoration(new EqualSpacingItemDecoration(16));
             logAdapter.notifyDataSetChanged();
             if (categoryArrayList.size() == 0) {
                 showView(1, "No Category available");

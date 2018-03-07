@@ -62,7 +62,7 @@
                 android:layout_margin="3dp"
                 android:gravity="center"
                 android:padding="5dp"
-                android:text="@string/following"
+                android:text="@string/you"
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
 

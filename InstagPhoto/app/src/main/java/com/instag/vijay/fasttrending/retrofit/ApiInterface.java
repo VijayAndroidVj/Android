@@ -60,7 +60,7 @@ public interface ApiInterface {
 
     @POST("getnotification.php")
     @FormUrlEncoded
-    Call<ArrayList<Notification>> getnotification(@Field("useremail") String useremail);
+    Call<ArrayList<Notification>> getnotification(@Field("followers") boolean followers, @Field("useremail") String useremail);
 
 
     @POST("search_user.php")

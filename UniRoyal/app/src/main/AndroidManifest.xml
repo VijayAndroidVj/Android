@@ -49,6 +49,9 @@
         <activity
             android:name=".activity.DownloadCatelog"
             android:theme="@style/AppTheme1" />
+        <activity
+            android:name=".activity.SpacePhotoActivity"
+            android:theme="@style/AppTheme1" />
     </application>
 
 </manifest>

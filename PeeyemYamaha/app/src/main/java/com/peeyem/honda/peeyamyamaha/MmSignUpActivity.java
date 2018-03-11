@@ -58,6 +58,7 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
     private LoginButton loginButton;
     private CallbackManager callbackManager;
     private String mobile;
+    private PreferenceUtil preferenceUtil;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -123,8 +124,8 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
         findViewById(R.id.btn_signup).setOnClickListener(this);
         input_email.clearFocus();
         input_password.clearFocus();
-
-        mobile = getIntent().getStringExtra("mobile");
+        preferenceUtil = new PreferenceUtil(this);
+        mobile = preferenceUtil.getString(Keys.PHONE, "");
 
         callbackManager = CallbackManager.Factory.create();
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -253,7 +254,7 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
             MainActivity.showProgress(activity);
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
-            Call<EventResponse> call = apiService.register("1", mobile, userName, email, password);
+            Call<EventResponse> call = apiService.register("6", mobile, userName, email, password, preferenceUtil.getUserVehicleType(), preferenceUtil.getUserVehicleNumber());
             call.enqueue(new Callback<EventResponse>() {
                 @Override
                 public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {

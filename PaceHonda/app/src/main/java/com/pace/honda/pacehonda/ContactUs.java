@@ -89,7 +89,7 @@ public class ContactUs extends AppCompatActivity {
                     intent.setClassName(best.activityInfo.packageName, best.activityInfo.name);
                 }
 
-                intent.setData(Uri.parse("customercare@honda2wheelersindia.com"));
+                intent.setData(Uri.parse("pacehondaksd@gmail.com"));
                 intent.putExtra(Intent.EXTRA_SUBJECT, "My Query");
                 intent.putExtra(Intent.EXTRA_TEXT, "Hi Pace Honda Team");
                 try {

@@ -34,8 +34,6 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
     TextInputLayout til_signin_username;
     TextInputLayout til_signin_password;
 
-    private String firstName, lastName, email, birthday, gender;
-    private String userId;
 
     private ProgressDialog mProgressDialog;
 
@@ -44,15 +42,14 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mobile_signin);
 
-        input_password = (EditText) findViewById(R.id.input_password);
-        input_username = (EditText) findViewById(R.id.input_username);
-        bt_clear_username = (Button) findViewById(R.id.bt_clear_username);
-        til_signin_username = (TextInputLayout) findViewById(R.id.til_signin_username);
-        til_signin_password = (TextInputLayout) findViewById(R.id.til_signin_password);
+        input_password = findViewById(R.id.input_password);
+        input_username = findViewById(R.id.input_username);
+        bt_clear_username = findViewById(R.id.bt_clear_username);
+        til_signin_username = findViewById(R.id.til_signin_username);
+        til_signin_password = findViewById(R.id.til_signin_password);
 
         input_password.addTextChangedListener(new MyTextWatcher(input_password));
         input_username.addTextChangedListener(new MyTextWatcher(input_username));
-//        findViewById(R.id.btn_signup).setOnClickListener(this);
         findViewById(R.id.link_signup).setOnClickListener(this);
         findViewById(R.id.btn_sigin).setOnClickListener(this);
         findViewById(R.id.bt_clear_username).setOnClickListener(this);
@@ -96,43 +93,6 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        hideProgressDialog();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-        }
-    }
-
-    private void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage("Loading");
-            mProgressDialog.setIndeterminate(true);
-        }
-
-        if (!mProgressDialog.isShowing())
-            mProgressDialog.show();
-    }
-
-    private void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.hide();
-        }
-    }
-
     /**
      * Validating form
      */
@@ -143,10 +103,6 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
             return;
         }
 
-        if (!validPassword()) {
-            return;
-        }
-
         final String username = input_username.getText().toString().trim();
         final String password = input_password.getText().toString().trim();
 
@@ -154,7 +110,8 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
             MainActivity.showProgress(MmSignInActivity.this);
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
-            Call<EventResponse> call = apiService.login(username, password);
+            PreferenceUtil preferenceUtil = new PreferenceUtil(MmSignInActivity.this);
+            Call<EventResponse> call = apiService.login("4", username, password, preferenceUtil.getUserVehicleType(), preferenceUtil.getUserVehicleNumber());
             call.enqueue(new Callback<EventResponse>() {
                 @Override
                 public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
@@ -168,6 +125,8 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
                             PreferenceUtil preferenceUtil = new PreferenceUtil(MmSignInActivity.this);
                             preferenceUtil.putBoolean(Keys.IS_ALREADY_REGISTERED, true);
                             preferenceUtil.putString(Keys.EmailID, sigInResponse.getEmail());
+                            preferenceUtil.putString(Keys.aid, sigInResponse.getAid());
+                            preferenceUtil.putString(Keys.ReferId, sigInResponse.getReferid());
                             preferenceUtil.putString(Keys.USERNAME, sigInResponse.getName());
                             preferenceUtil.putString(Keys.PHONE, sigInResponse.getMobile());
                             preferenceUtil.putString(Keys.PASSWORD, sigInResponse.getPassword());
@@ -217,14 +176,14 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
         String email = input_username.getText().toString().trim();
 
         if (email.isEmpty()) {
+            til_signin_username.setError("Enter valid Mobile");
+            requestFocus(input_username);
+            return false;
+        } /*else if (email.isEmpty() || !isValidEmail(email)) {
             til_signin_username.setError("Enter valid Email id");
             requestFocus(input_username);
             return false;
-        } else if (email.isEmpty() || !isValidEmail(email)) {
-            til_signin_username.setError("Enter valid Email id");
-            requestFocus(input_username);
-            return false;
-        } else {
+        }*/ else {
             til_signin_username.setError(null);
         }
 
@@ -278,23 +237,12 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.link_signup:
             case R.id.btn_signup:
-                PreferenceUtil preferenceUtil = new PreferenceUtil(MmSignInActivity.this);
-                if (TextUtils.isEmpty(preferenceUtil.getUserPhone())) {
-                    Intent intent = new Intent(MmSignInActivity.this, PhoneNumberAuthentication.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Intent intent = new Intent(MmSignInActivity.this, MmSignUpActivity.class);
+
+                Intent intent = new Intent(MmSignInActivity.this, MmSignUpActivity.class);
 //                    intent.putExtra("mobile", mobilenumber);
-                    intent.putExtra("mobile", preferenceUtil.getString(Keys.PHONE, ""));
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                    finish();
-                }
-//                Intent intent = new Intent(MmSignInActivity.this, MmSignUpActivity.class);
-//                startActivity(intent);
-//                finish();
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
                 break;
             case R.id.bt_clear_username:
                 input_username.setText("");

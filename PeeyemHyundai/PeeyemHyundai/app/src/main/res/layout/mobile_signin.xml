@@ -78,9 +78,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edt_bg"
-                        android:hint="@string/email"
-                        android:imeOptions="actionNext"
-                        android:inputType="textEmailAddress"
+                        android:hint="@string/hint_phone_number"
+                        android:imeOptions="actionDone"
+                        android:inputType="number"
+                        android:maxLength="15"
                         android:padding="10dp"
                         android:text=""
                         android:textSize="16sp" />

@@ -18,10 +18,8 @@ public class StaticValus {
             "                    \t<div class=\"block-heading-two\">\n" +
             "                        \t<h3><span>Address</span></h3>\n" +
             "                        </div>\n" +
-            "                        <address>India Yamaha Motor Pvt. Ltd.<br>\n" +
-            "                        A-3, Ind. Area, Noida-Dadri Road<br>\n" +
-            "                        Surajpur, Gautam Budh Nagar<br>\n" +
-            "                        Uttar Pradesh, India - 201306<br>\n" +
+            "                        <address>NEAR WATER AUTHORITY,<br>\n" +
+            "                        VIDYANAGAR, KASARAGOD-671123\n" +
             "                        </address>\n" +
             "                    </div>";
 

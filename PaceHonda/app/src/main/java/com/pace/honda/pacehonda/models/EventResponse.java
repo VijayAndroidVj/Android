@@ -9,7 +9,6 @@ import java.util.ArrayList;
  */
 
 public class EventResponse {
-
     @SerializedName("result")
     private String result;
 
@@ -27,6 +26,28 @@ public class EventResponse {
 
     @SerializedName("email")
     private String email;
+
+    @SerializedName("aid")
+    private String aid;
+
+    @SerializedName("referid")
+    private String referid;
+
+    public String getAid() {
+        return aid;
+    }
+
+    public String getReferid() {
+        return referid;
+    }
+
+    public void setReferid(String referid) {
+        this.referid = referid;
+    }
+
+    public void setAid(String aid) {
+        this.aid = aid;
+    }
 
     @SerializedName("items")
     private ArrayList<CarModel> items = new ArrayList<>();

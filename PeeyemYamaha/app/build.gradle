@@ -19,8 +19,8 @@ android {
         applicationId "com.peeyem.honda.peeyamyamaha"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 3
-        versionName "2.1"
+        versionCode 4
+        versionName "4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

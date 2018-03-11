@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/tools"
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
@@ -10,6 +10,8 @@
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
         android:layout_margin="15dp"
         android:padding="5dp"
         android:visibility="visible"
@@ -29,17 +31,30 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/logo_yamaha"
                 android:contentDescription="@string/app_name" />
+
+            <TextView
+                android:id="@+id/titleappname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ivlogo"
+                android:layout_marginTop="@dimen/_5dp"
+                android:gravity="center"
+                android:padding="@dimen/_5dp"
+                android:text="@string/app_name"
+                android:textColor="@color/grey"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
 
             <RelativeLayout
                 android:id="@+id/phone_auth_fields"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/ivlogo"
-                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/titleappname"
+                android:layout_marginBottom="@dimen/_10dp"
                 android:orientation="vertical"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp">
@@ -50,32 +65,67 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_margin="15dp"
+                    android:layout_margin="10dp"
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <com.rilixtech.CountryCodePicker
-                        android:id="@+id/countrycode"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_margin="15dp"
-                        android:gravity="center" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5dp"
+                        android:padding="@dimen/_5dp"
+                        android:text="Enter Vehicle Number"
+                        android:textColor="@color/grey"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/input_username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edt_bg"
+                        android:hint="vehicle number"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapWords"
+                        android:maxLines="1"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="5dp"
+                        android:paddingTop="10dp"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textSize="16sp" />
 
 
-                    <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/field_phone_number"
+                    <LinearLayout
+                        android:id="@+id/llnumber1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_margin="25dp"
+                        android:layout_margin="10dp"
                         android:gravity="center"
-                        android:hint="@string/hint_phone_number"
-                        android:inputType="phone"
-                        android:padding="20dp"
-                        android:textColor="@android:color/black"
-                        android:textSize="14sp" />
+                        android:orientation="horizontal">
 
+                        <com.rilixtech.CountryCodePicker
+                            android:id="@+id/countrycode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_margin="5dp"
+                            android:gravity="center" />
+
+
+                        <android.support.v7.widget.AppCompatEditText
+                            android:id="@+id/field_phone_number"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="5dp"
+                            android:gravity="center"
+                            android:hint="@string/hint_phone_number"
+                            android:inputType="phone"
+                            android:padding="20dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="14sp" />
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -87,31 +137,36 @@
                     android:visibility="gone" />
 
 
-                <LinearLayout
+                <Button
+                    android:id="@+id/button_verify"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_below="@+id/llnumber"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/bg_button"
+                    android:gravity="center"
+                    android:text="Verfify"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/selecttype"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/llnumber"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="15dp"
+                    android:layout_below="@+id/button_verify"
+                    android:layout_marginTop="@dimen/_25dp"
                     android:gravity="center"
-                    android:orientation="horizontal"
-                    android:weightSum="3.0">
+                    android:padding="@dimen/_5dp"
+                    android:text="Select Vehicle"
+                    android:textColor="@color/grey"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
-                    <Button
-                        android:id="@+id/button_verify"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.0"
-                        android:background="@drawable/bg_button"
-                        android:text="Verfify"
-                        android:textAllCaps="false"
-                        android:textColor="@color/white" />
-                </LinearLayout>
 
             </RelativeLayout>
 
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>
-</LinearLayout>
+</RelativeLayout>
 

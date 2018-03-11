@@ -13,10 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.List;
 import com.peeyem.app.R;
 
-
+import java.util.List;
 
 
 /**
@@ -41,8 +40,10 @@ public class ContactUs extends AppCompatActivity {
 
 
     String TAG = ContactUs.class.getSimpleName();
-    TextView email,address;
-    ImageView google_plus, facebook, twitter,map;
+    TextView email, address;
+    TextView address2, address3;
+    TextView address4, address5;
+    ImageView google_plus, facebook, twitter, map;
     String twitterURL = "https://twitter.com/hyundaiindia";
     String facebookURL = "https://www.facebook.com/HyundaiIndia";
     String googleURL = "https://plus.google.com/+hyundaiindia";
@@ -56,9 +57,17 @@ public class ContactUs extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        address=(TextView)findViewById(R.id.address);
+        address = (TextView) findViewById(R.id.address);
+        address2 = (TextView) findViewById(R.id.address2);
+        address3 = (TextView) findViewById(R.id.address3);
+        address4 = (TextView) findViewById(R.id.address4);
+        address5 = (TextView) findViewById(R.id.address5);
         address.setText(Html.fromHtml(StaticValus.address));
-        map=(ImageView)findViewById(R.id.map);
+        address2.setText(Html.fromHtml(StaticValus.address2));
+        address3.setText(Html.fromHtml(StaticValus.address3));
+        address4.setText(Html.fromHtml(StaticValus.address4));
+        address5.setText(Html.fromHtml(StaticValus.address5));
+        map = (ImageView) findViewById(R.id.map);
         map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

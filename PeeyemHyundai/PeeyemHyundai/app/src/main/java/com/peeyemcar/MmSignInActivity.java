@@ -104,10 +104,6 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
             return;
         }
 
-//        if (!validPassword()) {
-//            return;
-//        }
-
         final String username = input_username.getText().toString().trim();
         final String password = input_password.getText().toString().trim();
 
@@ -116,7 +112,7 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
             PreferenceUtil preferenceUtil = new PreferenceUtil(MmSignInActivity.this);
-            Call<EventResponse> call = apiService.login("2", username, password, preferenceUtil.getUserVehicleType(), preferenceUtil.getUserVehicleNumber());
+            Call<EventResponse> call = apiService.login("3", username, password, preferenceUtil.getUserVehicleType(), preferenceUtil.getUserVehicleNumber());
             call.enqueue(new Callback<EventResponse>() {
                 @Override
                 public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
@@ -181,14 +177,14 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
         String email = input_username.getText().toString().trim();
 
         if (email.isEmpty()) {
+            til_signin_username.setError("Enter valid Mobile");
+            requestFocus(input_username);
+            return false;
+        } /*else if (email.isEmpty() || !isValidEmail(email)) {
             til_signin_username.setError("Enter valid Email id");
             requestFocus(input_username);
             return false;
-        } else if (email.isEmpty() || !isValidEmail(email)) {
-            til_signin_username.setError("Enter valid Email id");
-            requestFocus(input_username);
-            return false;
-        } else {
+        }*/ else {
             til_signin_username.setError(null);
         }
 

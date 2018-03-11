@@ -7,9 +7,13 @@ package com.pace.honda.pacehonda.utils;
 public interface Keys {
 
     String EmailID = "emailID";
+    String ReferId = "ReferId";
+    String aid = "aid";
     String USERNAME = "username";
     String PASSWORD = "password";
     String PHONE = "PHONE";
+    String vehiclenumber = "vehiclenumber";
+    String vehicletype = "vehicletype";
     /**
      * Preference keys
      */

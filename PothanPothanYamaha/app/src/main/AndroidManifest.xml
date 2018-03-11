@@ -25,6 +25,9 @@
         <activity
             android:name="com.pothan.yamaha.pothanpothanyamaha.MainActivity"
             android:theme="@style/AppTheme1" />
+        <activity
+            android:name="com.pothan.yamaha.pothanpothanyamaha.SelectMyVehicle"
+            android:theme="@style/AppTheme1" />
 
         <activity
             android:name="com.pothan.yamaha.pothanpothanyamaha.WebViewActivity"

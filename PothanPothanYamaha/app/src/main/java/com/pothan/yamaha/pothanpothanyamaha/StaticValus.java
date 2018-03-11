@@ -13,16 +13,31 @@ public class StaticValus {
             "<p style=\"line-height: 1.3800000000000001; margin-top: 0pt; margin-bottom: 10pt;\"><span style=\"font-size: 12pt; font-family: 'Times New Roman'; color: #333333; background-color: #ffffff; font-weight: 400; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\">Sri. Rajan Pothan and Sri. Sureshan Pothan of Pioneer Group of companies are the directors of the company. The brief profiles of the directors are as follows. Rajan Pothan :- Sri.Rajan Pothan is a dynamic businessman hailing from Kannur having more than 30 years experience in automobile industry. After completion of his Diploma in Automobile Engineering from HIET, Chennai, he ventured to set up M/s.Pioneer Auto Engineering Works, a Maruthi Authorized Service Station at Kannur in 1981. He expanded to automobile dealership in 1993 by establishing Pioneer Motors(Kannur) Pvt Ltd at Kannothumchal in Kannur to take up the dealership of Yamaha Two Wheelers , Piaggio Vehicles and Honda Two Wheelers in Kannur District. </span></p>\n" +
             "<p style=\"line-height: 1.3800000000000001; margin-top: 0pt; margin-bottom: 10pt;\"><span style=\"font-size: 12pt; font-family: 'Times New Roman'; color: #333333; background-color: #ffffff; font-weight: 400; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\">This was followed by establishment of Pothan &amp; Pothan Automobiles Pvt Ltd in 1997 for Yamaha Two Wheeler dealership in Kannur and distributor for Greaves Cotton Ltd for their light engine spares for seven districts in Northern Kerala. Both Pioneer Motors (Kannur) Pvt Ltd and Pothan &amp; Pothan Automobiles Pvt Ltd have gone on to become the leading dealerships in the district. Besides the above concerns, Sri .Rajan Pothan has also promoted Pioneer motors for Yamaha two wheelers and Pace Motors for Honda two wheelers in kasaragod district in the year 2000 and 2006 respectively. His latest venture is Wayanad Vehicles Pvt Ltd in Kalpetta which is the authorized dealers for Piaggio Vehicles in Wayanad District. He has served as a catalyst to the growth and prosperity of Pioneer Group by providing guidance and direction to the group's operations. He is instrumental in making the Pioneer Group one of the leading business houses in North Kerala.</span></p>";
 
+    public static String address = "<div class=\"off_address col-md-12 col-sm-12 col-xs-12\">\n" +
+            "                                                <h4>POTHAN AND POTHAN AUTOMOBILES PRIVATE LTD</h4>\n" +
+            "                                                <h5>DELTA TOWER ,</h5>\n" +
+            "                                                <p>\n" +
+            "                                                    THANA" +
+            "                                                    KANNUR" +
+            "                                                </p>\n" +
+            "                                            </div>";
 
-    public static String address = "<div class=\"col-md-4 pull-right m-pull-right\">\n" +
-            "                    \t<div class=\"block-heading-two\">\n" +
-            "                        \t<h3><span>Address</span></h3>\n" +
-            "                        </div>\n" +
-            "                        <address>India Yamaha Motor Pvt. Ltd.<br>\n" +
-            "                        A-3, Ind. Area, Noida-Dadri Road<br>\n" +
-            "                        Surajpur, Gautam Budh Nagar<br>\n" +
-            "                        Uttar Pradesh, India - 201306<br>\n" +
-            "                        </address>\n" +
-            "                    </div>";
+
+    public static String address2 = "<div class=\"off_address col-md-12 col-sm-12 col-xs-12\">\n" +
+            "                                                <h4>POTHAN AND POTHAN AUTOMOBILES PRIVATE LTD</h4>\n" +
+            "                                                <h5>MANNA JUNCTION,</h5>\n" +
+            "                                                <p>\n" +
+            "                                                   THALIPARAMBA" +
+            "                                                </p>\n" +
+            "                                            </div>";
+
+
+    public static String address3 = "<div class=\"off_address col-md-12 col-sm-12 col-xs-12\">\n" +
+            "                                                <h4>POTHAN AND POTHAN AUTOMOBILES PRIVATE LTD</h4>\n" +
+            "                                                <h5> NIDHA COMPLEX,</h5>\n" +
+            "                                                <p>\n" +
+            "                                                     THAVAM," +
+            "                                                </p>\n" +
+            "                                            </div>";
 
 }

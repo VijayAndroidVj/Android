@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,6 +35,7 @@ import java.util.concurrent.TimeUnit;
 public class PhoneNumberAuthentication extends AppCompatActivity implements
         View.OnClickListener {
 
+
     private static final String TAG = "PhoneAuthActivity";
 
     private static final String KEY_VERIFY_IN_PROGRESS = "key_verify_in_progress";
@@ -46,25 +48,36 @@ public class PhoneNumberAuthentication extends AppCompatActivity implements
     private AppCompatEditText mPhoneNumberField;
 
     private Button mVerifyButton;
+    private EditText inputVehicleNumber;
 
     private ProgressBar progressbar;
-    CountryCodePicker ccp;
+    private CountryCodePicker ccp;
+    private String vehicletype;
+    private String vehiclenumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_auth);
-        ccp = (CountryCodePicker) findViewById(R.id.countrycode);
+        ccp = findViewById(R.id.countrycode);
         // Restore instance state
         if (savedInstanceState != null) {
             onRestoreInstanceState(savedInstanceState);
         }
 
+        vehicletype = getIntent().getStringExtra("vehicletype");
+        vehiclenumber = getIntent().getStringExtra("vehiclenumber");
+
         // Assign views
         mPhoneNumberField = findViewById(R.id.field_phone_number);
+        inputVehicleNumber = findViewById(R.id.input_username);
+
         progressbar = findViewById(R.id.progressbar);
         mVerifyButton = findViewById(R.id.button_verify);
+        findViewById(R.id.selecttype).setOnClickListener(this);
         mVerifyButton.setOnClickListener(this);
+        if (vehiclenumber != null)
+            inputVehicleNumber.setText(vehiclenumber);
 
         ccp.registerPhoneNumberTextView(mPhoneNumberField);
         ccp.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
@@ -133,8 +146,10 @@ public class PhoneNumberAuthentication extends AppCompatActivity implements
                 progressbar.setVisibility(View.GONE);
 
                 Intent intent = new Intent(PhoneNumberAuthentication.this, VerificationActivity.class);
-                intent.putExtra("mobile", ccp.getSelectedCountryCodeWithPlus() + ccp.getPhoneNumber().getNationalNumber());
+                intent.putExtra("mobile", ccp.getSelectedCountryCode() + ccp.getPhoneNumber().getNationalNumber());
                 intent.putExtra("verificationId", verificationId);
+                intent.putExtra("vehiclenumber", inputVehicleNumber.getText().toString().trim());
+                intent.putExtra("vehicletype", vehicletype);
                 intent.putExtra("country", ccp.getSelectedCountryName());
 
                 startActivity(intent);
@@ -143,7 +158,6 @@ public class PhoneNumberAuthentication extends AppCompatActivity implements
         };
         // [END phone_auth_callbacks]
     }
-
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         FirebaseAuth.getInstance().signInWithCredential(credential)
@@ -191,7 +205,6 @@ public class PhoneNumberAuthentication extends AppCompatActivity implements
                 TimeUnit.SECONDS,   // Unit of timeout
                 this,               // Activity (for callback binding)
                 mCallbacks);        // OnVerificationStateChangedCallbacks
-        // [END start_phone_auth]
 
         mVerificationInProgress = true;
     }
@@ -214,6 +227,7 @@ public class PhoneNumberAuthentication extends AppCompatActivity implements
                 token);             // ForceResendingToken from callbacks
     }
 
+
     private boolean validatePhoneNumber() {
         String phoneNumber = mPhoneNumberField.getText().toString();
         if (TextUtils.isEmpty(phoneNumber)) {
@@ -224,36 +238,38 @@ public class PhoneNumberAuthentication extends AppCompatActivity implements
         return true;
     }
 
-    private void enableViews(View... views) {
-        for (View v : views) {
-            v.setEnabled(true);
-        }
-    }
-
-    private void disableViews(View... views) {
-        for (View v : views) {
-            v.setEnabled(false);
-        }
-    }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.selecttype:
+                Intent intent = new Intent(PhoneNumberAuthentication.this, SelectMyVehicle.class);
+                startActivity(intent);
+                finish();
+                break;
             case R.id.button_verify:
+                if (inputVehicleNumber.getText().toString().length() == 0) {
+                    inputVehicleNumber.setError("Enter Vehicle Number");
+                    inputVehicleNumber.requestFocus();
+                    return;
+                }
                 if (!validatePhoneNumber()) {
                     return;
                 }
                 String mobile = ccp.getSelectedCountryCodeWithPlus() + ccp.getPhoneNumber().getNationalNumber();
+
+//                intent = new Intent(PhoneNumberAuthentication.this, MmSignInActivity.class);
+//                intent.putExtra("vehiclenumber", vehiclenumber);
+//                intent.putExtra("vehicletype", vehicletype);
+//                intent.putExtra("mobile", ccp.getPhoneNumber().getNationalNumber());
+//                intent.putExtra("country", ccp.getSelectedCountryCodeWithPlus());
+//                PreferenceUtil preferenceUtil = new PreferenceUtil(PhoneNumberAuthentication.this);
+//                preferenceUtil.putString(Keys.PHONE, mobile);
+//                preferenceUtil.putString(Keys.vehiclenumber, vehiclenumber);
+//                preferenceUtil.putString(Keys.vehicletype, vehicletype);
+//                startActivity(intent);
+
                 startPhoneNumberVerification(mobile);
                 break;
-//                String code = mVerificationField.getText().toString();
-//                if (TextUtils.isEmpty(code)) {
-//                    mVerificationField.setError("Cannot be empty.");
-//                    return;
-//                }
-
-//                verifyPhoneNumberWithCode(mVerificationId, code);
-//                resendVerificationCode(mPhoneNumberField.getText().toString(), mResendToken);
         }
     }
 }

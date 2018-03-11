@@ -177,7 +177,7 @@ public class TestDrive extends AppCompatActivity {
         BackgroundMail.newBuilder(this)
                 .withUsername("pothanyamaha@gmail.com")
                 .withPassword("poyamaha2017")
-                .withMailto("yes@yamaha-motor-india.com")
+                .withMailto("pioneeryamaha_kannur@yahoo.co.in")
 //                .withMailto("vijayece102@gmail.com")
                 .withSubject("Enquiry Form")
                 .withBody(str)

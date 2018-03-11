@@ -39,6 +39,8 @@ public class ContactUs extends AppCompatActivity {
 
     String TAG = ContactUs.class.getSimpleName();
     TextView email, address;
+    TextView address2, address3;
+    TextView address4, address5;
     ImageView google_plus, facebook, twitter, map;
     String twitterURL = "https://twitter.com/honda2wheelerin";
     String facebookURL = "https://www.facebook.com/honda2wheelers.in";
@@ -54,7 +56,15 @@ public class ContactUs extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         address = (TextView) findViewById(R.id.address);
+        address2 = (TextView) findViewById(R.id.address2);
+        address3 = (TextView) findViewById(R.id.address3);
+        address4 = (TextView) findViewById(R.id.address4);
+        address5 = (TextView) findViewById(R.id.address5);
         address.setText(Html.fromHtml(StaticValus.address));
+        address2.setText(Html.fromHtml(StaticValus.address2));
+        address3.setText(Html.fromHtml(StaticValus.address3));
+        address4.setText(Html.fromHtml(StaticValus.address4));
+        address5.setText(Html.fromHtml(StaticValus.address5));
         map = (ImageView) findViewById(R.id.map);
         map.setVisibility(View.GONE);
         map.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +99,7 @@ public class ContactUs extends AppCompatActivity {
                     intent.setClassName(best.activityInfo.packageName, best.activityInfo.name);
                 }
 
-                intent.setData(Uri.parse("customercare@honda2wheelersindia.com"));
+                intent.setData(Uri.parse("peeyemcallcenter@pioneermotors.in"));
                 intent.putExtra(Intent.EXTRA_SUBJECT, "My Query");
                 intent.putExtra(Intent.EXTRA_TEXT, "Hi Peeyem Honda Team");
                 try {

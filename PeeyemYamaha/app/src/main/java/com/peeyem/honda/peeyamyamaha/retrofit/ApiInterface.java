@@ -19,15 +19,15 @@ public interface ApiInterface {
     @FormUrlEncoded
     Call<EventResponse> get_used_cars(@Field("aid") String aid);
 
-
     @POST("customer_signup.php")
     @FormUrlEncoded
-    Call<EventResponse> register(@Field("aid") String aid, @Field("mobile") String mobile, @Field("name") String name, @Field("email") String email, @Field("password") String password);
+    Call<EventResponse> register(@Field("aid") String aid, @Field("mobile") String mobile, @Field("name") String name, @Field("email") String email, @Field("password") String password, @Field("userVehicleType") String userVehicleType, @Field("userVehicleNumber") String userVehicleNumber);
 
 
     @POST("customer_login.php")
     @FormUrlEncoded
-    Call<EventResponse> login(@Field("email") String email, @Field("password") String password);
+    Call<EventResponse> login(@Field("aid") String aid, @Field("mobile") String mobile, @Field("password") String password, @Field("userVehicleType") String userVehicleType, @Field("userVehicleNumber") String userVehicleNumber);
+
 
 
 }

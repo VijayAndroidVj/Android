@@ -10,6 +10,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -75,6 +77,47 @@ public class MainActivity extends BaseActivity implements ListItemClickListener 
         });
         getCategories();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.profile:
+//                Intent intentd = new Intent(MainActivity.this, Setting.class);
+//
+//                startActivity(intentd);
+                // Toast.makeText(this, "test", Toast.LENGTH_LONG).show();
+                // showOptiontAlert(MainActivity.this, "Choose", "")
+                ;
+                return (true);
+            case R.id.raisebybrand:
+//                Intent about = new Intent(MainActivity.this, Aboutus.class);
+//
+//                startActivity(about);
+                // Toast.makeText(this, "test", Toast.LENGTH_LONG).show();
+                // showOptiontAlert(MainActivity.this, "Choose", "")
+                ;
+                return (true);
+            case R.id.mcbox:
+                // finish();
+                // showMeetingtAlert(MainActivity.this, "Logout", "Are you sure want to logout?");
+                return (true);
+            case R.id.warrenty:
+                // finish();
+                // showMeetingtAlert(MainActivity.this, "Logout", "Are you sure want to logout?");
+                return (true);
+
+        }
+        return (super.onOptionsItemSelected(item));
+    }
+
 
     private ArrayList<Cateegory> categoryListModelArrayList = new ArrayList<>();
     public static ProgressDialog progressDoalog;

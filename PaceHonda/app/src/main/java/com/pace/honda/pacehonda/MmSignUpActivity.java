@@ -253,7 +253,7 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
             MainActivity.showProgress(activity);
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
-            Call<EventResponse> call = apiService.register("1", mobile, userName, email, password);
+            Call<EventResponse> call = apiService.register("7", mobile, userName, email, password);
             call.enqueue(new Callback<EventResponse>() {
                 @Override
                 public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {

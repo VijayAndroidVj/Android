@@ -249,7 +249,7 @@ public class Service extends AppCompatActivity {
         BackgroundMail.newBuilder(this)
                 .withUsername("peeyamhyundai@gmail.com")
                 .withPassword("pmhyundai2017")
-                .withMailto("peeyemhyundai@gmail.com")
+                .withMailto("jigesh@pioneermotors.in")
                 .withSubject("Book A Service")
                 .withBody(str)
                 .withOnSuccessCallback(new BackgroundMail.OnSuccessCallback() {

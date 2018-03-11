@@ -47,8 +47,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
-
 
 public class MainActivity extends AppCompatActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
 
@@ -245,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         breakdown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String phone = "9497718766";
+                String phone = "0490-2328800";
                 Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
                 startActivity(intent);
 
@@ -556,46 +554,14 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
                     startActivity(in);
                     break;
                 case 1:
-                    if (TextUtils.isEmpty(preferenceUtil.getUserEmail())) {
-                        new SweetAlertDialog(activity, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
-                                .setTitleText(getString(R.string.app_name))
-                                .setContentText("You are not logged in...")
-//                .setCustomImage(R.drawable.app_logo_back)
-                                .setConfirmText("Ok")
-                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sDialog) {
-                                        sDialog.dismissWithAnimation();
-                                    }
-                                })
-
-                                .show();
-
-                    } else {
-                        in = new Intent(MainActivity.this, Service.class);
-                        startActivity(in);
-                    }
+                    in = new Intent(MainActivity.this, Service.class);
+                    startActivity(in);
+//                    }
                     break;
                 case 2:
-                    if (TextUtils.isEmpty(preferenceUtil.getUserEmail())) {
-                        new SweetAlertDialog(activity, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
-                                .setTitleText(getString(R.string.app_name))
-                                .setContentText("You are not logged in...")
-//                .setCustomImage(R.drawable.app_logo_back)
-                                .setConfirmText("Ok")
-                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sDialog) {
-                                        sDialog.dismissWithAnimation();
-                                    }
-                                })
-
-                                .show();
-
-                    } else {
-                        in = new Intent(MainActivity.this, TestDrive.class);
-                        startActivity(in);
-                    }
+                    in = new Intent(MainActivity.this, TestDrive.class);
+                    startActivity(in);
+//                    }
                     break;
                 case 3:
                     String phone = "9497718766";
@@ -631,25 +597,9 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
                     startActivity(intent);
                     break;
                 case 11:
-                    if (TextUtils.isEmpty(preferenceUtil.getUserEmail())) {
-                        new SweetAlertDialog(activity, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
-                                .setTitleText(getString(R.string.app_name))
-                                .setContentText("You are not logged in...")
-//                .setCustomImage(R.drawable.app_logo_back)
-                                .setConfirmText("Ok")
-                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sDialog) {
-                                        sDialog.dismissWithAnimation();
-                                    }
-                                })
-
-                                .show();
-
-                    } else {
-                        in = new Intent(MainActivity.this, FeedBackActivity.class);
-                        startActivity(in);
-                    }
+                    in = new Intent(MainActivity.this, FeedBackActivity.class);
+                    startActivity(in);
+//                    }
                     break;
                 case 12:
                     preferenceUtil.logout();
@@ -659,52 +609,20 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
                     finish();
                     break;
                 case 13:
-                    if (TextUtils.isEmpty(preferenceUtil.getUserEmail())) {
-                        new SweetAlertDialog(activity, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
-                                .setTitleText(getString(R.string.app_name))
-                                .setContentText("You are not logged in...")
-//                .setCustomImage(R.drawable.app_logo_back)
-                                .setConfirmText("Ok")
-                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sDialog) {
-                                        sDialog.dismissWithAnimation();
-                                    }
-                                })
-
-                                .show();
-
-                    } else {
-                        in = new Intent(MainActivity.this, MyVechle.class);
-                        startActivity(in);
-                    }
+                    in = new Intent(MainActivity.this, MyVechle.class);
+                    startActivity(in);
+//                    }
                     break;
                 case 14:
-                    if (TextUtils.isEmpty(preferenceUtil.getUserEmail())) {
-                        new SweetAlertDialog(activity, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
-                                .setTitleText(getString(R.string.app_name))
-                                .setContentText("You are not logged in...")
-//                .setCustomImage(R.drawable.app_logo_back)
-                                .setConfirmText("Ok")
-                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sDialog) {
-                                        sDialog.dismissWithAnimation();
-                                    }
-                                })
-
-                                .show();
-
-                    } else {
-                        Intent share = new Intent(android.content.Intent.ACTION_SEND);
-                        share.setType("text/plain");
-                        share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-                        // Add data to the intent, the receiving app will decide
-                        // what to do with it.
-                        share.putExtra(Intent.EXTRA_SUBJECT, "Refer and Earn");
-                        share.putExtra(Intent.EXTRA_TEXT, "Use my Refer Code " + preferenceUtil.getUserReferId() + " to purchase");
-                        startActivity(Intent.createChooser(share, "Share link!"));
-                    }
+                    Intent share = new Intent(android.content.Intent.ACTION_SEND);
+                    share.setType("text/plain");
+                    share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                    // Add data to the intent, the receiving app will decide
+                    // what to do with it.
+                    share.putExtra(Intent.EXTRA_SUBJECT, "Refer and Earn");
+                    share.putExtra(Intent.EXTRA_TEXT, "Use my Refer Code " + preferenceUtil.getUserReferId() + " to purchase");
+                    startActivity(Intent.createChooser(share, "Share link!"));
+//                    }
                     break;
 
             }

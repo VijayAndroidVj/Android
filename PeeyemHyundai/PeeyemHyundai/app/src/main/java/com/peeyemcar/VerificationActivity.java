@@ -118,7 +118,7 @@ public class VerificationActivity extends AppCompatActivity implements
                     return;
                 }
                 progressbar.setVisibility(View.VISIBLE);
-//                verifyPhoneNumberWithCode(mPhoneNumberField.getText().toString());
+                verifyPhoneNumberWithCode(mPhoneNumberField.getText().toString());
                 break;
             case R.id.txtnotrecieve:
             case R.id.btnBack:

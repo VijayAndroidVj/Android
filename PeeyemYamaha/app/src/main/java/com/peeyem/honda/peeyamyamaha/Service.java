@@ -189,7 +189,7 @@ public class Service extends AppCompatActivity {
                 .withUsername("pioneeryamaha2017@gmail.com")
                 .withPassword("pyamaha2017")
 //                .withMailto("vijayece102@gmail.com")
-                .withMailto("yes@yamaha-motor-india.com")
+                .withMailto("yamahaksd@yahoo.co.in")
                 .withSubject("Book A Service")
                 .withBody(str)
                 .withOnSuccessCallback(new BackgroundMail.OnSuccessCallback() {

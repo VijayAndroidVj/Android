@@ -34,6 +34,7 @@ public class VerificationActivity extends AppCompatActivity implements
     FirebaseAuth mAuth;
     private Button mVerifyButton;
     String verificationId, mobilenumber, country;
+    String vehicletype, vehiclenumber;
 
     private ProgressBar progressbar;
 
@@ -51,6 +52,9 @@ public class VerificationActivity extends AppCompatActivity implements
         verificationId = getIntent().getStringExtra("verificationId");
         mobilenumber = getIntent().getStringExtra("mobile");
         country = getIntent().getStringExtra("country");
+        vehiclenumber = getIntent().getStringExtra("vehiclenumber");
+        vehicletype = getIntent().getStringExtra("vehicletype");
+
         // Assign views
         mPhoneNumberField = findViewById(R.id.edtCode);
         progressbar = findViewById(R.id.progressbar);
@@ -74,11 +78,15 @@ public class VerificationActivity extends AppCompatActivity implements
                         if (task.isSuccessful()) {
                             FirebaseAuth.getInstance().signOut();
                             Log.d(TAG, "signInWithCredential:success");
-                            Intent intent = new Intent(VerificationActivity.this, MmSignUpActivity.class);
+                            Intent intent = new Intent(VerificationActivity.this, MmSignInActivity.class);
+                            intent.putExtra("vehiclenumber", vehiclenumber);
+                            intent.putExtra("vehicletype", vehicletype);
                             intent.putExtra("mobile", mobilenumber);
                             intent.putExtra("country", country);
                             PreferenceUtil preferenceUtil = new PreferenceUtil(VerificationActivity.this);
                             preferenceUtil.putString(Keys.PHONE, mobilenumber);
+                            preferenceUtil.putString(Keys.vehiclenumber, vehiclenumber);
+                            preferenceUtil.putString(Keys.vehicletype, vehicletype);
                             startActivity(intent);
                             finish();
                         } else {

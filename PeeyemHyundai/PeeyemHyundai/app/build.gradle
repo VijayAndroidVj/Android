@@ -19,9 +19,9 @@ android {
         applicationId "com.peeyem.app"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 10
+        versionCode 11
         multiDexEnabled true
-        versionName "2.8"
+        versionName "3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

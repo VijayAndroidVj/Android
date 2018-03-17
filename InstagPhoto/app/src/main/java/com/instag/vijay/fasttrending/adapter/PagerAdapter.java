@@ -9,6 +9,7 @@ import com.instag.vijay.fasttrending.fragments.NewsfeedFragment;
 import com.instag.vijay.fasttrending.fragments.PhotoFragment;
 import com.instag.vijay.fasttrending.fragments.ProfileFragment;
 import com.instag.vijay.fasttrending.fragments.SearchFragment;
+import com.instag.vijay.fasttrending.fragments.VideoFragment;
 
 /**
  * Created by vijay on 21/11/17.
@@ -31,10 +32,12 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
             case 1:
                 return SearchFragment.getInstance();
             case 2:
-                return PhotoFragment.getInstance();
+                return VideoFragment.getInstance();
             case 3:
-                return FavFragment.getInstance();
+                return PhotoFragment.getInstance();
             case 4:
+                return FavFragment.getInstance();
+            case 5:
                 return ProfileFragment.getInstance();
             default:
                 return null;

@@ -14,11 +14,9 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -112,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     name.setVisibility(View.VISIBLE);
                     searchEditText.setVisibility(View.GONE);
                     name.setText(getString(R.string.app_name));
-                    if (position == 4) {
+                    if (position == 5) {
 //                        PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
                         name.setText("My Profile");
                         iv_actionbar_settings.setVisibility(View.VISIBLE);
@@ -141,16 +139,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     viewPager.setCurrentItem(1);
                     // The tab with id R.id.tab_favorites was selected,
                     // change your content accordingly.
-                } else if (tabId == R.id.tab_cam) {
+                } else if (tabId == R.id.tab_video) {
+
                     viewPager.setCurrentItem(2);
                     // The tab with id R.id.tab_favorites was selected,
                     // change your content accordingly.
-                } else if (tabId == R.id.tab_fav) {
+                } else if (tabId == R.id.tab_cam) {
                     viewPager.setCurrentItem(3);
                     // The tab with id R.id.tab_favorites was selected,
                     // change your content accordingly.
-                } else if (tabId == R.id.tab_account) {
+                } else if (tabId == R.id.tab_fav) {
                     viewPager.setCurrentItem(4);
+                    // The tab with id R.id.tab_favorites was selected,
+                    // change your content accordingly.
+                } else if (tabId == R.id.tab_account) {
+                    viewPager.setCurrentItem(5);
                     // The tab with id R.id.tab_favorites was selected,
                     // change your content accordingly.
                 }
@@ -364,7 +367,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void refresh() {
         try {
             NewsfeedFragment newsfeedFragment = (NewsfeedFragment) adapter.getItem(0);
-            ProfileFragment profileFragment = (ProfileFragment) adapter.getItem(4);
+            ProfileFragment profileFragment = (ProfileFragment) adapter.getItem(5);
             newsfeedFragment.refreshItems();
             profileFragment.getMyPosts();
         } catch (Exception e) {

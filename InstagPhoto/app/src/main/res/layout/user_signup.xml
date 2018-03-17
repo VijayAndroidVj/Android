@@ -28,8 +28,7 @@
                     android:layout_height="50dp"
                     android:layout_centerHorizontal="true"
                     android:contentDescription="@string/app_name"
-                    android:src="@drawable/ic_cam_enhance"
-                    android:tint="@color/colorPrimary"
+                    android:src="@drawable/feeloutbig"
                     android:visibility="visible" />
 
 

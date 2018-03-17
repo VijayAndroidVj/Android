@@ -17,7 +17,7 @@ public class StaticValus {
     public static String address = "<div class=\"off_address col-md-12 col-sm-12 col-xs-12\">\n" +
             "                                                <h4>NH ROAD.</h4>\n" +
             "                                                <p>\n" +
-            "                                                    ADKATHBAIL,KASARAGOD 671121<br>                                                                                              Gurgaon, Haryana (122018) India\n" +
+            "                                                    ADKATHBAIL,KASARAGOD 671121<br>\n" +
             "                                                </p>\n" +
             "                                            </div>";
 

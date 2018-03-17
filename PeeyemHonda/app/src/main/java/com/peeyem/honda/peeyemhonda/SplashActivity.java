@@ -42,7 +42,6 @@ public class SplashActivity extends Activity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-
                 PreferenceUtil preferenceUtil = new PreferenceUtil(SplashActivity.this);
                 boolean isRegistered = preferenceUtil.getBoolean(Keys.IS_ALREADY_REGISTERED, false);
                 if (isRegistered) {
@@ -61,8 +60,6 @@ public class SplashActivity extends Activity {
                 }
 
             }
-
-
         }, 1000);
         /****************************************/
 

@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final BottomBar bottomBar = findViewById(R.id.bottomBar);
         final ViewPager viewPager = findViewById(R.id.pager);
         adapter = new PagerAdapter
-                (getSupportFragmentManager(), 5);
+                (getSupportFragmentManager(), 6);
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(4);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

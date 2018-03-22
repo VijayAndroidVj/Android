@@ -2,6 +2,8 @@ package com.instag.vijay.fasttrending.retrofit;
 
 import com.instag.vijay.fasttrending.EventResponse;
 import com.instag.vijay.fasttrending.FavModel;
+import com.instag.vijay.fasttrending.model.CategoryItem;
+import com.instag.vijay.fasttrending.model.CategoryMain;
 import com.instag.vijay.fasttrending.model.Comments;
 import com.instag.vijay.fasttrending.model.Notification;
 import com.instag.vijay.fasttrending.model.PostModelMain;
@@ -102,6 +104,15 @@ public interface ApiInterface {
     @POST("getmynewsfeed.php")
     @FormUrlEncoded
     Call<PostModelMain> getmynewsfeed(@Field("useremail") String useremail);
+
+    @POST("getcategory.php")
+    @FormUrlEncoded
+    Call<ArrayList<CategoryMain>> getcategory(@Field("useremail") String useremail);
+
+    @POST("getcategory.php")
+    @FormUrlEncoded
+    Call<ArrayList<CategoryItem>> getcategoryItemList(@Field("useremail") String useremail);
+
 
     @POST("getsearchpost.php")
     @FormUrlEncoded

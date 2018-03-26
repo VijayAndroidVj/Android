@@ -1,5 +1,6 @@
 buildscript {
     repositories {
+        mavenCentral()
         maven { url 'https://maven.fabric.io/public' }
     }
 
@@ -11,6 +12,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 repositories {
+    mavenCentral()
     maven { url 'https://maven.fabric.io/public' }
 }
 
@@ -31,7 +33,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.instag.vijay.fasttrending"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -73,14 +75,17 @@ dependencies {
     compile 'com.roughike:bottom-bar:2.3.1'
     compile 'com.google.firebase:firebase-auth:11.8.0'
     compile "commons-io:commons-io:+"
+    compile 'com.android.support:leanback-v17:23.1.0'
     compile 'com.google.firebase:firebase-messaging:11.8.0'
     compile 'com.joooonho:selectableroundedimageview:1.0.1'
     compile 'com.github.joielechong:countrycodepicker:2.1.5'
     compile 'com.theartofdev.edmodo:android-image-cropper:2.6.+'
     compile 'com.github.rafakob:DrawMe:0.1.6'
     compile 'com.steelkiwi:cropiwa:1.0.3'
+    compile 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
     compile 'com.github.f0ris.sweetalert:library:1.5.1'
     compile 'com.yarolegovich:mp:1.0.5'
+    compile 'me.zhanghai.android.materialratingbar:library:1.2.0'
     compile('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
         transitive = true;
     }

@@ -9,12 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.instag.vijay.fasttrending.PreferenceUtil;
 import com.instag.vijay.fasttrending.R;
 import com.instag.vijay.fasttrending.model.CategoryItem;
 
@@ -29,8 +27,6 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.MyViewHolder> implements View.OnClickListener {
 
     private List<CategoryItem> originalList;
-    private PreferenceUtil preferenceUtil;
-
 
     @Override
     public void onClick(View v) {
@@ -151,8 +147,8 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView shopname;
         private TextView address;
-        private RatingBar ratingBar1;
         private ImageView ivImage;
+        private TextView mail;
         private TextView subcat;
         private TextView city;
         private TextView state;
@@ -164,8 +160,8 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             shopname = view.findViewById(R.id.shopname);
             address = view.findViewById(R.id.address);
             ivImage = view.findViewById(R.id.ivImage);
-            ratingBar1 = view.findViewById(R.id.ratingBar1);
             subcat = view.findViewById(R.id.subcat);
+            mail = view.findViewById(R.id.mail);
             city = view.findViewById(R.id.city);
             state = view.findViewById(R.id.state);
             btnview = view.findViewById(R.id.btnview);
@@ -178,13 +174,12 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     public CategoryListAdapter(Activity activity, List<CategoryItem> moviesList) {
         this.originalList = moviesList;
         this.activity = activity;
-        preferenceUtil = new PreferenceUtil(activity);
         layoutInflater = LayoutInflater.from(activity);
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = layoutInflater.inflate(R.layout.notification_item, parent, false);
+        View itemView = layoutInflater.inflate(R.layout.category_item, parent, false);
         return new MyViewHolder(itemView);
     }
 
@@ -198,42 +193,49 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 //        holder.txtPostDescription.setText(post.getDescription());
 
 
-        if (TextUtils.isEmpty(post.getShopname())) {
+        if (TextUtils.isEmpty(post.getBusiness_name())) {
             holder.shopname.setText("");
         } else {
-            holder.shopname.setText(post.getShopname());
+            holder.shopname.setText(post.getBusiness_name());
         }
-        if (TextUtils.isEmpty(post.getAddress())) {
+        if (TextUtils.isEmpty(post.getBusiness_desc())) {
             holder.address.setText("");
         } else {
-            holder.address.setText(post.getAddress());
+            holder.address.setText(post.getBusiness_desc());
+        }
+        if (TextUtils.isEmpty(post.getMail())) {
+            holder.mail.setText("");
+        } else {
+            holder.mail.setText(post.getMail());
         }
         if (TextUtils.isEmpty(post.getState())) {
             holder.state.setText("");
         } else {
             holder.state.setText(post.getState());
         }
-        if (TextUtils.isEmpty(post.getCity())) {
+        if (TextUtils.isEmpty(post.getBusiness_location())) {
             holder.city.setText("");
         } else {
-            holder.city.setText(post.getCity());
+            holder.city.setText(post.getBusiness_location());
         }
-        holder.ratingBar1.setRating(post.getRatings());
 
-        if (TextUtils.isEmpty(post.getSubcat())) {
-            holder.subcat.setVisibility(View.GONE);
+        if (TextUtils.isEmpty(post.getPhone())) {
+            holder.subcat.setVisibility(View.INVISIBLE);
             holder.subcat.setText("");
         } else {
             holder.subcat.setVisibility(View.VISIBLE);
-            holder.subcat.setText(post.getSubcat());
+            holder.subcat.setText("ph:" + post.getPhone());
         }
 
         holder.ivImage.setImageBitmap(null);
         if (post.getImage() != null && !post.getImage().isEmpty()) {
-            Glide.with(activity).load(post.getImage()).centerCrop()
-                    .thumbnail(0.5f)
+            Glide.with(activity).load("http://www.xooads.com/FEELOUTADMIN/img/upload/" + post.getImage()).centerCrop()
+                    .thumbnail(0.5f).placeholder(R.drawable.icon)
                     .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(holder.ivImage);
+        } else {
+            Glide.with(activity).load(R.drawable.icon)
                     .into(holder.ivImage);
         }
 

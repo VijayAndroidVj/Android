@@ -14,35 +14,41 @@ public class CategoryItem implements Parcelable {
     @SerializedName("_id")
     private String _id;
 
-    @SerializedName("shopname")
-    private String shopname;
+    @SerializedName("mail")
+    private String mail;
 
-    @SerializedName("address")
-    private String address;
+    @SerializedName("business_name")
+    private String business_name;
 
-    @SerializedName("subcat")
-    private String subcat;
+    @SerializedName("business_desc")
+    private String business_desc;
 
-    @SerializedName("city")
-    private String city;
+
+    @SerializedName("phone")
+    private String phone;
+
+    @SerializedName("business_location")
+    private String business_location;
 
     @SerializedName("state")
     private String state;
 
-    @SerializedName("ratings")
-    private int ratings;
+    @SerializedName("country")
+    private String country;
 
     @SerializedName("image")
     private String image;
 
+
     protected CategoryItem(Parcel in) {
         _id = in.readString();
-        shopname = in.readString();
-        address = in.readString();
-        subcat = in.readString();
-        city = in.readString();
+        mail = in.readString();
+        business_name = in.readString();
+        business_desc = in.readString();
+        phone = in.readString();
+        business_location = in.readString();
         state = in.readString();
-        ratings = in.readInt();
+        country = in.readString();
         image = in.readString();
     }
 
@@ -66,36 +72,37 @@ public class CategoryItem implements Parcelable {
         this._id = _id;
     }
 
-    public String getShopname() {
-        return shopname;
+    public String getMail() {
+        return mail;
     }
 
-    public void setShopname(String shopname) {
-        this.shopname = shopname;
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 
-    public String getAddress() {
-        return address;
+    public String getBusiness_name() {
+        return business_name;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setBusiness_name(String business_name) {
+        this.business_name = business_name;
     }
 
-    public String getSubcat() {
-        return subcat;
+
+    public String getPhone() {
+        return phone;
     }
 
-    public void setSubcat(String subcat) {
-        this.subcat = subcat;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public String getCity() {
-        return city;
+    public String getBusiness_location() {
+        return business_location;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setBusiness_location(String business_location) {
+        this.business_location = business_location;
     }
 
     public String getState() {
@@ -106,12 +113,12 @@ public class CategoryItem implements Parcelable {
         this.state = state;
     }
 
-    public int getRatings() {
-        return ratings;
+    public String getCountry() {
+        return country;
     }
 
-    public void setRatings(int ratings) {
-        this.ratings = ratings;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public String getImage() {
@@ -122,6 +129,14 @@ public class CategoryItem implements Parcelable {
         this.image = image;
     }
 
+    public String getBusiness_desc() {
+        return business_desc;
+    }
+
+    public void setBusiness_desc(String business_desc) {
+        this.business_desc = business_desc;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -130,12 +145,13 @@ public class CategoryItem implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(_id);
-        dest.writeString(shopname);
-        dest.writeString(address);
-        dest.writeString(subcat);
-        dest.writeString(city);
+        dest.writeString(mail);
+        dest.writeString(business_name);
+        dest.writeString(business_desc);
+        dest.writeString(phone);
+        dest.writeString(business_location);
         dest.writeString(state);
-        dest.writeInt(ratings);
+        dest.writeString(country);
         dest.writeString(image);
     }
 }

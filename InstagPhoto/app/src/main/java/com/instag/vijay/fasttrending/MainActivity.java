@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setCustomView(view, params);
         actionBar.setElevation(0);
+
         final BottomBar bottomBar = findViewById(R.id.bottomBar);
         final ViewPager viewPager = findViewById(R.id.pager);
         adapter = new PagerAdapter
@@ -125,7 +126,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        findViewById(R.id.flnewsfeed).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPager.setCurrentItem(0);
+            }
+        });
 
+        findViewById(R.id.flsearch).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPager.setCurrentItem(1);
+            }
+        });
+
+        findViewById(R.id.flvideo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPager.setCurrentItem(2);
+            }
+        });
+
+        findViewById(R.id.flcamera).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPager.setCurrentItem(3);
+            }
+        });
+
+        findViewById(R.id.flheart).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPager.setCurrentItem(4);
+            }
+        });
+
+        findViewById(R.id.flprofile).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPager.setCurrentItem(5);
+            }
+        });
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelected(@IdRes int tabId) {

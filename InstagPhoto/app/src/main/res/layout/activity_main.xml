@@ -19,6 +19,110 @@
     </android.support.v7.widget.Toolbar>
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true">
+
+        <FrameLayout
+            android:id="@+id/flnewsfeed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:padding="@dimen/_5dp">
+
+            <ImageView
+                android:layout_width="@dimen/_30dp"
+                android:layout_height="@dimen/_30dp"
+                android:layout_gravity="center"
+                android:src="@drawable/document" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/flsearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:padding="@dimen/_5dp">
+
+            <ImageView
+                android:layout_width="@dimen/_30dp"
+                android:layout_height="@dimen/_30dp"
+                android:layout_gravity="center"
+                android:src="@drawable/search" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/flvideo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:padding="@dimen/_5dp">
+
+            <ImageView
+                android:layout_width="@dimen/_30dp"
+                android:layout_height="@dimen/_30dp"
+                android:layout_gravity="center"
+                android:src="@drawable/youtube1" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/flcamera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:padding="@dimen/_5dp">
+
+            <ImageView
+                android:layout_width="@dimen/_30dp"
+                android:layout_height="@dimen/_30dp"
+                android:layout_gravity="center"
+                android:src="@drawable/camera" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/flheart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:padding="@dimen/_5dp">
+
+            <ImageView
+                android:layout_width="@dimen/_30dp"
+                android:layout_height="@dimen/_30dp"
+                android:layout_gravity="center"
+                android:src="@drawable/heart" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/flprofile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:padding="@dimen/_5dp">
+
+            <ImageView
+                android:layout_width="@dimen/_30dp"
+                android:layout_height="@dimen/_30dp"
+                android:layout_gravity="center"
+                android:src="@drawable/man" />
+
+        </FrameLayout>
+
+
+    </LinearLayout>
+
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
@@ -31,6 +135,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
+        android:visibility="invisible"
         app:bb_behavior="iconsOnly"
         app:bb_tabXmlResource="@xml/bottombar_tabs" />
 </RelativeLayout>

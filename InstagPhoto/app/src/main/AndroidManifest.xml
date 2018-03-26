@@ -107,6 +107,10 @@
             android:name="com.instag.vijay.fasttrending.ProfileView"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.instag.vijay.fasttrending.activity.CategoryItemListActivity"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name="com.instag.vijay.fasttrending.Likes"

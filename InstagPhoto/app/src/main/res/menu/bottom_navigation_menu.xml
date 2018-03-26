@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_item1"
+        android:checked="true"
+        android:enabled="true"
+        android:icon="@drawable/document"
+        android:title="Newsfeed"
+        android:visible="true"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_item2"
+        android:checked="true"
+        android:enabled="true"
+        android:icon="@drawable/search"
+        android:title="Search"
+        android:visible="true"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_item3"
+        android:checked="true"
+        android:enabled="true"
+        android:icon="@drawable/youtube"
+        android:title="Video"
+        android:visible="true"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_item4"
+        android:checked="true"
+        android:enabled="true"
+        android:icon="@drawable/camera"
+        android:title="Camera"
+        android:visible="true"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_item5"
+        android:checked="true"
+        android:enabled="true"
+        android:icon="@drawable/fav"
+        android:title="Favourite"
+        android:visible="true"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_item6"
+        android:checked="true"
+        android:enabled="true"
+        android:icon="@drawable/man"
+        android:title="Profile"
+        android:visible="true"
+        app:showAsAction="never" />
+</menu>

@@ -109,9 +109,9 @@ public interface ApiInterface {
     @FormUrlEncoded
     Call<ArrayList<CategoryMain>> getcategory(@Field("useremail") String useremail);
 
-    @POST("getcategory.php")
+    @POST("getcategory_item_list.php")
     @FormUrlEncoded
-    Call<ArrayList<CategoryItem>> getcategoryItemList(@Field("useremail") String useremail);
+    Call<ArrayList<CategoryItem>> getcategoryItemList(@Field("_id") String _id);
 
 
     @POST("getsearchpost.php")

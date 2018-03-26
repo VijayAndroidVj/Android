@@ -14,21 +14,29 @@
         app:cardBackgroundColor="@color/white">
 
         <HorizontalScrollView
-            android:id="@+id/horizontalscrollView"
+            android:id="@+id/title_horizontalScrollView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="60dp"
+            android:layout_margin="1dp"
+            android:fillViewport="false"
+            android:scrollbars="none">
 
             <LinearLayout
-                android:id="@+id/llCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="5dp">
+                android:orientation="horizontal">
 
+                <GridView
+                    android:id="@+id/gridView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:horizontalSpacing="0dp"
+                    android:padding="@dimen/_5dp" />
             </LinearLayout>
         </HorizontalScrollView>
+
     </android.support.v7.widget.CardView>
 
 

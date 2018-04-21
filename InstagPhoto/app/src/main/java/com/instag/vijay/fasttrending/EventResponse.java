@@ -29,6 +29,15 @@ public class EventResponse {
     @SerializedName("country")
     private String country;
 
+    @SerializedName("contact_number")
+    private String contact_number;
+
+    @SerializedName("profile_status")
+    private String profile_status;
+
+    @SerializedName("web_info")
+    private String web_info;
+
     @SerializedName("aboutme")
     private String aboutme;
 
@@ -49,6 +58,22 @@ public class EventResponse {
 
     @SerializedName("cover_image")
     private String coverimage;
+
+    public String getProfile_status() {
+        return profile_status;
+    }
+
+    public void setProfile_status(String profile_status) {
+        this.profile_status = profile_status;
+    }
+
+    public String getWeb_info() {
+        return web_info;
+    }
+
+    public void setWeb_info(String web_info) {
+        this.web_info = web_info;
+    }
 
     public String getProfileName() {
         return profileName;
@@ -160,6 +185,14 @@ public class EventResponse {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getContact_number() {
+        return contact_number;
+    }
+
+    public void setContact_number(String contact_number) {
+        this.contact_number = contact_number;
     }
 
     @Override

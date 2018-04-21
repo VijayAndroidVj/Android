@@ -3,18 +3,16 @@ package com.instag.vijay.fasttrending.adapter;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Point;
-import android.support.v7.app.AlertDialog;
+import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -22,31 +20,45 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.instag.vijay.fasttrending.Comment;
 import com.instag.vijay.fasttrending.CommonUtil;
 import com.instag.vijay.fasttrending.EventResponse;
+import com.instag.vijay.fasttrending.Likes;
 import com.instag.vijay.fasttrending.PostView;
 import com.instag.vijay.fasttrending.PreferenceUtil;
+import com.instag.vijay.fasttrending.ProfileView;
 import com.instag.vijay.fasttrending.R;
+import com.instag.vijay.fasttrending.activity.VideoViewActivity;
 import com.instag.vijay.fasttrending.model.Posts;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder> implements View.OnClickListener {
+public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.MyViewHolder> implements View.OnClickListener {
 
     private List<Posts> originalList;
+    private PreferenceUtil preferenceUtil;
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.ibPlay:
+                Posts posts = (Posts) v.getTag();
+                Intent myIntent = new Intent(activity,
+                        VideoViewActivity.class);
+                myIntent.putExtra("post", posts);
+                activity.startActivity(myIntent);
+                break;
             case R.id.btnpostDelete:
                 Object object = v.getTag();
                 if (object instanceof Posts) {
                     Posts post = (Posts) object;
-                    showMeetingtAlert(activity, activity.getString(R.string.app_name), "Are you sure want to delete this post?", post);
+                    showMeetingtAlert(activity, "Delete Post", "Are you sure want to delete this post?", post);
                 }
                 break;
             case R.id.likePost:
@@ -56,6 +68,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
                     likePost(post);
                 }
                 break;
+            case R.id.txtViewAllComments:
             case R.id.commentPost:
                 object = v.getTag();
                 if (object instanceof Posts) {
@@ -65,7 +78,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
                     activity.startActivity(intent);
                 }
                 break;
-            case R.id.rlgrid:
+            case R.id.rlParentMeeting:
                 object = v.getTag();
                 if (object instanceof Posts) {
                     Posts post = (Posts) object;
@@ -74,6 +87,27 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
                     activity.startActivity(intent);
                 }
                 break;
+            case R.id.rlMeeting1:
+                object = v.getTag();
+                if (object instanceof Posts && !(activity instanceof ProfileView)) {
+                    Posts post = (Posts) object;
+                    Intent intent = new Intent(activity, ProfileView.class);
+                    intent.putExtra("profileId", post.getPostmail());
+                    activity.startActivity(intent);
+                }
+                break;
+
+            case R.id.txtPostLikesCount:
+                object = v.getTag();
+                if (object instanceof Posts) {
+                    Posts post = (Posts) object;
+                    Intent intent = new Intent(activity, Likes.class);
+                    intent.putExtra("postid", post.getPost_id());
+                    activity.startActivity(intent);
+                }
+                break;
+
+
         }
     }
 
@@ -82,7 +116,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
             initProgress("Please wait...");
             ApiInterface service =
                     ApiClient.getClient().create(ApiInterface.class);
-            PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
 
             String usermail = preferenceUtil.getUserMailId();
             Call<EventResponse> call = service.post_like(usermail, preferenceUtil.getUserName(), post.getPost_id(), !post.isLiked());
@@ -124,7 +157,28 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
 
 
     private void showMeetingtAlert(Activity activity, String title, String message, final Posts post) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
+
+        new SweetAlertDialog(activity, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+                .setTitleText(title)
+                .setContentText(message)
+//                .setCustomImage(R.drawable.app_logo_back)
+                .setCancelText("No").setConfirmText("Yes")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        deletePost(post);
+                        sDialog.dismissWithAnimation();
+                    }
+                })
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismissWithAnimation();
+                    }
+                })
+                .show();
+
+       /* AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
         LayoutInflater inflater = activity.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.custom_ok_dialog_, null);
         alertDialogBuilder.setView(dialogView);
@@ -154,7 +208,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
             }
         });
 
-        alertDialog.show();
+        alertDialog.show();*/
     }
 
     private void deletePost(final Posts post) {
@@ -162,8 +216,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
             initProgress("Deleting....");
             ApiInterface service =
                     ApiClient.getClient().create(ApiInterface.class);
-            PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
-
             String usermail = preferenceUtil.getUserMailId();
             Call<EventResponse> call = service.delete_post(usermail, post.getPost_id());
             call.enqueue(new Callback<EventResponse>() {
@@ -221,60 +273,75 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        //        private TextView txtMeetingName, txtPostDescription, txtPostLikesCount;
-//        private Button btnpostDelete;
         private ImageView postImage;
-        private View rlgrid;
-//        private ImageView likePost, commentPost;
+        private View rlParentMeeting, ibPlay;
 
         private MyViewHolder(View view) {
             super(view);
-//            txtMeetingName = view.findViewById(R.id.txtMeetingName);
-//            txtPostDescription = view.findViewById(R.id.txtPostDescription);
-//            txtPostLikesCount = view.findViewById(R.id.txtPostLikesCount);
-            postImage = view.findViewById(R.id.postImg);
-            rlgrid = view.findViewById(R.id.rlgrid);
-//            txtMeetingName.setTypeface(font, Typeface.BOLD);
-//            btnpostDelete = view.findViewById(R.id.btnpostDelete);
-//            likePost = view.findViewById(R.id.likePost);
-//            commentPost = view.findViewById(R.id.commentPost);
+            postImage = view.findViewById(R.id.postImage);
+            rlParentMeeting = view.findViewById(R.id.rlParentMeeting);
+            ibPlay = view.findViewById(R.id.ibPlay);
         }
     }
 
     private Activity activity;
     private LayoutInflater layoutInflater;
-    int width;
+    private SimpleDateFormat sdf;
+    private SimpleDateFormat formatter;
+    private ColorStateList selectedColorStateList;
+    private ColorStateList unselectedColorStateList;
 
-    public ImageAdapter(Activity activity, List<Posts> moviesList) {
+    public TrendingAdapter(Activity activity, List<Posts> moviesList) {
         this.originalList = moviesList;
         this.activity = activity;
+        selectedColorStateList = CommonUtil.getColorStateList(activity, R.color.red);
+        unselectedColorStateList = CommonUtil.getColorStateList(activity, R.color.black);
         layoutInflater = LayoutInflater.from(activity);
-        Display display = activity.getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        width = size.x;
+        preferenceUtil = new PreferenceUtil(activity);
+        sdf = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss", Locale.getDefault());
+        formatter = new SimpleDateFormat("MMM dd,yyyy hh:mm a", Locale.getDefault());
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = layoutInflater.inflate(R.layout.grid_image_layout, parent, false);
+        View itemView = layoutInflater.inflate(R.layout.trendingvideo_item, parent, false);
         return new MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Posts post = originalList.get(position);
-        holder.rlgrid.getLayoutParams().width = width / 3;
-        holder.postImage.getLayoutParams().width = width / 3;
-        holder.rlgrid.setOnClickListener(this);
-        holder.rlgrid.setTag(post);
-        if (post.getImage() != null && !post.getImage().isEmpty()) {
+        holder.rlParentMeeting.setTag(post);
+        holder.rlParentMeeting.setOnClickListener(this);
+        holder.ibPlay.setTag(post);
+        holder.ibPlay.setOnClickListener(this);
 
-            Glide.with(activity).load(post.getImage()).centerCrop()
-                    .thumbnail(0.5f)
-                    .crossFade()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(holder.postImage);
+        if (post.getFileType().equalsIgnoreCase("2")) {
+            if (post.getVideoThumb() != null && !post.getVideoThumb().isEmpty()) {
+                byte[] decodedString = Base64.decode(post.getVideoThumb().getBytes(), Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                if (bitmap != null)
+                    holder.postImage.setImageBitmap(bitmap);
+                holder.ibPlay.setVisibility(View.VISIBLE);
+
+            } else if (post.getImage() != null && !post.getImage().isEmpty()) {
+                holder.ibPlay.setVisibility(View.GONE);
+                Glide.with(activity).load(post.getImage()).centerCrop()
+                        .thumbnail(0.5f)
+                        .crossFade()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(holder.postImage);
+            }
+
+        } else {
+            holder.ibPlay.setVisibility(View.GONE);
+            if (post.getImage() != null && !post.getImage().isEmpty()) {
+                Glide.with(activity).load(post.getImage()).centerCrop()
+                        .thumbnail(0.5f)
+                        .crossFade()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(holder.postImage);
+            }
         }
 
     }

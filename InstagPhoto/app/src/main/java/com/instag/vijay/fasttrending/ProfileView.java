@@ -140,7 +140,7 @@ public class ProfileView extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<PostModelMain> call, Throwable t) {
                         // Log error here since request failed
-                        String message = t.getMessage();
+                        String message = t.toString();
                         if (message.contains("Failed to")) {
                             message = "Failed to Connect";
                         } else if (message.contains("Expected")) {

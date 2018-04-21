@@ -20,8 +20,8 @@ import android.widget.Toast;
 
 import com.instag.vijay.fasttrending.CommonUtil;
 import com.instag.vijay.fasttrending.R;
-import com.instag.vijay.fasttrending.adapter.CategoryListAdapter;
-import com.instag.vijay.fasttrending.model.CategoryItem;
+import com.instag.vijay.fasttrending.adapter.TrendingAdapter;
+import com.instag.vijay.fasttrending.model.Posts;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
 
@@ -95,60 +95,11 @@ public class VideoFragmentNew extends Fragment {
             public void onRefresh() {
                 // Refresh items
                 // refreshItems(searchEditText.getText().toString());
+                refreshItems();
             }
         });
 
         refreshItems();
-    }
-
-    ArrayList<CategoryItem> mlistClone = new ArrayList<>();
-
-    public void makeSearch(String query) {
-        try {
-            mlistClone = (ArrayList<CategoryItem>) ilist.clone();
-            if (TextUtils.isEmpty(query)) {
-                setList(mlistClone);
-            } else {
-                query = query.toLowerCase();
-                mlistClone.clear();
-                for (CategoryItem meetingItem : ilist) {
-                    if (meetingItem.getBusiness_name().toLowerCase().contains(query)) {
-                        mlistClone.add(meetingItem);
-                    }
-                }
-                setList(mlistClone);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            setList(mlistClone);
-        }
-    }
-
-    private void setList(ArrayList<CategoryItem> mlistClone) {
-        {
-            try {
-                //ilist = getMeetingList(isPast ? PAST : UPCOMING);
-                viewInfo.setVisibility(GONE);
-                recyclerView.setVisibility(VISIBLE);
-
-                CategoryListAdapter logAdapter = new CategoryListAdapter(activity, mlistClone);
-                recyclerView.setAdapter(logAdapter);
-                LinearLayoutManager mLayoutManager = new LinearLayoutManager(activity);
-                recyclerView.setLayoutManager(mLayoutManager);
-                recyclerView.setItemAnimator(new DefaultItemAnimator());
-//        recycleraddItemDecoration(new SimpleDividerItemDecoration(getContext(), R.drawable.list_item_background));
-                logAdapter.notifyDataSetChanged();
-                if (mlistClone.size() == 0) {
-                    showView(1, "No data available");
-                } else {
-                    progressBar.setVisibility(GONE);
-                    viewInfo.setVisibility(GONE);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }
     }
 
     private void refreshItems() {
@@ -157,14 +108,14 @@ public class VideoFragmentNew extends Fragment {
             progressBar.setVisibility(VISIBLE);
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
-            Call<ArrayList<CategoryItem>> call = apiService.getcategoryItemList("10");
-            call.enqueue(new Callback<ArrayList<CategoryItem>>() {
+            Call<ArrayList<Posts>> call = apiService.getTrendingVideos("10");
+            call.enqueue(new Callback<ArrayList<Posts>>() {
                 @Override
-                public void onResponse(Call<ArrayList<CategoryItem>> call, Response<ArrayList<CategoryItem>> response) {
+                public void onResponse(Call<ArrayList<Posts>> call, Response<ArrayList<Posts>> response) {
                     Log.d("", "response: " + response.body());
                     swipeRefreshLayout.setRefreshing(false);
                     progressBar.setVisibility(GONE);
-                    ArrayList<CategoryItem> sigInResponse = response.body();
+                    ArrayList<Posts> sigInResponse = response.body();
                     if (sigInResponse != null) {
                         ilist = sigInResponse;
                         setList();
@@ -175,7 +126,7 @@ public class VideoFragmentNew extends Fragment {
                 }
 
                 @Override
-                public void onFailure(Call<ArrayList<CategoryItem>> call, Throwable t) {
+                public void onFailure(Call<ArrayList<Posts>> call, Throwable t) {
                     // Log error here since request failed
                     Log.e("", t.toString());
                     progressBar.setVisibility(GONE);
@@ -272,7 +223,7 @@ public class VideoFragmentNew extends Fragment {
         }
     }
 
-    public ArrayList<CategoryItem> ilist = new ArrayList<>();
+    public ArrayList<Posts> ilist = new ArrayList<>();
 
     public void setList() {
         try {
@@ -280,7 +231,7 @@ public class VideoFragmentNew extends Fragment {
             viewInfo.setVisibility(GONE);
             recyclerView.setVisibility(VISIBLE);
 
-            CategoryListAdapter logAdapter = new CategoryListAdapter(activity, ilist);
+            TrendingAdapter logAdapter = new TrendingAdapter(activity, ilist);
             recyclerView.setAdapter(logAdapter);
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(activity);
             recyclerView.setLayoutManager(mLayoutManager);

@@ -129,7 +129,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                 @Override
                 public void onFailure(Call<EventResponse> call, Throwable t) {
                     // Log error here since request failed
-                    String message = t.getMessage();
+                    String message = t.toString();
                     if (message.contains("Failed to")) {
                         message = "Failed to Connect";
                     } else {

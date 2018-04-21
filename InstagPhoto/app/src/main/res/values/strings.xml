@@ -16,6 +16,10 @@
         <item>Male</item>
         <item>Female</item>
     </string-array>
+    <string-array name="status_array">
+        <item>Single</item>
+        <item>Married</item>
+    </string-array>
     <string name="followers">followers</string>
     <string name="following">following</string>
     <string name="you">You</string>

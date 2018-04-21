@@ -147,7 +147,7 @@ public class Comment extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<EventResponse> call, Throwable t) {
                     // Log error here since request failed
-                    String message = t.getMessage();
+                    String message = t.toString();
                     if (message.contains("Failed to")) {
                         message = "Failed to Connect";
                     } else {
@@ -180,7 +180,7 @@ public class Comment extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<ArrayList<Comments>> call, Throwable t) {
                         // Log error here since request failed
-                        String message = t.getMessage();
+                        String message = t.toString();
                         if (message.contains("Failed to")) {
                             message = "Failed to Connect";
                         } else {

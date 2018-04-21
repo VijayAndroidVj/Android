@@ -110,7 +110,7 @@ public class NewsfeedFragment extends Fragment {
                     @Override
                     public void onFailure(Call<PostModelMain> call, Throwable t) {
                         // Log error here since request failed
-                        String message = t.getMessage();
+                        String message = t.toString();
                         if (message.contains("Failed to")) {
                             message = "Failed to Connect";
                         } else if (message.contains("Expected")) {
@@ -157,7 +157,7 @@ public class NewsfeedFragment extends Fragment {
                     @Override
                     public void onFailure(Call<ArrayList<CategoryMain>> call, Throwable t) {
                         // Log error here since request failed
-                        String message = t.getMessage();
+                        String message = t.toString();
                         if (message.contains("Failed to")) {
                             message = "Failed to Connect";
                         } else if (message.contains("Expected")) {
@@ -197,7 +197,7 @@ public class NewsfeedFragment extends Fragment {
         // this is size of your list with data
         int size = categoryMainArrayList.size();
         // Calculated single Item Layout Width for each grid element .. for me it was ~100dp
-        int width = 60;
+        int width = 50;
 
         DisplayMetrics dm = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(dm);

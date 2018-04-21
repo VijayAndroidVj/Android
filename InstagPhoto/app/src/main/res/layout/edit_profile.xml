@@ -214,6 +214,23 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10dp"
+                    android:padding="@dimen/_5dp"
+                    android:text="Status"
+                    android:textColor="@color/grey"
+                    android:textSize="14sp" />
+
+                <Spinner
+                    android:id="@+id/spinnerStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5dp"
                     android:padding="@dimen/_5dp"
                     android:text="Biography"
@@ -281,6 +298,57 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLength="100"
+                    android:maxLines="1"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="10dp"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:padding="@dimen/_5dp"
+                    android:text="Contact number"
+                    android:textColor="@color/grey"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/input_user_contact_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edt_bg"
+                    android:hint="contact number"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLength="15"
+                    android:maxLines="1"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="10dp"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:padding="@dimen/_5dp"
+                    android:text="Web Info"
+                    android:textColor="@color/grey"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/input_web_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edt_bg"
+                    android:hint="http://"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
                     android:maxLines="1"
                     android:paddingBottom="10dp"
                     android:paddingLeft="5dp"

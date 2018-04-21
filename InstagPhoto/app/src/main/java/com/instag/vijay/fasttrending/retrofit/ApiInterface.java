@@ -2,12 +2,14 @@ package com.instag.vijay.fasttrending.retrofit;
 
 import com.instag.vijay.fasttrending.EventResponse;
 import com.instag.vijay.fasttrending.FavModel;
+import com.instag.vijay.fasttrending.UserModel;
 import com.instag.vijay.fasttrending.model.CategoryItem;
 import com.instag.vijay.fasttrending.model.CategoryMain;
 import com.instag.vijay.fasttrending.model.Comments;
 import com.instag.vijay.fasttrending.model.Notification;
 import com.instag.vijay.fasttrending.model.PostModelMain;
 import com.instag.vijay.fasttrending.model.Posts;
+import com.instag.vijay.fasttrending.model.SubCategory;
 
 import java.util.ArrayList;
 
@@ -15,9 +17,11 @@ import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Query;
 
 /**
  * Created by iyara_rajan on 06-07-2017.
@@ -70,6 +74,22 @@ public interface ApiInterface {
     Call<ArrayList<FavModel>> search_user(@Field("useremail") String useremail, @Field("searchname") String searchname);
 
     @Multipart
+    @POST("FEELOUTADMIN/list/add_business_page.php")
+    Call<EventResponse> add_business_page(
+            @Part MultipartBody.Part title,
+            @Part MultipartBody.Part uploaded_file,
+            @Part MultipartBody.Part txtEmpPreAddress,
+            @Part MultipartBody.Part state,
+            @Part MultipartBody.Part city,
+            @Part MultipartBody.Part txtEmpContact,
+            @Part MultipartBody.Part category,
+            @Part MultipartBody.Part scategory,
+            @Part MultipartBody.Part key,
+            @Part MultipartBody.Part email
+    );
+
+
+    @Multipart
     @POST("insta_posts.php")
     Call<EventResponse> insta_posts(
             @Part MultipartBody.Part description,
@@ -94,24 +114,55 @@ public interface ApiInterface {
             @Part MultipartBody.Part aboutmemul,
             @Part MultipartBody.Part statemul,
             @Part MultipartBody.Part countrymul,
+            @Part MultipartBody.Part contact,
             @Part MultipartBody.Part gendermul,
-            @Part MultipartBody.Part privacyOn);
+            @Part MultipartBody.Part privacyOn,
+            @Part MultipartBody.Part statusmull,
+            @Part MultipartBody.Part web_info_mul);
 
     @POST("getposts.php")
     @FormUrlEncoded
     Call<PostModelMain> getposts(@Field("useremail") String useremail, @Field("myemail") String myemail);
 
+    @POST("getpostsnew.php")
+    @FormUrlEncoded
+    Call<PostModelMain> getpostsnew(@Field("myemail") String myemail);
+
+
+    @POST("getallLists.php")
+    @FormUrlEncoded
+    Call<ArrayList<UserModel>> getallLists(@Field("myemail") String myemail, @Field("action") String action);
+
     @POST("getmynewsfeed.php")
     @FormUrlEncoded
     Call<PostModelMain> getmynewsfeed(@Field("useremail") String useremail);
+
+    @POST("get_friends_post.php")
+    @FormUrlEncoded
+    Call<PostModelMain> get_friends_post(@Field("myemail") String myemail);
+
+    @POST("get_liked_posts.php")
+    @FormUrlEncoded
+    Call<PostModelMain> get_liked_post(@Field("myemail") String myemail);
 
     @POST("getcategory.php")
     @FormUrlEncoded
     Call<ArrayList<CategoryMain>> getcategory(@Field("useremail") String useremail);
 
+    @GET("get_business_subcategory_list.php")
+    Call<ArrayList<SubCategory>> get_business_subcategory_list(@Query("category") String category);
+
+    @POST("getbanner.php")
+    @FormUrlEncoded
+    Call<ArrayList<CategoryMain>> getbanner(@Field("useremail") String useremail);
+
     @POST("getcategory_item_list.php")
     @FormUrlEncoded
     Call<ArrayList<CategoryItem>> getcategoryItemList(@Field("_id") String _id);
+
+    @POST("getTrendingVideos.php")
+    @FormUrlEncoded
+    Call<ArrayList<Posts>> getTrendingVideos(@Field("useremail") String useremail);
 
 
     @POST("getsearchpost.php")

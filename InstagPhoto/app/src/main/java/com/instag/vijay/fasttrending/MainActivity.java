@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.IdRes;
@@ -43,6 +44,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private View iv_actionbar_settings;
     public static MainActivity mainActivity;
     private PagerAdapter adapter;
+    private View flnewsfeed;
+    private View flsearch;
+    private View flvideo;
+    private View flcamera;
+    private View flheart;
+    private View flprofile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +125,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
 
                 }
+                flnewsfeed.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                flsearch.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                flvideo.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                flcamera.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                flheart.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                flprofile.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                switch (position) {
+                    case 0:
+                        flnewsfeed.setBackgroundColor(Color.parseColor("#d9d9d9"));
+                        break;
+                    case 1:
+                        flsearch.setBackgroundColor(Color.parseColor("#d9d9d9"));
+                        break;
+                    case 2:
+                        flvideo.setBackgroundColor(Color.parseColor("#d9d9d9"));
+                        break;
+                    case 3:
+                        flcamera.setBackgroundColor(Color.parseColor("#d9d9d9"));
+                        break;
+                    case 4:
+                        flheart.setBackgroundColor(Color.parseColor("#d9d9d9"));
+                        break;
+                    case 5:
+                        flprofile.setBackgroundColor(Color.parseColor("#d9d9d9"));
+                        break;
+                }
             }
 
             @Override
@@ -126,42 +159,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        findViewById(R.id.flnewsfeed).setOnClickListener(new View.OnClickListener() {
+        flnewsfeed = findViewById(R.id.flnewsfeed);
+        flsearch = findViewById(R.id.flsearch);
+        flvideo = findViewById(R.id.flvideo);
+        flcamera = findViewById(R.id.flcamera);
+        flheart = findViewById(R.id.flheart);
+        flprofile = findViewById(R.id.flprofile);
+        flnewsfeed.setBackgroundColor(Color.parseColor("#d9d9d9"));
+        flnewsfeed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 viewPager.setCurrentItem(0);
             }
         });
 
-        findViewById(R.id.flsearch).setOnClickListener(new View.OnClickListener() {
+        flsearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 viewPager.setCurrentItem(1);
             }
         });
 
-        findViewById(R.id.flvideo).setOnClickListener(new View.OnClickListener() {
+        flvideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 viewPager.setCurrentItem(2);
             }
         });
 
-        findViewById(R.id.flcamera).setOnClickListener(new View.OnClickListener() {
+        flcamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 viewPager.setCurrentItem(3);
             }
         });
 
-        findViewById(R.id.flheart).setOnClickListener(new View.OnClickListener() {
+        flheart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 viewPager.setCurrentItem(4);
             }
         });
 
-        findViewById(R.id.flprofile).setOnClickListener(new View.OnClickListener() {
+        flprofile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 viewPager.setCurrentItem(5);
@@ -243,7 +283,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void onFailure(Call<EventResponse> call, Throwable t) {
                     // Log error here since request failed
-                    String message = t.getMessage();
+                    String message = t.toString();
                     if (message.contains("Failed to")) {
                         message = "Failed to Connect";
                     } else {

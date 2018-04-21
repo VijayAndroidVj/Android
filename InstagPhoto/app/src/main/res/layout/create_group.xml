@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5dp"
+        android:gravity="center"
+        android:padding="@dimen/_5dp"
+        android:text="Create Your Group"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cv_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+        android:layout_marginTop="@dimen/_45dp"
+        android:background="@color/white"
+        android:elevation="@dimen/_15dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/_5dp"
+        app:cardElevation="@dimen/_5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:layout_weight=".7"
+                    android:padding="@dimen/_5dp"
+                    android:text="Group Title"
+                    android:textColor="@color/grey"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/input_business_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1.3"
+                    android:background="@drawable/edt_bg"
+                    android:hint="group name"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:maxLength="100"
+                    android:maxLines="1"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="10dp"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:layout_weight="0.7"
+                    android:padding="@dimen/_5dp"
+                    android:text="Group Image"
+                    android:textColor="@color/grey"
+                    android:textSize="14sp" />
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1.3">
+
+                    <ImageView
+                        android:id="@+id/iv_business_image"
+                        android:layout_width="150dp"
+                        android:layout_height="120dp"
+                        android:background="@drawable/default_cover_photo"
+                        android:scaleType="fitXY" />
+
+                </FrameLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:layout_weight=".7"
+                    android:padding="@dimen/_5dp"
+                    android:text="Group Type"
+                    android:textColor="@color/grey"
+                    android:textSize="14sp" />
+
+                <fr.ganfra.materialspinner.MaterialSpinner
+                    android:id="@+id/sp_add_group_type"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1.3"
+                    app:ms_arrowColor="@color/black"
+                    app:ms_arrowSize="13dp"
+                    app:ms_baseColor="@color/black"
+                    app:ms_floatingLabelColor="@color/grey"
+                    app:ms_floatingLabelText="Business Category"
+                    app:ms_hint="Business Category"
+                    app:ms_multiline="false" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/_10dp">
+
+                <TextView
+                    android:id="@+id/btnGroupCreate"
+                    android:layout_width="@dimen/_100dp"
+                    android:layout_height="@dimen/_35dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="@dimen/_130dp"
+                    android:background="@color/participant_view_selected"
+                    android:drawableTint="@color/white"
+                    android:gravity="center"
+                    android:padding="@dimen/_8dp"
+                    android:text="Create"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/btnGroupCancel"
+                    android:layout_width="@dimen/_100dp"
+                    android:layout_height="@dimen/_35dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/_130dp"
+                    android:background="@color/participant_view_selected"
+                    android:drawableTint="@color/white"
+                    android:gravity="center"
+                    android:padding="@dimen/_8dp"
+                    android:text="Cancel"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:visibility="visible" />
+
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+</RelativeLayout>

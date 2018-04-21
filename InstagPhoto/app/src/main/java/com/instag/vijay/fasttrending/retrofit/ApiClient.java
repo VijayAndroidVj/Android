@@ -26,6 +26,7 @@ public class ApiClient {
 
     private static Retrofit retrofit = null;
     public static String serverAddress = "http://www.xooads.com/insta/";
+    public static String serverAddress1 = "http://www.xooads.com/";
 
 
     private static TrustManager[] trustAllCerts = new TrustManager[]{
@@ -69,6 +70,38 @@ public class ApiClient {
 //        if (retrofit == null) {
         retrofit = new Retrofit.Builder().client(client.build())
                 .baseUrl(serverAddress)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+//        }
+        return retrofit;
+    }
+
+    public static Retrofit getClientAdmin() {
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient.Builder client = new OkHttpClient.Builder().addInterceptor(interceptor);
+
+        try {
+            try {
+                SSLContext sc = SSLContext.getInstance("SSL");
+                sc.init(null, trustAllCerts, new SecureRandom());
+                client.hostnameVerifier(new RelaxedHostNameVerifier());
+                client.sslSocketFactory(sc.getSocketFactory(), (X509TrustManager) trustAllCerts[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
+//        if (retrofit == null) {
+        retrofit = new Retrofit.Builder().client(client.build())
+                .baseUrl(serverAddress1)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 

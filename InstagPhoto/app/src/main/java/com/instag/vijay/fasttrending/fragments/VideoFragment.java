@@ -35,7 +35,7 @@ public class VideoFragment extends Fragment implements TabLayout.OnTabSelectedLi
         super.onViewCreated(view, savedInstanceState);
         activity = getActivity();
 
-        tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
+        tabLayout = view.findViewById(R.id.tabLayout);
 
         tabLayout.addTab(tabLayout.newTab().setText("Home"));
         tabLayout.addTab(tabLayout.newTab().setText("Trending"));
@@ -44,18 +44,33 @@ public class VideoFragment extends Fragment implements TabLayout.OnTabSelectedLi
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         //Initializing viewPager
-        viewPager = (ViewPager) view.findViewById(R.id.pager);
+        viewPager = view.findViewById(R.id.pager);
 
         //Creating our pager adapter
-        VideoPager adapter = new VideoPager(getFragmentManager(), tabLayout.getTabCount());
+        VideoPager adapter = new VideoPager(getChildFragmentManager(), tabLayout.getTabCount());
 
         //Adding adapter to pager
         viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
 
+            @Override
+            public void onPageSelected(int position) {
+                tabLayout.setScrollPosition(position, 0f, true);
+                viewPager.setCurrentItem(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         //Adding onTabSelectedListener to swipe views
         tabLayout.addOnTabSelectedListener(this);
-        //tabLayout.setupWithViewPager(viewPager);
-        // tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+//        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
     }
 
 

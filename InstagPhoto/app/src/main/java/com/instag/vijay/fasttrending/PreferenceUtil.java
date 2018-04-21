@@ -49,6 +49,10 @@ public class PreferenceUtil {
         return getString(Keys.COUNTRY, "");
     }
 
+    public String getUserContactNumber() {
+        return getString(Keys.CONTACT_NUMBER, "");
+    }
+
 
     public String getUserPassword() {
         return getString(Keys.PASSWORD, "");
@@ -56,6 +60,14 @@ public class PreferenceUtil {
 
     public String getUserMailId() {
         return getString(Keys.EmailID, "");
+    }
+
+    public String getUserProfileStatus() {
+        return getString(Keys.PROFILE_STATUS, "");
+    }
+
+    public String getWebInfo() {
+        return getString(Keys.WEN_INFO, "");
     }
 
     public String getUserName() {

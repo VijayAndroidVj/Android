@@ -18,7 +18,10 @@ public interface Keys {
     String ABOUTME = "aboutme";
     String STATE = "state";
     String COUNTRY = "country";
+    String CONTACT_NUMBER = "CONTACT_NUMBER";
     String PRIVACY_SETTINGS = "PRIVACY_SETTINGS";
+    String PROFILE_STATUS = "PROFILE_STATUS";
+    String WEN_INFO = "WEN_INFO";
 
     /**
      * Preference keys

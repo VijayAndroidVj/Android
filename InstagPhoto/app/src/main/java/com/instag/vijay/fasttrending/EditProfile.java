@@ -68,7 +68,7 @@ import retrofit2.Response;
 
 public class EditProfile extends AppCompatActivity {
 
-    EditText input_username, input_profilename, input_usermail, input_userpassword, input_aboutme, input_state, input_country;
+    EditText input_username, input_web_info, input_profilename, input_usermail, input_userpassword, input_aboutme, input_state, input_country, input_user_contact_number;
     SelectableRoundedImageView ivProfile1;
     Activity activity;
     PreferenceUtil preferenceUtil;
@@ -78,6 +78,7 @@ public class EditProfile extends AppCompatActivity {
     String coverimagePath;
     boolean removePhoto;
     Spinner spinner;
+    Spinner spinnerStatus;
     ImageView ivCoverPhoto;
     boolean isCoverPhoto;
 
@@ -118,6 +119,7 @@ public class EditProfile extends AppCompatActivity {
         actionBar.setDefaultDisplayHomeAsUpEnabled(true);
         progressBar = findViewById(R.id.progressBar_cyclic);
         spinner = findViewById(R.id.spinner);
+        spinnerStatus = findViewById(R.id.spinnerStatus);
         input_username = findViewById(R.id.input_username);
         input_profilename = findViewById(R.id.input_profilename);
         ivCoverPhoto = findViewById(R.id.ivCoverPhoto);
@@ -125,8 +127,10 @@ public class EditProfile extends AppCompatActivity {
         tglPrivacySettings = findViewById(R.id.tglPrivacySettings);
         input_userpassword = findViewById(R.id.input_userpassword);
         input_aboutme = findViewById(R.id.input_userbiography);
+        input_web_info = findViewById(R.id.input_web_info);
         input_state = findViewById(R.id.input_userstate);
         input_country = findViewById(R.id.input_usercountry);
+        input_user_contact_number = findViewById(R.id.input_user_contact_number);
         ivProfile1 = findViewById(R.id.ivProfile1);
         input_profilename.setText(preferenceUtil.getProfileName());
         input_username.setText(preferenceUtil.getUserName());
@@ -136,15 +140,22 @@ public class EditProfile extends AppCompatActivity {
         input_aboutme.setText(preferenceUtil.getUserAboutMe());
         input_state.setText(preferenceUtil.getUserState());
         input_country.setText(preferenceUtil.getUserCountry());
+        input_user_contact_number.setText(preferenceUtil.getUserContactNumber());
+        input_web_info.setText(preferenceUtil.getWebInfo());
         ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.gender_array, R.layout.spinner_item);
         spinner.setAdapter(adapter);
+        ArrayAdapter adapterStatus = ArrayAdapter.createFromResource(this, R.array.status_array, R.layout.spinner_item);
+        spinnerStatus.setAdapter(adapterStatus);
 
         if (preferenceUtil.getUserGender().equalsIgnoreCase("male")) {
-//            radioButtonmale.setChecked(true);
             spinner.setSelection(0);
         } else {
             spinner.setSelection(1);
-//            radioButtonfemale.setChecked(true);
+        }
+        if (preferenceUtil.getUserProfileStatus().equalsIgnoreCase("single")) {
+            spinnerStatus.setSelection(0);
+        } else {
+            spinnerStatus.setSelection(1);
         }
         if (preferenceUtil.getMyPrivacySettings()) {
             tglPrivacySettings.setToggleOn();
@@ -303,13 +314,16 @@ public class EditProfile extends AppCompatActivity {
         final String userName1 = input_username.getText().toString().trim();
         final String profileName1 = input_profilename.getText().toString().trim();
         final String password1 = input_userpassword.getText().toString().trim();
+        final String web_info = input_web_info.getText().toString().trim();
 
 
         final String gender = spinner.getSelectedItemPosition() == 0 ? "male" : "female";
+        final String status = spinnerStatus.getSelectedItemPosition() == 0 ? "single" : "married";
 
         final String aboutme = input_aboutme.getText().toString().trim();
         final String state = input_state.getText().toString().trim();
         final String country = input_country.getText().toString().trim();
+        final String contact = input_user_contact_number.getText().toString().trim();
 
         if (CommonUtil.isNetworkAvailable(activity)) {
             progressBar.setVisibility(View.VISIBLE);
@@ -325,9 +339,18 @@ public class EditProfile extends AppCompatActivity {
             MultipartBody.Part gendermul =
                     MultipartBody.Part.createFormData("gender", gender);
 
+            MultipartBody.Part pstatusmul =
+                    MultipartBody.Part.createFormData("profile_status", status);
 
             MultipartBody.Part countrymul =
                     MultipartBody.Part.createFormData("country", country);
+
+            MultipartBody.Part contactmul =
+                    MultipartBody.Part.createFormData("contact_number", contact);
+
+            MultipartBody.Part webInfomul =
+                    MultipartBody.Part.createFormData("web_info", web_info);
+
             MultipartBody.Part privacyOn =
                     MultipartBody.Part.createFormData("privacyOn", String.valueOf(isPrivacyOn));
 
@@ -373,7 +396,7 @@ public class EditProfile extends AppCompatActivity {
 
 
             // finally, execute the request
-            Call<EventResponse> call = apiService.update_profile(uploadimage, uploadCoverimage, profileName, userName, email, password, profile_image, cover_image, aboutmemul, statemul, countrymul, gendermul, privacyOn);
+            Call<EventResponse> call = apiService.update_profile(uploadimage, uploadCoverimage, profileName, userName, email, password, profile_image, cover_image, aboutmemul, statemul, countrymul, contactmul, gendermul, privacyOn, pstatusmul, webInfomul);
             call.enqueue(new Callback<EventResponse>() {
                 @Override
                 public void onResponse(Call<EventResponse> call, retrofit2.Response<EventResponse> response) {
@@ -390,6 +413,9 @@ public class EditProfile extends AppCompatActivity {
                             preferenceUtil.putString(Keys.GENDER, gender);
                             preferenceUtil.putString(Keys.STATE, state);
                             preferenceUtil.putString(Keys.COUNTRY, country);
+                            preferenceUtil.putString(Keys.CONTACT_NUMBER, contact);
+                            preferenceUtil.putString(Keys.PROFILE_STATUS, status);
+                            preferenceUtil.putString(Keys.WEN_INFO, web_info);
                             preferenceUtil.putBoolean(Keys.PRIVACY_SETTINGS, isPrivacyOn);
                             preferenceUtil.putString(Keys.PROFILE_IMAGE, sigInResponse.getServerimage());
                             preferenceUtil.putString(Keys.COVER_IMAGE, sigInResponse.getCoverimage());
@@ -520,7 +546,7 @@ public class EditProfile extends AppCompatActivity {
                 public void onFailure(Call<EventResponse> call, Throwable t) {
                     // Log error here since request failed
                     progressBar.setVisibility(View.GONE);
-                    String message = t.getMessage();
+                    String message = t.toString();
                     if (message.contains("Failed to")) {
                         message = "Failed to Connect";
                     } else {

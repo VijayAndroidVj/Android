@@ -78,6 +78,9 @@
             android:name="com.instag.vijay.fasttrending.EditProfile"
             android:theme="@style/AppTheme" />
         <activity
+            android:name="com.instag.vijay.fasttrending.activity.SeeAllFriendsActivity"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name="com.instag.vijay.fasttrending.activity.SearchActivity"
             android:theme="@style/AppTheme1" />
         <activity
@@ -91,6 +94,14 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name="com.instag.vijay.fasttrending.MainActivity"
+            android:theme="@style/AppTheme1"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.instag.vijay.fasttrending.activity.CreateBusinessPageActivity"
+            android:theme="@style/AppTheme1"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.instag.vijay.fasttrending.activity.CreateGroupActivity"
             android:theme="@style/AppTheme1"
             android:windowSoftInputMode="adjustPan" />
         <activity

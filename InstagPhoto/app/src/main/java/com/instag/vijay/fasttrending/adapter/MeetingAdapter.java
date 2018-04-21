@@ -119,7 +119,7 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
                     @Override
                     public void onFailure(Call<EventResponse> call, Throwable t) {
                         // Log error here since request failed
-                        String message = t.getMessage();
+                        String message = t.toString();
                         if (message.contains("Failed to")) {
                             message = "Failed to Connect";
                         } else {

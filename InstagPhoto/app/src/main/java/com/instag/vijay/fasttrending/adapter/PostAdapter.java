@@ -29,6 +29,7 @@ import com.instag.vijay.fasttrending.PostView;
 import com.instag.vijay.fasttrending.PreferenceUtil;
 import com.instag.vijay.fasttrending.ProfileView;
 import com.instag.vijay.fasttrending.R;
+import com.instag.vijay.fasttrending.activity.VideoViewActivity;
 import com.instag.vijay.fasttrending.model.Posts;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
@@ -52,6 +53,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ibPlay:
+                Posts posts = (Posts) v.getTag();
+                Intent myIntent = new Intent(activity,
+                        VideoViewActivity.class);
+                myIntent.putExtra("post", posts);
+                activity.startActivity(myIntent);
+                break;
             case R.id.btnpostDelete:
                 Object object = v.getTag();
                 if (object instanceof Posts) {
@@ -138,7 +145,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
                 @Override
                 public void onFailure(Call<EventResponse> call, Throwable t) {
                     // Log error here since request failed
-                    String message = t.getMessage();
+                    String message = t.toString();
                     if (message.contains("Failed to")) {
                         message = "Failed to Connect";
                     } else {
@@ -233,7 +240,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
                 @Override
                 public void onFailure(Call<EventResponse> call, Throwable t) {
                     // Log error here since request failed
-                    String message = t.getMessage();
+                    String message = t.toString();
                     if (message.contains("Failed to")) {
                         message = "Failed to Connect";
                     } else {

@@ -10,6 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import com.vajralabs.uniroyal.uniroyal.R;
 import com.vajralabs.uniroyal.uniroyal.activity.SpacePhotoActivity;
 import com.vajralabs.uniroyal.uniroyal.model.CategoryItem;
@@ -59,11 +63,15 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHo
         private ImageView ivGallery;
         private View recyclerviewContact;
         private View topview;
+        private CircularProgressBar progressBar_cyclic;
+        private View flGallery;
 
         private MyViewHolder(View view) {
             super(view);
             topview = view;
             recyclerviewContact = view.findViewById(R.id.recyclerviewContact);
+            progressBar_cyclic = view.findViewById(R.id.progress_bar);
+            flGallery = view.findViewById(R.id.flGallery);
             ivGallery = view.findViewById(R.id.ivGallery);
         }
     }
@@ -84,15 +92,32 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHo
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
         holder.recyclerviewContact.setVisibility(View.GONE);
-        holder.ivGallery.setVisibility(View.VISIBLE);
+        holder.flGallery.setVisibility(View.VISIBLE);
 
         CategoryItem post = originalList.get(position);
-
+        holder.progressBar_cyclic.setVisibility(View.VISIBLE);
+        holder.progressBar_cyclic.setProgress(70f);
         if (post.getImage_path() != null && !post.getImage_path().isEmpty()) {
             Glide.with(activity).load(post.getImage_path())
-                    .into(holder.ivGallery);
+                    .listener(new RequestListener<String, GlideDrawable>() {
+                        @Override
+                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            holder.progressBar_cyclic.setVisibility(View.GONE);
+                            return false; // important to return false so the error placeholder can be placed
+                        }
+
+                        @Override
+                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            holder.progressBar_cyclic.setVisibility(View.GONE);
+                            return false;
+                        }
+                    }).into(holder.ivGallery);
+
+
+        } else {
+            holder.progressBar_cyclic.setVisibility(View.GONE);
         }
 
         holder.topview.setTag(post);

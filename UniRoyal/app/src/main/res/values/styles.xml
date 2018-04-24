@@ -10,6 +10,14 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.Dialog.Alert.Green" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/green</item>
+        <item name="colorPrimaryDark">@color/participant_view_selected</item>
+        <item name="colorAccent">@color/green</item>
+        <item name="colorControlNormal">@color/green</item>
+        <item name="titleTextColor">@color/green</item>
+    </style>
+
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">

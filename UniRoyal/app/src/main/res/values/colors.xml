@@ -22,4 +22,6 @@
     <color name="blue1">#1d3767</color>
     <color name="greendark">#123b38</color>
     <color name="blue2">#2d918b</color>
+    <color name="green">#2E8B57</color>
+    <color name="participant_view_selected">#27AF81</color>
 </resources>

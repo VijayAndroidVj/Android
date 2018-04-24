@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.graphics.Palette;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,10 +83,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 //    private View llState;
 //    private View llCountry;
 //    private TextView txtGenderValue;
-    private TextView txtCountryValue;
-    private TextView txtProfileContactNumber;
-    private TextView txtProfileEmailId;
-    private TextView txtProfileBusinessPage;
     private TextView txtFriendsCount;
     private TextView badge_followers;
     private TextView badge_following;
@@ -113,7 +110,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     private ImageView ivProfile1;
     private ImageView ivCoverPhoto;
-    private TextView txtStateCity;
+    private TextView txtProfileLocation;
     private TextView txtBiography;
     private TextView txtUserName;
     private TextView txt_see_all_friends;
@@ -138,11 +135,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         gv_post_list = view.findViewById(R.id.gv_post_list);
         collapsingToolbarLayout = view.findViewById(R.id.collapsing_toolbar);
         collapsingToolbarLayout.setTitle(getResources().getString(R.string.app_name));
-        txtStateCity = view.findViewById(R.id.txtStateCity);
-        txtCountryValue = view.findViewById(R.id.txtCountryValue);
-        txtProfileContactNumber = view.findViewById(R.id.txtProfileContactNumber);
-        txtProfileEmailId = view.findViewById(R.id.txtProfileEmailId);
-        txtProfileBusinessPage = view.findViewById(R.id.txtProfileBusinessPage);
+        txtProfileLocation = view.findViewById(R.id.txtProfileLocation);
         txtFriendsCount = view.findViewById(R.id.txtFriendsCount);
         badge_friends = view.findViewById(R.id.badge_friends);
         badge_following = view.findViewById(R.id.badge_following);
@@ -204,11 +197,23 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     .into(ivProfile1);
         }
 
-        txtStateCity.setText(preferenceUtil.getUserState());
+
+        String location = preferenceUtil.getUserState();
+        if (!TextUtils.isEmpty(location)) {
+            location = location + ",<br>";
+        }
+        if (!TextUtils.isEmpty(preferenceUtil.getUserCountry())) {
+            location = location + preferenceUtil.getUserCountry() + ",<br>";
+        }
+        if (!TextUtils.isEmpty(preferenceUtil.getUserContactNumber())) {
+            location = location + preferenceUtil.getUserContactNumber() + ",<br>";
+        }
+        if (!TextUtils.isEmpty(preferenceUtil.getUserMailId())) {
+            location = location + preferenceUtil.getUserMailId();
+        }
+        txtProfileLocation.setText(Html.fromHtml(location));
+
         txtBiography.setText(preferenceUtil.getUserAboutMe());
-        txtCountryValue.setText((preferenceUtil.getUserState() != null && preferenceUtil.getUserState().length() > 0) ? ", " + preferenceUtil.getUserCountry() : preferenceUtil.getUserCountry());
-        txtProfileContactNumber.setText(preferenceUtil.getUserContactNumber());
-        txtProfileEmailId.setText(preferenceUtil.getUserMailId());
         txtProfileStatus.setText(preferenceUtil.getUserProfileStatus());
         txtProfileWebInfo.setText(preferenceUtil.getWebInfo());
 
@@ -410,13 +415,23 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                             } else {
                                 badge_followers.setVisibility(View.GONE);
                             }
-                            if (postModelMain.getState() != null)
-                                txtStateCity.setText(postModelMain.getState());
                             if (postModelMain.getAboutme() != null)
                                 txtBiography.setText(postModelMain.getAboutme());
-                            txtCountryValue.setText((postModelMain.getState() != null && postModelMain.getState().length() > 0) ? ", " + postModelMain.getCountry() : postModelMain.getCountry());
-                            txtProfileContactNumber.setText(postModelMain.getContact_number());
-                            txtProfileEmailId.setText(usermail);
+                            String location = postModelMain.getState();
+                            if (!TextUtils.isEmpty(location)) {
+                                location = location + ",<br>";
+                            }
+                            if (!TextUtils.isEmpty(postModelMain.getCountry())) {
+                                location = location + postModelMain.getCountry() + ",<br>";
+                            }
+                            if (!TextUtils.isEmpty(postModelMain.getContact_number())) {
+                                location = location + postModelMain.getContact_number() + ",<br>";
+                            }
+                            if (!TextUtils.isEmpty(preferenceUtil.getUserMailId())) {
+                                location = location + preferenceUtil.getUserMailId();
+                            }
+                            txtProfileLocation.setText(Html.fromHtml(location));
+
                             txtProfileStatus.setText(postModelMain.getProfileStatus());
                             txtProfileWebInfo.setText(postModelMain.getWebInfo());
 
@@ -495,7 +510,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     public void setGridViewHeightBasedOnChildren(ExpandableHeightGridView gridView, int columns) {
         PostsGridAdapter listAdapter = (PostsGridAdapter) gridView.getAdapter();
-        if (listAdapter == null) {
+        if (listAdapter == null || listAdapter.getCount() == 0) {
             // pre-condition
             return;
         }
@@ -523,7 +538,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     public void setListViewHeightBasedOnChildren(ListView listview) {
         ArrayAdapter listAdapter = (ArrayAdapter) listview.getAdapter();
-        if (listAdapter == null) {
+        if (listAdapter == null || listAdapter.getCount() == 0) {
             // pre-condition
             return;
         }

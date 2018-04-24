@@ -25,7 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
 
     private static Retrofit retrofit = null;
-    public static String serverAddress = "http://www.itmspl.com/UniRoyal/";
+    public static String serverAddress = "http://www.pioneer-impex.com/UniRoyal/";
 
 
     private static TrustManager[] trustAllCerts = new TrustManager[]{

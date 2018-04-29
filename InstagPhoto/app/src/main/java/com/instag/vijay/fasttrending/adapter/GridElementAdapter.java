@@ -3,8 +3,6 @@ package com.instag.vijay.fasttrending.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +13,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.instag.vijay.fasttrending.R;
-import com.instag.vijay.fasttrending.activity.CategoryItemListActivity;
+import com.instag.vijay.fasttrending.activity.SubCategoryItemListActivity;
 import com.instag.vijay.fasttrending.model.CategoryMain;
 
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by vijay on 25/3/18.
@@ -29,7 +26,7 @@ public class GridElementAdapter extends BaseAdapter {
 
     private Activity context;
     private List<CategoryMain> categoryMainArrayList;
-    String[] colors = new String[]{"#E91E63", "#4CAF50", "#9C27B0", "#F44336", "#3F51B5", "#2196F3", "#673AB7", "#00BCD4", "#009688", "#03A9F4", "#4CAF50", "#733f55", "#FFC107", "#4CAF50"};
+    // String[] colors = new String[]{"#E91E63", "#4CAF50", "#9C27B0", "#F44336", "#3F51B5", "#2196F3", "#673AB7", "#00BCD4", "#009688", "#03A9F4", "#4CAF50", "#733f55", "#FFC107", "#4CAF50"};
 
     public GridElementAdapter(Activity context, List<CategoryMain> categoryMainArrayList) {
         this.context = context;
@@ -69,9 +66,9 @@ public class GridElementAdapter extends BaseAdapter {
         CategoryMain categoryMain = categoryMainArrayList.get(i);
         TextView txtCategory = gridView.findViewById(R.id.txtCategory);
         ImageView ivCategory = gridView.findViewById(R.id.ivCategory);
-        CardView cv_category = gridView.findViewById(R.id.cv_category);
+        //  CardView cv_category = gridView.findViewById(R.id.cv_category);
         gridView.setTag(categoryMain);
-        cv_category.setCardBackgroundColor(Color.parseColor(colors[new Random().nextInt(colors.length)]));
+        // cv_category.setCardBackgroundColor(Color.parseColor(colors[new Random().nextInt(colors.length)]));
         if (categoryMain.getName() != null) {
             txtCategory.setText(categoryMain.getName());
         }
@@ -85,7 +82,7 @@ public class GridElementAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 CategoryMain categoryMain1 = (CategoryMain) v.getTag();
-                Intent intent = new Intent(context, CategoryItemListActivity.class);
+                Intent intent = new Intent(context, SubCategoryItemListActivity.class);
                 intent.putExtra("category", categoryMain1);
                 context.startActivity(intent);
             }

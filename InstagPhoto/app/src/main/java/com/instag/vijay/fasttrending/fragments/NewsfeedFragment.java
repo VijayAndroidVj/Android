@@ -8,12 +8,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,8 +18,7 @@ import android.widget.Toast;
 import com.instag.vijay.fasttrending.CommonUtil;
 import com.instag.vijay.fasttrending.PreferenceUtil;
 import com.instag.vijay.fasttrending.R;
-import com.instag.vijay.fasttrending.adapter.GridElementAdapter;
-import com.instag.vijay.fasttrending.adapter.PostAdapter;
+import com.instag.vijay.fasttrending.adapter.PostNewsfeedAdapter;
 import com.instag.vijay.fasttrending.model.CategoryMain;
 import com.instag.vijay.fasttrending.model.PostModelMain;
 import com.instag.vijay.fasttrending.model.Posts;
@@ -48,9 +44,9 @@ public class NewsfeedFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private ArrayList<Posts> postsArrayList;
     private ArrayList<CategoryMain> categoryMainArrayList;
-    private PostAdapter postAdapter;
+    private PostNewsfeedAdapter postAdapter;
     private static NewsfeedFragment newsfeedFragment;
-    private GridView horizontalGridView;
+
 
     public static NewsfeedFragment getInstance() {
         if (newsfeedFragment == null) {
@@ -69,11 +65,10 @@ public class NewsfeedFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         activity = getActivity();
 
-        viewInfo = (TextView) view.findViewById(R.id.txtContactInfo);
-        horizontalGridView = view.findViewById(R.id.gridView);
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerviewContact);
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar_cyclic);
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
+        viewInfo = view.findViewById(R.id.txtContactInfo);
+        recyclerView = view.findViewById(R.id.recyclerviewContact);
+        progressBar = view.findViewById(R.id.progressBar_cyclic);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -180,42 +175,9 @@ public class NewsfeedFragment extends Fragment {
     }
 
     private void setCategoryList() {
-        try {
-            gridViewSetting();
-//            horizontalGridView.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
-//            horizontalGridView.setNumColumns(categoryMainArrayList.size());
-            GridElementAdapter gridElementAdapter = new GridElementAdapter(activity, categoryMainArrayList);
-            horizontalGridView.setAdapter(gridElementAdapter);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    private void gridViewSetting() {
-
-        // this is size of your list with data
-        int size = categoryMainArrayList.size();
-        // Calculated single Item Layout Width for each grid element .. for me it was ~100dp
-        int width = 50;
-
-        DisplayMetrics dm = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
-        float density = dm.density;
-
-        int totalWidth = (int) (width * size * density);
-        int singleItemWidth = (int) (width * density);
-
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                totalWidth, LinearLayout.LayoutParams.MATCH_PARENT);
-
-        horizontalGridView.setLayoutParams(params);
-        horizontalGridView.setColumnWidth(singleItemWidth);
-        horizontalGridView.setHorizontalSpacing(2);
-        horizontalGridView.setStretchMode(GridView.STRETCH_SPACING);
-        horizontalGridView.setNumColumns(size);
 
     }
+
 
     private void setNewsfeedList() {
         try {
@@ -226,7 +188,7 @@ public class NewsfeedFragment extends Fragment {
                 swipeRefreshLayout.setRefreshing(false);
                 viewInfo.setText("");
 
-                postAdapter = new PostAdapter(activity, postsArrayList);
+                postAdapter = new PostNewsfeedAdapter(activity, postsArrayList, categoryMainArrayList);
                 recyclerView.setAdapter(postAdapter);
                 RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(activity);
                 recyclerView.setLayoutManager(mLayoutManager);

@@ -27,6 +27,12 @@ public class PermissionCheck {
         return pendingPermission;
     }
 
+    public static ArrayList<String> getCallPermissions() {
+        ArrayList<String> pendingPermission = new ArrayList<>();
+        pendingPermission.add(Manifest.permission.CALL_PHONE);
+        return pendingPermission;
+    }
+
 
     public static ArrayList<String> checkPermission(Activity activity, ArrayList<String> permissions) {
         ArrayList<String> pendingPermission = new ArrayList<>();

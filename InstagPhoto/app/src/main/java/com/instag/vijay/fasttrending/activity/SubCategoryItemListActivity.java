@@ -21,8 +21,8 @@ import android.widget.Toast;
 
 import com.instag.vijay.fasttrending.CommonUtil;
 import com.instag.vijay.fasttrending.R;
-import com.instag.vijay.fasttrending.adapter.CategoryListAdapter;
-import com.instag.vijay.fasttrending.model.CategoryItem;
+import com.instag.vijay.fasttrending.adapter.SubCategoryListAdapter;
+import com.instag.vijay.fasttrending.model.CategoryMain;
 import com.instag.vijay.fasttrending.model.SubCategory;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
@@ -40,13 +40,13 @@ import static android.view.View.VISIBLE;
  * Created by vijay on 19/3/18.
  */
 
-public class CategoryItemListActivity extends AppCompatActivity {
+public class SubCategoryItemListActivity extends AppCompatActivity {
 
     private TextView viewInfo;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private SubCategory categoryMain;
+    private CategoryMain categoryMain;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,8 +65,11 @@ public class CategoryItemListActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDefaultDisplayHomeAsUpEnabled(true);
 
-        EditText searchEditText = findViewById(R.id.searchview);
+
+        final EditText searchEditText = findViewById(R.id.searchview);
         searchEditText.setVisibility(VISIBLE);
+        searchEditText.clearFocus();
+
 //        searchEditText.setTextColor(getResources().getColor(R.color.black));
 //        searchEditText.setHintTextColor(getResources().getColor(R.color.grey1));
         searchEditText.addTextChangedListener(new TextWatcher() {
@@ -89,15 +92,15 @@ public class CategoryItemListActivity extends AppCompatActivity {
 
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setElevation(0);
-        viewInfo = (TextView) findViewById(R.id.txtContactInfo);
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerviewContact);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar_cyclic);
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        viewInfo = findViewById(R.id.txtContactInfo);
+        recyclerView = findViewById(R.id.recyclerviewContact);
+        progressBar = findViewById(R.id.progressBar_cyclic);
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                // Refresh items
                 refreshItems();
+                // Refresh items
                 // refreshItems(searchEditText.getText().toString());
             }
         });
@@ -106,18 +109,18 @@ public class CategoryItemListActivity extends AppCompatActivity {
     }
 
 
-    ArrayList<CategoryItem> mlistClone = new ArrayList<>();
+    ArrayList<SubCategory> mlistClone = new ArrayList<>();
 
     public void makeSearch(String query) {
         try {
-            mlistClone = (ArrayList<CategoryItem>) ilist.clone();
+            mlistClone = (ArrayList<SubCategory>) ilist.clone();
             if (TextUtils.isEmpty(query)) {
                 setList(mlistClone);
             } else {
                 query = query.toLowerCase();
                 mlistClone.clear();
-                for (CategoryItem meetingItem : ilist) {
-                    if (meetingItem.getTitle().toLowerCase().contains(query)) {
+                for (SubCategory meetingItem : ilist) {
+                    if (meetingItem.getCategory().toLowerCase().contains(query)) {
                         mlistClone.add(meetingItem);
                     }
                 }
@@ -129,14 +132,14 @@ public class CategoryItemListActivity extends AppCompatActivity {
         }
     }
 
-    private void setList(ArrayList<CategoryItem> mlistClone) {
+    private void setList(ArrayList<SubCategory> mlistClone) {
         {
             try {
                 //ilist = getMeetingList(isPast ? PAST : UPCOMING);
                 viewInfo.setVisibility(GONE);
                 recyclerView.setVisibility(VISIBLE);
 
-                CategoryListAdapter logAdapter = new CategoryListAdapter(activity, mlistClone);
+                SubCategoryListAdapter logAdapter = new SubCategoryListAdapter(activity, mlistClone);
                 recyclerView.setAdapter(logAdapter);
                 LinearLayoutManager mLayoutManager = new LinearLayoutManager(activity);
                 recyclerView.setLayoutManager(mLayoutManager);
@@ -161,14 +164,14 @@ public class CategoryItemListActivity extends AppCompatActivity {
             progressBar.setVisibility(VISIBLE);
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
-            Call<ArrayList<CategoryItem>> call = apiService.getcategoryItemList(categoryMain.getCategory());
-            call.enqueue(new Callback<ArrayList<CategoryItem>>() {
+            Call<ArrayList<SubCategory>> call = apiService.getsubcategory_item_list(categoryMain.getName());
+            call.enqueue(new Callback<ArrayList<SubCategory>>() {
                 @Override
-                public void onResponse(Call<ArrayList<CategoryItem>> call, Response<ArrayList<CategoryItem>> response) {
+                public void onResponse(Call<ArrayList<SubCategory>> call, Response<ArrayList<SubCategory>> response) {
                     Log.d("", "response: " + response.body());
                     swipeRefreshLayout.setRefreshing(false);
                     progressBar.setVisibility(GONE);
-                    ArrayList<CategoryItem> sigInResponse = response.body();
+                    ArrayList<SubCategory> sigInResponse = response.body();
                     if (sigInResponse != null) {
                         ilist = sigInResponse;
                         setList();
@@ -179,7 +182,7 @@ public class CategoryItemListActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<ArrayList<CategoryItem>> call, Throwable t) {
+                public void onFailure(Call<ArrayList<SubCategory>> call, Throwable t) {
                     // Log error here since request failed
                     Log.e("", t.toString());
                     progressBar.setVisibility(GONE);
@@ -286,7 +289,7 @@ public class CategoryItemListActivity extends AppCompatActivity {
         }
     }
 
-    public ArrayList<CategoryItem> ilist = new ArrayList<>();
+    public ArrayList<SubCategory> ilist = new ArrayList<>();
 
     public void setList() {
         try {
@@ -294,7 +297,7 @@ public class CategoryItemListActivity extends AppCompatActivity {
             viewInfo.setVisibility(GONE);
             recyclerView.setVisibility(VISIBLE);
 
-            CategoryListAdapter logAdapter = new CategoryListAdapter(activity, ilist);
+            SubCategoryListAdapter logAdapter = new SubCategoryListAdapter(activity, ilist);
             recyclerView.setAdapter(logAdapter);
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(activity);
             recyclerView.setLayoutManager(mLayoutManager);

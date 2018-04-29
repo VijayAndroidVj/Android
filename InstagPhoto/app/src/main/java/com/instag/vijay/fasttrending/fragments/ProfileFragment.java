@@ -200,13 +200,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         String location = preferenceUtil.getUserState();
         if (!TextUtils.isEmpty(location)) {
-            location = location + ",<br>";
+            location = location + ", ";
         }
         if (!TextUtils.isEmpty(preferenceUtil.getUserCountry())) {
             location = location + preferenceUtil.getUserCountry() + ",<br>";
         }
         if (!TextUtils.isEmpty(preferenceUtil.getUserContactNumber())) {
-            location = location + preferenceUtil.getUserContactNumber() + ",<br>";
+            location = location + preferenceUtil.getUserContactNumber() + ", ";
         }
         if (!TextUtils.isEmpty(preferenceUtil.getUserMailId())) {
             location = location + preferenceUtil.getUserMailId();
@@ -419,13 +419,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                                 txtBiography.setText(postModelMain.getAboutme());
                             String location = postModelMain.getState();
                             if (!TextUtils.isEmpty(location)) {
-                                location = location + ",<br>";
+                                location = location + ", ";
                             }
                             if (!TextUtils.isEmpty(postModelMain.getCountry())) {
-                                location = location + postModelMain.getCountry() + ",<br>";
+                                location = location + postModelMain.getCountry() + "<br>";
                             }
                             if (!TextUtils.isEmpty(postModelMain.getContact_number())) {
-                                location = location + postModelMain.getContact_number() + ",<br>";
+                                location = location + postModelMain.getContact_number() + ", ";
                             }
                             if (!TextUtils.isEmpty(preferenceUtil.getUserMailId())) {
                                 location = location + preferenceUtil.getUserMailId();

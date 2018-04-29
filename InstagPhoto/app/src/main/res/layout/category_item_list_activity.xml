@@ -13,6 +13,7 @@
         android:drawableLeft="@drawable/ic_search_black"
         android:focusable="true"
         android:focusableInTouchMode="true"
+        android:focusedByDefault="false"
         android:hint="Search"
         android:imeOptions="actionSearch"
         android:inputType="text"

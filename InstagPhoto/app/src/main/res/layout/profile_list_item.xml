@@ -35,9 +35,11 @@
                 android:layout_gravity="bottom|center"
                 android:background="@drawable/bottomtopline"
                 android:gravity="center"
+                android:maxLines="1"
+                android:singleLine="true"
                 android:text="@string/app_name"
                 android:textColor="@color/black"
-                android:textSize="10sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 

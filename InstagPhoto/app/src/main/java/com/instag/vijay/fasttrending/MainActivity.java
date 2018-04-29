@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         activity = this;
         mainActivity = this;
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         ActionBar.LayoutParams params = new ActionBar.LayoutParams(//Center the textview in the ActionBar !
@@ -68,7 +68,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setHomeButtonEnabled(false);
         View view = LayoutInflater.from(this).inflate(R.layout.actionbar, null);
-        final TextView name = (TextView) view.findViewById(R.id.txtAppName);
+        final View ivLogo = view.findViewById(R.id.ivLogo);
+        final TextView name = view.findViewById(R.id.txtAppName);
         view.findViewById(R.id.iv_actionbar_noti).setOnClickListener(this);
         iv_actionbar_settings = view.findViewById(R.id.iv_actionbar_settings);
         searchEditText = view.findViewById(R.id.searchview);
@@ -77,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         iv_actionbar_settings.setOnClickListener(this);
 
         name.setVisibility(View.VISIBLE);
+        ivLogo.setVisibility(View.VISIBLE);
         searchEditText.setVisibility(View.GONE);
         name.setText(getString(R.string.app_name));
 
@@ -105,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     SearchFragment searchFragment = (SearchFragment) adapter.getItem(1);
                     searchFragment.refreshItems();
                     name.setVisibility(View.GONE);
+                    ivLogo.setVisibility(View.GONE);
                     searchEditText.setVisibility(View.VISIBLE);
                     searchEditText.setClickable(true);
                     searchEditText.setOnClickListener(new View.OnClickListener() {
@@ -116,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     });
                 } else {
                     name.setVisibility(View.VISIBLE);
+                    ivLogo.setVisibility(View.VISIBLE);
                     searchEditText.setVisibility(View.GONE);
                     name.setText(getString(R.string.app_name));
                     if (position == 5) {

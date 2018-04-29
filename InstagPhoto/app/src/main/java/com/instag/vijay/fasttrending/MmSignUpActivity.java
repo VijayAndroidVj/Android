@@ -407,17 +407,19 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
         }
 
         final String email = input_email.getText().toString().trim();
-        final String name = input_name.getText().toString().trim();
-        final String userName = input_userName.getText().toString().trim();
+        String name = input_name.getText().toString().trim();
+        String userName = input_userName.getText().toString().trim();
         final String password = input_password.getText().toString().trim();
         int selectedId = radioSexGroup.getCheckedRadioButtonId();
+        final String name1 = name.substring(0, 1).toUpperCase() + name.substring(1);
+        final String userName1 = userName.substring(0, 1).toUpperCase() + userName.substring(1);
 
         final String gender = selectedId == R.id.radioMale ? "male" : "female";
         if (CommonUtil.isNetworkAvailable(activity)) {
             MainActivity.showProgress(activity);
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
-            Call<EventResponse> call = apiService.register(country, gender, name, userName, email, password);
+            Call<EventResponse> call = apiService.register(country, gender, name1, userName1, email, password);
             call.enqueue(new Callback<EventResponse>() {
                 @Override
                 public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
@@ -431,9 +433,9 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
                         } else {
                             PreferenceUtil preferenceUtil = new PreferenceUtil(MmSignUpActivity.this);
                             preferenceUtil.putBoolean(Keys.IS_ALREADY_REGISTERED, true);
-                            preferenceUtil.putString(Keys.NAME, name);
+                            preferenceUtil.putString(Keys.NAME, name1);
                             preferenceUtil.putString(Keys.EmailID, email);
-                            preferenceUtil.putString(Keys.USERNAME, userName);
+                            preferenceUtil.putString(Keys.USERNAME, userName1);
                             preferenceUtil.putString(Keys.PASSWORD, password);
                             preferenceUtil.putString(Keys.COUNTRY, country);
                             preferenceUtil.putString(Keys.GENDER, gender);

@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.instag.vijay.fasttrending">
+    package="com.instag.vijay.fasttrending"
+    tools:ignore="MissingLeanbackLauncher">
+
+    <uses-feature
+        android:name="android.software.leanback"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Network State Permissions -->
@@ -11,6 +19,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.NETWORK" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:name=".MyApplicaton"
@@ -120,6 +129,14 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name="com.instag.vijay.fasttrending.activity.CategoryItemListActivity"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+        <activity
+            android:name="com.instag.vijay.fasttrending.activity.SubCategoryItemListActivity"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+        <activity
+            android:name="com.instag.vijay.fasttrending.activity.CategoryView"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize" />
 

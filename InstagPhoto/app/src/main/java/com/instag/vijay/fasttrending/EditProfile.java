@@ -311,10 +311,13 @@ public class EditProfile extends AppCompatActivity {
             return;
         }
 
-        final String userName1 = input_username.getText().toString().trim();
-        final String profileName1 = input_profilename.getText().toString().trim();
+        final String userName11 = input_username.getText().toString().trim();
+        final String profileName11 = input_profilename.getText().toString().trim();
         final String password1 = input_userpassword.getText().toString().trim();
         final String web_info = input_web_info.getText().toString().trim();
+
+        final String userName12 = userName11.substring(0, 1).toUpperCase() + userName11.substring(1);
+        final String profileName12 = profileName11.substring(0, 1).toUpperCase() + profileName11.substring(1);
 
 
         final String gender = spinner.getSelectedItemPosition() == 0 ? "male" : "female";
@@ -356,9 +359,9 @@ public class EditProfile extends AppCompatActivity {
 
 
             final MultipartBody.Part profileName =
-                    MultipartBody.Part.createFormData("profileName", profileName1);
+                    MultipartBody.Part.createFormData("profileName", profileName12);
             MultipartBody.Part userName =
-                    MultipartBody.Part.createFormData("username", userName1);
+                    MultipartBody.Part.createFormData("username", userName12);
 
             final PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
             MultipartBody.Part email =
@@ -407,8 +410,8 @@ public class EditProfile extends AppCompatActivity {
                             if (!TextUtils.isEmpty(sigInResponse.getMessage()))
                                 Toast.makeText(activity, sigInResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             preferenceUtil.putString(Keys.PASSWORD, password1);
-                            preferenceUtil.putString(Keys.USERNAME, userName1);
-                            preferenceUtil.putString(Keys.NAME, profileName1);
+                            preferenceUtil.putString(Keys.USERNAME, userName12);
+                            preferenceUtil.putString(Keys.NAME, profileName12);
                             preferenceUtil.putString(Keys.ABOUTME, aboutme);
                             preferenceUtil.putString(Keys.GENDER, gender);
                             preferenceUtil.putString(Keys.STATE, state);

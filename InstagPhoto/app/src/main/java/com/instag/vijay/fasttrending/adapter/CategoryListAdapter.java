@@ -2,6 +2,7 @@ package com.instag.vijay.fasttrending.adapter;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.instag.vijay.fasttrending.R;
+import com.instag.vijay.fasttrending.activity.CategoryView;
 import com.instag.vijay.fasttrending.model.CategoryItem;
 
 import java.util.List;
@@ -31,12 +33,13 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.rlivImage:
+            case R.id.btnview:
                 Object object = v.getTag();
                 if (object instanceof CategoryItem) {
                     CategoryItem userModel = (CategoryItem) object;
-//                    Intent intent = new Intent(activity, ProfileView.class);
-//                    activity.startActivity(intent);
+                    Intent intent = new Intent(activity, CategoryView.class);
+                    intent.putExtra("category", userModel);
+                    activity.startActivity(intent);
                 }
                 break;
             case R.id.bfollow:
@@ -193,38 +196,38 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 //        holder.txtPostDescription.setText(post.getDescription());
 
 
-        if (TextUtils.isEmpty(post.getBusiness_name())) {
+        if (TextUtils.isEmpty(post.getTitle())) {
             holder.shopname.setText("");
         } else {
-            holder.shopname.setText(post.getBusiness_name());
+            holder.shopname.setText(post.getTitle());
         }
-        if (TextUtils.isEmpty(post.getBusiness_desc())) {
+        if (TextUtils.isEmpty(post.getDes())) {
             holder.address.setText("");
         } else {
-            holder.address.setText(post.getBusiness_desc());
+            holder.address.setText(post.getDes());
         }
-        if (TextUtils.isEmpty(post.getMail())) {
+        if (TextUtils.isEmpty(post.getEmail())) {
             holder.mail.setText("");
         } else {
-            holder.mail.setText(post.getMail());
+            holder.mail.setText(post.getEmail());
         }
         if (TextUtils.isEmpty(post.getState())) {
             holder.state.setText("");
         } else {
             holder.state.setText(post.getState());
         }
-        if (TextUtils.isEmpty(post.getBusiness_location())) {
+        if (TextUtils.isEmpty(post.getCity())) {
             holder.city.setText("");
         } else {
-            holder.city.setText(post.getBusiness_location());
+            holder.city.setText(post.getCity());
         }
 
-        if (TextUtils.isEmpty(post.getPhone())) {
+        if (TextUtils.isEmpty(post.getE_contact())) {
             holder.subcat.setVisibility(View.INVISIBLE);
             holder.subcat.setText("");
         } else {
             holder.subcat.setVisibility(View.VISIBLE);
-            holder.subcat.setText("ph:" + post.getPhone());
+            holder.subcat.setText("ph:" + post.getE_contact());
         }
 
         holder.ivImage.setImageBitmap(null);

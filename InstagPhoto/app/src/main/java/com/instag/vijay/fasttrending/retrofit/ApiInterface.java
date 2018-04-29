@@ -74,7 +74,7 @@ public interface ApiInterface {
     Call<ArrayList<FavModel>> search_user(@Field("useremail") String useremail, @Field("searchname") String searchname);
 
     @Multipart
-    @POST("FEELOUTADMIN/list/add_business_page.php")
+    @POST("add_business_page_new.php")
     Call<EventResponse> add_business_page(
             @Part MultipartBody.Part title,
             @Part MultipartBody.Part uploaded_file,
@@ -158,7 +158,13 @@ public interface ApiInterface {
 
     @POST("getcategory_item_list.php")
     @FormUrlEncoded
-    Call<ArrayList<CategoryItem>> getcategoryItemList(@Field("_id") String _id);
+    Call<ArrayList<CategoryItem>> getcategoryItemList(@Field("subcategory") String subcategory);
+
+
+    @POST("getsubcategory_item_list.php")
+    @FormUrlEncoded
+    Call<ArrayList<SubCategory>> getsubcategory_item_list(@Field("category_name") String category_name);
+
 
     @POST("getTrendingVideos.php")
     @FormUrlEncoded
@@ -191,6 +197,11 @@ public interface ApiInterface {
     @POST("post_like.php")
     @FormUrlEncoded
     Call<EventResponse> post_like(@Field("useremail") String useremail, @Field("username") String username, @Field("post_id") String post_id, @Field("like") boolean like);
+
+
+    @POST("add_save_post.php")
+    @FormUrlEncoded
+    Call<EventResponse> add_save_post(@Field("useremail") String useremail, @Field("post_id") String post_id, @Field("save") boolean save);
 
 
     @POST("post_comments.php")

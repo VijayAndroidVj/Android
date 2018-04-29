@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.instag.vijay.fasttrending.R;
-import com.instag.vijay.fasttrending.activity.CategoryItemListActivity;
+import com.instag.vijay.fasttrending.activity.SubCategoryItemListActivity;
 import com.instag.vijay.fasttrending.model.CategoryMain;
 
 import java.util.List;
@@ -82,7 +82,7 @@ public class GridSearchElementAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 CategoryMain categoryMain1 = (CategoryMain) v.getTag();
-                Intent intent = new Intent(context, CategoryItemListActivity.class);
+                Intent intent = new Intent(context, SubCategoryItemListActivity.class);
                 intent.putExtra("category", categoryMain1);
                 context.startActivity(intent);
             }

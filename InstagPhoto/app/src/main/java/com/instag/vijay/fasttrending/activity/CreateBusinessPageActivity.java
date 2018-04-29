@@ -250,7 +250,7 @@ public class CreateBusinessPageActivity extends AppCompatActivity {
         try {
             ArrayList<String> list = new ArrayList<>();
             for (SubCategory subCategory : subCategoryMains) {
-                list.add(subCategory.getScategory());
+                list.add(subCategory.getCategory());
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -347,8 +347,9 @@ public class CreateBusinessPageActivity extends AppCompatActivity {
                         MultipartBody.Part.createFormData("scategory", subcategory);
 
                 // MultipartBody.Part is used to send also the actual file name
-                MultipartBody.Part uploaded_file =
-                        MultipartBody.Part.createFormData("uploaded_file", file == null ? "" : file.getName(), requestFile);
+                MultipartBody.Part uploaded_file = null;
+                if (requestFile != null)
+                    uploaded_file = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
                 MultipartBody.Part txtEmpPreAddress =
                         MultipartBody.Part.createFormData("txtEmpPreAddress", "");
                 MultipartBody.Part state =
@@ -358,7 +359,7 @@ public class CreateBusinessPageActivity extends AppCompatActivity {
                 MultipartBody.Part txtEmpContact =
                         MultipartBody.Part.createFormData("txtEmpContact", preferenceUtil.getUserContactNumber());
                 MultipartBody.Part keyword =
-                        MultipartBody.Part.createFormData("key", new PreferenceUtil(activity).getUserMailId());
+                        MultipartBody.Part.createFormData("key", "");
                 MultipartBody.Part txtEmail =
                         MultipartBody.Part.createFormData("email", new PreferenceUtil(activity).getUserMailId());
 

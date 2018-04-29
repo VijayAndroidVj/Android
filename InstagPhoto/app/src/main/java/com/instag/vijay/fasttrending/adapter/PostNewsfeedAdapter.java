@@ -7,15 +7,19 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,11 +34,13 @@ import com.instag.vijay.fasttrending.PreferenceUtil;
 import com.instag.vijay.fasttrending.ProfileView;
 import com.instag.vijay.fasttrending.R;
 import com.instag.vijay.fasttrending.activity.VideoViewActivity;
+import com.instag.vijay.fasttrending.model.CategoryMain;
 import com.instag.vijay.fasttrending.model.Posts;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -44,10 +50,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> implements View.OnClickListener {
+public class PostNewsfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener {
 
     private List<Posts> originalList;
     private PreferenceUtil preferenceUtil;
+    private static final int TYPE_HEADER = 0;
+    private static final int TYPE_ITEM = 2;
+    private ArrayList<CategoryMain> categoryMainArrayList;
 
     @Override
     public void onClick(View v) {
@@ -71,6 +80,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
                 if (object instanceof Posts) {
                     Posts post = (Posts) object;
                     likePost(post);
+                }
+                break;
+            case R.id.ivSavePost:
+                object = v.getTag();
+                if (object instanceof Posts) {
+                    Posts post = (Posts) object;
+                    savePost(post);
                 }
                 break;
             case R.id.txtViewAllComments:
@@ -136,6 +152,44 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
                         else
                             post.setTotal_likes(post.getTotal_likes() - 1);
 
+                        notifyDataSetChanged();
+                        closeProgress();
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<EventResponse> call, Throwable t) {
+                    // Log error here since request failed
+                    String message = t.toString();
+                    if (message.contains("Failed to")) {
+                        message = "Failed to Connect";
+                    } else {
+                        message = "Failed";
+                    }
+                    closeProgress();
+                    Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Toast.makeText(activity, "Check your internet connection!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void savePost(final Posts post) {
+        if (CommonUtil.isNetworkAvailable(activity)) {
+            initProgress("Please wait...");
+            ApiInterface service =
+                    ApiClient.getClient().create(ApiInterface.class);
+            String usermail = preferenceUtil.getUserMailId();
+            Call<EventResponse> call = service.add_save_post(usermail, post.getPost_id(), !post.isSaved());
+            call.enqueue(new Callback<EventResponse>() {
+                @Override
+                public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
+                    EventResponse patientDetails = response.body();
+                    Log.i("patientDetails", response.toString());
+                    if (patientDetails != null && patientDetails.getResult().equalsIgnoreCase("success")) {
+                        post.setSaved(!post.isSaved());
                         notifyDataSetChanged();
                         closeProgress();
                     }
@@ -277,6 +331,40 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         progressDoalog = null;
     }
 
+    private class HeaderViewHolder extends RecyclerView.ViewHolder {
+        private GridView horizontalGridView;
+
+        private HeaderViewHolder(View view) {
+            super(view);
+            horizontalGridView = view.findViewById(R.id.gridView);
+        }
+
+        private void gridViewSetting() {
+
+            // this is size of your list with data
+            int size = categoryMainArrayList.size();
+            // Calculated single Item Layout Width for each grid element .. for me it was ~100dp
+            int width = 50;
+
+            DisplayMetrics dm = new DisplayMetrics();
+            activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
+            float density = dm.density;
+
+            int totalWidth = (int) (width * size * density);
+            int singleItemWidth = (int) (width * density);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    totalWidth, LinearLayout.LayoutParams.MATCH_PARENT);
+
+            horizontalGridView.setLayoutParams(params);
+            horizontalGridView.setColumnWidth(singleItemWidth);
+            horizontalGridView.setHorizontalSpacing(2);
+            horizontalGridView.setStretchMode(GridView.STRETCH_SPACING);
+            horizontalGridView.setNumColumns(size);
+
+        }
+    }
+
     class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView txtMeetingName, txtPostDescription, txtPostLikesCount, txtCreatedDate;
         private TextView txtViewAllComments;
@@ -315,8 +403,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     private ColorStateList selectedColorStateList;
     private ColorStateList unselectedColorStateList;
 
-    public PostAdapter(Activity activity, List<Posts> moviesList) {
+    public PostNewsfeedAdapter(Activity activity, List<Posts> moviesList, ArrayList<CategoryMain> categoryMainArrayList) {
         this.originalList = moviesList;
+        this.categoryMainArrayList = categoryMainArrayList;
         this.activity = activity;
         selectedColorStateList = CommonUtil.getColorStateList(activity, R.color.red);
         unselectedColorStateList = CommonUtil.getColorStateList(activity, R.color.black);
@@ -328,170 +417,207 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = layoutInflater.inflate(R.layout.post_item, parent, false);
-        return new MyViewHolder(itemView);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        if (viewType == TYPE_ITEM) {
+            //Inflating recycle view item layout
+            View itemView = layoutInflater.inflate(R.layout.post_item, parent, false);
+            return new MyViewHolder(itemView);
+        } else if (viewType == TYPE_HEADER) {
+            //Inflating header view
+            View itemView = layoutInflater.from(parent.getContext()).inflate(R.layout.category_nearby, parent, false);
+            return new HeaderViewHolder(itemView);
+        } else return null;
+
+
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        Posts post = originalList.get(position);
-        holder.rlParentMeeting.setTag(post);
-        holder.rlParentMeeting.setOnClickListener(this);
-        holder.rlMeeting1.setTag(post);
-        holder.ibPlay.setTag(post);
-        holder.rlMeeting1.setOnClickListener(this);
-        holder.ibPlay.setOnClickListener(this);
-        holder.txtViewAllComments.setOnClickListener(this);
-
-        if (TextUtils.isEmpty(post.getUsername())) {
-            holder.txtMeetingName.setText("");
-        } else {
-            if (post.getFileType() != null && post.getFileType().equalsIgnoreCase("3")) {
-                String name = post.getUsername();
-                if (preferenceUtil.getUserMailId().equalsIgnoreCase(post.getPostmail())) {
-                    name = "You";
-                }
-//                holder.txtMeetingName.setText(name + " updated profile");
-                holder.txtMeetingName.setText(Html.fromHtml(" <b><font color='#000000'>" + name + "</font></b>  <n>updated profile</n>"));
-            } else {
-                holder.txtMeetingName.setText(post.getUsername());
-            }
-
+    public int getItemViewType(int position) {
+        if (position == 0) {
+            return TYPE_HEADER;
         }
+        return TYPE_ITEM;
+    }
 
-        if (TextUtils.isEmpty(post.getState()) && TextUtils.isEmpty(post.getCountry())) {
-            holder.txtMeetingState.setText("");
-            holder.txtMeetingState.setVisibility(View.GONE);
-        } else if (TextUtils.isEmpty(post.getState())) {
-            holder.txtMeetingState.setText(post.getCountry());
-            holder.txtMeetingState.setVisibility(View.VISIBLE);
-        } else {
-            holder.txtMeetingState.setVisibility(View.VISIBLE);
-            holder.txtMeetingState.setText(post.getState() + ", " + post.getCountry());
-        }
-        if (TextUtils.isEmpty(post.getDescription())) {
-            holder.txtPostDescription.setText("");
-            holder.txtPostDescription.setVisibility(View.GONE);
-        } else {
-            holder.txtPostDescription.setVisibility(View.VISIBLE);
-            holder.txtPostDescription.setText(post.getDescription());
-        }
-        if (TextUtils.isEmpty(post.getTotalComments())) {
-            holder.txtViewAllComments.setText("");
-            holder.txtViewAllComments.setVisibility(View.GONE);
-        } else {
-            holder.txtViewAllComments.setVisibility(View.VISIBLE);
-            int total = 0;
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+
+        if (viewHolder instanceof HeaderViewHolder) {
+            HeaderViewHolder headerHolder = (HeaderViewHolder) viewHolder;
             try {
-                total = Integer.valueOf(post.getTotalComments());
+                headerHolder.gridViewSetting();
+                GridElementAdapter gridElementAdapter = new GridElementAdapter(activity, categoryMainArrayList);
+                headerHolder.horizontalGridView.setAdapter(gridElementAdapter);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            if (total > 1) {
-                holder.txtViewAllComments.setText("View all " + post.getTotalComments() + " comments");
-            } else if (total == 1) {
-                holder.txtViewAllComments.setText("View " + post.getTotalComments() + " comment");
+        } else {
+            MyViewHolder holder = (MyViewHolder) viewHolder;
+            Posts post = originalList.get(position);
+            holder.rlParentMeeting.setTag(post);
+            holder.rlParentMeeting.setOnClickListener(this);
+            holder.rlMeeting1.setTag(post);
+            holder.ibPlay.setTag(post);
+            holder.rlMeeting1.setOnClickListener(this);
+            holder.ibPlay.setOnClickListener(this);
+            holder.txtViewAllComments.setOnClickListener(this);
+
+            if (TextUtils.isEmpty(post.getUsername())) {
+                holder.txtMeetingName.setText("");
             } else {
+                if (post.getFileType() != null && post.getFileType().equalsIgnoreCase("3")) {
+                    String name = post.getUsername();
+                    if (preferenceUtil.getUserMailId().equalsIgnoreCase(post.getPostmail())) {
+                        name = "You";
+                    }
+//                holder.txtMeetingName.setText(name + " updated profile");
+                    holder.txtMeetingName.setText(Html.fromHtml(" <b><font color='#000000'>" + name + "</font></b>  <n>updated profile</n>"));
+                } else {
+                    holder.txtMeetingName.setText(post.getUsername());
+                }
+
+            }
+
+            if (TextUtils.isEmpty(post.getState()) && TextUtils.isEmpty(post.getCountry())) {
+                holder.txtMeetingState.setText("");
+                holder.txtMeetingState.setVisibility(View.GONE);
+            } else if (TextUtils.isEmpty(post.getState())) {
+                holder.txtMeetingState.setText(post.getCountry());
+                holder.txtMeetingState.setVisibility(View.VISIBLE);
+            } else {
+                holder.txtMeetingState.setVisibility(View.VISIBLE);
+                holder.txtMeetingState.setText(post.getState() + ", " + post.getCountry());
+            }
+            if (TextUtils.isEmpty(post.getDescription())) {
+                holder.txtPostDescription.setText("");
+                holder.txtPostDescription.setVisibility(View.GONE);
+            } else {
+                holder.txtPostDescription.setVisibility(View.VISIBLE);
+                holder.txtPostDescription.setText(post.getDescription());
+            }
+            if (TextUtils.isEmpty(post.getTotalComments())) {
                 holder.txtViewAllComments.setText("");
                 holder.txtViewAllComments.setVisibility(View.GONE);
-            }
-        }
-
-        holder.txtPostLikesCount.setText(post.getTotal_likes() + " likes");
-
-
-        if (post.isLiked()) {
-            holder.likePost.setImageResource(R.drawable.like_filled);
-            holder.likePost.setImageTintList(selectedColorStateList);
-        } else {
-            holder.likePost.setImageTintList(unselectedColorStateList);
-            holder.likePost.setImageResource(R.drawable.like);
-        }
-
-        if (post.isSaved()) {
-            holder.ivSavePost.setImageResource(R.drawable.ic_bookmark_black_24dp);
-        } else {
-            holder.ivSavePost.setImageResource(R.drawable.ic_bookmark_border_black_24dp);
-        }
-
-        holder.likePost.setTag(post);
-        holder.txtViewAllComments.setTag(post);
-        holder.commentPost.setTag(post);
-        holder.txtPostLikesCount.setTag(post);
-        holder.likePost.setOnClickListener(this);
-        holder.commentPost.setOnClickListener(this);
-        holder.txtPostLikesCount.setOnClickListener(this);
-        if (post.getPostmail() != null && post.getPostmail().equalsIgnoreCase(preferenceUtil.getUserMailId())) {
-            holder.btnpostDelete.setTag(post);
-            holder.btnpostDelete.setOnClickListener(this);
-            holder.btnpostDelete.setVisibility(View.VISIBLE);
-        } else {
-            holder.btnpostDelete.setVisibility(View.GONE);
-        }
-
-        if (post.getCreated_date() != null && !post.getCreated_date().isEmpty()) {
-            holder.txtCreatedDate.setVisibility(View.VISIBLE);
-            try {
-                Date testDate = null;
-                testDate = sdf.parse(post.getCreated_date());
-                String newFormat = formatter.format(testDate);
-                holder.txtCreatedDate.setText(newFormat);
-            } catch (Exception e) {
-                e.printStackTrace();
-                holder.txtCreatedDate.setText(post.getCreated_date());
+            } else {
+                holder.txtViewAllComments.setVisibility(View.VISIBLE);
+                int total = 0;
+                try {
+                    total = Integer.valueOf(post.getTotalComments());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (total > 1) {
+                    holder.txtViewAllComments.setText("View all " + post.getTotalComments() + " comments");
+                } else if (total == 1) {
+                    holder.txtViewAllComments.setText("View " + post.getTotalComments() + " comment");
+                } else {
+                    holder.txtViewAllComments.setText("");
+                    holder.txtViewAllComments.setVisibility(View.GONE);
+                }
             }
 
-        } else {
-            holder.txtCreatedDate.setVisibility(View.GONE);
-        }
+            holder.txtPostLikesCount.setText(post.getTotal_likes() + " likes");
 
-        if (post.getFileType().equalsIgnoreCase("2")) {
-            if (post.getVideoThumb() != null && !post.getVideoThumb().isEmpty()) {
-                byte[] decodedString = Base64.decode(post.getVideoThumb().getBytes(), Base64.DEFAULT);
-                Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                if (bitmap != null)
-                    holder.postImage.setImageBitmap(bitmap);
-                holder.ibPlay.setVisibility(View.VISIBLE);
 
-            } else if (post.getImage() != null && !post.getImage().isEmpty()) {
+            if (post.isLiked()) {
+                holder.likePost.setImageResource(R.drawable.like_filled);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    holder.likePost.setImageTintList(selectedColorStateList);
+                }
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    holder.likePost.setImageTintList(unselectedColorStateList);
+                }
+                holder.likePost.setImageResource(R.drawable.like);
+            }
+            if (post.isSaved()) {
+                holder.ivSavePost.setImageResource(R.drawable.ic_bookmark_black_24dp);
+            } else {
+                holder.ivSavePost.setImageResource(R.drawable.ic_bookmark_border_black_24dp);
+            }
+
+
+            holder.likePost.setTag(post);
+            holder.txtViewAllComments.setTag(post);
+            holder.commentPost.setTag(post);
+            holder.ivSavePost.setTag(post);
+            holder.txtPostLikesCount.setTag(post);
+            holder.likePost.setOnClickListener(this);
+            holder.commentPost.setOnClickListener(this);
+            holder.ivSavePost.setOnClickListener(this);
+            holder.txtPostLikesCount.setOnClickListener(this);
+            if (post.getPostmail() != null && post.getPostmail().equalsIgnoreCase(preferenceUtil.getUserMailId())) {
+                holder.btnpostDelete.setTag(post);
+                holder.btnpostDelete.setOnClickListener(this);
+                holder.btnpostDelete.setVisibility(View.VISIBLE);
+            } else {
+                holder.btnpostDelete.setVisibility(View.GONE);
+            }
+
+            if (post.getCreated_date() != null && !post.getCreated_date().isEmpty()) {
+                holder.txtCreatedDate.setVisibility(View.VISIBLE);
+                try {
+                    Date testDate = null;
+                    testDate = sdf.parse(post.getCreated_date());
+                    String newFormat = formatter.format(testDate);
+                    holder.txtCreatedDate.setText(newFormat);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    holder.txtCreatedDate.setText(post.getCreated_date());
+                }
+
+            } else {
+                holder.txtCreatedDate.setVisibility(View.GONE);
+            }
+
+            if (post.getFileType().equalsIgnoreCase("2")) {
+                if (post.getVideoThumb() != null && !post.getVideoThumb().isEmpty()) {
+                    byte[] decodedString = Base64.decode(post.getVideoThumb().getBytes(), Base64.DEFAULT);
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    if (bitmap != null)
+                        holder.postImage.setImageBitmap(bitmap);
+                    holder.ibPlay.setVisibility(View.VISIBLE);
+
+                } else if (post.getImage() != null && !post.getImage().isEmpty()) {
+                    holder.ibPlay.setVisibility(View.GONE);
+                    Glide.with(activity).load(post.getImage()).centerCrop()
+                            .thumbnail(0.5f)
+                            .crossFade()
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(holder.postImage);
+                }
+
+            } else {
                 holder.ibPlay.setVisibility(View.GONE);
-                Glide.with(activity).load(post.getImage()).centerCrop()
-                        .thumbnail(0.5f)
-                        .crossFade()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(holder.postImage);
+                if (post.getImage() != null && !post.getImage().isEmpty()) {
+                    Glide.with(activity).load(post.getImage()).centerCrop()
+                            .thumbnail(0.5f)
+                            .crossFade()
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(holder.postImage);
+                }
             }
 
-        } else {
-            holder.ibPlay.setVisibility(View.GONE);
-            if (post.getImage() != null && !post.getImage().isEmpty()) {
-                Glide.with(activity).load(post.getImage()).centerCrop()
+
+            if (post.getProfile_image() != null && !post.getProfile_image().isEmpty()) {
+
+                Glide.with(activity).load(post.getProfile_image()).asBitmap().centerCrop()
                         .thumbnail(0.5f)
-                        .crossFade()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(holder.postImage);
+                        .into(holder.ivProfile);
+            } else {
+                Glide.with(activity).load(R.drawable.profile)
+                        .into(holder.ivProfile);
             }
+
         }
-
-
-        if (post.getProfile_image() != null && !post.getProfile_image().isEmpty()) {
-
-            Glide.with(activity).load(post.getProfile_image()).asBitmap().centerCrop()
-                    .thumbnail(0.5f)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(holder.ivProfile);
-        } else {
-            Glide.with(activity).load(R.drawable.profile)
-                    .into(holder.ivProfile);
-        }
-
-
     }
 
     @Override
     public int getItemCount() {
-        return originalList == null ? 0 : originalList.size();
+        return originalList == null ? 1 : originalList.size() + 1;
     }
 
 }

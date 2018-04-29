@@ -35,6 +35,8 @@
             android:layout_marginLeft="@dimen/_2dp"
             android:layout_marginRight="@dimen/_2dp"
             android:gravity="center"
+            android:maxLines="1"
+            android:singleLine="true"
             android:text="Coffee shop"
             android:textColor="@color/black"
             android:textSize="8sp" />

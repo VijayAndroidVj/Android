@@ -47,6 +47,9 @@ public class Posts implements Parcelable {
     @SerializedName("liked")
     private boolean liked;
 
+    @SerializedName("isSaved")
+    private boolean isSaved;
+
     @SerializedName("videoThumb")
     private String videoThumb;
 
@@ -67,6 +70,7 @@ public class Posts implements Parcelable {
         description = in.readString();
         total_likes = in.readInt();
         liked = in.readByte() != 0;
+        isSaved = in.readByte() != 0;
         videoThumb = in.readString();
         totalComments = in.readString();
     }
@@ -195,26 +199,35 @@ public class Posts implements Parcelable {
         this.country = country;
     }
 
+    public boolean isSaved() {
+        return isSaved;
+    }
+
+    public void setSaved(boolean saved) {
+        isSaved = saved;
+    }
+
     @Override
     public int describeContents() {
         return 0;
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(post_id);
-        parcel.writeString(image);
-        parcel.writeString(fileType);
-        parcel.writeString(username);
-        parcel.writeString(state);
-        parcel.writeString(country);
-        parcel.writeString(profile_image);
-        parcel.writeString(created_date);
-        parcel.writeString(postmail);
-        parcel.writeString(description);
-        parcel.writeInt(total_likes);
-        parcel.writeByte((byte) (liked ? 1 : 0));
-        parcel.writeString(videoThumb);
-        parcel.writeString(totalComments);
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(post_id);
+        dest.writeString(image);
+        dest.writeString(fileType);
+        dest.writeString(username);
+        dest.writeString(state);
+        dest.writeString(country);
+        dest.writeString(profile_image);
+        dest.writeString(created_date);
+        dest.writeString(postmail);
+        dest.writeString(description);
+        dest.writeInt(total_likes);
+        dest.writeByte((byte) (liked ? 1 : 0));
+        dest.writeByte((byte) (isSaved ? 1 : 0));
+        dest.writeString(videoThumb);
+        dest.writeString(totalComments);
     }
 }

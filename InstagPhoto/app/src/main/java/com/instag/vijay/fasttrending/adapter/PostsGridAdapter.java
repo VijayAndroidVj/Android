@@ -74,12 +74,21 @@ public class PostsGridAdapter extends BaseAdapter {
                     activity.startActivity(intent);
                 }
             });
-            if (post.getFileType().equalsIgnoreCase("2")) {
-                if (post.getVideoThumb() != null && !post.getVideoThumb().isEmpty()) {
-                    byte[] decodedString = Base64.decode(post.getVideoThumb().getBytes(), Base64.DEFAULT);
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                    if (bitmap != null)
-                        holder.iv_profile_pic.setImageBitmap(bitmap);
+            if (activity != null && !activity.isFinishing()) {
+                if (post.getFileType().equalsIgnoreCase("2")) {
+                    if (post.getVideoThumb() != null && !post.getVideoThumb().isEmpty()) {
+                        byte[] decodedString = Base64.decode(post.getVideoThumb().getBytes(), Base64.DEFAULT);
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        if (bitmap != null)
+                            holder.iv_profile_pic.setImageBitmap(bitmap);
+
+                    } else if (post.getImage() != null && !post.getImage().isEmpty()) {
+                        Glide.with(activity).load(post.getImage()).centerCrop()
+                                .thumbnail(0.5f)
+                                .crossFade()
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .into(holder.iv_profile_pic);
+                    }
 
                 } else if (post.getImage() != null && !post.getImage().isEmpty()) {
                     Glide.with(activity).load(post.getImage()).centerCrop()
@@ -87,20 +96,13 @@ public class PostsGridAdapter extends BaseAdapter {
                             .crossFade()
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .into(holder.iv_profile_pic);
+                } else {
+                    Glide.with(activity).load(R.drawable.default_profile_photo).centerCrop()
+                            .thumbnail(0.5f)
+                            .crossFade()
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(holder.iv_profile_pic);
                 }
-
-            } else if (post.getImage() != null && !post.getImage().isEmpty()) {
-                Glide.with(activity).load(post.getImage()).centerCrop()
-                        .thumbnail(0.5f)
-                        .crossFade()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(holder.iv_profile_pic);
-            } else {
-                Glide.with(activity).load(R.drawable.default_profile_photo).centerCrop()
-                        .thumbnail(0.5f)
-                        .crossFade()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(holder.iv_profile_pic);
             }
             convertView.setTag(holder);
         }

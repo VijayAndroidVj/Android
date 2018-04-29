@@ -46,7 +46,7 @@ public class PostView extends AppCompatActivity implements View.OnClickListener 
     private TextView txtMeetingName, txtPostDescription, txtPostLikesCount, txtCreatedDate, txtViewAllComments;
     private ImageView btnpostDelete;
     private ImageView postImage, ivProfile;
-    private ImageView likePost, commentPost;
+    private ImageView likePost, commentPost, ivSavePost;
     private PreferenceUtil preferenceUtil;
     Posts posts;
     private View ibPlay;
@@ -77,6 +77,7 @@ public class PostView extends AppCompatActivity implements View.OnClickListener 
         likePost = findViewById(R.id.likePost);
         txtCreatedDate = findViewById(R.id.txtCreatedDate);
         commentPost = findViewById(R.id.commentPost);
+        ivSavePost = findViewById(R.id.ivSavePost);
         ibPlay = findViewById(R.id.ibPlay);
         try {
             postId = getIntent().getStringExtra("postId");
@@ -168,6 +169,14 @@ public class PostView extends AppCompatActivity implements View.OnClickListener 
                 likePost.setImageResource(R.drawable.like);
                 likePost.setImageTintList(unselectedColorStateList);
             }
+
+            if (post.isSaved()) {
+                ivSavePost.setImageResource(R.drawable.ic_bookmark_black_24dp);
+            } else {
+                ivSavePost.setImageResource(R.drawable.ic_bookmark_border_black_24dp);
+            }
+
+
             if (post.getCreated_date() != null && !post.getCreated_date().isEmpty()) {
                 txtCreatedDate.setVisibility(View.VISIBLE);
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss", Locale.getDefault());

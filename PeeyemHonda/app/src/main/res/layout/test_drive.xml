@@ -115,7 +115,8 @@
                         android:layout_below="@+id/car_model"
                         android:layout_margin="@dimen/_10dp"
                         android:text="Fuel Type*"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:visibility="gone" />
 
                     <RadioGroup
                         android:id="@+id/radioFuel"
@@ -125,7 +126,8 @@
                         android:layout_margin="@dimen/_10dp"
                         android:layout_toEndOf="@+id/textView"
                         android:layout_toRightOf="@+id/textView"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
                         <RadioButton
                             android:id="@+id/radioPetrol"

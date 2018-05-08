@@ -41,7 +41,13 @@
             android:id="@+id/nav_share"
             android:icon="@drawable/ic_share_black_24dp"
             android:title="@string/nav_share" />
+
     </group>
 
+    <group android:id="@+id/nav_footer">
+        <item
+            android:id="@+id/nav_footer_2"
+            android:title="powered by www.vajralabs.com" />
+    </group>
 
 </menu>

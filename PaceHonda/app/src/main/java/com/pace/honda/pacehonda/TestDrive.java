@@ -10,8 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -26,7 +24,7 @@ public class TestDrive extends AppCompatActivity {
     String str = "my string \n my other string";
     Spinner carModel, state, city, dealerLocation;
     EditText preferredDate, fullName, mobNum, emailID, comment, currentVehicle;
-    RadioGroup rg;
+    //    RadioGroup rg;
     View submit, reset;
     Calendar myCalendar;
     DatePickerDialog.OnDateSetListener date;
@@ -72,8 +70,7 @@ public class TestDrive extends AppCompatActivity {
         city = findViewById(R.id.city);
         dealerLocation = findViewById(R.id.dealer_location);
 
-        rg = findViewById(R.id.radioFuel);
-
+//        rg = findViewById(R.id.radioFuel);
 
         submit = findViewById(R.id.submit_rl);
         reset = findViewById(R.id.reset_rl);
@@ -136,7 +133,7 @@ public class TestDrive extends AppCompatActivity {
             str =
                     "Car Model : " + carModel.getSelectedItem().toString() + "\n"
                             + "Preferred Date : " + preferredDate.getText().toString() + "\n"
-                            + "Fuel Type : " + ((RadioButton) findViewById(rg.getCheckedRadioButtonId())).getText().toString() + "\n"
+                            + "Fuel Type : Diesel \n"
                             + "Full Name : " + fullName.getText().toString() + "\n"
                             + "Mobile Number : " + mobNum.getText().toString() + "\n"
                             + "E-Mail ID : " + emailID.getText().toString() + "\n"

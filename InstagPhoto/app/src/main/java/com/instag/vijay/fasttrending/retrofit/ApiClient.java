@@ -27,6 +27,7 @@ public class ApiClient {
     private static Retrofit retrofit = null;
     public static String serverAddress = "http://www.xooads.com/insta/";
     public static String serverAddress1 = "http://www.xooads.com/";
+    public static String fcmServer = "https://fcm.googleapis.com/fcm/";
 
 
     private static TrustManager[] trustAllCerts = new TrustManager[]{
@@ -77,10 +78,20 @@ public class ApiClient {
         return retrofit;
     }
 
-    public static Retrofit getClientAdmin() {
+    public static Retrofit getClientFcm() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient.Builder client = new OkHttpClient.Builder().addInterceptor(interceptor);
+        OkHttpClient.Builder client = new OkHttpClient.Builder().addInterceptor(interceptor
+                /*new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                Request newRequest = chain.request().newBuilder()
+                        .addHeader("Authorization", "key " + YOUR_LEGACY_SERVER_KEY_FROM_FIREBASE_CONSOLE)
+                        .build();
+                return chain.proceed(newRequest);
+            }
+        }*/
+        );
 
         try {
             try {
@@ -101,7 +112,7 @@ public class ApiClient {
 
 //        if (retrofit == null) {
         retrofit = new Retrofit.Builder().client(client.build())
-                .baseUrl(serverAddress1)
+                .baseUrl(fcmServer)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 

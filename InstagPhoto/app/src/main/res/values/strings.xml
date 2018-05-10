@@ -12,6 +12,13 @@
         <item>@string/gallery</item>
         <item>@string/remove</item>
     </string-array>
+    <string-array name="attachment1">
+        <item>@string/doc</item>
+        <item>@string/camera</item>
+        <item>@string/gallery</item>
+        <item>@string/audio</item>
+        <item>@string/video</item>
+    </string-array>
     <string-array name="gender_array">
         <item>Male</item>
         <item>Female</item>
@@ -20,16 +27,20 @@
         <item>Single</item>
         <item>Married</item>
     </string-array>
+
+    <string name="doc">Document</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="audio">Audio</string>
+    <string name="video">Video</string>
+
     <string name="followers">followers</string>
     <string name="following">following</string>
     <string name="you">You</string>
     <string name="follow">Follow</string>
     <string name="delete">Delete Post</string>
     <string name="unfollow">UnFollow</string>
-    <string name="gallery">Gallery</string>
-    <string name="camera">Camera</string>
     <string name="photo">Photo</string>
-    <string name="video">Video</string>
     <string name="remove">Delete</string>
     <string name="share">Share</string>
     <string name="hint_phone_number">Phone Number</string>
@@ -64,4 +75,11 @@
 
     <string name="key_quality">image_quality</string>
     <string name="key_save_format">image_format</string>
+
+    <string name="trova_base_folder">/WebMuo/Media</string>
+    <string name="trova_base_image_folder">/Images/</string>
+    <string name="trova_base_thumb_folder">/Thumb/</string>
+    <string name="trova_base_audio_folder">/Audio/</string>
+    <string name="trova_base_video_folder">/Video/</string>
+    <string name="trova_base_document_folder">/Documents/</string>
 </resources>

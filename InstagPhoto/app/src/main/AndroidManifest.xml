@@ -96,6 +96,9 @@
             android:name="com.instag.vijay.fasttrending.NotificationActivity"
             android:theme="@style/AppTheme" />
         <activity
+            android:name="com.instag.vijay.fasttrending.chat.ChatListActivity"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name="com.instag.vijay.fasttrending.MmSignInActivity"
             android:theme="@style/AppTheme" />
         <activity
@@ -122,6 +125,11 @@
             android:name="com.instag.vijay.fasttrending.PostView"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".chat.TrovaChat"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme1" />
 
         <activity
             android:name="com.instag.vijay.fasttrending.ProfileView"

@@ -3,14 +3,18 @@ package com.instag.vijay.fasttrending;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.instag.vijay.fasttrending.Db.DataBaseHandler;
+
 /**
  * This class used to store and get the preference value
  */
 
 public class PreferenceUtil {
     SharedPreferences sharedpreferences;
+    private Context context;
 
     public PreferenceUtil(Context context) {
+        this.context = context;
         sharedpreferences = context.getSharedPreferences("InstagPhoto", Context.MODE_PRIVATE);
     }
 
@@ -105,6 +109,9 @@ public class PreferenceUtil {
         editor.putString(Keys.COVER_IMAGE, "");
         editor.putBoolean(Keys.PRIVACY_SETTINGS, false);
         editor.apply();
+
+        DataBaseHandler dataBaseHandler = DataBaseHandler.getInstance(context);
+        dataBaseHandler.dropTables();
     }
 
     public String getMyCoverPhoto() {

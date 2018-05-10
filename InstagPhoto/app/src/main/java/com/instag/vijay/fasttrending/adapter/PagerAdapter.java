@@ -4,9 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.instag.vijay.fasttrending.fragments.ChatFragment;
 import com.instag.vijay.fasttrending.fragments.FavFragment;
 import com.instag.vijay.fasttrending.fragments.NewsfeedFragment;
-import com.instag.vijay.fasttrending.fragments.PhotoFragment;
 import com.instag.vijay.fasttrending.fragments.ProfileFragment;
 import com.instag.vijay.fasttrending.fragments.SearchFragment;
 import com.instag.vijay.fasttrending.fragments.VideoFragment;
@@ -34,7 +34,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
             case 2:
                 return VideoFragment.getInstance();
             case 3:
-                return PhotoFragment.getInstance();
+                return ChatFragment.getInstance();
             case 4:
                 return FavFragment.getInstance();
             case 5:

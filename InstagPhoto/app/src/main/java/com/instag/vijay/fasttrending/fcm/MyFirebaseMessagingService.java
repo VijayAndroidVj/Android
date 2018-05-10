@@ -1,18 +1,38 @@
 package com.instag.vijay.fasttrending.fcm;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v4.app.NotificationCompat;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.instag.vijay.fasttrending.Db.DataBaseHandler;
 import com.instag.vijay.fasttrending.MainActivity;
 import com.instag.vijay.fasttrending.R;
+import com.instag.vijay.fasttrending.chat.TrovaChat;
+import com.instag.vijay.fasttrending.model.ChatMessageModel;
+
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TimeZone;
+
+import static com.instag.vijay.fasttrending.MainActivity.mainActivity;
 
 /**
  * Created by vijay on 16/12/17.
@@ -21,6 +41,7 @@ import com.instag.vijay.fasttrending.R;
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
+    private int i = 0;
 
     /**
      * Called when message is received.
@@ -48,10 +69,31 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
             sendNotification(remoteMessage.getNotification().getBody());
+        } else {
+            Map<String, String> map = remoteMessage.getData();
+            for (Map.Entry<String, String> entry : map.entrySet()) {
+                System.out.println(entry.getKey() + "/" + entry.getValue());
+                if (entry.getKey().equalsIgnoreCase("nameValuePairs")) {
+                    Message message = mHandler.obtainMessage(7, entry.getValue());
+                    message.sendToTarget();
+                }
+            }
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
+    }
+
+    @Override
+    public void onMessageSent(String msgId) {
+        super.onMessageSent(msgId);
+        Log.d(TAG, "Message sent: " + msgId);
+    }
+
+    @Override
+    public void onSendError(String msgId, Exception e) {
+        super.onSendError(msgId, e);
+        Log.e(TAG, "Error sending upstream message: " + e);
     }
     // [END receive_message]
 
@@ -94,4 +136,164 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }
+
+
+    Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message message) {
+            // This is where you do your work in the UI thread.
+            // Your worker tells you in the message what to do.
+            if (message.what == 7)
+                try {
+                    JSONObject jsonObject = new JSONObject(new JSONObject(message.obj.toString()).getString("messageJson"));
+                    long timemilliseconds = System.currentTimeMillis();
+                    Calendar cal = Calendar.getInstance();
+                    TimeZone tz = cal.getTimeZone();
+                    String timezone = tz.getDisplayName();
+                    SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                    String currDate = df.format(cal.getTime());
+                    df = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+                    String time = df.format(cal.getTime());
+                    String message1 = jsonObject.getString("message");
+                    String senderId = jsonObject.getString("senderId");
+                    ChatMessageModel chatMessageModel = new ChatMessageModel();
+                    chatMessageModel.setMessageId(jsonObject.getLong("messageId"));
+                    chatMessageModel.setUserID(senderId);
+                    chatMessageModel.setMessage(message1);
+                    chatMessageModel.setMimeType("text");
+                    chatMessageModel.setMessageSentOrReceived(1);
+                    chatMessageModel.setName(jsonObject.getString("senderName"));
+                    chatMessageModel.setDate(currDate);
+                    chatMessageModel.setTime(time);
+                    chatMessageModel.setTimeZone(timezone);
+                    chatMessageModel.setSeenstatus(0);
+                    chatMessageModel.setId("0");
+                    chatMessageModel.setFileUploading(true);
+                    chatMessageModel.setTimemilliseconds(timemilliseconds);
+                    DataBaseHandler dataBaseHandler = DataBaseHandler.getInstance(MyFirebaseMessagingService.this);
+                    //  dataBaseHandler.saveFilteredContacts(userModel);
+                    dataBaseHandler.saveChatMessage(chatMessageModel);
+
+
+//                                if (agentLogActivity != null) {
+//                                    agentLogActivity.callBackListener(null, "refresh");
+//                                }
+                    if (TrovaChat.trovaChat != null) {
+                        if (TrovaChat.chatSenderId.equalsIgnoreCase(senderId)) {
+                            //handle trova event
+
+                            TrovaChat.trovaChat.sendMessageSeenStatus(chatMessageModel.getMessageId(), "");
+                            TrovaChat.chatList.add(chatMessageModel);
+                            TrovaChat.trovaChat.TrovaEvents(TrovaChat.chatList);
+                        } else {
+                            Notification.Builder mNotificationBuilder = new Notification.Builder(getApplicationContext());
+                            Intent ChatActivity = new Intent(getApplicationContext(), TrovaChat.class);
+                            try {
+                                ChatActivity.putExtra("otherUserName", chatMessageModel.getName());
+                                ChatActivity.putExtra("otherUserID", senderId);
+                                ChatActivity.putExtra("incoming", 1);
+                                ChatActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                PendingIntent resultIntent = PendingIntent.getActivity(getApplicationContext(), 0, ChatActivity,
+                                        PendingIntent.FLAG_UPDATE_CURRENT);
+
+                                Uri notificationSoundURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                                mNotificationBuilder.setSmallIcon(R.drawable.ic_launcher);
+
+                                String title = chatMessageModel.getName();
+                                mNotificationBuilder.setContentTitle(title);
+                                mNotificationBuilder.setContentText(message1).setTicker(message1);
+                                mNotificationBuilder.setAutoCancel(true);
+                                mNotificationBuilder.setSound(notificationSoundURI);
+                                mNotificationBuilder.setContentIntent(resultIntent).setPriority(Notification.PRIORITY_MAX);
+                                String CHANNEL_ID = getPackageName() + "_Channel";// The id of the channel.
+
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                    mNotificationBuilder.setChannelId(CHANNEL_ID);
+                                }
+                                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    mNotificationBuilder.setSmallIcon(R.drawable.ic_launcher);
+                                    mNotificationBuilder.setColor(getResources().getColor(R.color.white));
+                                } else {
+                                    mNotificationBuilder.setSmallIcon(R.drawable.ic_launcher);
+                                }
+                                NotificationManager notificationManager = (NotificationManager) getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
+                                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                    String channelName = getPackageName();
+                                    int importance = NotificationManager.IMPORTANCE_HIGH;
+                                    NotificationChannel mChannel = new NotificationChannel(
+                                            CHANNEL_ID, channelName, importance);
+                                    notificationManager.createNotificationChannel(mChannel);
+                                }
+                                mNotificationBuilder.setStyle(new Notification.BigTextStyle()
+                                        .bigText(message1));
+                                Notification nf = mNotificationBuilder.build();
+                                i = (i + 1);
+                                notificationManager.notify(i, nf);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    } else {
+                        Notification.Builder mNotificationBuilder = new Notification.Builder(getApplicationContext());
+                        Intent ChatActivity = new Intent(getApplicationContext(), TrovaChat.class);
+                        try {
+                            ChatActivity.putExtra("otherUserName", chatMessageModel.getName());
+                            ChatActivity.putExtra("otherUserID", senderId);
+                            ChatActivity.putExtra("incoming", 1);
+
+                            ChatActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            PendingIntent resultIntent = PendingIntent.getActivity(getApplicationContext(), 0, ChatActivity,
+                                    PendingIntent.FLAG_UPDATE_CURRENT);
+
+                            Uri notificationSoundURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                            mNotificationBuilder.setSmallIcon(R.drawable.ic_launcher);
+                            String title = "";
+                            if (!TextUtils.isEmpty(chatMessageModel.getName())) {
+                                title = chatMessageModel.getName();
+                            }
+                            mNotificationBuilder.setContentTitle(title);
+                            mNotificationBuilder.setContentText(message1).setTicker(message1);
+                            mNotificationBuilder.setAutoCancel(true);
+                            mNotificationBuilder.setSound(notificationSoundURI);
+                            mNotificationBuilder.setContentIntent(resultIntent).setPriority(Notification.PRIORITY_MAX);
+                            String CHANNEL_ID = getPackageName() + "_Channel";// The id of the channel.
+
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                mNotificationBuilder.setChannelId(CHANNEL_ID);
+                            }
+                            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                mNotificationBuilder.setSmallIcon(R.drawable.ic_launcher);
+                                mNotificationBuilder.setColor(getResources().getColor(R.color.white));
+                            } else {
+                                mNotificationBuilder.setSmallIcon(R.drawable.ic_launcher);
+                            }
+                            NotificationManager notificationManager = (NotificationManager) getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                String channelName = getPackageName();
+                                int importance = NotificationManager.IMPORTANCE_HIGH;
+                                NotificationChannel mChannel = new NotificationChannel(
+                                        CHANNEL_ID, channelName, importance);
+                                notificationManager.createNotificationChannel(mChannel);
+                            }
+                            mNotificationBuilder.setStyle(new Notification.BigTextStyle()
+                                    .bigText(message1));
+                            Notification nf = mNotificationBuilder.build();
+                            i = (i + 1);
+                            notificationManager.notify(i, nf);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    if (mainActivity != null) {
+                        mainActivity.refreshChat();
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+        }
+    };
 }

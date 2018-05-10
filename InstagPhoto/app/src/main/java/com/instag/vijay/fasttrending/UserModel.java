@@ -47,6 +47,28 @@ public class UserModel {
     @SerializedName("cover_image")
     private String coverimage;
 
+    @SerializedName("from_token")
+    private String from_token;
+
+    @SerializedName("to_token")
+    private String to_token;
+
+    public String getFrom_token() {
+        return from_token;
+    }
+
+    public void setFrom_token(String from_token) {
+        this.from_token = from_token;
+    }
+
+    public String getTo_token() {
+        return to_token;
+    }
+
+    public void setTo_token(String to_token) {
+        this.to_token = to_token;
+    }
+
     public String getProfileName() {
         return profileName;
     }

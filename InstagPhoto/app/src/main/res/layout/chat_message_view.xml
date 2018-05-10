@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#cccccc"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:fitsSystemWindows="true">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                android:contentInsetLeft="0dp"
+                android:contentInsetStart="0dp"
+                app:contentInsetEndWithActions="0dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                app:contentInsetStartWithNavigation="0dp"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:titleMargin="0dp" />
+        </android.support.design.widget.AppBarLayout>
+    </android.support.design.widget.CoordinatorLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/chatSwipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/edit"
+            android:paddingBottom="5dp">
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/msgListView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/edit"
+                android:layout_marginBottom="10dp"
+                android:background="@null"
+                android:divider="@null"
+                android:dividerHeight="5sp"
+                android:scrollbars="vertical"
+                android:stackFromBottom="true"
+                android:transcriptMode="alwaysScroll"
+                android:visibility="visible"
+                app:stackFromEnd="true" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <LinearLayout
+            android:id="@+id/edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <EditText
+                android:id="@+id/messageEditText"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="5sp"
+                android:layout_marginStart="5sp"
+                android:layout_weight=".77"
+                android:background="@drawable/chat_rounded_cornner_tint"
+                android:ems="10"
+                android:inputType="textMultiLine"
+                android:maxHeight="145dp"
+                android:maxLength="2048"
+                android:maxLines="3"
+                android:padding="2sp"
+                android:scrollHorizontally="false"
+                android:scrollbars="vertical"
+                android:textColor="@android:color/black" />
+
+            <ImageView
+                android:id="@+id/senderarrowimage"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="-4sp"
+                android:layout_marginStart="-4sp"
+                android:layout_marginTop="-6sp"
+                android:layout_weight=".06"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/arrow3" />
+
+            <ImageButton
+                android:id="@+id/sendMessageButton"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="5sp"
+                android:layout_marginLeft="2sp"
+                android:layout_marginStart="2sp"
+                android:layout_weight=".13"
+                android:background="@drawable/send"
+                android:contentDescription="@string/app_name"
+                android:gravity="bottom"
+                android:paddingBottom="2sp"
+                android:rotation="40" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

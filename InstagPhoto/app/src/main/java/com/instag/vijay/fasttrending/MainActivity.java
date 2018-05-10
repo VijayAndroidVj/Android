@@ -24,6 +24,8 @@ import android.widget.Toast;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.instag.vijay.fasttrending.activity.SearchActivity;
 import com.instag.vijay.fasttrending.adapter.PagerAdapter;
+import com.instag.vijay.fasttrending.chat.ChatListActivity;
+import com.instag.vijay.fasttrending.fragments.ChatFragment;
 import com.instag.vijay.fasttrending.fragments.NewsfeedFragment;
 import com.instag.vijay.fasttrending.fragments.ProfileFragment;
 import com.instag.vijay.fasttrending.fragments.SearchFragment;
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public TextView searchEditText;
     private Activity activity;
     private View iv_actionbar_settings;
+    private View iv_actionbar_peoples;
     public static MainActivity mainActivity;
     private PagerAdapter adapter;
     private View flnewsfeed;
@@ -72,9 +75,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final TextView name = view.findViewById(R.id.txtAppName);
         view.findViewById(R.id.iv_actionbar_noti).setOnClickListener(this);
         iv_actionbar_settings = view.findViewById(R.id.iv_actionbar_settings);
+        iv_actionbar_peoples = view.findViewById(R.id.iv_actionbar_peoples);
         searchEditText = view.findViewById(R.id.searchview);
 //        searchEditText.setTextColor(getResources().getColor(R.color.black));
 //        searchEditText.setHintTextColor(getResources().getColor(R.color.grey1));
+        iv_actionbar_peoples.setOnClickListener(this);
         iv_actionbar_settings.setOnClickListener(this);
 
         name.setVisibility(View.VISIBLE);
@@ -103,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onPageSelected(int position) {
                 bottomBar.selectTabAtPosition(position);
                 iv_actionbar_settings.setVisibility(View.GONE);
+                iv_actionbar_peoples.setVisibility(View.GONE);
                 if (position == 1) {
                     SearchFragment searchFragment = (SearchFragment) adapter.getItem(1);
                     searchFragment.refreshItems();
@@ -126,6 +132,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                        PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
                         name.setText("My Profile");
                         iv_actionbar_settings.setVisibility(View.VISIBLE);
+                    } else if (position == 3) {
+                        iv_actionbar_peoples.setVisibility(View.VISIBLE);
                     }
 
                 }
@@ -341,6 +349,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.iv_actionbar_noti:
                 moveToNotification();
                 break;
+            case R.id.iv_actionbar_peoples:
+                Intent in = new Intent(activity, ChatListActivity.class);
+                startActivity(in);
+                break;
             case R.id.iv_actionbar_settings:
                 //Creating the instance of PopupMenu
                 PopupMenu popup = new PopupMenu(MainActivity.this, view);
@@ -455,6 +467,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ProfileFragment profileFragment = (ProfileFragment) adapter.getItem(5);
             newsfeedFragment.refreshItems();
             profileFragment.getMyPosts();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void refreshChat() {
+        try {
+            ChatFragment chatFragment = (ChatFragment) adapter.getItem(3);
+            chatFragment.onResume();
         } catch (Exception e) {
             e.printStackTrace();
         }

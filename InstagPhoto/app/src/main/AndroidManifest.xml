@@ -54,7 +54,7 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/profile" />
+            android:resource="@drawable/feelout" />
         <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
              notification message. See README(https://goo.gl/6BKBk7) for more. -->
         <meta-data
@@ -83,6 +83,9 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
+        <activity
+            android:name="com.instag.vijay.fasttrending.activity.PostActivity"
+            android:theme="@style/AppTheme" />
         <activity
             android:name="com.instag.vijay.fasttrending.EditProfile"
             android:theme="@style/AppTheme" />
@@ -137,11 +140,11 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name="com.instag.vijay.fasttrending.activity.CategoryItemListActivity"
-            android:theme="@style/AppTheme"
+            android:theme="@style/AppTheme1"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
             android:name="com.instag.vijay.fasttrending.activity.SubCategoryItemListActivity"
-            android:theme="@style/AppTheme"
+            android:theme="@style/AppTheme1"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
             android:name="com.instag.vijay.fasttrending.activity.CategoryView"

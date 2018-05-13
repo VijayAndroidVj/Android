@@ -10,7 +10,7 @@
         icon="@drawable/youtube"
         id="@+id/tab_video" />
     <tab
-        icon="@drawable/ic_camera_black"
+        icon="@drawable/ic_chat_black_24dp"
         id="@+id/tab_cam" />
     <tab
         icon="@drawable/ic_favorite_black"

@@ -47,7 +47,6 @@ public class NewsfeedFragment extends Fragment {
     private PostNewsfeedAdapter postAdapter;
     private static NewsfeedFragment newsfeedFragment;
 
-
     public static NewsfeedFragment getInstance() {
         if (newsfeedFragment == null) {
             newsfeedFragment = new NewsfeedFragment();

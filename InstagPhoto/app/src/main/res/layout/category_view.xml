@@ -159,7 +159,7 @@
                     android:drawableTint="@color/green"
                     android:drawableTop="@drawable/ic_chat_black_24dp"
                     android:gravity="center"
-                    android:text="Call"
+                    android:text="Chat"
                     android:textSize="16sp" />
             </LinearLayout>
         </LinearLayout>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#D50000</color>
-    <color name="colorPrimaryTransparent">#80D50000</color>
-    <color name="colorPrimaryDark">#D50000</color>
+    <color name="colorPrimary">#2196F3</color>
+    <color name="colorPrimaryTransparent">#802196F3</color>
+    <color name="colorPrimaryDark">#2196F3</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#ffffff</color>
     <color name="whitetrans">#80ffffff</color>
@@ -29,7 +29,7 @@
 
     <color name="green">#2E8B57</color>
     <color name="participant_view_selected">#27AF81</color>
-    <color name="participant_view_unselected">#808080</color>
+    <color name="participant_view_unselected">#EEEEEE</color>
     <color name="button_background">#009AE0</color>
     <color name="button_pressed_background">#502199E2</color>
 

@@ -18,21 +18,33 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.instag.vijay.fasttrending.CommonUtil;
 import com.instag.vijay.fasttrending.Db.DataBaseHandler;
 import com.instag.vijay.fasttrending.MainActivity;
+import com.instag.vijay.fasttrending.PreferenceUtil;
 import com.instag.vijay.fasttrending.R;
 import com.instag.vijay.fasttrending.chat.TrovaChat;
 import com.instag.vijay.fasttrending.model.ChatMessageModel;
+import com.instag.vijay.fasttrending.model.UserModel;
+import com.instag.vijay.fasttrending.retrofit.ApiClient;
+import com.instag.vijay.fasttrending.retrofit.ApiInterface;
 
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+
 import static com.instag.vijay.fasttrending.MainActivity.mainActivity;
+import static com.instag.vijay.fasttrending.chat.TrovaChat.YOUR_LEGACY_SERVER_KEY_FROM_FIREBASE_CONSOLE;
+import static com.instag.vijay.fasttrending.chat.TrovaChat.jsonValuePut;
 
 /**
  * Created by vijay on 16/12/17.
@@ -124,7 +136,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(R.drawable.feelout)
+                        .setSmallIcon(R.drawable.feelout_1_36x36)
                         .setContentTitle(getString(R.string.app_name))
                         .setContentText(messageBody)
                         .setAutoCancel(true)
@@ -145,61 +157,167 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             // Your worker tells you in the message what to do.
             if (message.what == 7)
                 try {
-                    JSONObject jsonObject = new JSONObject(new JSONObject(message.obj.toString()).getString("messageJson"));
-                    long timemilliseconds = System.currentTimeMillis();
-                    Calendar cal = Calendar.getInstance();
-                    TimeZone tz = cal.getTimeZone();
-                    String timezone = tz.getDisplayName();
-                    SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-                    String currDate = df.format(cal.getTime());
-                    df = new SimpleDateFormat("hh:mm a", Locale.getDefault());
-                    String time = df.format(cal.getTime());
-                    String message1 = jsonObject.getString("message");
-                    String senderId = jsonObject.getString("senderId");
-                    ChatMessageModel chatMessageModel = new ChatMessageModel();
-                    chatMessageModel.setMessageId(jsonObject.getLong("messageId"));
-                    chatMessageModel.setUserID(senderId);
-                    chatMessageModel.setMessage(message1);
-                    chatMessageModel.setMimeType("text");
-                    chatMessageModel.setMessageSentOrReceived(1);
-                    chatMessageModel.setName(jsonObject.getString("senderName"));
-                    chatMessageModel.setDate(currDate);
-                    chatMessageModel.setTime(time);
-                    chatMessageModel.setTimeZone(timezone);
-                    chatMessageModel.setSeenstatus(0);
-                    chatMessageModel.setId("0");
-                    chatMessageModel.setFileUploading(true);
-                    chatMessageModel.setTimemilliseconds(timemilliseconds);
                     DataBaseHandler dataBaseHandler = DataBaseHandler.getInstance(MyFirebaseMessagingService.this);
-                    //  dataBaseHandler.saveFilteredContacts(userModel);
-                    dataBaseHandler.saveChatMessage(chatMessageModel);
+                    JSONObject jsonObject = new JSONObject(message.obj.toString());
+                    if (jsonObject.has("updateDelivered")) {
+                        jsonObject = new JSONObject(jsonObject.getString("updateDelivered"));
+                        jsonObject = new JSONObject(jsonObject.getString("nameValuePairs"));
+                        Long messageID = jsonObject.getLong("messageId");
+                        String senderId = jsonObject.getString("senderId");
+                        dataBaseHandler.updateChatMessageStatus(senderId, "" + messageID, 1);
+                        if (TrovaChat.trovaChat != null && TrovaChat.chatSenderId.equalsIgnoreCase(senderId)) {
+                            TrovaChat.trovaChat.updateMesageStatus(messageID, 1);
+                        }
+                    } else if (jsonObject.has("updateSeenMessage")) {
+                        jsonObject = new JSONObject(jsonObject.getString("updateSeenMessage"));
+                        jsonObject = new JSONObject(jsonObject.getString("nameValuePairs"));
+                        Long messageID = jsonObject.getLong("messageId");
+                        String senderId = jsonObject.getString("senderId");
+                        dataBaseHandler.updateChatMessageStatus(senderId, "" + messageID, 1);
+                        if (TrovaChat.trovaChat != null && TrovaChat.chatSenderId.equalsIgnoreCase(senderId)) {
+                            TrovaChat.trovaChat.updateMesageStatus(messageID, 2);
+                        }
+                    } else if (jsonObject.has("messageJson")) {
+                        jsonObject = new JSONObject(jsonObject.getString("messageJson"));
+                        long timemilliseconds = System.currentTimeMillis();
+                        Calendar cal = Calendar.getInstance();
+                        TimeZone tz = cal.getTimeZone();
+                        String timezone = tz.getDisplayName();
+                        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                        String currDate = df.format(cal.getTime());
+                        df = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+                        String time = df.format(cal.getTime());
+                        String message1 = jsonObject.getString("message");
+                        String senderId = jsonObject.getString("senderId");
+                        ChatMessageModel chatMessageModel = new ChatMessageModel();
+                        chatMessageModel.setMessageId(jsonObject.getLong("messageId"));
+                        chatMessageModel.setUserID(senderId);
+                        chatMessageModel.setMessage(message1);
+                        chatMessageModel.setMimeType("text");
+                        chatMessageModel.setMessageSentOrReceived(1);
+                        chatMessageModel.setName(jsonObject.getString("senderName"));
+                        chatMessageModel.setDate(currDate);
+                        chatMessageModel.setTime(time);
+                        chatMessageModel.setTimeZone(timezone);
+                        chatMessageModel.setSeenstatus(0);
+                        chatMessageModel.setId("0");
+                        chatMessageModel.setFileUploading(true);
+                        chatMessageModel.setTimemilliseconds(timemilliseconds);
 
+                        //  dataBaseHandler.saveFilteredContacts(userModel);
+                        dataBaseHandler.saveChatMessage(chatMessageModel);
+
+                        String name = dataBaseHandler.getUserName(chatMessageModel.getUserID());
+                        UserModel userModel = new UserModel();
+                        userModel.setUserId(chatMessageModel.getUserID());
+                        cal = Calendar.getInstance();
+                        tz = cal.getTimeZone();
+                        timezone = tz.getDisplayName();
+                        df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                        currDate = df.format(cal.getTime());
+                        df = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+                        time = df.format(cal.getTime());
+                        String callDuration = "00:00:00";
+                        userModel.setDate(currDate);
+                        userModel.setTime(time);
+                        userModel.setTimeZone(timezone);
+                        userModel.setCallDuration(callDuration);
+                        userModel.setCallCount(0);
+                        if (chatMessageModel.getMessageSentOrReceived() == 0) {
+                            userModel.setStatus("1");
+                            userModel.setCallType(UserModel.DIALEDCALL);
+                        } else {
+                            userModel.setStatus("0");
+                            userModel.setCallType(UserModel.RECIVEDCALL);
+                        }
+
+                        userModel.setCallMode("chat");
+                        userModel.setMessage(chatMessageModel.getMessage());
+                        userModel.setName(name);
+                        userModel.setTimemillis(chatMessageModel.getTimemilliseconds());
+                        dataBaseHandler.saveContactLogs(userModel);
+                        dataBaseHandler.saveCallLogs(userModel);
 
 //                                if (agentLogActivity != null) {
 //                                    agentLogActivity.callBackListener(null, "refresh");
 //                                }
-                    if (TrovaChat.trovaChat != null) {
-                        if (TrovaChat.chatSenderId.equalsIgnoreCase(senderId)) {
-                            //handle trova event
+                        String senderToken = jsonObject.has("senderToken") ? jsonObject.getString("senderToken") : "";
+                        if (!TextUtils.isEmpty(senderToken))
+                            dataBaseHandler.updateToken(senderId, senderToken);
+                        if (TrovaChat.trovaChat != null) {
+                            if (TrovaChat.chatSenderId.equalsIgnoreCase(senderId)) {
+                                //handle trova event
+                                sendUpdateMessage(MyFirebaseMessagingService.this, chatMessageModel.getMessageId(), dataBaseHandler.getUserToken(senderId), 2);
+                                TrovaChat.chatList.add(chatMessageModel);
+                                TrovaChat.trovaChat.TrovaEvents(TrovaChat.chatList);
+                            } else {
+                                sendUpdateMessage(MyFirebaseMessagingService.this, chatMessageModel.getMessageId(), dataBaseHandler.getUserToken(senderId), 1);
+                                Notification.Builder mNotificationBuilder = new Notification.Builder(getApplicationContext());
+                                Intent ChatActivity = new Intent(getApplicationContext(), TrovaChat.class);
+                                try {
+                                    ChatActivity.putExtra("otherUserName", chatMessageModel.getName());
+                                    ChatActivity.putExtra("otherUserID", senderId);
+                                    ChatActivity.putExtra("incoming", 1);
+                                    ChatActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    PendingIntent resultIntent = PendingIntent.getActivity(getApplicationContext(), 0, ChatActivity,
+                                            PendingIntent.FLAG_UPDATE_CURRENT);
 
-                            TrovaChat.trovaChat.sendMessageSeenStatus(chatMessageModel.getMessageId(), "");
-                            TrovaChat.chatList.add(chatMessageModel);
-                            TrovaChat.trovaChat.TrovaEvents(TrovaChat.chatList);
+                                    Uri notificationSoundURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                                    mNotificationBuilder.setSmallIcon(R.drawable.feelout_1_36x36);
+
+                                    String title = chatMessageModel.getName();
+                                    mNotificationBuilder.setContentTitle(title);
+                                    mNotificationBuilder.setContentText(message1).setTicker(message1);
+                                    mNotificationBuilder.setAutoCancel(true);
+                                    mNotificationBuilder.setSound(notificationSoundURI);
+                                    mNotificationBuilder.setContentIntent(resultIntent).setPriority(Notification.PRIORITY_MAX);
+                                    String CHANNEL_ID = getPackageName() + "_Channel";// The id of the channel.
+
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                        mNotificationBuilder.setChannelId(CHANNEL_ID);
+                                    }
+                                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                        mNotificationBuilder.setSmallIcon(R.drawable.feelout_1_36x36);
+                                        mNotificationBuilder.setColor(getResources().getColor(R.color.white));
+                                    } else {
+                                        mNotificationBuilder.setSmallIcon(R.drawable.feelout_1_36x36);
+                                    }
+                                    NotificationManager notificationManager = (NotificationManager) getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
+                                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                        String channelName = getPackageName();
+                                        int importance = NotificationManager.IMPORTANCE_HIGH;
+                                        NotificationChannel mChannel = new NotificationChannel(
+                                                CHANNEL_ID, channelName, importance);
+                                        notificationManager.createNotificationChannel(mChannel);
+                                    }
+                                    mNotificationBuilder.setStyle(new Notification.BigTextStyle()
+                                            .bigText(message1));
+                                    Notification nf = mNotificationBuilder.build();
+                                    i = (i + 1);
+                                    notificationManager.notify(i, nf);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
                         } else {
+                            sendUpdateMessage(MyFirebaseMessagingService.this, chatMessageModel.getMessageId(), dataBaseHandler.getUserToken(senderId), 1);
                             Notification.Builder mNotificationBuilder = new Notification.Builder(getApplicationContext());
                             Intent ChatActivity = new Intent(getApplicationContext(), TrovaChat.class);
                             try {
                                 ChatActivity.putExtra("otherUserName", chatMessageModel.getName());
                                 ChatActivity.putExtra("otherUserID", senderId);
                                 ChatActivity.putExtra("incoming", 1);
+
                                 ChatActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 PendingIntent resultIntent = PendingIntent.getActivity(getApplicationContext(), 0, ChatActivity,
                                         PendingIntent.FLAG_UPDATE_CURRENT);
 
                                 Uri notificationSoundURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                                mNotificationBuilder.setSmallIcon(R.drawable.ic_launcher);
-
-                                String title = chatMessageModel.getName();
+                                mNotificationBuilder.setSmallIcon(R.drawable.feelout_1_36x36);
+                                String title = "";
+                                if (!TextUtils.isEmpty(chatMessageModel.getName())) {
+                                    title = chatMessageModel.getName();
+                                }
                                 mNotificationBuilder.setContentTitle(title);
                                 mNotificationBuilder.setContentText(message1).setTicker(message1);
                                 mNotificationBuilder.setAutoCancel(true);
@@ -211,10 +329,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                     mNotificationBuilder.setChannelId(CHANNEL_ID);
                                 }
                                 if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    mNotificationBuilder.setSmallIcon(R.drawable.ic_launcher);
+                                    mNotificationBuilder.setSmallIcon(R.drawable.feelout_1_36x36);
                                     mNotificationBuilder.setColor(getResources().getColor(R.color.white));
                                 } else {
-                                    mNotificationBuilder.setSmallIcon(R.drawable.ic_launcher);
+                                    mNotificationBuilder.setSmallIcon(R.drawable.feelout_1_36x36);
                                 }
                                 NotificationManager notificationManager = (NotificationManager) getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
                                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -232,62 +350,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                        }
-                    } else {
-                        Notification.Builder mNotificationBuilder = new Notification.Builder(getApplicationContext());
-                        Intent ChatActivity = new Intent(getApplicationContext(), TrovaChat.class);
-                        try {
-                            ChatActivity.putExtra("otherUserName", chatMessageModel.getName());
-                            ChatActivity.putExtra("otherUserID", senderId);
-                            ChatActivity.putExtra("incoming", 1);
 
-                            ChatActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            PendingIntent resultIntent = PendingIntent.getActivity(getApplicationContext(), 0, ChatActivity,
-                                    PendingIntent.FLAG_UPDATE_CURRENT);
-
-                            Uri notificationSoundURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                            mNotificationBuilder.setSmallIcon(R.drawable.ic_launcher);
-                            String title = "";
-                            if (!TextUtils.isEmpty(chatMessageModel.getName())) {
-                                title = chatMessageModel.getName();
-                            }
-                            mNotificationBuilder.setContentTitle(title);
-                            mNotificationBuilder.setContentText(message1).setTicker(message1);
-                            mNotificationBuilder.setAutoCancel(true);
-                            mNotificationBuilder.setSound(notificationSoundURI);
-                            mNotificationBuilder.setContentIntent(resultIntent).setPriority(Notification.PRIORITY_MAX);
-                            String CHANNEL_ID = getPackageName() + "_Channel";// The id of the channel.
-
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                mNotificationBuilder.setChannelId(CHANNEL_ID);
-                            }
-                            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                mNotificationBuilder.setSmallIcon(R.drawable.ic_launcher);
-                                mNotificationBuilder.setColor(getResources().getColor(R.color.white));
-                            } else {
-                                mNotificationBuilder.setSmallIcon(R.drawable.ic_launcher);
-                            }
-                            NotificationManager notificationManager = (NotificationManager) getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
-                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                                String channelName = getPackageName();
-                                int importance = NotificationManager.IMPORTANCE_HIGH;
-                                NotificationChannel mChannel = new NotificationChannel(
-                                        CHANNEL_ID, channelName, importance);
-                                notificationManager.createNotificationChannel(mChannel);
-                            }
-                            mNotificationBuilder.setStyle(new Notification.BigTextStyle()
-                                    .bigText(message1));
-                            Notification nf = mNotificationBuilder.build();
-                            i = (i + 1);
-                            notificationManager.notify(i, nf);
-                        } catch (Exception e) {
-                            e.printStackTrace();
                         }
 
-                    }
-
-                    if (mainActivity != null) {
-                        mainActivity.refreshChat();
+                        if (mainActivity != null) {
+                            mainActivity.refreshChat();
+                        }
                     }
 
                 } catch (Exception e) {
@@ -296,4 +364,59 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         }
     };
+
+
+    public static void sendUpdateMessage(final Context activity, final long messageId, final String instanceIdToken, final int status) {
+
+        if (CommonUtil.isNetworkAvailable(activity)) {
+            //DashBoardActivity.showProgress(activity);
+            ApiInterface apiService =
+                    ApiClient.getClientFcm().create(ApiInterface.class);
+            HashMap<String, Object> jsonParams = new HashMap<>();
+            JSONObject dataValue = new JSONObject();
+            PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
+            try {
+                dataValue.put("messageId", messageId);
+                dataValue.put("status", status);
+                jsonValuePut(dataValue, "userId", preferenceUtil.getUserMailId());
+                jsonValuePut(dataValue, "senderId", preferenceUtil.getUserMailId());
+                JSONObject userObj = new JSONObject();
+                if (status == 1)
+                    jsonValuePut(userObj, "updateDelivered", dataValue);
+                else {
+                    jsonValuePut(userObj, "updateSeenMessage", dataValue);
+                }
+                jsonParams.put("data", userObj);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+            jsonParams.put("to", instanceIdToken);
+            Call<ResponseBody> call = apiService.sendFcm(jsonParams, "key=" + YOUR_LEGACY_SERVER_KEY_FROM_FIREBASE_CONSOLE);
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                    final ResponseBody requestBody = response.body();
+                    //DashBoardActivity.dismissProgress();
+                    if (requestBody != null) {
+                        try {
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        //  Toast.makeText(activity, "Could not connect to server.", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    // Log error here since request failed
+                }
+            });
+        }
+
+    }
+
 }

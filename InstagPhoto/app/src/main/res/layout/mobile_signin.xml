@@ -25,7 +25,7 @@
                     android:layout_height="50dp"
                     android:layout_centerHorizontal="true"
                     android:contentDescription="@string/app_name"
-                    android:src="@drawable/feeloutbig"
+                    android:src="@drawable/feelout"
                     android:visibility="visible" />
 
                 <TextView

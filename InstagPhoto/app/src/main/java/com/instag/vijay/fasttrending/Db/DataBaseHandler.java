@@ -140,7 +140,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void dropTables() {
+    public synchronized void dropTables() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DROP TABLE IF EXISTS " + TBLCHATMESSAGES);
         db.execSQL("DROP TABLE IF EXISTS " + TBLFILTEREDCONTACTS);
@@ -169,7 +169,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     }
 
 
-    public void saveFilteredContacts(UserModel userModel) {
+    public synchronized void saveFilteredContacts(UserModel userModel) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
             String selectQuery = "SELECT * FROM " + TBLFILTEREDCONTACTS + " WHERE " + CONTACTS_USERID + "= '" + userModel.getUserId() + "'";
@@ -196,8 +196,24 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         }
     }
 
+    public synchronized void updateToken(String mail, String token) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            String selectQuery = "SELECT * FROM " + TBLFILTEREDCONTACTS + " WHERE " + CONTACTS_USERID + "= '" + mail + "'";
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            if (cursor != null && cursor.moveToFirst() && cursor.getCount() != 0) {
+                ContentValues values = new ContentValues();
+                values.put(CONTACTS_USER_TO_TOKEN, token);
+                db.update(TBLFILTEREDCONTACTS, values, CONTACTS_USERID + " = ?",
+                        new String[]{mail});
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-    public ArrayList<UserModel> getFilteredContactList() {
+
+    public synchronized ArrayList<UserModel> getFilteredContactList() {
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery = "SELECT * FROM " + TBLFILTEREDCONTACTS + " ORDER BY " + CONTACTS_NAME + " ASC";
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -237,7 +253,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         return contactCount;
     }
 
-    public boolean isContactAvailable(String userId) {
+    public synchronized boolean isContactAvailable(String userId) {
         int contactCount = 0;
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery = "SELECT * FROM " + TBLFILTEREDCONTACTS + " WHERE " + CONTACTS_USERID + " = '" + userId + "'";
@@ -259,7 +275,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     }
 
 
-    public String getUserName(String userId) {
+    public synchronized String getUserName(String userId) {
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery = "SELECT * FROM " + TBLFILTEREDCONTACTS + " WHERE " + CONTACTS_USERID + "= '" + userId + "'";
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -274,7 +290,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         return name;
     }
 
-    public String getUserImage(String userId) {
+    public synchronized String getUserImage(String userId) {
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery = "SELECT * FROM " + TBLFILTEREDCONTACTS + " WHERE " + CONTACTS_USERID + "= '" + userId + "'";
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -289,7 +305,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         return name;
     }
 
-    public String getUserToken(String userId) {
+    public synchronized String getUserToken(String userId) {
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery = "SELECT * FROM " + TBLFILTEREDCONTACTS + " WHERE " + CONTACTS_USERID + "= '" + userId + "'";
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -319,7 +335,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         return uploaded;
     }
 
-    public void saveChatMessage(ChatMessageModel chatMessageModel) {
+    public synchronized void saveChatMessage(ChatMessageModel chatMessageModel) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -343,40 +359,12 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         long status = db.insert(TBLCHATMESSAGES, null, values);
         Log.i("insert to chat table", ":" + status);
 
-        UserModel userModel = new UserModel();
-        userModel.setUserId(chatMessageModel.getUserID());
-        Calendar cal = Calendar.getInstance();
-        TimeZone tz = cal.getTimeZone();
-        String timezone = tz.getDisplayName();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-        String currDate = df.format(cal.getTime());
-        df = new SimpleDateFormat("hh:mm a", Locale.getDefault());
-        String time = df.format(cal.getTime());
-        String callDuration = "00:00:00";
-        userModel.setDate(currDate);
-        userModel.setTime(time);
-        userModel.setTimeZone(timezone);
-        userModel.setCallDuration(callDuration);
-        userModel.setCallCount(0);
-        if (chatMessageModel.getMessageSentOrReceived() == 0) {
-            userModel.setStatus("1");
-            userModel.setCallType(UserModel.DIALEDCALL);
-        } else {
-            userModel.setStatus("0");
-            userModel.setCallType(UserModel.RECIVEDCALL);
-        }
 
-        userModel.setCallMode("chat");
-        userModel.setMessage(chatMessageModel.getMessage());
-        userModel.setName(getUserName(userModel.getUserId()));
-        userModel.setTimemillis(chatMessageModel.getTimemilliseconds());
-        saveContactLogs(userModel);
-        saveCallLogs(userModel);
 
 
     }
 
-    public ArrayList<ChatMessageModel> getChatMessages(String number) {
+    public synchronized ArrayList<ChatMessageModel> getChatMessages(String number) {
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery = "SELECT * FROM " + TBLCHATMESSAGES + " WHERE " + CHATFIELDUSERID + " = '" + number + "' ORDER BY " + CHATFIELDTIMEMILLISECONDS + " ASC";
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -410,28 +398,28 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         return chatmessageList;
     }
 
-    public void updateChatMessageStatus(String userId, String messageId, int status) {
+    public synchronized void updateChatMessageStatus(String userId, String messageId, int status) {
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(CHATFIELDSEENSTATUS, status);
         db.update(TBLCHATMESSAGES, cv, CHATFIELDUSERID + "=? AND " + CHATFIELDMESSAGEID + " =?", new String[]{userId, messageId});
     }
 
-    public void updateChatStatus(int status) {
+    public synchronized void updateChatStatus(int status) {
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(CHATFIELDSEENSTATUS, status);
         db.update(TBLCHATMESSAGES, cv, null, null);
     }
 
-    public void updateChatFileStatus(String server_path, int status) {
+    public synchronized void updateChatFileStatus(String server_path, int status) {
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(CHATFIELDSEENSTATUS, status);
         db.update(TBLCHATMESSAGES, cv, CHATFIELDFILEMEDIALINK + " =?", new String[]{server_path});
     }
 
-    public void saveContactLogs(UserModel trovaAgentCallLogs) {
+    public synchronized void saveContactLogs(UserModel trovaAgentCallLogs) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
             //System.out.println(trovaAgentCallLogs);
@@ -463,7 +451,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<UserModel> getAllContactDisplayCallLogs() {
+    public synchronized ArrayList<UserModel> getAllContactDisplayCallLogs() {
         ArrayList<UserModel> trovaAgentCallLogsList = new ArrayList<>();
         try {
             SQLiteDatabase db = this.getReadableDatabase();
@@ -583,7 +571,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<UserModel> getAllContactCallLogs(String type) {
+    public synchronized ArrayList<UserModel> getAllContactCallLogs(String type) {
 
         String where = "";
         if (type.equalsIgnoreCase("audio")) {
@@ -661,7 +649,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<UserModel> getMissedCallLogs() {
+    public synchronized ArrayList<UserModel> getMissedCallLogs() {
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery = "SELECT * FROM " + TROVAMISSEDCALLLOGS + " ORDER BY " + FIELD_ID + " DESC";
         Cursor cursor = db.rawQuery(selectQuery, null);

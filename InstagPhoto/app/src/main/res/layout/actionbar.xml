@@ -68,7 +68,6 @@
             android:layout_height="match_parent"
             android:layout_toLeftOf="@+id/rlnotifi"
             android:layout_toStartOf="@+id/rlnotifi"
-            android:background="@drawable/border_bg_prescription_list"
             android:drawableLeft="@drawable/ic_search_black"
             android:drawableStart="@drawable/ic_search_black"
             android:focusable="true"

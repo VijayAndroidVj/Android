@@ -37,6 +37,7 @@ import com.instag.vijay.fasttrending.PreferenceUtil;
 import com.instag.vijay.fasttrending.R;
 import com.instag.vijay.fasttrending.activity.CreateBusinessPageActivity;
 import com.instag.vijay.fasttrending.activity.CreateGroupActivity;
+import com.instag.vijay.fasttrending.activity.PostActivity;
 import com.instag.vijay.fasttrending.activity.SeeAllFriendsActivity;
 import com.instag.vijay.fasttrending.adapter.FriendsGridAdapter;
 import com.instag.vijay.fasttrending.adapter.PostsGridAdapter;
@@ -119,6 +120,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private TextView txtProfileStatus;
     private TextView txtProfileWebInfo;
     private ListView listview_business;
+    private View fab_post;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -143,6 +145,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         txtProfileStatus = view.findViewById(R.id.txtProfileStatus);
         txtProfileWebInfo = view.findViewById(R.id.txtProfileWebInfo);
         listview_business = view.findViewById(R.id.listview_business);
+        fab_post = view.findViewById(R.id.fab_post);
 
         viewYou = view.findViewById(R.id.viewYou);
         viewFriends = view.findViewById(R.id.viewFriends);
@@ -171,6 +174,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         txt_see_all_followings.setOnClickListener(this);
         txt_see_all_followers.setOnClickListener(this);
 
+        fab_post.setOnClickListener(this);
         viewYou.setOnClickListener(this);
         viewFriends.setOnClickListener(this);
         viewLikes.setOnClickListener(this);
@@ -725,6 +729,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     break;
                 case R.id.btnBusinessPage:
                     in = new Intent(activity, CreateBusinessPageActivity.class);
+                    startActivity(in);
+                    break;
+                case R.id.fab_post:
+                    in = new Intent(activity, PostActivity.class);
                     startActivity(in);
                     break;
                 case R.id.viewYou:

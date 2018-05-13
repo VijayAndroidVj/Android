@@ -174,6 +174,10 @@ public interface ApiInterface {
     @POST("send")
     Call<ResponseBody> sendFcm(@Body HashMap<String, Object> body, @Header("Authorization") String authHeader);
 
+    @POST("getToken.php")
+    @FormUrlEncoded
+    Call<ResponseBody> getToken(@Field("email") String email);
+
     @POST("getTrendingVideos.php")
     @FormUrlEncoded
     Call<ArrayList<Posts>> getTrendingVideos(@Field("useremail") String useremail);

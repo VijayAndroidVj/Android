@@ -40,7 +40,7 @@ import java.io.File;
 
 public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.MyViewHolder> implements View.OnClickListener {
 
-    int densityPix;
+    private int densityPix;
     //    private List<ChatMessageModel> chatList;
     private LayoutInflater layoutInflater;
     private Activity activity;
@@ -123,28 +123,33 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                 holder.rlVideoLayout.setVisibility(View.GONE);
                 holder.rlDocLayout.setVisibility(View.GONE);
                 switch (model.getSeenstatus()) {
+                    case -1:
+                        holder.img_chat_message_status_sent.setVisibility(View.VISIBLE);
+                        holder.img_chat_message_status_sent.setImageResource(R.drawable.clock);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            holder.img_chat_message_status_sent.setImageTintList(textColors);
+                        }
+                        break;
                     case 0:
                         holder.img_chat_message_status_sent.setVisibility(View.VISIBLE);
-                        holder.img_chat_message_status_delivered.setVisibility(View.GONE);
+                        holder.img_chat_message_status_sent.setImageResource(R.drawable.single_tick);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             holder.img_chat_message_status_sent.setImageTintList(textColors);
                         }
                         break;
                     case 1:
                         holder.img_chat_message_status_sent.setVisibility(View.VISIBLE);
-                        holder.img_chat_message_status_delivered.setVisibility(View.VISIBLE);
+                        holder.img_chat_message_status_sent.setImageResource(R.drawable.double_tick);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             holder.img_chat_message_status_sent.setImageTintList(textColors);
-                            holder.img_chat_message_status_delivered.setImageTintList(textColors);
                         }
                         break;
 
                     case 2:
                         holder.img_chat_message_status_sent.setVisibility(View.VISIBLE);
-                        holder.img_chat_message_status_delivered.setVisibility(View.VISIBLE);
+                        holder.img_chat_message_status_sent.setImageResource(R.drawable.double_tick);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             holder.img_chat_message_status_sent.setImageTintList(seenColors);
-                            holder.img_chat_message_status_delivered.setImageTintList(seenColors);
                         }
                         break;
                 }
@@ -592,7 +597,6 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
         private TextView ivDocTime;
 
         ImageView img_chat_message_status_sent;
-        ImageView img_chat_message_status_delivered;
         ImageView img_chat_image_status_sent;
         ImageView img_chat_image_status_delivered;
         ImageView img_chat_audio_status_sent;
@@ -604,61 +608,60 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
 
         private MyViewHolder(View view) {
             super(view);
-//            sendCallout = (ImageView) view.findViewById(R.id.send_callout);
-//            recvCallout = (ImageView) view.findViewById(R.id.recv_callout);
-            txtMsgLyt = (RelativeLayout) view.findViewById(R.id.rlTextLayout);
-            txtMessage = (TextView) view.findViewById(R.id.txtMessage);
-            chatTime = (TextView) view.findViewById(R.id.chat_time);
-            llTextMessageStatus = (LinearLayout) view.findViewById(R.id.llTextMessageStatus);
-            rlImageLayout = (RelativeLayout) view.findViewById(R.id.rlImageLayout);
-            ivImage = (ImageView) view.findViewById(R.id.ivImage);
-            pbImage = (ProgressBar) view.findViewById(R.id.pbImage);
-            ivUploadDownload = (ImageView) view.findViewById(R.id.ivUploadDownload);
-            txtImageTime = (TextView) view.findViewById(R.id.txtImageTime);
-            llImageStatus = (LinearLayout) view.findViewById(R.id.llImageStatus);
-            rlAudioLayout = (RelativeLayout) view.findViewById(R.id.rlAudioLayout);
-            rlAudioInnerLayout = (RelativeLayout) view.findViewById(R.id.rlAudioInnerLayout);
-            rlAudioPlayPauseLayout = (RelativeLayout) view.findViewById(R.id.rlAudioPlayPauseLayout);
-            txtAudioDuration = (TextView) view.findViewById(R.id.txtAudioDuration);
-            ivAudioImage = (ImageView) view.findViewById(R.id.ivAudioImage);
-            rlAudioUploadDownloadLayout = (RelativeLayout) view.findViewById(R.id.rlAudioUploadDownloadLayout);
-            pbAudio = (ProgressBar) view.findViewById(R.id.pbAudio);
-            txtAudioFilename = (TextView) view.findViewById(R.id.txtAudioFilename);
-            ivAudioUploadDownload = (ImageView) view.findViewById(R.id.ivAudioUploadDownload);
-            rlAudioPlayLayout = (RelativeLayout) view.findViewById(R.id.rlAudioPlayLayout);
-            ivAudioPlay = (ImageView) view.findViewById(R.id.ivAudioPlay);
-            ivAudioPause = (ImageView) view.findViewById(R.id.ivAudioPause);
-            sbAudio = (SeekBar) view.findViewById(R.id.sbAudio);
-            txtAudioTime = (TextView) view.findViewById(R.id.txtAudioTime);
-            llAudioStatus = (LinearLayout) view.findViewById(R.id.llAudioStatus);
-            txtAudioSize = (TextView) view.findViewById(R.id.txtAudioSize);
-            rlVideoLayout = (RelativeLayout) view.findViewById(R.id.rlVideoLayout);
-            ivVideoThumb = (ImageView) view.findViewById(R.id.ivVideoThumb);
-            pbVideo = (ProgressBar) view.findViewById(R.id.pbVideo);
-            ivVideoUploadDownload = (ImageView) view.findViewById(R.id.ivVideoUploadDownload);
-            ivVideoIcon = (ImageView) view.findViewById(R.id.ivVideoIcon);
-            txtVideoDuration = (TextView) view.findViewById(R.id.txtVideoDuration);
-            txtVideoTime = (TextView) view.findViewById(R.id.txtVideoTime);
-            llVideoStatus = (LinearLayout) view.findViewById(R.id.llVideoStatus);
-            rlDocLayout = (RelativeLayout) view.findViewById(R.id.rlDocLayout);
-            rlDocInnerLayout = (RelativeLayout) view.findViewById(R.id.rlDocInnerLayout);
-            ivDocImage = (ImageView) view.findViewById(R.id.ivDocImage);
-            ivDocName = (TextView) view.findViewById(R.id.ivDocName1);
-            pbDoc = (ProgressBar) view.findViewById(R.id.pbDoc);
-            ivDocUploadDownload = (ImageView) view.findViewById(R.id.ivDocUploadDownload);
-            txtDocSize = (TextView) view.findViewById(R.id.txtDocSize);
-            llDocStatus = (LinearLayout) view.findViewById(R.id.llDocStatus);
-            ivDocTime = (TextView) view.findViewById(R.id.ivDocTime);
-            img_chat_message_status_sent = (ImageView) view.findViewById(R.id.img_chat_message_status_sent);
-            img_chat_message_status_delivered = (ImageView) view.findViewById(R.id.img_chat_message_status_delivered);
-            img_chat_image_status_sent = (ImageView) view.findViewById(R.id.img_chat_image_status_sent);
-            img_chat_image_status_delivered = (ImageView) view.findViewById(R.id.img_chat_image_status_delivered);
-            img_chat_audio_status_sent = (ImageView) view.findViewById(R.id.img_chat_audio_status_sent);
-            img_chat_audio_status_delivered = (ImageView) view.findViewById(R.id.img_chat_audio_status_delivered);
-            img_chat_video_status_sent = (ImageView) view.findViewById(R.id.img_chat_video_status_sent);
-            img_chat_video_status_delivered = (ImageView) view.findViewById(R.id.img_chat_video_status_delivered);
-            img_chat_doc_status_sent = (ImageView) view.findViewById(R.id.img_chat_doc_status_sent);
-            img_chat_doc_status_delivered = (ImageView) view.findViewById(R.id.img_chat_doc_status_delivered);
+//            sendCallout =  view.findViewById(R.id.send_callout);
+//            recvCallout =  view.findViewById(R.id.recv_callout);
+            txtMsgLyt = view.findViewById(R.id.rlTextLayout);
+            txtMessage = view.findViewById(R.id.txtMessage);
+            chatTime = view.findViewById(R.id.chat_time);
+            llTextMessageStatus = view.findViewById(R.id.llTextMessageStatus);
+            rlImageLayout = view.findViewById(R.id.rlImageLayout);
+            ivImage = view.findViewById(R.id.ivImage);
+            pbImage = view.findViewById(R.id.pbImage);
+            ivUploadDownload = view.findViewById(R.id.ivUploadDownload);
+            txtImageTime = view.findViewById(R.id.txtImageTime);
+            llImageStatus = view.findViewById(R.id.llImageStatus);
+            rlAudioLayout = view.findViewById(R.id.rlAudioLayout);
+            rlAudioInnerLayout = view.findViewById(R.id.rlAudioInnerLayout);
+            rlAudioPlayPauseLayout = view.findViewById(R.id.rlAudioPlayPauseLayout);
+            txtAudioDuration = view.findViewById(R.id.txtAudioDuration);
+            ivAudioImage = view.findViewById(R.id.ivAudioImage);
+            rlAudioUploadDownloadLayout = view.findViewById(R.id.rlAudioUploadDownloadLayout);
+            pbAudio = view.findViewById(R.id.pbAudio);
+            txtAudioFilename = view.findViewById(R.id.txtAudioFilename);
+            ivAudioUploadDownload = view.findViewById(R.id.ivAudioUploadDownload);
+            rlAudioPlayLayout = view.findViewById(R.id.rlAudioPlayLayout);
+            ivAudioPlay = view.findViewById(R.id.ivAudioPlay);
+            ivAudioPause = view.findViewById(R.id.ivAudioPause);
+            sbAudio = view.findViewById(R.id.sbAudio);
+            txtAudioTime = view.findViewById(R.id.txtAudioTime);
+            llAudioStatus = view.findViewById(R.id.llAudioStatus);
+            txtAudioSize = view.findViewById(R.id.txtAudioSize);
+            rlVideoLayout = view.findViewById(R.id.rlVideoLayout);
+            ivVideoThumb = view.findViewById(R.id.ivVideoThumb);
+            pbVideo = view.findViewById(R.id.pbVideo);
+            ivVideoUploadDownload = view.findViewById(R.id.ivVideoUploadDownload);
+            ivVideoIcon = view.findViewById(R.id.ivVideoIcon);
+            txtVideoDuration = view.findViewById(R.id.txtVideoDuration);
+            txtVideoTime = view.findViewById(R.id.txtVideoTime);
+            llVideoStatus = view.findViewById(R.id.llVideoStatus);
+            rlDocLayout = view.findViewById(R.id.rlDocLayout);
+            rlDocInnerLayout = view.findViewById(R.id.rlDocInnerLayout);
+            ivDocImage = view.findViewById(R.id.ivDocImage);
+            ivDocName = view.findViewById(R.id.ivDocName1);
+            pbDoc = view.findViewById(R.id.pbDoc);
+            ivDocUploadDownload = view.findViewById(R.id.ivDocUploadDownload);
+            txtDocSize = view.findViewById(R.id.txtDocSize);
+            llDocStatus = view.findViewById(R.id.llDocStatus);
+            ivDocTime = view.findViewById(R.id.ivDocTime);
+            img_chat_message_status_sent = view.findViewById(R.id.img_chat_message_status_sent);
+            img_chat_image_status_sent = view.findViewById(R.id.img_chat_image_status_sent);
+            img_chat_image_status_delivered = view.findViewById(R.id.img_chat_image_status_delivered);
+            img_chat_audio_status_sent = view.findViewById(R.id.img_chat_audio_status_sent);
+            img_chat_audio_status_delivered = view.findViewById(R.id.img_chat_audio_status_delivered);
+            img_chat_video_status_sent = view.findViewById(R.id.img_chat_video_status_sent);
+            img_chat_video_status_delivered = view.findViewById(R.id.img_chat_video_status_delivered);
+            img_chat_doc_status_sent = view.findViewById(R.id.img_chat_doc_status_sent);
+            img_chat_doc_status_delivered = view.findViewById(R.id.img_chat_doc_status_delivered);
 
             rlImageLayout.setOnClickListener(this);
             rlVideoLayout.setOnClickListener(this);
@@ -965,7 +968,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                 bitmap.compress(Bitmap.CompressFormat.PNG, 70, stream);
 //                Glide.with(activity).load(stream.toByteArray())
 //                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                        .into(imageView);
+//                        .into;
                 imageView.setImageBitmap(bitmap);
             } else {
                 Glide.with(activity).load(path)

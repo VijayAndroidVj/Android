@@ -51,6 +51,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.instag.vijay.fasttrending.CommonUtil;
 import com.instag.vijay.fasttrending.Db.DataBaseHandler;
 import com.instag.vijay.fasttrending.PreferenceUtil;
@@ -89,6 +90,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
+
+import static com.instag.vijay.fasttrending.fcm.MyFirebaseMessagingService.sendUpdateMessage;
 
 
 public class TrovaChat extends AppCompatActivity implements View.OnClickListener {
@@ -346,6 +349,8 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
                 sendNotificationObject.put("messageId", messageId);
                 sendNotificationObject.put("serverPath", serverPath);
                 sendNotificationObject.put("userId", preferenceUtil.getUserContactNumber());
+
+                sendUpdateMessage(activity, messageId, dataBaseHandler.getUserToken(chatSenderId), 2);
                 //  Globalclass.trovaSDK_init.trovaXmit_Notification(chatSenderId, sendNotificationObject.toString(), "high", 0, "", "");
                 dataBaseHandler.updateChatMessageStatus(chatSenderId, "" + messageId, 2);
             } catch (Exception e) {
@@ -384,12 +389,6 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
             dataBaseHandler = DataBaseHandler.getInstance(this);
             if (chatSenderId != null) {
                 chatList = dataBaseHandler.getChatMessages(chatSenderId);
-                for (int i = 0; i < chatList.size(); i++) {
-                    if (chatList.get(i).getMessageSentOrReceived() == 1 && chatList.get(i).getSeenstatus() != 2) {
-                        sendMessageSeenStatus(chatList.get(i).getMessageId(), chatList.get(i).getMediaLink());
-                    }
-                }
-
                 try {
                     UserModel userModel = new UserModel();
                     Calendar cal = Calendar.getInstance();
@@ -421,7 +420,58 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+                getToken();
             }
+        }
+
+    }
+
+    private void getToken() {
+        if (CommonUtil.isNetworkAvailable(activity)) {
+            //DashBoardActivity.showProgress(activity);
+            ApiInterface apiService =
+                    ApiClient.getClient().create(ApiInterface.class);
+            JSONObject dataValue = new JSONObject();
+            try {
+                dataValue.put("email", chatSenderId);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+            Call<ResponseBody> call = apiService.getToken(chatSenderId);
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                    final ResponseBody requestBody = response.body();
+                    //DashBoardActivity.dismissProgress();
+                    if (requestBody != null) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(requestBody.string());
+                            String token = jsonObject.getString("token");
+                            dataBaseHandler.updateToken(chatSenderId, token);
+
+                            for (int i = 0; i < chatList.size(); i++) {
+                                if (chatList.get(i).getMessageSentOrReceived() == 1 && chatList.get(i).getSeenstatus() != 2) {
+                                    sendMessageSeenStatus(chatList.get(i).getMessageId(), chatList.get(i).getMediaLink());
+                                }
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        //  Toast.makeText(activity, "Could not connect to server.", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    // Log error here since request failed
+                }
+            });
         }
 
     }
@@ -500,7 +550,7 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
 
 
         chatMessageModel.setName(chatSenderName);
-        chatMessageModel.setSeenstatus(1);
+        chatMessageModel.setSeenstatus(-1);
         chatMessageModel.setTimemilliseconds(timemilliseconds);
         chatMessageModel.setMessageSentOrReceived(0);
         chatList.add(chatMessageModel);
@@ -516,11 +566,13 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
                 Calendar calendar = Calendar.getInstance();
                 JSONObject jsonObject = new JSONObject();
                 jsonValuePut(jsonObject, "mode", "text");
-                jsonValuePut(jsonObject, "senderId", preferenceUtil.getUserMailId());
                 jsonValuePut(jsonObject, "messageId", chatMessageModel.getMessageId());
                 jsonValuePut(jsonObject, "message", message);
                 jsonValuePut(jsonObject, "TimeZoneOffset", calendar.getTimeZone().getRawOffset());
                 jsonValuePut(jsonObject, "userId", preferenceUtil.getUserMailId());
+                jsonValuePut(jsonObject, "senderId", preferenceUtil.getUserMailId());
+                String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+                jsonValuePut(jsonObject, "senderToken", refreshedToken);
                 jsonValuePut(jsonObject, "receiverId", chatSenderId);
                 jsonValuePut(jsonObject, "senderName", preferenceUtil.getUserName());
 
@@ -530,7 +582,7 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
                 jsonValuePut(userObj, "messageJson", data);
 
 //                sendPushToSingleInstance(activity, userObj, dataBaseHandler.getUserToken(chatSenderId));
-                sendPushToSingleInstanceRetro(activity, userObj, dataBaseHandler.getUserToken(chatSenderId));
+                sendPushToSingleInstanceRetro(activity, chatMessageModel.getMessageId(), userObj, dataBaseHandler.getUserToken(chatSenderId), chatList.size() - 1);
 //
 //                FirebaseMessaging fm = FirebaseMessaging.getInstance();
 //                fm.send(new RemoteMessage.Builder(dataBaseHandler.getUserToken(chatSenderId) + "@gcm.googleapis.com")
@@ -550,7 +602,7 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
     }
 
 
-    public static void sendPushToSingleInstanceRetro(final Context activity, final JSONObject dataValue /*your data from the activity*/, final String instanceIdToken /*firebase instance token you will find in documentation that how to get this*/) {
+    public void sendPushToSingleInstanceRetro(final Context activity, final long messageId, final JSONObject dataValue /*your data from the activity*/, final String instanceIdToken, /*firebase instance token you will find in documentation that how to get this*/final int position) {
 
         if (CommonUtil.isNetworkAvailable(activity)) {
             //DashBoardActivity.showProgress(activity);
@@ -567,7 +619,9 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
                     //DashBoardActivity.dismissProgress();
                     if (requestBody != null) {
                         try {
-
+                            dataBaseHandler.updateChatMessageStatus(chatSenderId, "" + messageId, 1);
+                            chatList.get(position).setSeenstatus(0);
+                            chatMessageAdapter.notifyDataSetChanged();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -1408,6 +1462,21 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
                 }
             }
         });
+    }
+
+    public void updateMesageStatus(Long messageID, int status) {
+        try {
+            for (int i = 0; i < chatList.size(); i++) {
+                ChatMessageModel chatMessageModel = chatList.get(i);
+                if (messageID == chatMessageModel.getMessageId()) {
+                    chatMessageModel.setSeenstatus(status);
+                    break;
+                }
+            }
+            chatMessageAdapter.notifyDataSetChanged();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 /*

@@ -9,11 +9,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -53,21 +57,31 @@ public class SubCategoryItemListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.category_item_list_activity);
         activity = this;
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        ActionBar.LayoutParams params = new ActionBar.LayoutParams(//Center the textview in the ActionBar !
+                ActionBar.LayoutParams.WRAP_CONTENT,
+                ActionBar.LayoutParams.MATCH_PARENT,
+                Gravity.CENTER);
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setHomeButtonEnabled(false);
+        View view = LayoutInflater.from(this).inflate(R.layout.actionbar, null);
+        view.findViewById(R.id.txtAppName).setVisibility(GONE);
+        view.findViewById(R.id.iv_actionbar_noti).setVisibility(GONE);
+        view.findViewById(R.id.searchview).setVisibility(GONE);
+        EditText searchEditTextmain = findViewById(R.id.searchview);
+        final EditText searchEditText = view.findViewById(R.id.edtsearchview);
+        searchEditText.setVisibility(VISIBLE);
+        searchEditTextmain.setVisibility(GONE);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(view, params);
+        actionBar.setElevation(0);
+
         if (getIntent() != null && getIntent().getExtras() != null) {
             categoryMain = getIntent().getParcelableExtra("category");
         }
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(getString(R.string.app_name));
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDefaultDisplayHomeAsUpEnabled(true);
 
-
-        final EditText searchEditText = findViewById(R.id.searchview);
-        searchEditText.setVisibility(VISIBLE);
         searchEditText.clearFocus();
 
 //        searchEditText.setTextColor(getResources().getColor(R.color.black));

@@ -40,6 +40,7 @@ import com.instag.vijay.fasttrending.activity.CreateGroupActivity;
 import com.instag.vijay.fasttrending.activity.PostActivity;
 import com.instag.vijay.fasttrending.activity.SeeAllFriendsActivity;
 import com.instag.vijay.fasttrending.adapter.FriendsGridAdapter;
+import com.instag.vijay.fasttrending.adapter.GroupPageListAdapter;
 import com.instag.vijay.fasttrending.adapter.PostsGridAdapter;
 import com.instag.vijay.fasttrending.model.PostModelMain;
 import com.instag.vijay.fasttrending.model.Posts;
@@ -117,10 +118,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private TextView txt_see_all_friends;
     private TextView txt_see_all_followings;
     private TextView txt_see_all_followers;
-    private TextView txtProfileStatus;
     private TextView txtProfileWebInfo;
-    private ListView listview_business;
+    private TextView txtProfileMobile;
+    private TextView txtProfileEmail;
+    private ListView listview_business_pages;
+    private ListView listview_Groups;
     private View fab_post;
+    private View txtProfilePagesLable;
+    private View txtProfileGroupsLable;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -142,10 +147,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         badge_friends = view.findViewById(R.id.badge_friends);
         badge_following = view.findViewById(R.id.badge_following);
         badge_followers = view.findViewById(R.id.badge_followers);
-        txtProfileStatus = view.findViewById(R.id.txtProfileStatus);
         txtProfileWebInfo = view.findViewById(R.id.txtProfileWebInfo);
-        listview_business = view.findViewById(R.id.listview_business);
+        txtProfileMobile = view.findViewById(R.id.txtProfileMobile);
+        txtProfileEmail = view.findViewById(R.id.txtProfileEmail);
+        listview_business_pages = view.findViewById(R.id.listview_business_pages);
+        listview_Groups = view.findViewById(R.id.listview_Groups);
         fab_post = view.findViewById(R.id.fab_post);
+        txtProfilePagesLable = view.findViewById(R.id.txtProfilePagesLable);
+        txtProfileGroupsLable = view.findViewById(R.id.txtProfileGroupsLable);
 
         viewYou = view.findViewById(R.id.viewYou);
         viewFriends = view.findViewById(R.id.viewFriends);
@@ -193,6 +202,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         ivProfile1 = view.findViewById(R.id.ivProfile1);
         ivCoverPhoto = view.findViewById(R.id.ivCoverPhoto);
         txtUserName.setText(" # " + preferenceUtil.getUserName());
+
         String profileImage = preferenceUtil.getMyProfile();
         if (!TextUtils.isEmpty(profileImage) && profileImage.contains("http://")) {
             Glide.with(activity)
@@ -207,18 +217,17 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             location = location + ", ";
         }
         if (!TextUtils.isEmpty(preferenceUtil.getUserCountry())) {
-            location = location + preferenceUtil.getUserCountry() + ",<br>";
+            location = location + preferenceUtil.getUserCountry();
         }
         if (!TextUtils.isEmpty(preferenceUtil.getUserContactNumber())) {
-            location = location + preferenceUtil.getUserContactNumber() + ", ";
+            txtProfileMobile.setText(preferenceUtil.getUserContactNumber());
         }
         if (!TextUtils.isEmpty(preferenceUtil.getUserMailId())) {
-            location = location + preferenceUtil.getUserMailId();
+            txtProfileEmail.setText(preferenceUtil.getUserMailId());
         }
         txtProfileLocation.setText(Html.fromHtml(location));
 
         txtBiography.setText(preferenceUtil.getUserAboutMe());
-        txtProfileStatus.setText(preferenceUtil.getUserProfileStatus());
         txtProfileWebInfo.setText(preferenceUtil.getWebInfo());
 
 
@@ -426,17 +435,15 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                                 location = location + ", ";
                             }
                             if (!TextUtils.isEmpty(postModelMain.getCountry())) {
-                                location = location + postModelMain.getCountry() + "<br>";
+                                location = location + postModelMain.getCountry();
                             }
                             if (!TextUtils.isEmpty(postModelMain.getContact_number())) {
-                                location = location + postModelMain.getContact_number() + ", ";
+                                txtProfileMobile.setText(preferenceUtil.getUserContactNumber());
                             }
                             if (!TextUtils.isEmpty(preferenceUtil.getUserMailId())) {
-                                location = location + preferenceUtil.getUserMailId();
+                                txtProfileEmail.setText(preferenceUtil.getUserMailId());
                             }
                             txtProfileLocation.setText(Html.fromHtml(location));
-
-                            txtProfileStatus.setText(postModelMain.getProfileStatus());
                             txtProfileWebInfo.setText(postModelMain.getWebInfo());
 
 
@@ -451,9 +458,26 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                             for (int i = 0; i < postModelMain.getBusinessPagesList().size(); i++) {
                                 bList.add(postModelMain.getBusinessPagesList().get(i).getTitle());
                             }
-                            ArrayAdapter arrayAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1, bList);
-                            listview_business.setAdapter(arrayAdapter);
-                            setListViewHeightBasedOnChildren(listview_business);
+                            if (bList.size() <= 0) {
+                                txtProfilePagesLable.setVisibility(View.VISIBLE);
+                            } else {
+                                txtProfilePagesLable.setVisibility(View.GONE);
+                                GroupPageListAdapter arrayAdapter = new GroupPageListAdapter(activity, bList);
+                                listview_business_pages.setAdapter(arrayAdapter);
+                                setListViewHeightBasedOnChildren(listview_business_pages);
+                            }
+                            ArrayList<String> gList = new ArrayList<>();
+                            for (int i = 0; i < postModelMain.getGroupsList().size(); i++) {
+                                gList.add(postModelMain.getGroupsList().get(i).getTitle());
+                            }
+                            if (gList.size() <= 0) {
+                                txtProfileGroupsLable.setVisibility(View.VISIBLE);
+                            } else {
+                                txtProfileGroupsLable.setVisibility(View.GONE);
+                                GroupPageListAdapter arrayAdapter = new GroupPageListAdapter(activity, gList);
+                                listview_Groups.setAdapter(arrayAdapter);
+                                setListViewHeightBasedOnChildren(listview_Groups);
+                            }
                             yourPosts = postModelMain.getYourPostsList();
 
                             PostsGridAdapter postGridAdapter = new PostsGridAdapter(activity, yourPosts);

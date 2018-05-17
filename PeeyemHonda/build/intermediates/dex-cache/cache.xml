@@ -3,16 +3,6 @@
 
     <item
         is-multidex="false"
-        jar="/home/vijay/.gradle/caches/transforms-1/files-1.1/facebook-messenger-4.31.0.aar/0883533b7d37d6630346df00a5b76789/jars/classes.jar"
-        jumboMode="false"
-        min-sdk-version="15"
-        optimize="true"
-        revision="27.0.1"
-        sha1="2482bfd874e8b3927f4141105674ad392ff83698">
-        <dex dex="/home/vijay/Android Projects/Android/PeeyemHonda/app/build/intermediates/transforms/preDex/release/85.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="/home/vijay/Android Projects/Android/PeeyemHonda/gmailbackgroundlibrary/libs/additionnal.jar"
         jumboMode="false"
         min-sdk-version="15"
@@ -20,16 +10,6 @@
         revision="27.0.1"
         sha1="bd9e8dc422bb8c8405359947fe9f4282b49f57f4">
         <dex dex="/home/vijay/Android Projects/Android/PeeyemHonda/app/build/intermediates/transforms/preDex/release/26.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/vijay/.gradle/caches/transforms-1/files-1.1/facebook-share-4.31.0.aar/9e2e9f02009cd2f19657d677aa44947d/jars/classes.jar"
-        jumboMode="false"
-        min-sdk-version="15"
-        optimize="true"
-        revision="27.0.1"
-        sha1="95d97996ec624fca99f6b06ad6004c749259970d">
-        <dex dex="/home/vijay/Android Projects/Android/PeeyemHonda/app/build/intermediates/transforms/preDex/release/78.jar" />
     </item>
     <item
         is-multidex="false"
@@ -50,66 +30,6 @@
         revision="27.0.1"
         sha1="d1257cbff6faa44c1f325ae0d9413522d4644383">
         <dex dex="/home/vijay/Android Projects/Android/PeeyemHonda/app/build/intermediates/transforms/preDex/release/25.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/vijay/.gradle/caches/transforms-1/files-1.1/facebook-android-sdk-4.31.0.aar/862d935a137fc1a73c223b3c400b86b6/jars/classes.jar"
-        jumboMode="false"
-        min-sdk-version="15"
-        optimize="true"
-        revision="27.0.1"
-        sha1="b1c250352bb7bbd5ea1982ca5165f2a81f36b530">
-        <dex dex="/home/vijay/Android Projects/Android/PeeyemHonda/app/build/intermediates/transforms/preDex/release/76.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/vijay/.gradle/caches/transforms-1/files-1.1/facebook-places-4.31.0.aar/a42cbb3d0c30d3c75e7d1dd18565aca1/jars/classes.jar"
-        jumboMode="false"
-        min-sdk-version="15"
-        optimize="true"
-        revision="27.0.1"
-        sha1="821200fa3e07f93d0ae66e4a5917db8bac69dfe1">
-        <dex dex="/home/vijay/Android Projects/Android/PeeyemHonda/app/build/intermediates/transforms/preDex/release/83.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/vijay/.gradle/caches/transforms-1/files-1.1/facebook-core-4.31.0.aar/9219170a52c10db0b9f83ecd80dbd957/jars/classes.jar"
-        jumboMode="false"
-        min-sdk-version="15"
-        optimize="true"
-        revision="27.0.1"
-        sha1="49d6e981cef2eb91ff98aa6004fadb3bd757790d">
-        <dex dex="/home/vijay/Android Projects/Android/PeeyemHonda/app/build/intermediates/transforms/preDex/release/86.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/vijay/.gradle/caches/transforms-1/files-1.1/facebook-login-4.31.0.aar/ef305b4943a38d31003ead75d3acc230/jars/classes.jar"
-        jumboMode="false"
-        min-sdk-version="15"
-        optimize="true"
-        revision="27.0.1"
-        sha1="b8b26b28aae0ba8e2db55ad9fe0ebc770530c5ef">
-        <dex dex="/home/vijay/Android Projects/Android/PeeyemHonda/app/build/intermediates/transforms/preDex/release/77.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/vijay/.gradle/caches/transforms-1/files-1.1/facebook-applinks-4.31.0.aar/8b782d4adfc149b9786b304d7eeacf80/jars/classes.jar"
-        jumboMode="false"
-        min-sdk-version="15"
-        optimize="true"
-        revision="27.0.1"
-        sha1="82ea5a937ab84229fbd2f3fc8cf2a72cbdf0ee0f">
-        <dex dex="/home/vijay/Android Projects/Android/PeeyemHonda/app/build/intermediates/transforms/preDex/release/84.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/vijay/.gradle/caches/transforms-1/files-1.1/facebook-common-4.31.0.aar/8c3054ad34fa77d3c10f7366885ac304/jars/classes.jar"
-        jumboMode="false"
-        min-sdk-version="15"
-        optimize="true"
-        revision="27.0.1"
-        sha1="e3b8ecc558c6deeb90eb3934c1c715128ab26dcd">
-        <dex dex="/home/vijay/Android Projects/Android/PeeyemHonda/app/build/intermediates/transforms/preDex/release/79.jar" />
     </item>
     <item
         is-multidex="false"

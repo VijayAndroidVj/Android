@@ -322,7 +322,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.MyView
                 Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                 if (bitmap != null)
                     holder.postImage.setImageBitmap(bitmap);
-                holder.ibPlay.setVisibility(View.VISIBLE);
+                holder.ibPlay.setVisibility(View.GONE);
 
             } else if (post.getImage() != null && !post.getImage().isEmpty()) {
                 holder.ibPlay.setVisibility(View.GONE);

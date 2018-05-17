@@ -23,8 +23,7 @@
             android:layout_height="60dp"
             android:layout_gravity="center"
             android:layout_marginBottom="@dimen/_5dp"
-            android:padding="@dimen/_10dp"
-            android:tint="@color/grey" />
+            android:padding="@dimen/_10dp" />
 
         <TextView
             android:id="@+id/txtCategory"

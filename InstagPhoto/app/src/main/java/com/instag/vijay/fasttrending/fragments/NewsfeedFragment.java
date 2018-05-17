@@ -2,6 +2,7 @@ package com.instag.vijay.fasttrending.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.instag.vijay.fasttrending.CommonUtil;
 import com.instag.vijay.fasttrending.PreferenceUtil;
 import com.instag.vijay.fasttrending.R;
+import com.instag.vijay.fasttrending.Utils.ListListener;
 import com.instag.vijay.fasttrending.adapter.PostNewsfeedAdapter;
 import com.instag.vijay.fasttrending.model.CategoryMain;
 import com.instag.vijay.fasttrending.model.PostModelMain;
@@ -35,7 +37,7 @@ import retrofit2.Response;
  * Created by vijay on 21/11/17.
  */
 
-public class NewsfeedFragment extends Fragment {
+public class NewsfeedFragment extends Fragment implements ListListener {
 
     private Activity activity;
     private TextView viewInfo;
@@ -82,7 +84,6 @@ public class NewsfeedFragment extends Fragment {
     }
 
     public void refreshItems() {
-
         try {
             if (CommonUtil.isNetworkAvailable(activity)) {
                 ApiInterface service =
@@ -90,7 +91,7 @@ public class NewsfeedFragment extends Fragment {
                 PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
 
                 String usermail = preferenceUtil.getUserMailId();
-                Call<PostModelMain> call = service.getmynewsfeed(usermail);
+                Call<PostModelMain> call = service.getmynewsfeed(usermail, 0);
                 call.enqueue(new Callback<PostModelMain>() {
                     @Override
                     public void onResponse(Call<PostModelMain> call, Response<PostModelMain> response) {
@@ -128,6 +129,70 @@ public class NewsfeedFragment extends Fragment {
 
     }
 
+    public void loadMore() {
+        try {
+            if (CommonUtil.isNetworkAvailable(activity)) {
+                progressBar.setVisibility(View.VISIBLE);
+                ApiInterface service =
+                        ApiClient.getClient().create(ApiInterface.class);
+                PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
+                int start = postsArrayList == null ? 0 : postsArrayList.size();
+                String usermail = preferenceUtil.getUserMailId();
+                Call<PostModelMain> call = service.getmynewsfeed(usermail, start);
+                call.enqueue(new Callback<PostModelMain>() {
+                    @Override
+                    public void onResponse(Call<PostModelMain> call, Response<PostModelMain> response) {
+                        PostModelMain postModelMain = response.body();
+                        if (postModelMain != null) {
+                            postsArrayList.addAll(postModelMain.getPostsArrayList());
+                            postAdapter.notifyDataSetChanged();
+                        }
+                        progressBar.setVisibility(View.GONE);
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                isLoadMoreCalled = false;
+                            }
+                        }, 1000);
+                    }
+
+                    @Override
+                    public void onFailure(Call<PostModelMain> call, Throwable t) {
+                        // Log error here since request failed
+                        String message = t.toString();
+                        if (message.contains("Failed to")) {
+                            message = "Failed to Connect";
+                        } else if (message.contains("Expected")) {
+                            message = "No Newsfeed available";
+                        } else {
+                            message = "Failed";
+                        }
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                isLoadMoreCalled = false;
+                            }
+                        }, 1000);
+                    }
+                });
+            } else {
+                progressBar.setVisibility(View.GONE);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        isLoadMoreCalled = false;
+                    }
+                }, 1000);
+                Toast.makeText(activity, "Check your internet connection!", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public void getCategoryList() {
 
         try {
@@ -144,7 +209,6 @@ public class NewsfeedFragment extends Fragment {
                         ArrayList<CategoryMain> postModelMain = response.body();
                         if (postModelMain != null) {
                             categoryMainArrayList = postModelMain;
-                            setCategoryList();
                         }
                     }
 
@@ -164,7 +228,6 @@ public class NewsfeedFragment extends Fragment {
                 });
             } else {
                 progressBar.setVisibility(View.GONE);
-                setCategoryList();
                 Toast.makeText(activity, "Check your internet connection!", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
@@ -172,11 +235,6 @@ public class NewsfeedFragment extends Fragment {
         }
 
     }
-
-    private void setCategoryList() {
-
-    }
-
 
     private void setNewsfeedList() {
         try {
@@ -187,7 +245,7 @@ public class NewsfeedFragment extends Fragment {
                 swipeRefreshLayout.setRefreshing(false);
                 viewInfo.setText("");
 
-                postAdapter = new PostNewsfeedAdapter(activity, postsArrayList, categoryMainArrayList);
+                postAdapter = new PostNewsfeedAdapter(activity, postsArrayList, categoryMainArrayList, this);
                 recyclerView.setAdapter(postAdapter);
                 RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(activity);
                 recyclerView.setLayoutManager(mLayoutManager);
@@ -203,6 +261,16 @@ public class NewsfeedFragment extends Fragment {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private boolean isLoadMoreCalled = false;
+
+    @Override
+    public void bottomReached() {
+        if (!isLoadMoreCalled) {
+            isLoadMoreCalled = true;
+            loadMore();
         }
     }
 }

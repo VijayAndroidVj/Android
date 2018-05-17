@@ -338,6 +338,7 @@ public class CreateBusinessPageActivity extends AppCompatActivity {
                             null,
                             file
                     );
+                title = title.substring(0, 1).toUpperCase() + title.substring(1);
                 PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
                 MultipartBody.Part titlemul =
                         MultipartBody.Part.createFormData("title", title);

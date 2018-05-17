@@ -140,7 +140,7 @@ public interface ApiInterface {
 
     @POST("getmynewsfeed.php")
     @FormUrlEncoded
-    Call<PostModelMain> getmynewsfeed(@Field("useremail") String useremail);
+    Call<PostModelMain> getmynewsfeed(@Field("useremail") String useremail, @Field("start") int start);
 
     @POST("get_friends_post.php")
     @FormUrlEncoded

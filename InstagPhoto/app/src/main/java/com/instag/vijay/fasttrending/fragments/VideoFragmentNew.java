@@ -1,14 +1,14 @@
 package com.instag.vijay.fasttrending.fragments;
 
 import android.app.Activity;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -230,13 +230,17 @@ public class VideoFragmentNew extends Fragment {
             //ilist = getMeetingList(isPast ? PAST : UPCOMING);
             viewInfo.setVisibility(GONE);
             recyclerView.setVisibility(VISIBLE);
+            recyclerView.setHasFixedSize(true);
+
+            StaggeredGridLayoutManager gaggeredGridLayoutManager = new StaggeredGridLayoutManager(2, 1);
+            recyclerView.setLayoutManager(gaggeredGridLayoutManager);
 
             TrendingAdapter logAdapter = new TrendingAdapter(activity, ilist);
+
+//            recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+//            recyclerView.setItemAnimator(new DefaultItemAnimator());
+
             recyclerView.setAdapter(logAdapter);
-            LinearLayoutManager mLayoutManager = new LinearLayoutManager(activity);
-            recyclerView.setLayoutManager(mLayoutManager);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-//        recycleraddItemDecoration(new SimpleDividerItemDecoration(getContext(), R.drawable.list_item_background));
             logAdapter.notifyDataSetChanged();
             if (ilist.size() == 0) {
                 showView(1, "No data available");
@@ -248,5 +252,41 @@ public class VideoFragmentNew extends Fragment {
             e.printStackTrace();
         }
 
+
+    }
+
+
+    private class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
+        private int spanCount;
+        private int spacing;
+        private boolean includeEdge;
+
+        public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
+            this.spanCount = spanCount;
+            this.spacing = spacing;
+            this.includeEdge = includeEdge;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            int position = parent.getChildAdapterPosition(view); // item position
+            int column = position % spanCount; // item column
+
+            if (includeEdge) {
+                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
+                outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
+
+                if (position < spanCount) { // top edge
+                    outRect.top = spacing;
+                }
+                outRect.bottom = spacing; // item bottom
+            } else {
+                outRect.left = column * spacing / spanCount; // column * ((1f / spanCount) * spacing)
+                outRect.right = spacing - (column + 1) * spacing / spanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
+                if (position >= spanCount) {
+                    outRect.top = spacing; // item top
+                }
+            }
+        }
     }
 }

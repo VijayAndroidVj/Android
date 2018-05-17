@@ -30,6 +30,7 @@ import com.instag.vijay.fasttrending.PreferenceUtil;
 import com.instag.vijay.fasttrending.ProfileView;
 import com.instag.vijay.fasttrending.R;
 import com.instag.vijay.fasttrending.activity.VideoViewActivity;
+import com.instag.vijay.fasttrending.chat.TrovaChat;
 import com.instag.vijay.fasttrending.model.Posts;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
@@ -59,8 +60,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
                 myIntent.putExtra("post", posts);
                 activity.startActivity(myIntent);
                 break;
-            case R.id.btnpostDelete:
+            case R.id.commentSendMessage:
                 Object object = v.getTag();
+                if (object instanceof Posts) {
+                    Posts post = (Posts) object;
+                    Intent CallActivity = new Intent(activity, TrovaChat.class);
+                    CallActivity.putExtra("otherUserID", post.getPostmail());
+                    CallActivity.putExtra("otherUserName", post.getUsername());
+                    CallActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    activity.startActivity(CallActivity);
+                }
+                break;
+            case R.id.btnpostDelete:
+                object = v.getTag();
                 if (object instanceof Posts) {
                     Posts post = (Posts) object;
                     showMeetingtAlert(activity, "Delete Post", "Are you sure want to delete this post?", post);
@@ -283,13 +295,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         private TextView txtMeetingState;
         private ImageView btnpostDelete;
         private ImageView postImage, ivProfile;
-        private ImageView likePost, commentPost, ivSavePost;
+        private ImageView likePost, commentPost, ivSavePost, commentSendMessage;
         private View rlParentMeeting, rlMeeting1, ibPlay;
+        private View viewLineLikes;
 
         private MyViewHolder(View view) {
             super(view);
             txtPostLikesCount = view.findViewById(R.id.txtPostLikesCount);
             txtViewAllComments = view.findViewById(R.id.txtViewAllComments);
+            commentSendMessage = view.findViewById(R.id.commentSendMessage);
             txtMeetingName = view.findViewById(R.id.txtMeetingName);
             txtMeetingState = view.findViewById(R.id.txtMeetingState);
             txtPostDescription = view.findViewById(R.id.txtPostDescription);
@@ -304,6 +318,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
             rlMeeting1 = view.findViewById(R.id.rlMeeting1);
             txtCreatedDate = view.findViewById(R.id.txtCreatedDate);
             ibPlay = view.findViewById(R.id.ibPlay);
+            viewLineLikes = view.findViewById(R.id.viewLineLikes);
         }
     }
 
@@ -318,8 +333,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     public PostAdapter(Activity activity, List<Posts> moviesList) {
         this.originalList = moviesList;
         this.activity = activity;
-        selectedColorStateList = CommonUtil.getColorStateList(activity, R.color.red);
-        unselectedColorStateList = CommonUtil.getColorStateList(activity, R.color.black);
+        selectedColorStateList = CommonUtil.getColorStateList(activity, R.color.white);
+        unselectedColorStateList = CommonUtil.getColorStateList(activity, R.color.white);
         layoutInflater = LayoutInflater.from(activity);
         preferenceUtil = new PreferenceUtil(activity);
         font = Typeface.createFromAsset(activity.getAssets(), "fontawesome-webfont.ttf");
@@ -343,6 +358,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         holder.rlMeeting1.setOnClickListener(this);
         holder.ibPlay.setOnClickListener(this);
         holder.txtViewAllComments.setOnClickListener(this);
+
+        if (post.getPostmail().equalsIgnoreCase(preferenceUtil.getUserMailId())) {
+            holder.commentSendMessage.setVisibility(View.GONE);
+        } else {
+            holder.commentSendMessage.setVisibility(View.VISIBLE);
+            holder.commentSendMessage.setTag(post);
+            holder.commentSendMessage.setOnClickListener(this);
+        }
 
         if (TextUtils.isEmpty(post.getUsername())) {
             holder.txtMeetingName.setText("");
@@ -380,8 +403,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         if (TextUtils.isEmpty(post.getTotalComments())) {
             holder.txtViewAllComments.setText("");
             holder.txtViewAllComments.setVisibility(View.GONE);
+            holder.viewLineLikes.setVisibility(View.GONE);
         } else {
             holder.txtViewAllComments.setVisibility(View.VISIBLE);
+            holder.viewLineLikes.setVisibility(View.VISIBLE);
             int total = 0;
             try {
                 total = Integer.valueOf(post.getTotalComments());
@@ -395,6 +420,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
             } else {
                 holder.txtViewAllComments.setText("");
                 holder.txtViewAllComments.setVisibility(View.GONE);
+                holder.viewLineLikes.setVisibility(View.GONE);
             }
         }
 
@@ -410,9 +436,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         }
 
         if (post.isSaved()) {
-            holder.ivSavePost.setImageResource(R.drawable.ic_bookmark_black_24dp);
+            holder.ivSavePost.setImageResource(R.drawable.ic_star_black_24dp);
         } else {
-            holder.ivSavePost.setImageResource(R.drawable.ic_bookmark_border_black_24dp);
+            holder.ivSavePost.setImageResource(R.drawable.ic_star_border_black_24dp);
         }
 
         holder.likePost.setTag(post);

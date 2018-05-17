@@ -65,6 +65,9 @@ public class PostModelMain {
     @SerializedName("businessPage")
     private ArrayList<BusinessPageModel> businessPagesList = new ArrayList<>();
 
+    @SerializedName("groups")
+    private ArrayList<BusinessPageModel> groupsList = new ArrayList<>();
+
     @SerializedName("yourPosts")
     private ArrayList<Posts> yourPostsList = new ArrayList<>();
 
@@ -106,6 +109,14 @@ public class PostModelMain {
 
     public void setFollowersList(ArrayList<UserModel> followersList) {
         this.followersList = followersList;
+    }
+
+    public ArrayList<BusinessPageModel> getGroupsList() {
+        return groupsList;
+    }
+
+    public void setGroupsList(ArrayList<BusinessPageModel> groupsList) {
+        this.groupsList = groupsList;
     }
 
     public String getUsername() {

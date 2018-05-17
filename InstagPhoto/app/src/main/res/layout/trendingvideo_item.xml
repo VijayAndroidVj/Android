@@ -24,19 +24,28 @@
 
                 <ImageView
                     android:id="@+id/postImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
                     android:contentDescription="@string/name"
                     android:scaleType="fitXY" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="right"
+                    android:layout_margin="@dimen/_5dp"
+                    android:contentDescription="@string/name"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/movie"
+                    android:tint="@color/white" />
 
                 <ImageView
                     android:id="@+id/ibPlay"
                     android:layout_width="@dimen/_40dp"
                     android:layout_height="@dimen/_40dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_play_circle_filled_black_24dp"
-                    android:tint="@color/green"
-                    android:visibility="visible" />
+                    android:src="@drawable/play_button"
+                    android:visibility="gone" />
             </FrameLayout>
 
         </LinearLayout>

@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.instag.vijay.fasttrending.activity.VideoViewActivity;
+import com.instag.vijay.fasttrending.chat.TrovaChat;
 import com.instag.vijay.fasttrending.model.Posts;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
@@ -44,9 +45,11 @@ import static android.view.View.GONE;
 public class PostView extends AppCompatActivity implements View.OnClickListener {
     private Activity activity;
     private TextView txtMeetingName, txtPostDescription, txtPostLikesCount, txtCreatedDate, txtViewAllComments;
+    private TextView txtMeetingState;
+    private View viewLineLikes;
     private ImageView btnpostDelete;
     private ImageView postImage, ivProfile;
-    private ImageView likePost, commentPost, ivSavePost;
+    private ImageView likePost, commentPost, ivSavePost, commentSendMessage;
     private PreferenceUtil preferenceUtil;
     Posts posts;
     private View ibPlay;
@@ -67,10 +70,12 @@ public class PostView extends AppCompatActivity implements View.OnClickListener 
 
 
         preferenceUtil = new PreferenceUtil(activity);
+        txtMeetingState = findViewById(R.id.txtMeetingState);
         txtMeetingName = findViewById(R.id.txtMeetingName);
         txtPostDescription = findViewById(R.id.txtPostDescription);
         txtPostLikesCount = findViewById(R.id.txtPostLikesCount);
         txtViewAllComments = findViewById(R.id.txtViewAllComments);
+        viewLineLikes = findViewById(R.id.viewLineLikes);
         postImage = findViewById(R.id.postImage);
         ivProfile = findViewById(R.id.ivProfile);
         btnpostDelete = findViewById(R.id.btnpostDelete);
@@ -78,6 +83,7 @@ public class PostView extends AppCompatActivity implements View.OnClickListener 
         txtCreatedDate = findViewById(R.id.txtCreatedDate);
         commentPost = findViewById(R.id.commentPost);
         ivSavePost = findViewById(R.id.ivSavePost);
+        commentSendMessage = findViewById(R.id.commentSendMessage);
         ibPlay = findViewById(R.id.ibPlay);
         try {
             postId = getIntent().getStringExtra("postId");
@@ -149,6 +155,25 @@ public class PostView extends AppCompatActivity implements View.OnClickListener 
                 }
             }
 
+            if (post.getPostmail().equalsIgnoreCase(preferenceUtil.getUserMailId())) {
+                commentSendMessage.setVisibility(View.GONE);
+            } else {
+                commentSendMessage.setVisibility(View.VISIBLE);
+                commentSendMessage.setTag(post);
+                commentSendMessage.setOnClickListener(this);
+            }
+
+            if (TextUtils.isEmpty(post.getState()) && TextUtils.isEmpty(post.getCountry())) {
+                txtMeetingState.setText("");
+                txtMeetingState.setVisibility(View.GONE);
+            } else if (TextUtils.isEmpty(post.getState())) {
+                txtMeetingState.setText(post.getCountry());
+                txtMeetingState.setVisibility(View.VISIBLE);
+            } else {
+                txtMeetingState.setVisibility(View.VISIBLE);
+                txtMeetingState.setText(post.getState() + ", " + post.getCountry());
+            }
+
             if (TextUtils.isEmpty(post.getDescription())) {
                 txtPostDescription.setText("");
                 txtPostDescription.setVisibility(View.GONE);
@@ -161,19 +186,19 @@ public class PostView extends AppCompatActivity implements View.OnClickListener 
 
 
             if (post.isLiked()) {
-                ColorStateList selectedColorStateList = CommonUtil.getColorStateList(activity, R.color.red);
+                ColorStateList selectedColorStateList = CommonUtil.getColorStateList(activity, R.color.white);
                 likePost.setImageTintList(selectedColorStateList);
                 likePost.setImageResource(R.drawable.like_filled);
             } else {
-                ColorStateList unselectedColorStateList = CommonUtil.getColorStateList(activity, R.color.black);
+                ColorStateList unselectedColorStateList = CommonUtil.getColorStateList(activity, R.color.white);
                 likePost.setImageResource(R.drawable.like);
                 likePost.setImageTintList(unselectedColorStateList);
             }
 
             if (post.isSaved()) {
-                ivSavePost.setImageResource(R.drawable.ic_bookmark_black_24dp);
+                ivSavePost.setImageResource(R.drawable.ic_star_black_24dp);
             } else {
-                ivSavePost.setImageResource(R.drawable.ic_bookmark_border_black_24dp);
+                ivSavePost.setImageResource(R.drawable.ic_star_border_black_24dp);
             }
 
 
@@ -197,8 +222,10 @@ public class PostView extends AppCompatActivity implements View.OnClickListener 
             if (TextUtils.isEmpty(post.getTotalComments())) {
                 txtViewAllComments.setText("");
                 txtViewAllComments.setVisibility(View.GONE);
+                viewLineLikes.setVisibility(View.GONE);
             } else {
                 txtViewAllComments.setVisibility(View.VISIBLE);
+                viewLineLikes.setVisibility(View.VISIBLE);
                 int total = 0;
                 try {
                     total = Integer.valueOf(post.getTotalComments());
@@ -212,6 +239,7 @@ public class PostView extends AppCompatActivity implements View.OnClickListener 
                 } else {
                     txtViewAllComments.setText("");
                     txtViewAllComments.setVisibility(View.GONE);
+                    viewLineLikes.setVisibility(View.GONE);
                 }
             }
 
@@ -306,6 +334,17 @@ public class PostView extends AppCompatActivity implements View.OnClickListener 
                     Intent intent = new Intent(activity, Comment.class);
                     intent.putExtra("post_id", post.getPost_id());
                     activity.startActivity(intent);
+                }
+                break;
+            case R.id.commentSendMessage:
+                object = view.getTag();
+                if (object instanceof Posts) {
+                    Posts post = (Posts) object;
+                    Intent CallActivity = new Intent(activity, TrovaChat.class);
+                    CallActivity.putExtra("otherUserID", post.getPostmail());
+                    CallActivity.putExtra("otherUserName", post.getUsername());
+                    CallActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    activity.startActivity(CallActivity);
                 }
                 break;
             case R.id.txtPostLikesCount:

@@ -12,12 +12,8 @@ import android.util.Log;
 import com.instag.vijay.fasttrending.model.ChatMessageModel;
 import com.instag.vijay.fasttrending.model.UserModel;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
 import java.util.Random;
-import java.util.TimeZone;
 
 
 public class DataBaseHandler extends SQLiteOpenHelper {
@@ -358,8 +354,6 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
         long status = db.insert(TBLCHATMESSAGES, null, values);
         Log.i("insert to chat table", ":" + status);
-
-
 
 
     }

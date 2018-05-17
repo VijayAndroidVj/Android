@@ -33,7 +33,9 @@ import com.instag.vijay.fasttrending.PostView;
 import com.instag.vijay.fasttrending.PreferenceUtil;
 import com.instag.vijay.fasttrending.ProfileView;
 import com.instag.vijay.fasttrending.R;
+import com.instag.vijay.fasttrending.Utils.ListListener;
 import com.instag.vijay.fasttrending.activity.VideoViewActivity;
+import com.instag.vijay.fasttrending.chat.TrovaChat;
 import com.instag.vijay.fasttrending.model.CategoryMain;
 import com.instag.vijay.fasttrending.model.Posts;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
@@ -68,8 +70,19 @@ public class PostNewsfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 myIntent.putExtra("post", posts);
                 activity.startActivity(myIntent);
                 break;
-            case R.id.btnpostDelete:
+            case R.id.commentSendMessage:
                 Object object = v.getTag();
+                if (object instanceof Posts) {
+                    Posts post = (Posts) object;
+                    Intent CallActivity = new Intent(activity, TrovaChat.class);
+                    CallActivity.putExtra("otherUserID", post.getPostmail());
+                    CallActivity.putExtra("otherUserName", post.getUsername());
+                    CallActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    activity.startActivity(CallActivity);
+                }
+                break;
+            case R.id.btnpostDelete:
+                object = v.getTag();
                 if (object instanceof Posts) {
                     Posts post = (Posts) object;
                     showMeetingtAlert(activity, "Delete Post", "Are you sure want to delete this post?", post);
@@ -358,7 +371,7 @@ public class PostNewsfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             horizontalGridView.setLayoutParams(params);
             horizontalGridView.setColumnWidth(singleItemWidth);
-            horizontalGridView.setHorizontalSpacing(2);
+            horizontalGridView.setHorizontalSpacing(1);
             horizontalGridView.setStretchMode(GridView.STRETCH_SPACING);
             horizontalGridView.setNumColumns(size);
 
@@ -368,16 +381,18 @@ public class PostNewsfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView txtMeetingName, txtPostDescription, txtPostLikesCount, txtCreatedDate;
         private TextView txtViewAllComments;
+        private View viewLineLikes;
         private TextView txtMeetingState;
         private ImageView btnpostDelete;
         private ImageView postImage, ivProfile;
-        private ImageView likePost, commentPost, ivSavePost;
+        private ImageView likePost, commentPost, ivSavePost, commentSendMessage;
         private View rlParentMeeting, rlMeeting1, ibPlay;
 
         private MyViewHolder(View view) {
             super(view);
             txtPostLikesCount = view.findViewById(R.id.txtPostLikesCount);
             txtViewAllComments = view.findViewById(R.id.txtViewAllComments);
+            viewLineLikes = view.findViewById(R.id.viewLineLikes);
             txtMeetingName = view.findViewById(R.id.txtMeetingName);
             txtMeetingState = view.findViewById(R.id.txtMeetingState);
             txtPostDescription = view.findViewById(R.id.txtPostDescription);
@@ -388,6 +403,7 @@ public class PostNewsfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             likePost = view.findViewById(R.id.likePost);
             commentPost = view.findViewById(R.id.commentPost);
             ivSavePost = view.findViewById(R.id.ivSavePost);
+            commentSendMessage = view.findViewById(R.id.commentSendMessage);
             rlParentMeeting = view.findViewById(R.id.rlParentMeeting);
             rlMeeting1 = view.findViewById(R.id.rlMeeting1);
             txtCreatedDate = view.findViewById(R.id.txtCreatedDate);
@@ -402,13 +418,15 @@ public class PostNewsfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private SimpleDateFormat formatter;
     private ColorStateList selectedColorStateList;
     private ColorStateList unselectedColorStateList;
+    private ListListener listListener;
 
-    public PostNewsfeedAdapter(Activity activity, List<Posts> moviesList, ArrayList<CategoryMain> categoryMainArrayList) {
+    public PostNewsfeedAdapter(Activity activity, List<Posts> moviesList, ArrayList<CategoryMain> categoryMainArrayList, ListListener listListener) {
         this.originalList = moviesList;
         this.categoryMainArrayList = categoryMainArrayList;
         this.activity = activity;
-        selectedColorStateList = CommonUtil.getColorStateList(activity, R.color.red);
-        unselectedColorStateList = CommonUtil.getColorStateList(activity, R.color.black);
+        this.listListener = listListener;
+        selectedColorStateList = CommonUtil.getColorStateList(activity, R.color.white);
+        unselectedColorStateList = CommonUtil.getColorStateList(activity, R.color.white);
         layoutInflater = LayoutInflater.from(activity);
         preferenceUtil = new PreferenceUtil(activity);
         font = Typeface.createFromAsset(activity.getAssets(), "fontawesome-webfont.ttf");
@@ -455,14 +473,22 @@ public class PostNewsfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         } else {
             MyViewHolder holder = (MyViewHolder) viewHolder;
-            Posts post = originalList.get(position);
+            Posts post = originalList.get(position - 1);
             holder.rlParentMeeting.setTag(post);
             holder.rlParentMeeting.setOnClickListener(this);
             holder.rlMeeting1.setTag(post);
             holder.ibPlay.setTag(post);
+
             holder.rlMeeting1.setOnClickListener(this);
             holder.ibPlay.setOnClickListener(this);
             holder.txtViewAllComments.setOnClickListener(this);
+            if (post.getPostmail().equalsIgnoreCase(preferenceUtil.getUserMailId())) {
+                holder.commentSendMessage.setVisibility(View.GONE);
+            } else {
+                holder.commentSendMessage.setVisibility(View.VISIBLE);
+                holder.commentSendMessage.setTag(post);
+                holder.commentSendMessage.setOnClickListener(this);
+            }
 
             if (TextUtils.isEmpty(post.getUsername())) {
                 holder.txtMeetingName.setText("");
@@ -500,7 +526,9 @@ public class PostNewsfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             if (TextUtils.isEmpty(post.getTotalComments())) {
                 holder.txtViewAllComments.setText("");
                 holder.txtViewAllComments.setVisibility(View.GONE);
+                holder.viewLineLikes.setVisibility(View.GONE);
             } else {
+                holder.viewLineLikes.setVisibility(View.VISIBLE);
                 holder.txtViewAllComments.setVisibility(View.VISIBLE);
                 int total = 0;
                 try {
@@ -515,6 +543,7 @@ public class PostNewsfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 } else {
                     holder.txtViewAllComments.setText("");
                     holder.txtViewAllComments.setVisibility(View.GONE);
+                    holder.viewLineLikes.setVisibility(View.GONE);
                 }
             }
 
@@ -533,9 +562,9 @@ public class PostNewsfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 holder.likePost.setImageResource(R.drawable.like);
             }
             if (post.isSaved()) {
-                holder.ivSavePost.setImageResource(R.drawable.ic_bookmark_black_24dp);
+                holder.ivSavePost.setImageResource(R.drawable.ic_star_black_24dp);
             } else {
-                holder.ivSavePost.setImageResource(R.drawable.ic_bookmark_border_black_24dp);
+                holder.ivSavePost.setImageResource(R.drawable.ic_star_border_black_24dp);
             }
 
 
@@ -610,6 +639,10 @@ public class PostNewsfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             } else {
                 Glide.with(activity).load(R.drawable.profile)
                         .into(holder.ivProfile);
+            }
+
+            if (listListener != null && position == (getItemCount() - 1)) {
+                listListener.bottomReached();
             }
 
         }

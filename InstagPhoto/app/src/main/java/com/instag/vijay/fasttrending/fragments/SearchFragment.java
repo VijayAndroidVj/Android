@@ -1,9 +1,11 @@
 package com.instag.vijay.fasttrending.fragments;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 import com.instag.vijay.fasttrending.CommonUtil;
 import com.instag.vijay.fasttrending.PreferenceUtil;
 import com.instag.vijay.fasttrending.R;
+import com.instag.vijay.fasttrending.activity.CategoryExploreActivity;
 import com.instag.vijay.fasttrending.adapter.GridSearchElementAdapter;
 import com.instag.vijay.fasttrending.model.CategoryMain;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
@@ -36,6 +39,7 @@ import technolifestyle.com.imageslider.FlipperView;
 public class SearchFragment extends Fragment {
 
     private GridView horizontalGridView;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private FlipperLayout flipperLayout;
     private ArrayList<CategoryMain> categoryMainArrayList;
 
@@ -50,6 +54,23 @@ public class SearchFragment extends Fragment {
         activity = getActivity();
         horizontalGridView = view.findViewById(R.id.gridView);
         flipperLayout = view.findViewById(R.id.flipper_layout);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (categoryMainArrayList != null) {
+                    categoryMainArrayList.clear();
+                }
+                getCategoryList();
+            }
+        });
+        view.findViewById(R.id.exploreAll).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, CategoryExploreActivity.class);
+                startActivity(intent);
+            }
+        });
 
         getCategoryList();
         getBanners();
@@ -134,11 +155,13 @@ public class SearchFragment extends Fragment {
                             categoryMainArrayList = postModelMain;
                             setCategoryList();
                         }
+                        swipeRefreshLayout.setRefreshing(false);
                     }
 
                     @Override
                     public void onFailure(Call<ArrayList<CategoryMain>> call, Throwable t) {
                         // Log error here since request failed
+                        swipeRefreshLayout.setRefreshing(false);
                         String message = t.toString();
                         if (message.contains("Failed to")) {
                             message = "Failed to Connect";
@@ -152,10 +175,12 @@ public class SearchFragment extends Fragment {
                 });
             } else {
                 setCategoryList();
+                swipeRefreshLayout.setRefreshing(false);
                 Toast.makeText(activity, "Check your internet connection!", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             e.printStackTrace();
+            swipeRefreshLayout.setRefreshing(false);
         }
 
     }

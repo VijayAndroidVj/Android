@@ -42,8 +42,6 @@ import com.twitter.sdk.android.core.models.User;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Arrays;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -52,23 +50,19 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
     private static final String TAG = MmSignUpActivity.class.getSimpleName();
     private Activity activity;
 
-    //Tags to send the username and image url to next activity using intent
-    public static final String KEY_USERNAME = "username";
-    public static final String KEY_PROFILE_IMAGE_URL = "image_url";
     private TextInputEditText input_name;
     private TextInputEditText input_email;
     private TextInputEditText input_password;
     private Button bt_clear_name;
     private Button bt_clear_email;
     private TextInputEditText input_userName;
-    private LoginButton loginButton;
     private TextView txtusravailable;
     private CallbackManager callbackManager;
     TwitterLoginButton twitterLoginButton;
-    TwitterAuthClient mTwitterAuthClient;
     private RadioGroup radioSexGroup;
     private RadioButton male, female;
     private String country;
+    private String mobile;
     private boolean isFbClicked;
 
     @Override
@@ -77,9 +71,9 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.user_signup);
 
         activity = this;
-        loginButton = (LoginButton) findViewById(R.id.login_button);
+        final LoginButton loginButton = findViewById(R.id.login_button);
         loginButton.setReadPermissions("public_profile email");
-        radioSexGroup = (RadioGroup) findViewById(R.id.radioSex);
+        radioSexGroup = findViewById(R.id.radioSex);
         male = findViewById(R.id.radioMale);
         female = findViewById(R.id.radioFemale);
         txtusravailable = findViewById(R.id.txtusravailable);
@@ -155,8 +149,8 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
         input_email = findViewById(R.id.input_email);
         input_password = findViewById(R.id.input_password);
         input_userName = findViewById(R.id.input_userName);
-        bt_clear_name = (Button) findViewById(R.id.bt_clear_name);
-        bt_clear_email = (Button) findViewById(R.id.bt_clear_email);
+        bt_clear_name = findViewById(R.id.bt_clear_name);
+        bt_clear_email = findViewById(R.id.bt_clear_email);
         input_userName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -266,53 +260,54 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
         input_password.clearFocus();
 
         country = getIntent().getStringExtra("country");
+        mobile = getIntent().getStringExtra("mobile");
 
         callbackManager = CallbackManager.Factory.create();
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 isFbClicked = true;
+                // LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile"));
+                loginButton.registerCallback(callbackManager,
+                        new FacebookCallback<LoginResult>() {
+                            String facebook_id, f_name, m_name, l_name, gender, profile_image, full_name, email_id = "";
+
+                            @Override
+                            public void onSuccess(LoginResult loginResult) {
+                                if (isFbClicked && AccessToken.getCurrentAccessToken() != null) {
+                                    RequestData();
+                                    Profile profile = Profile.getCurrentProfile();
+                                    if (profile != null) {
+
+                                        facebook_id = profile.getId();
+                                        Log.e("facebook_id", facebook_id);
+                                        f_name = profile.getFirstName();
+                                        Log.e("f_name", f_name);
+                                        input_name.setText(f_name);
+                                        m_name = profile.getMiddleName();
+                                        Log.e("m_name", m_name);
+                                        l_name = profile.getLastName();
+                                        Log.e("l_name", l_name);
+                                        full_name = profile.getName();
+                                        Log.e("full_name", full_name);
+                                        profile_image = profile.getProfilePictureUri(400, 400).toString();
+                                        Log.e("profile_image", profile_image);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancel() {
+                                // App code
+                            }
+
+                            @Override
+                            public void onError(FacebookException exception) {
+                                // App code
+                            }
+                        });
             }
         });
-        LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile"));
-        loginButton.registerCallback(callbackManager,
-                new FacebookCallback<LoginResult>() {
-                    String facebook_id, f_name, m_name, l_name, gender, profile_image, full_name, email_id = "";
-
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        if (isFbClicked && AccessToken.getCurrentAccessToken() != null) {
-                            RequestData();
-                            Profile profile = Profile.getCurrentProfile();
-                            if (profile != null) {
-
-                                facebook_id = profile.getId();
-                                Log.e("facebook_id", facebook_id);
-                                f_name = profile.getFirstName();
-                                Log.e("f_name", f_name);
-                                input_name.setText(f_name);
-                                m_name = profile.getMiddleName();
-                                Log.e("m_name", m_name);
-                                l_name = profile.getLastName();
-                                Log.e("l_name", l_name);
-                                full_name = profile.getName();
-                                Log.e("full_name", full_name);
-                                profile_image = profile.getProfilePictureUri(400, 400).toString();
-                                Log.e("profile_image", profile_image);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        // App code
-                    }
-
-                    @Override
-                    public void onError(FacebookException exception) {
-                        // App code
-                    }
-                });
 
 
     }
@@ -328,10 +323,12 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
                     if (json != null) {
                         input_email.setText(json.getString("email"));
                         input_userName.setText(json.getString("name"));
-                        if (!json.getString("name").equalsIgnoreCase("male")) {
-                            female.setChecked(true);
-                        } else {
-                            male.setChecked(true);
+                        if (json.has("gender")) {
+                            if (!json.getString("gender").equalsIgnoreCase("male")) {
+                                female.setChecked(true);
+                            } else {
+                                male.setChecked(true);
+                            }
                         }
                     }
                     LoginManager.getInstance().logOut();
@@ -407,7 +404,7 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
         }
 
         final String email = input_email.getText().toString().trim();
-        String name = input_name.getText().toString().trim();
+        final String name = input_name.getText().toString().trim();
         String userName = input_userName.getText().toString().trim();
         final String password = input_password.getText().toString().trim();
         int selectedId = radioSexGroup.getCheckedRadioButtonId();
@@ -419,7 +416,7 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
             MainActivity.showProgress(activity);
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
-            Call<EventResponse> call = apiService.register(country, gender, name1, userName1, email, password);
+            Call<EventResponse> call = apiService.register(country, gender, name, userName1, email, password, mobile);
             call.enqueue(new Callback<EventResponse>() {
                 @Override
                 public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
@@ -433,11 +430,12 @@ public class MmSignUpActivity extends AppCompatActivity implements View.OnClickL
                         } else {
                             PreferenceUtil preferenceUtil = new PreferenceUtil(MmSignUpActivity.this);
                             preferenceUtil.putBoolean(Keys.IS_ALREADY_REGISTERED, true);
-                            preferenceUtil.putString(Keys.NAME, name1);
+                            preferenceUtil.putString(Keys.NAME, name);
                             preferenceUtil.putString(Keys.EmailID, email);
                             preferenceUtil.putString(Keys.USERNAME, userName1);
                             preferenceUtil.putString(Keys.PASSWORD, password);
                             preferenceUtil.putString(Keys.COUNTRY, country);
+                            preferenceUtil.putString(Keys.CONTACT_NUMBER, mobile);
                             preferenceUtil.putString(Keys.GENDER, gender);
                             Intent intent = new Intent(MmSignUpActivity.this, MmSignInActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);

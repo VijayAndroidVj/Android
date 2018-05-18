@@ -21,8 +21,6 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -42,10 +40,6 @@ import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
-import org.json.JSONObject;
-
-import java.util.Arrays;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -54,16 +48,14 @@ import retrofit2.Response;
 public class MmSignInActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText input_password, input_username;
     private static final String TAG = MmSignInActivity.class.getSimpleName();
-    Button bt_clear_username;
+    private Button bt_clear_username;
     private Activity activity;
     private FirebaseAuth mAuth;
-    private String firstName, lastName, email, birthday, gender;
-    private String userId;
     private CallbackManager callbackManager;
-    TwitterLoginButton twitterLoginButton;
+    private TwitterLoginButton twitterLoginButton;
     private ProgressDialog mProgressDialog;
-    private LoginButton loginButton;
     private boolean isFbClicked;
+    private LoginButton loginButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,10 +63,9 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.mobile_signin);
         activity = this;
         mAuth = FirebaseAuth.getInstance();
-        loginButton = (LoginButton) findViewById(R.id.login_button);
+        loginButton = findViewById(R.id.login_button);
         loginButton.setReadPermissions("public_profile email");
-
-        twitterLoginButton = (TwitterLoginButton) findViewById(R.id.twitter_login_button);
+        twitterLoginButton = findViewById(R.id.twitter_login_button);
         twitterLoginButton.setCallback(new com.twitter.sdk.android.core.Callback<TwitterSession>() {
             @Override
             // If the login is successful...//
@@ -97,16 +88,15 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
             public void onClick(View view) {
                 Log.e("l_name", "");
                 isFbClicked = true;
-            }
-        });
-        LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile"));
-        loginButton.registerCallback(callbackManager,
-                new FacebookCallback<LoginResult>() {
+
+                // LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile"));
+                loginButton.registerCallback(callbackManager,
+                        new FacebookCallback<LoginResult>() {
 //                            String facebook_id, f_name, m_name, l_name, gender, profile_image, full_name, email_id = "";
 
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        handleFacebookAccessToken(loginResult.getAccessToken());
+                            @Override
+                            public void onSuccess(LoginResult loginResult) {
+                                handleFacebookAccessToken(loginResult.getAccessToken());
 //                                if (AccessToken.getCurrentAccessToken() != null) {
 //                                    RequestData();
 //                                    Profile profile = Profile.getCurrentProfile();
@@ -127,25 +117,30 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
 //                                        Log.e("profile_image", profile_image);
 //                                    }
 //                                }
-                    }
+                            }
 
-                    @Override
-                    public void onCancel() {
-                        // App code
-                    }
+                            @Override
+                            public void onCancel() {
+                                // App code
+                                isFbClicked = false;
+                            }
 
-                    @Override
-                    public void onError(FacebookException exception) {
-                        // App code
-                    }
-                });
+                            @Override
+                            public void onError(FacebookException exception) {
+                                // App code
+                                isFbClicked = false;
+                            }
+                        });
+            }
+        });
+
 //            }
 //        });
 
 
-        input_password = (EditText) findViewById(R.id.input_password);
-        input_username = (EditText) findViewById(R.id.input_username);
-        bt_clear_username = (Button) findViewById(R.id.bt_clear_username);
+        input_password = findViewById(R.id.input_password);
+        input_username = findViewById(R.id.input_username);
+        bt_clear_username = findViewById(R.id.bt_clear_username);
 
         input_password.addTextChangedListener(new MyTextWatcher(input_password));
         input_username.addTextChangedListener(new MyTextWatcher(input_username));
@@ -191,8 +186,15 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        LoginManager.getInstance().logOut();
+    }
+
     private void handleFacebookAccessToken(AccessToken token) {
         if (isFbClicked) {
+
             Log.d(TAG, "handleFacebookAccessToken:" + token);
 
             AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
@@ -201,6 +203,7 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
+
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "signInWithCredential:success");
                                 FirebaseUser user = mAuth.getCurrentUser();
@@ -209,16 +212,17 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
                                     user = FirebaseAuth.getInstance().getCurrentUser();
                                 if (user != null) {
                                     // Name, email address, and profile photo Url
-                                    String name = user.getDisplayName();
+//                                    String name = user.getDisplayName();
                                     String email = user.getEmail();
                                     LoginManager.getInstance().logOut();
+                                    isFbProcessing = false;
                                     if (email != null) {
                                         submitForm(email);
                                     }
 //                                Uri photoUrl = user.getPhotoUrl();
 
                                     // Check if user's email is verified
-                                    boolean emailVerified = user.isEmailVerified();
+//                                    boolean emailVerified = user.isEmailVerified();
 
                                     // The user's ID, unique to the Firebase project. Do NOT use this value to
                                     // authenticate with your backend server, if you have one. Use
@@ -266,7 +270,7 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
                                 user = FirebaseAuth.getInstance().getCurrentUser();
                             if (user != null) {
                                 // Name, email address, and profile photo Url
-                                String name = user.getDisplayName();
+//                                String name = user.getDisplayName();
                                 String email = user.getEmail();
                                 if (email == null) {
                                     TwitterAuthClient authClient = new TwitterAuthClient();
@@ -317,40 +321,7 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
-    public void RequestData() {
-        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-            @Override
-            public void onCompleted(JSONObject object, GraphResponse response) {
-
-                JSONObject json = response.getJSONObject();
-                System.out.println("Json data :" + json);
-                try {
-                    if (json != null) {
-//                        input_email.setText(json.getString("email"));
-//                        input_userName.setText(json.getString("name"));
-                        /*if (!json.getString("name").equalsIgnoreCase("male")) {
-                            female.setChecked(true);
-                        } else {
-                            male.setChecked(true);
-                        }*/
-                    }
-                    LoginManager.getInstance().logOut();
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,link,email,picture, gender");
-        request.setParameters(parameters);
-        request.executeAsync();
-    }
-
-
-//        spinner.setVisibility(View.INVISIBLE);
-    //spinner.performClick();
-//        spinner.setVisibility(View.GONE);
+    boolean isFbProcessing = false;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -358,9 +329,16 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
         try {
 
             if (requestCode == 64206) {
-                if (isFbClicked) {
-                    MainActivity.showProgress(MmSignInActivity.this);
-                    callbackManager.onActivityResult(requestCode, resultCode, data);
+                if (resultCode == Activity.RESULT_OK) {
+                    if (isFbClicked) {
+                        if (!isFbProcessing) {
+                            isFbProcessing = true;
+                            MainActivity.showProgress(MmSignInActivity.this);
+                            callbackManager.onActivityResult(requestCode, resultCode, data);
+                        }
+                    }
+                } else {
+                    MainActivity.dismissProgress();
                 }
             } else {
                 MainActivity.showProgress(MmSignInActivity.this);
@@ -560,7 +538,7 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
             case R.id.link_signup:
             case R.id.btn_signup:
                 PreferenceUtil preferenceUtil = new PreferenceUtil(MmSignInActivity.this);
-                if (TextUtils.isEmpty(preferenceUtil.getUserCountry())) {
+                if (TextUtils.isEmpty(preferenceUtil.getUserCountry()) || TextUtils.isEmpty(preferenceUtil.getUserContactNumber())) {
                     Intent intent = new Intent(MmSignInActivity.this, PhoneNumberAuthentication.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
@@ -569,6 +547,7 @@ public class MmSignInActivity extends AppCompatActivity implements View.OnClickL
                     Intent intent = new Intent(MmSignInActivity.this, MmSignUpActivity.class);
 //                    intent.putExtra("mobile", mobilenumber);
                     intent.putExtra("country", preferenceUtil.getUserCountry());
+                    intent.putExtra("mobile", preferenceUtil.getUserContactNumber());
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     finish();

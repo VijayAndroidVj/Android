@@ -44,7 +44,7 @@ public interface ApiInterface {
 
     @POST("signup.php")
     @FormUrlEncoded
-    Call<EventResponse> register(@Field("country") String country, @Field("gender") String gender, @Field("name") String name, @Field("username") String username, @Field("email") String email, @Field("password") String password);
+    Call<EventResponse> register(@Field("country") String country, @Field("gender") String gender, @Field("name") String name, @Field("username") String username, @Field("email") String email, @Field("password") String password, @Field("mobile") String mobile);
 
 
     @POST("user_name_availability.php")
@@ -55,6 +55,14 @@ public interface ApiInterface {
     @POST("login.php")
     @FormUrlEncoded
     Call<EventResponse> login(@Field("username") String username, @Field("password") String password, @Field("email") String email);
+
+    @POST("generateOtp.php")
+    @FormUrlEncoded
+    Call<EventResponse> generateOtp(@Field("mobile") String mobile);
+
+    @POST("verifyOtp.php")
+    @FormUrlEncoded
+    Call<EventResponse> verifyOtp(@Field("mobile") String mobile, @Field("otp") String otp);
 
 
     @POST("add_follow.php")

@@ -152,7 +152,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/rlsex"
-                        android:layout_marginTop="5dp">
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:padding="5dp">
 
 
                         <android.support.design.widget.TextInputEditText
@@ -162,7 +165,6 @@
                             android:hint="@string/name"
                             android:imeOptions="actionNext"
                             android:inputType="textCapSentences"
-                            android:padding="15dp"
                             android:textSize="16sp" />
 
                         <Button
@@ -172,10 +174,10 @@
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:layout_marginTop="8dp"
                             android:background="@android:color/transparent"
                             android:text="x"
                             android:textColor="@color/grey"
+                            android:textSize="18sp"
                             android:visibility="gone" />
                     </RelativeLayout>
 
@@ -184,7 +186,10 @@
                         android:id="@+id/rl_signup_userName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/rl_signup_name">
+                        android:layout_below="@+id/rl_signup_name"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:padding="5dp">
 
                         <TextView
                             android:id="@+id/txtusravailable"
@@ -192,17 +197,18 @@
                             android:layout_height="wrap_content"
                             android:text="User name is available"
                             android:textColor="@color/colorPrimary"
-                            android:visibility="gone" />
+                            android:visibility="visible" />
 
 
                         <android.support.design.widget.TextInputEditText
                             android:id="@+id/input_userName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_below="@+id/txtusravailable"
+                            android:layout_marginTop="@dimen/_3dp"
                             android:hint="@string/username"
                             android:imeOptions="actionNext"
                             android:inputType="textEmailAddress"
-                            android:padding="15dp"
                             android:text=""
                             android:textSize="16sp" />
 
@@ -213,10 +219,10 @@
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:layout_marginTop="8dp"
                             android:background="@android:color/transparent"
                             android:text="x"
                             android:textColor="@color/grey"
+                            android:textSize="18sp"
                             android:visibility="gone" />
                     </RelativeLayout>
 
@@ -225,7 +231,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/rl_signup_userName"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:gravity="bottom"
+                        android:padding="5dp"
                         android:visibility="visible">
 
 
@@ -236,7 +245,6 @@
                             android:hint="@string/email"
                             android:imeOptions="actionNext"
                             android:inputType="textEmailAddress"
-                            android:padding="15dp"
                             android:text=""
                             android:textSize="16sp" />
 
@@ -250,6 +258,7 @@
                             android:background="@android:color/transparent"
                             android:text="x"
                             android:textColor="@color/grey"
+                            android:textSize="18sp"
                             android:visibility="gone" />
                     </RelativeLayout>
 
@@ -258,7 +267,10 @@
                         android:id="@+id/rl_signup_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/rlEmail">
+                        android:layout_below="@+id/rlEmail"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:padding="5dp">
 
                         <android.support.design.widget.TextInputEditText
                             android:id="@+id/input_password"
@@ -267,7 +279,6 @@
                             android:hint="@string/password"
                             android:imeOptions="actionDone"
                             android:inputType="textPassword"
-                            android:padding="15dp"
                             android:textSize="16sp" />
                     </RelativeLayout>
 

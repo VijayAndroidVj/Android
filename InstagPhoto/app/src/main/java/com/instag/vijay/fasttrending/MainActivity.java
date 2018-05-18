@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -273,13 +274,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public static void registerFcmToken(String token, Context context) {
-        if (CommonUtil.isNetworkAvailable(context)) {
-
+        PreferenceUtil preferenceUtil = new PreferenceUtil(context);
+        String usermail = preferenceUtil.getUserMailId();
+        if (CommonUtil.isNetworkAvailable(context) && !TextUtils.isEmpty(usermail)) {
             ApiInterface service =
                     ApiClient.getClient().create(ApiInterface.class);
-            PreferenceUtil preferenceUtil = new PreferenceUtil(context);
 
-            String usermail = preferenceUtil.getUserMailId();
             Call<EventResponse> call = service.register_fcm(usermail, token);
             call.enqueue(new Callback<EventResponse>() {
                 @Override

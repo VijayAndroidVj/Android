@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_5dp"
-        android:background="@drawable/circle_red_count"
+        android:background="@drawable/circle_blue_count"
         android:orientation="vertical"
         android:padding="@dimen/_8dp">
 

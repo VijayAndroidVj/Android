@@ -144,8 +144,8 @@
 
                 <ImageView
                     android:id="@+id/likePost"
-                    android:layout_width="34dp"
-                    android:layout_height="34dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_margin="3dp"
                     android:background="@drawable/circle_red_count"
                     android:backgroundTint="@color/invite_title"
@@ -156,12 +156,12 @@
 
                 <ImageView
                     android:id="@+id/commentPost"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_margin="3dp"
                     android:layout_toEndOf="@+id/likePost"
                     android:layout_toRightOf="@+id/likePost"
-                    android:background="@drawable/circle_red_count"
+                    android:background="@drawable/circle_blue_count"
                     android:contentDescription="@string/name"
                     android:padding="@dimen/_5dp"
                     android:src="@drawable/comment"
@@ -169,8 +169,8 @@
 
                 <ImageView
                     android:id="@+id/commentSendMessage"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_margin="3dp"
                     android:layout_toEndOf="@+id/commentPost"
                     android:layout_toRightOf="@+id/commentPost"
@@ -245,10 +245,10 @@
                     android:layout_marginRight="5dp"
                     android:layout_toRightOf="@+id/viewLineLikes"
                     android:maxLines="1"
-                    android:padding="2dp"
+                    android:padding="3dp"
                     android:text="View all comments"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textStyle="normal" />
 
 

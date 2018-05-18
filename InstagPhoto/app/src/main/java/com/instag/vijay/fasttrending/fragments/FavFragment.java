@@ -8,7 +8,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -142,14 +141,10 @@ public class FavFragment extends Fragment implements View.OnClickListener {
                         progressBar.setVisibility(View.GONE);
                         viewInfo.setVisibility(View.VISIBLE);
                         recyclerView.setVisibility(View.GONE);
-                        if (TextUtils.isEmpty(text)) {
-                            if (followers) {
-                                viewInfo.setText("No followers available");
-                            } else {
-                                viewInfo.setText("No one followed you");
-                            }
+                        if (followers) {
+                            viewInfo.setText("No followers available");
                         } else {
-                            viewInfo.setText(text);
+                            viewInfo.setText("You not followed anyone");
                         }
                     }
                     break;
@@ -183,9 +178,7 @@ public class FavFragment extends Fragment implements View.OnClickListener {
 //        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext(), R.drawable.list_item_background));
             logAdapter.notifyDataSetChanged();
             if (list.size() == 0) {
-                showView(1, "No notification available");
-                progressBar.setVisibility(View.GONE);
-                viewInfo.setVisibility(View.GONE);
+                showView(1, "No list available");
             }
 
         } catch (Exception e) {

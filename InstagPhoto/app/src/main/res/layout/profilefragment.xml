@@ -621,7 +621,7 @@
                             android:background="@drawable/round_count"
                             android:gravity="center"
                             android:text="1"
-                            android:textColor="@color/white"
+                            android:textColor="@color/colorPrimary"
                             android:textSize="12sp"
                             android:textStyle="bold"
                             android:visibility="gone" />
@@ -702,7 +702,7 @@
                             android:background="@drawable/round_count"
                             android:gravity="center"
                             android:text="1"
-                            android:textColor="@color/white"
+                            android:textColor="@color/colorPrimary"
                             android:textSize="12sp"
                             android:textStyle="bold"
                             android:visibility="gone" />
@@ -783,7 +783,7 @@
                             android:background="@drawable/round_count"
                             android:gravity="center"
                             android:text="1"
-                            android:textColor="@color/white"
+                            android:textColor="@color/colorPrimary"
                             android:textSize="12sp"
                             android:textStyle="bold"
                             android:visibility="gone" />

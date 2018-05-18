@@ -225,7 +225,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         if (!TextUtils.isEmpty(preferenceUtil.getUserMailId())) {
             txtProfileEmail.setText(preferenceUtil.getUserMailId());
         }
-        txtProfileLocation.setText(Html.fromHtml(location));
+        if (!TextUtils.isEmpty(location))
+            txtProfileLocation.setText(Html.fromHtml(location));
 
         txtBiography.setText(preferenceUtil.getUserAboutMe());
         txtProfileWebInfo.setText(preferenceUtil.getWebInfo());
@@ -443,7 +444,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                             if (!TextUtils.isEmpty(preferenceUtil.getUserMailId())) {
                                 txtProfileEmail.setText(preferenceUtil.getUserMailId());
                             }
-                            txtProfileLocation.setText(Html.fromHtml(location));
+                            if (!TextUtils.isEmpty(location))
+                                txtProfileLocation.setText(Html.fromHtml(location));
                             txtProfileWebInfo.setText(postModelMain.getWebInfo());
 
 

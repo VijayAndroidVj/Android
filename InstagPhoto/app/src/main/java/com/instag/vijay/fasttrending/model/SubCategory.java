@@ -17,6 +17,9 @@ public class SubCategory implements Parcelable {
     @SerializedName("scategory")
     private String scategory;
 
+    @SerializedName("image")
+    private String image;
+
     @SerializedName("category")
     private String category;
 
@@ -26,9 +29,11 @@ public class SubCategory implements Parcelable {
     @SerializedName("branch_id")
     private String branch_id;
 
+
     protected SubCategory(Parcel in) {
         subid = in.readString();
         scategory = in.readString();
+        image = in.readString();
         category = in.readString();
         description = in.readString();
         branch_id = in.readString();
@@ -86,6 +91,14 @@ public class SubCategory implements Parcelable {
         this.branch_id = branch_id;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -95,6 +108,7 @@ public class SubCategory implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(subid);
         dest.writeString(scategory);
+        dest.writeString(image);
         dest.writeString(category);
         dest.writeString(description);
         dest.writeString(branch_id);

@@ -88,7 +88,8 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name="com.instag.vijay.fasttrending.EditProfile"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
             android:name="com.instag.vijay.fasttrending.activity.CategoryExploreActivity"
             android:theme="@style/AppTheme" />

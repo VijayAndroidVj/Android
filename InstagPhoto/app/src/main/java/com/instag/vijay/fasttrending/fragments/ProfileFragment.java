@@ -89,6 +89,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private TextView badge_followers;
     private TextView badge_following;
     private TextView badge_friends;
+    private TextView txtLabelProfilePosts;
     private View viewYou;
     private View viewFriends;
     private View viewLikes;
@@ -168,6 +169,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         txtPostsCount = view.findViewById(R.id.txtPostsCount);
         txtFollowersCount = view.findViewById(R.id.txtFollowersCount);
         txtFolloweringCount = view.findViewById(R.id.txtFolloweringCount);
+        txtLabelProfilePosts = view.findViewById(R.id.txtLabelProfilePosts);
 //        llGender = view.findViewById(R.id.llGender);
 //        llState = view.findViewById(R.id.llState);
 //        llCountry = view.findViewById(R.id.llCountry);
@@ -482,10 +484,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                             }
                             yourPosts = postModelMain.getYourPostsList();
 
-                            PostsGridAdapter postGridAdapter = new PostsGridAdapter(activity, yourPosts);
-                            gv_post_list.setAdapter(postGridAdapter);
-                            setGridViewHeightBasedOnChildren(gv_post_list, 4);
-
+                            viewYou.callOnClick();
                         }
                         // showGrid();
                     }
@@ -561,7 +560,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
 
         ViewGroup.LayoutParams params = gridView.getLayoutParams();
-        params.height = totalHeight;
+        params.height = totalHeight + listItem.getMeasuredHeight();
         gridView.setLayoutParams(params);
 
     }
@@ -762,6 +761,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     startActivity(in);
                     break;
                 case R.id.viewYou:
+                    currentTab = 0;
                     viewYou.setBackgroundResource(R.drawable.bottomlinecolor);
                     viewFriends.setBackgroundResource(0);
                     viewLikes.setBackgroundResource(0);
@@ -769,8 +769,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     PostsGridAdapter postGridAdapter = new PostsGridAdapter(activity, yourPosts);
                     gv_post_list.setAdapter(postGridAdapter);
                     setGridViewHeightBasedOnChildren(gv_post_list, 4);
+                    if (yourPosts.size() > 0) {
+                        gv_post_list.setVisibility(View.VISIBLE);
+                        txtLabelProfilePosts.setVisibility(View.GONE);
+                    } else {
+                        gv_post_list.setVisibility(View.GONE);
+                        txtLabelProfilePosts.setVisibility(View.VISIBLE);
+                    }
                     break;
                 case R.id.viewFriends:
+                    currentTab = 1;
                     viewYou.setBackgroundResource(0);
                     viewFriends.setBackgroundResource(R.drawable.bottomlinecolor);
                     viewLikes.setBackgroundResource(0);
@@ -778,6 +786,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     getFriendsPost();
                     break;
                 case R.id.viewLikes:
+                    currentTab = 2;
                     viewYou.setBackgroundResource(0);
                     viewFriends.setBackgroundResource(0);
                     viewLikes.setBackgroundResource(R.drawable.bottomlinecolor);
@@ -802,6 +811,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             e.printStackTrace();
         }
     }
+
+    private int currentTab = 0;
 
     private void getLikedPosts() {
         try {
@@ -833,7 +844,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                             message = "Failed";
                         }
                         showLikedPosts();
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                     }
                 });
             } else {
@@ -846,16 +857,25 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     }
 
     private void showLikedPosts() {
-        try {
-            if (likedPosts == null) {
-                likedPosts = new ArrayList<>();
+        if (currentTab == 2)
+            try {
+                if (likedPosts == null) {
+                    likedPosts = new ArrayList<>();
+                }
+                PostsGridAdapter postGridAdapter = new PostsGridAdapter(activity, likedPosts);
+                gv_post_list.setAdapter(postGridAdapter);
+                setGridViewHeightBasedOnChildren(gv_post_list, 4);
+
+                if (likedPosts.size() > 0) {
+                    gv_post_list.setVisibility(View.VISIBLE);
+                    txtLabelProfilePosts.setVisibility(View.GONE);
+                } else {
+                    gv_post_list.setVisibility(View.GONE);
+                    txtLabelProfilePosts.setVisibility(View.VISIBLE);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            PostsGridAdapter postGridAdapter = new PostsGridAdapter(activity, likedPosts);
-            gv_post_list.setAdapter(postGridAdapter);
-            setGridViewHeightBasedOnChildren(gv_post_list, 4);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private void getFriendsPost() {
@@ -902,16 +922,24 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     }
 
     private void showFriendsPost() {
-        try {
-            if (friendsPosts == null) {
-                friendsPosts = new ArrayList<>();
+        if (currentTab == 1)
+            try {
+                if (friendsPosts == null) {
+                    friendsPosts = new ArrayList<>();
+                }
+                PostsGridAdapter postGridAdapter = new PostsGridAdapter(activity, friendsPosts);
+                gv_post_list.setAdapter(postGridAdapter);
+                setGridViewHeightBasedOnChildren(gv_post_list, 4);
+                if (friendsPosts.size() > 0) {
+                    gv_post_list.setVisibility(View.VISIBLE);
+                    txtLabelProfilePosts.setVisibility(View.GONE);
+                } else {
+                    gv_post_list.setVisibility(View.GONE);
+                    txtLabelProfilePosts.setVisibility(View.VISIBLE);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            PostsGridAdapter postGridAdapter = new PostsGridAdapter(activity, friendsPosts);
-            gv_post_list.setAdapter(postGridAdapter);
-            setGridViewHeightBasedOnChildren(gv_post_list, 4);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
 

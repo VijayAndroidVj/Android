@@ -7,8 +7,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.instag.vijay.fasttrending.R;
 import com.instag.vijay.fasttrending.activity.CategoryItemListActivity;
 import com.instag.vijay.fasttrending.model.SubCategory;
@@ -41,10 +44,12 @@ public class SubCategoryListAdapter extends RecyclerView.Adapter<SubCategoryList
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView txtSubCategory;
+        private ImageView ivSubCat;
 
         private MyViewHolder(View view) {
             super(view);
             txtSubCategory = view.findViewById(R.id.txtSubCategory);
+            ivSubCat = view.findViewById(R.id.ivSubCat);
         }
     }
 
@@ -73,6 +78,15 @@ public class SubCategoryListAdapter extends RecyclerView.Adapter<SubCategoryList
             holder.txtSubCategory.setText("");
         } else {
             holder.txtSubCategory.setText(post.getCategory());
+        }
+
+        if (post.getImage() != null && !post.getImage().isEmpty()) {
+
+            Glide.with(activity).load("http://www.xooads.com/FEELOUTADMIN/img/upload/" + post.getImage()).centerCrop()
+                    .thumbnail(0.5f)
+                    .crossFade()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(holder.ivSubCat);
         }
     }
 

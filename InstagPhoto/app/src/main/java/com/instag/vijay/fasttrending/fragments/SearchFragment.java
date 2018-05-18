@@ -96,7 +96,7 @@ public class SearchFragment extends Fragment {
                                 FlipperView view1 = new FlipperView(activity);
                                 view1.setImageUrl("http://www.xooads.com/FEELOUTADMIN/img/upload/" + categoryMain.getImage())
                                         // .setImageDrawable(R.drawable.test) // Use one of setImageUrl() or setImageDrawable() functions, otherwise IllegalStateException will be thrown
-                                        .setImageScaleType(ImageView.ScaleType.CENTER_CROP) //You can use any ScaleType
+                                        .setImageScaleType(ImageView.ScaleType.FIT_XY) //You can use any ScaleType
                                         .setDescription("")
                                         .setOnFlipperClickListener(new FlipperView.OnFlipperClickListener() {
                                             @Override
@@ -104,11 +104,12 @@ public class SearchFragment extends Fragment {
                                                 //Handle View Click here
                                             }
                                         });
-                                flipperLayout.setScrollTimeInSec(3); //setting up scroll time, by default it's 3 seconds
+                                //setting up scroll time, by default it's 3 seconds
 //                                flipperLayout.getScrollTimeInSec(); //returns the scroll time in sec
 //                                flipperLayout.getCurrentPagePosition(); //returns the current position of pager
                                 flipperLayout.addFlipperView(view1);
                             }
+                            flipperLayout.setScrollTimeInSec(3);
                         }
                     }
 

@@ -272,9 +272,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/_5dp"
-                android:background="@color/blue"
-                app:cardBackgroundColor="@color/blue"
-                app:cardCornerRadius="@dimen/_10dp"
+                android:background="@color/white"
+                app:cardBackgroundColor="@color/white"
                 app:cardElevation="@dimen/_5dp">
 
                 <LinearLayout
@@ -287,7 +286,6 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/profile_title"
                         android:focusableInTouchMode="true"
                         android:orientation="horizontal"
                         android:padding="@dimen/_3dp">
@@ -300,10 +298,10 @@
                             android:gravity="center"
                             android:paddingLeft="@dimen/_5dp"
                             android:text="Additional Information"
-                            android:textColor="@color/white"
+                            android:textColor="@color/colorPrimary"
                             android:textSize="14sp"
                             android:textStyle="normal"
-                            android:visibility="visible" />
+                            android:visibility="gone" />
 
 
                         <RelativeLayout
@@ -325,7 +323,7 @@
                                 android:padding="@dimen/_5dp"
                                 android:text="Edit Details"
                                 android:textAllCaps="false"
-                                android:textColor="@color/white"
+                                android:textColor="@color/colorPrimary"
                                 android:textSize="12sp" />
 
                             <ImageView
@@ -337,7 +335,7 @@
                                 android:layout_marginEnd="@dimen/_5dp"
                                 android:layout_marginRight="@dimen/_5dp"
                                 android:src="@drawable/edit"
-                                android:tint="@color/white" />
+                                android:tint="@color/colorPrimary" />
                         </RelativeLayout>
 
                     </RelativeLayout>
@@ -537,7 +535,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginBottom="@dimen/_5dp"
-                        android:layout_marginTop="@dimen/_3dp"
+                        android:layout_marginTop="@dimen/_10dp"
                         android:orientation="horizontal">
 
                         <Button
@@ -900,6 +898,18 @@
                 android:stretchMode="columnWidth"
                 android:verticalSpacing="@dimen/_10dp" />
 
+            <TextView
+                android:id="@+id/txtLabelProfilePosts"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/_45dp"
+                android:layout_marginTop="@dimen/_15dp"
+                android:gravity="center"
+                android:text="No data available"
+                android:textColor="@color/grey"
+                android:textSize="16sp"
+                android:visibility="gone" />
 
             <!-- <View
                  android:layout_width="match_parent"

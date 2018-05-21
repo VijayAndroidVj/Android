@@ -7,7 +7,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.instag.vijay.fasttrending.R;
+import com.instag.vijay.fasttrending.model.BusinessPageModel;
+import com.joooonho.SelectableRoundedImageView;
 
 import java.util.ArrayList;
 
@@ -15,20 +19,24 @@ import java.util.ArrayList;
  * Created by vijay on 17/5/18.
  */
 
-public class GroupPageListAdapter extends ArrayAdapter<String> {
+public class GroupPageListAdapter extends ArrayAdapter<BusinessPageModel> {
     // View lookup cache
     private static class ViewHolder {
         TextView name;
+        SelectableRoundedImageView ivProfileGroupListItem;
     }
 
-    public GroupPageListAdapter(Context context, ArrayList<String> users) {
+    private Context context;
+
+    public GroupPageListAdapter(Context context, ArrayList<BusinessPageModel> users) {
         super(context, R.layout.page_list_item, users);
+        this.context = context;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        String user = getItem(position);
+        BusinessPageModel businessPageModel = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
         if (convertView == null) {
@@ -37,6 +45,7 @@ public class GroupPageListAdapter extends ArrayAdapter<String> {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.page_list_item, parent, false);
             viewHolder.name = convertView.findViewById(R.id.tvName);
+            viewHolder.ivProfileGroupListItem = convertView.findViewById(R.id.ivProfileGroupListItem);
             // Cache the viewHolder object inside the fresh view
             convertView.setTag(viewHolder);
         } else {
@@ -45,7 +54,13 @@ public class GroupPageListAdapter extends ArrayAdapter<String> {
         }
         // Populate the data from the data object via the viewHolder object
         // into the template view.
-        viewHolder.name.setText(user);
+        viewHolder.name.setText(businessPageModel.getTitle());
+        if (businessPageModel.getImage() != null && !businessPageModel.getImage().isEmpty()) {
+            Glide.with(context).load("http://www.xooads.com/FEELOUTADMIN/img/upload/" + businessPageModel.getImage()).centerCrop()
+                    .crossFade()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(viewHolder.ivProfileGroupListItem);
+        }
         // Return the completed view to render on screen
         return convertView;
     }

@@ -357,7 +357,7 @@ public class PostNewsfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             // this is size of your list with data
             int size = categoryMainArrayList.size();
             // Calculated single Item Layout Width for each grid element .. for me it was ~100dp
-            int width = 50;
+            int width = 75;
 
             DisplayMetrics dm = new DisplayMetrics();
             activity.getWindowManager().getDefaultDisplay().getMetrics(dm);

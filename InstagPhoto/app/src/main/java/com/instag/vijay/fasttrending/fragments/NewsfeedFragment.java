@@ -1,6 +1,7 @@
 package com.instag.vijay.fasttrending.fragments;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -68,6 +69,7 @@ public class NewsfeedFragment extends Fragment implements ListListener {
 
         viewInfo = view.findViewById(R.id.txtContactInfo);
         recyclerView = view.findViewById(R.id.recyclerviewContact);
+        recyclerView.setBackgroundColor(Color.parseColor("#D3D3D3"));
         progressBar = view.findViewById(R.id.progressBar_cyclic);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

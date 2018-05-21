@@ -31,7 +31,7 @@
                     <ImageView
                         android:id="@+id/ivCoverPhoto"
                         android:layout_width="match_parent"
-                        android:layout_height="150dp"
+                        android:layout_height="160dp"
                         android:background="@drawable/default_cover_photo"
                         android:scaleType="fitXY" />
 
@@ -485,7 +485,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_5dp"
-                        android:layout_marginStart="@dimen/_5dp" />
+                        android:layout_marginStart="@dimen/_5dp"
+                        android:divider="@color/white" />
 
                     <TextView
                         android:id="@+id/txtProfileGroups"
@@ -528,7 +529,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_5dp"
-                        android:layout_marginStart="@dimen/_5dp" />
+                        android:layout_marginStart="@dimen/_5dp"
+                        android:divider="@color/white" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"

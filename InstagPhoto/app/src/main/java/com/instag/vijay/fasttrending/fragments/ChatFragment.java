@@ -130,7 +130,6 @@ public class ChatFragment extends Fragment {
 
         tv_contact_info.setVisibility(View.GONE);
         rv_contact_list.setVisibility(VISIBLE);
-
         searchView_contact_list.setQueryHint("Type to search");
         searchView_contact_list.setIconified(false);
         searchView_contact_list.clearFocus();

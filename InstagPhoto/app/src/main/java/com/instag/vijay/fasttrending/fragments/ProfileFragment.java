@@ -42,6 +42,7 @@ import com.instag.vijay.fasttrending.activity.SeeAllFriendsActivity;
 import com.instag.vijay.fasttrending.adapter.FriendsGridAdapter;
 import com.instag.vijay.fasttrending.adapter.GroupPageListAdapter;
 import com.instag.vijay.fasttrending.adapter.PostsGridAdapter;
+import com.instag.vijay.fasttrending.model.BusinessPageModel;
 import com.instag.vijay.fasttrending.model.PostModelMain;
 import com.instag.vijay.fasttrending.model.Posts;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
@@ -458,11 +459,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                             FriendsGridAdapter followersGridAdapter = new FriendsGridAdapter(activity, postModelMain.getFollowersList());
                             gv_followers_list.setAdapter(followersGridAdapter);
 
-                            ArrayList<String> bList = new ArrayList<>();
-                            for (int i = 0; i < postModelMain.getBusinessPagesList().size(); i++) {
-                                bList.add(postModelMain.getBusinessPagesList().get(i).getTitle());
-                            }
-                            if (bList.size() <= 0) {
+                            ArrayList<BusinessPageModel> bList = postModelMain.getBusinessPagesList();
+                            if (bList == null || bList.size() <= 0) {
                                 txtProfilePagesLable.setVisibility(View.VISIBLE);
                             } else {
                                 txtProfilePagesLable.setVisibility(View.GONE);
@@ -470,10 +468,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                                 listview_business_pages.setAdapter(arrayAdapter);
                                 setListViewHeightBasedOnChildren(listview_business_pages);
                             }
-                            ArrayList<String> gList = new ArrayList<>();
-                            for (int i = 0; i < postModelMain.getGroupsList().size(); i++) {
-                                gList.add(postModelMain.getGroupsList().get(i).getTitle());
-                            }
+                            ArrayList<BusinessPageModel> gList = postModelMain.getGroupsList();
                             if (gList.size() <= 0) {
                                 txtProfileGroupsLable.setVisibility(View.VISIBLE);
                             } else {
@@ -572,9 +567,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             return;
         }
 
-        int totalHeight = 0;
+        int totalHeight;
         int items = listAdapter.getCount();
-        int rows = 0;
+        int rows;
 
         View listItem = listAdapter.getView(0, null, listview);
         listItem.measure(0, 0);
@@ -585,7 +580,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         totalHeight *= rows;
 
         ViewGroup.LayoutParams params = listview.getLayoutParams();
-        params.height = totalHeight;
+        params.height = totalHeight + (listItem.getMeasuredHeight() / 4);
         listview.setLayoutParams(params);
 
     }

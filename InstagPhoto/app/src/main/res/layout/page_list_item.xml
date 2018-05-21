@@ -1,16 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_5dp">
+
+
+    <com.joooonho.SelectableRoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ivProfileGroupListItem"
+        android:layout_width="@dimen/_35dp"
+        android:layout_height="@dimen/_35dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:padding="5dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_flag_black_24dp"
+        app:layout_collapseMode="parallax"
+        app:sriv_left_bottom_corner_radius="48dip"
+        app:sriv_left_top_corner_radius="16dip"
+        app:sriv_oval="true"
+        app:sriv_right_bottom_corner_radius="16dip"
+        app:sriv_right_top_corner_radius="0dip" />
 
     <TextView
         android:id="@+id/tvName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawablePadding="@dimen/_5dp"
-        android:drawableStart="@drawable/ic_flag_black_24dp"
-        android:drawableTint="@color/grey"
-        android:padding="@dimen/_3dp"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/ivProfileGroupListItem"
+        android:layout_toRightOf="@+id/ivProfileGroupListItem"
+        android:gravity="left"
+        android:maxLines="1"
+        android:padding="@dimen/_5dp"
+        android:singleLine="true"
         android:text="Name"
         android:textColor="@color/black1"
         android:textSize="16sp" />

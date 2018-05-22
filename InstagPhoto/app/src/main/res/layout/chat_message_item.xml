@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#cccccc">
+    android:background="@color/white">
 
     <!-- Sending Message -->
 
@@ -16,7 +16,7 @@
         android:layout_marginTop="5dp"
         android:background="@drawable/chat_rounded_cornner"
         android:padding="10sp"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/txtMessage"
@@ -26,7 +26,7 @@
             android:layout_marginRight="5dp"
             android:maxWidth="227sp"
             android:text="@string/app_name"
-            android:textColor="#000" />
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/chat_time"
@@ -42,7 +42,7 @@
             android:maxLines="1"
             android:text=""
             android:textAllCaps="true"
-            android:textColor="#808080"
+            android:textColor="@color/grey3"
             android:textSize="10sp" />
 
         <LinearLayout
@@ -57,8 +57,8 @@
                 android:id="@+id/img_chat_message_status_sent"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
-                android:tint="@color/grey"
-                android:src="@drawable/single_tick" />
+                android:src="@drawable/ic_done_black"
+                android:tint="@color/white" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -104,16 +104,21 @@
             android:layout_alignEnd="@+id/ivImage"
             android:layout_alignParentBottom="true"
             android:background="@drawable/bg_chat_status_gradient"
-            android:paddingBottom="5sp"
             android:paddingLeft="5sp"
             android:paddingRight="5dp">
 
             <TextView
                 android:id="@+id/txtImageTime"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_alignParentBottom="true"
-                android:text=""
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/_3dp"
+                android:layout_marginRight="@dimen/_3dp"
+                android:layout_toLeftOf="@+id/llImageStatus"
+                android:layout_toStartOf="@+id/llImageStatus"
+                android:gravity="center"
+                android:text="00.00 AM"
                 android:textAllCaps="true"
                 android:textColor="#ffffff"
                 android:textSize="10sp" />
@@ -121,22 +126,19 @@
             <LinearLayout
                 android:id="@+id/llImageStatus"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginBottom="5dp">
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="5dp"
+                android:gravity="center">
 
                 <ImageView
                     android:id="@+id/img_chat_image_status_sent"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:src="@drawable/single_tick" />
-
-                <ImageView
-                    android:id="@+id/img_chat_image_status_delivered"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:src="@drawable/single_tick" />
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_done_black" />
 
             </LinearLayout>
         </RelativeLayout>
@@ -146,44 +148,43 @@
 
     <RelativeLayout
         android:id="@+id/rlAudioLayout"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="5dp"
         android:layout_marginEnd="25sp"
         android:layout_marginLeft="45sp"
         android:layout_marginRight="25sp"
         android:layout_marginStart="45sp"
-        android:layout_marginTop="5sp"
         android:background="@drawable/chat_rounded_cornner"
         android:paddingLeft="5sp"
         android:paddingRight="5sp"
         android:paddingTop="5sp"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <RelativeLayout
             android:id="@+id/rlAudioInnerLayout"
             android:layout_width="250dp"
-            android:layout_height="40sp"
+            android:layout_height="55dp"
+            android:layout_marginBottom="5sp"
             android:layout_marginLeft="5sp"
             android:layout_marginRight="5sp"
             android:layout_marginTop="5sp"
-            android:background="@drawable/chat_rounded_cornner_tint"
             android:orientation="horizontal">
 
             <RelativeLayout
                 android:id="@+id/rlAudioPlayPauseLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="4sp"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:background="@drawable/chat_rounded_cornner_tint_yellow"
+                android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="1dp">
 
                 <TextView
                     android:id="@+id/txtAudioDuration"
-                    android:layout_width="24sp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:gravity="center"
@@ -192,23 +193,23 @@
                     android:singleLine="true"
                     android:text="00:00"
                     android:textColor="#FFFFFF"
-                    android:textSize="6sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
                 <ImageView
                     android:id="@+id/ivAudioImage"
-                    android:layout_width="24sp"
-                    android:layout_height="24sp"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerInParent="true"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/_7dp"
                     android:contentDescription="@string/app_name"
                     android:src="@drawable/ic_headset_white" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/rlAudioPlayLayout"
-                android:layout_width="30sp"
-                android:layout_height="30sp"
+                android:layout_width="40sp"
+                android:layout_height="40sp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="5sp"
                 android:layout_marginStart="5sp"
@@ -220,16 +221,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
-                    android:contentDescription="@string/app_name"
-                    android:src="@drawable/play" />
+                    android:background="@drawable/play"
+                    android:contentDescription="@string/app_name" />
 
                 <ImageView
                     android:id="@+id/ivAudioPause"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
+                    android:background="@drawable/pause"
                     android:contentDescription="@string/app_name"
-                    android:src="@drawable/pause"
                     android:visibility="gone" />
             </RelativeLayout>
 
@@ -239,104 +240,91 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/rlAudioPlayLayout"
-                android:layout_toRightOf="@+id/rlAudioPlayLayout" />
+                android:layout_toLeftOf="@+id/rlAudioUploadDownloadLayout"
+                android:layout_toRightOf="@+id/rlAudioPlayLayout"
+                android:layout_toStartOf="@+id/rlAudioUploadDownloadLayout" />
 
             <RelativeLayout
                 android:id="@+id/rlAudioUploadDownloadLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="@dimen/_30dp"
+                android:layout_height="@dimen/_30dp"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_toRightOf="@+id/rlAudioPlayPauseLayout"
-                android:paddingTop="5sp">
+                android:layout_centerVertical="true">
 
                 <ProgressBar
                     android:id="@+id/pbAudio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerInParent="true"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:visibility="visible" />
-
-                <TextView
-                    android:id="@+id/txtAudioFilename"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_marginEnd="10sp"
-                    android:layout_marginRight="10sp"
-                    android:layout_toLeftOf="@+id/ivAudioUploadDownload"
-                    android:layout_toStartOf="@+id/ivAudioUploadDownload"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:text="@string/app_name"
-                    android:textAlignment="center"
-                    android:textColor="#000000"
-                    android:visibility="gone" />
 
                 <ImageView
                     android:id="@+id/ivAudioUploadDownload"
-                    android:layout_width="50sp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:contentDescription="@string/app_name"
                     android:rotation="0"
                     android:src="@drawable/upload"
                     android:visibility="visible" />
             </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="15dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/llAudioStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/img_chat_audio_status_sent"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/ic_done_black"
+                        android:tint="@color/white" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txtAudioTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_toLeftOf="@+id/llAudioStatus"
+                    android:layout_toStartOf="@+id/llAudioStatus"
+                    android:gravity="center"
+                    android:text=""
+                    android:textColor="@color/grey3"
+                    android:textSize="12sp" />
+
+
+                <TextView
+                    android:id="@+id/txtAudioSize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_toLeftOf="@+id/txtAudioTime"
+                    android:layout_toStartOf="@+id/txtAudioTime"
+                    android:gravity="center"
+                    android:text=""
+                    android:textColor="@color/grey3"
+                    android:textSize="12sp" />
+            </RelativeLayout>
 
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/txtAudioTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/rlAudioInnerLayout"
-            android:layout_marginLeft="5sp"
-            android:layout_marginTop="5sp"
-            android:text=""
-            android:textColor="#808080"
-            android:textSize="10sp" />
 
-        <LinearLayout
-            android:id="@+id/llAudioStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/rlAudioInnerLayout"
-            android:layout_alignRight="@+id/rlAudioInnerLayout"
-            android:layout_below="@+id/rlAudioInnerLayout"
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="6sp">
-
-            <ImageView
-                android:id="@+id/img_chat_audio_status_sent"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:src="@drawable/single_tick" />
-
-            <ImageView
-                android:id="@+id/img_chat_audio_status_delivered"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:src="@drawable/single_tick" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/txtAudioSize"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/rlAudioInnerLayout"
-            android:layout_marginLeft="10sp"
-            android:layout_marginStart="10sp"
-            android:layout_marginTop="10sp"
-            android:text=""
-            android:textColor="#808080"
-            android:textSize="10sp" />
     </RelativeLayout>
 
     <!-- Sending Video -->
@@ -362,6 +350,17 @@
             android:contentDescription="@string/app_name"
             android:scaleType="centerCrop" />
 
+        <ImageView
+            android:id="@+id/ivPlayVideo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="5sp"
+            android:layout_marginRight="5sp"
+            android:contentDescription="@string/app_name"
+            android:rotation="0"
+            android:src="@drawable/play_button" />
+
         <ProgressBar
             android:id="@+id/pbVideo"
             android:layout_width="wrap_content"
@@ -380,86 +379,74 @@
             android:rotation="0"
             android:src="@drawable/upload" />
 
-        <ImageView
-            android:id="@+id/ivVideoIcon"
-            android:layout_width="24sp"
-            android:layout_height="24sp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="8sp"
-            android:layout_marginLeft="10sp"
-            android:layout_marginStart="10sp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/video"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/txtVideoDuration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="10sp"
-            android:layout_marginLeft="10sp"
-            android:layout_marginStart="10sp"
-            android:layout_toEndOf="@id/ivVideoIcon"
-            android:layout_toRightOf="@id/ivVideoIcon"
-            android:text=""
-            android:textColor="#808080"
-            android:textSize="10sp"
-            android:textStyle="bold" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:layout_alignEnd="@+id/ivVideoThumb"
             android:layout_alignParentBottom="true"
-            android:background="@drawable/bg_chat_status_gradient"
-            android:paddingBottom="5sp"
             android:paddingLeft="5sp"
             android:paddingRight="5dp">
+
+            <ImageView
+                android:id="@+id/ivVideoIcon"
+                android:layout_width="24sp"
+                android:layout_height="24sp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/video"
+                android:tint="@color/colorPrimary"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/txtVideoDuration"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10sp"
+                android:layout_marginStart="10sp"
+                android:layout_toEndOf="@id/ivVideoIcon"
+                android:layout_toRightOf="@id/ivVideoIcon"
+                android:gravity="center"
+                android:text="00.00"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
 
             <TextView
                 android:id="@+id/txtVideoTime"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:text=""
-                android:textAllCaps="true"
-                android:textColor="#ffffff"
-                android:textSize="10sp" />
-
-            <!--<TextView
-                android:id="@+id/txtVideoTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="10sp"
-                android:layout_marginRight="5dp"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/_5dp"
+                android:layout_marginRight="@dimen/_5dp"
                 android:layout_toLeftOf="@+id/llVideoStatus"
-                android:gravity="end"
+                android:layout_toStartOf="@+id/llVideoStatus"
+                android:gravity="center"
                 android:text=""
                 android:textAllCaps="true"
-                android:textColor="#808080"
-                android:textSize="10sp" />-->
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:id="@+id/llVideoStatus"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true">
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:gravity="center">
 
                 <ImageView
                     android:id="@+id/img_chat_video_status_sent"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:src="@drawable/single_tick" />
-
-                <ImageView
-                    android:id="@+id/img_chat_video_status_delivered"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:src="@drawable/single_tick" />
-
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/ic_done_black"
+                    android:tint="@color/white" />
             </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>
@@ -472,26 +459,19 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="5dp"
         android:layout_marginEnd="25sp"
         android:layout_marginLeft="45sp"
         android:layout_marginRight="25sp"
         android:layout_marginStart="45sp"
-        android:layout_marginTop="5sp"
         android:background="@drawable/chat_rounded_cornner"
-        android:paddingLeft="5sp"
-        android:paddingRight="5sp"
-        android:paddingTop="5sp"
         android:visibility="gone">
 
         <RelativeLayout
             android:id="@+id/rlDocInnerLayout"
             android:layout_width="250dp"
-            android:layout_height="40sp"
-            android:layout_marginLeft="5sp"
-            android:layout_marginRight="5sp"
-            android:layout_marginTop="5sp"
-            android:background="@drawable/chat_rounded_cornner_tint"
+            android:layout_height="70sp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:orientation="horizontal">
 
 
@@ -503,13 +483,27 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="3sp"
-                android:layout_marginStart="3sp"
                 android:alpha="1.0"
                 android:contentDescription="@string/app_name"
                 android:gravity="center_horizontal"
                 android:scaleType="fitXY"
                 android:src="@drawable/doc" />
+
+            <TextView
+                android:id="@+id/tvDocType"
+                android:layout_width="28sp"
+                android:layout_height="28sp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_horizontal"
+                android:alpha="1.0"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="8sp"
+                android:textStyle="bold" />
 
 
             <TextView
@@ -517,12 +511,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
-                android:layout_marginStart="15dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_toEndOf="@+id/ivDocImage"
-                android:layout_toLeftOf="@+id/ivDocUploadDownload"
+                android:layout_toLeftOf="@+id/rlDocRightViews"
                 android:layout_toRightOf="@+id/ivDocImage"
-                android:layout_toStartOf="@+id/ivDocUploadDownload"
+                android:layout_toStartOf="@+id/rlDocRightViews"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:maxWidth="200sp"
@@ -530,76 +524,91 @@
                 android:text="@string/app_name"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="normal" />
 
-            <ProgressBar
-                android:id="@+id/pbDoc"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/rlDocRightViews"
+                android:layout_width="30dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:visibility="gone" />
+                android:layout_centerVertical="true">
 
-            <ImageView
-                android:id="@+id/ivDocUploadDownload"
-                android:layout_width="50sp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginLeft="5sp"
-                android:layout_marginRight="5sp"
-                android:contentDescription="@string/app_name"
-                android:rotation="180"
-                android:src="@drawable/upload"
-                android:visibility="visible" />
+                <ProgressBar
+                    android:id="@+id/pbDoc"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/ivDocUploadDownload"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="5sp"
+                    android:layout_marginRight="5sp"
+                    android:contentDescription="@string/app_name"
+                    android:rotation="180"
+                    android:src="@drawable/upload"
+                    android:visibility="visible" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/ivDocName1"
+                android:layout_marginLeft="@dimen/_5dp"
+                android:layout_marginStart="@dimen/_5dp"
+                android:layout_marginTop="@dimen/_3dp"
+                android:layout_toEndOf="@+id/ivDocImage"
+                android:layout_toRightOf="@+id/ivDocImage"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/txtDocSize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:text=""
+                    android:textColor="@color/grey_overlay"
+                    android:textSize="12sp" />
+
+                <LinearLayout
+                    android:id="@+id/llDocStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp">
+
+                    <ImageView
+                        android:id="@+id/img_chat_doc_status_sent"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/ic_done_black" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/ivDocTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@+id/llDocStatus"
+                    android:layout_toStartOf="@+id/llDocStatus"
+                    android:text="00:00"
+                    android:textColor="@color/grey_overlay"
+                    android:textSize="12sp" />
+            </RelativeLayout>
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/txtDocSize"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/rlDocInnerLayout"
-            android:layout_marginLeft="10sp"
-            android:layout_marginStart="10sp"
-            android:layout_marginTop="10sp"
-            android:text=""
-            android:textColor="#808080"
-            android:textSize="10sp" />
 
-        <LinearLayout
-            android:id="@+id/llDocStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/rlDocInnerLayout"
-            android:layout_alignRight="@+id/rlDocInnerLayout"
-            android:layout_below="@+id/rlDocInnerLayout"
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5sp">
-
-            <ImageView
-                android:id="@+id/img_chat_doc_status_sent"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:src="@drawable/single_tick" />
-
-            <ImageView
-                android:id="@+id/img_chat_doc_status_delivered"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:src="@drawable/single_tick" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/ivDocTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/rlDocInnerLayout"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="@dimen/_5dp"
-            android:text=""
-            android:textColor="#808080"
-            android:textSize="10sp" />
     </RelativeLayout>
 </RelativeLayout>

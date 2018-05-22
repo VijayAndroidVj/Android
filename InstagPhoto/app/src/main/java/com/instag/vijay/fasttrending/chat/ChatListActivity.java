@@ -17,7 +17,7 @@ import com.instag.vijay.fasttrending.CommonUtil;
 import com.instag.vijay.fasttrending.Db.DataBaseHandler;
 import com.instag.vijay.fasttrending.PreferenceUtil;
 import com.instag.vijay.fasttrending.R;
-import com.instag.vijay.fasttrending.model.UserModel;
+import com.instag.vijay.fasttrending.UserModel;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
 
@@ -36,18 +36,16 @@ import static android.view.View.VISIBLE;
 
 
 public class ChatListActivity extends AppCompatActivity implements View.OnClickListener {
-    private ContactListAdapter contactListAdapter;
-    private DataBaseHandler dataBaseHandler;
-    private ArrayList<UserModel> contact_list;
+    private LogListAdapter contactListAdapter;
+    private ArrayList<com.instag.vijay.fasttrending.model.UserModel> contact_list = new ArrayList<>();
     private Activity activity;
-    private PreferenceUtil preferenceUtil;
+    private DataBaseHandler dataBaseHandler;
 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_list);
         activity = this;
-        dataBaseHandler = new DataBaseHandler(this);
-        preferenceUtil = new PreferenceUtil(this);
+        dataBaseHandler = DataBaseHandler.getInstance(activity);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Friends");
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -67,20 +65,20 @@ public class ChatListActivity extends AppCompatActivity implements View.OnClickL
                 ApiInterface service =
                         ApiClient.getClient().create(ApiInterface.class);
                 final String usermail = new PreferenceUtil(activity).getUserMailId();
-                Call<ArrayList<com.instag.vijay.fasttrending.UserModel>> call = service.getallLists(usermail, "friends");
-                call.enqueue(new Callback<ArrayList<com.instag.vijay.fasttrending.UserModel>>() {
+                Call<ArrayList<UserModel>> call = service.getallLists(usermail, "friends");
+                call.enqueue(new Callback<ArrayList<UserModel>>() {
                     @Override
-                    public void onResponse(Call<ArrayList<com.instag.vijay.fasttrending.UserModel>> call, Response<ArrayList<com.instag.vijay.fasttrending.UserModel>> response) {
-                        ArrayList<com.instag.vijay.fasttrending.UserModel> postModelMain = response.body();
+                    public void onResponse(Call<ArrayList<UserModel>> call, Response<ArrayList<UserModel>> response) {
+                        ArrayList<UserModel> postModelMain = response.body();
                         if (postModelMain != null) {
 //                            postsArrayList = postModelMain.getPostsArrayList();
-                            for (com.instag.vijay.fasttrending.UserModel userModel : postModelMain) {
-                                UserModel userModel1 = new UserModel();
+                            for (UserModel userModel : postModelMain) {
+                                com.instag.vijay.fasttrending.model.UserModel userModel1 = new com.instag.vijay.fasttrending.model.UserModel();
                                 userModel1.setUserId(userModel.getEmail());
                                 userModel1.setName(userModel.getName());
                                 userModel1.setImage(userModel.getServerimage());
                                 userModel1.setTo_token(userModel.getTo_token());
-                                //contact_list.add(userModel1);
+                                // contact_list.add(userModel1);
                                 dataBaseHandler.saveFilteredContacts(userModel1);
                             }
 
@@ -90,7 +88,7 @@ public class ChatListActivity extends AppCompatActivity implements View.OnClickL
                     }
 
                     @Override
-                    public void onFailure(Call<ArrayList<com.instag.vijay.fasttrending.UserModel>> call, Throwable t) {
+                    public void onFailure(Call<ArrayList<UserModel>> call, Throwable t) {
                         // Log error here since request failed
                         String message = t.toString();
                         if (message.contains("Failed to")) {
@@ -124,7 +122,6 @@ public class ChatListActivity extends AppCompatActivity implements View.OnClickL
 
     public void fetchContacts() {
         try {
-//            dataBaseHandler.updateChatStatus(1);
             contact_list = dataBaseHandler.getFilteredContactList();
         } catch (Exception var7) {
             var7.printStackTrace();
@@ -142,7 +139,7 @@ public class ChatListActivity extends AppCompatActivity implements View.OnClickL
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(this.getApplicationContext());
             rv_contact_list.setLayoutManager(mLayoutManager);
             rv_contact_list.setItemAnimator(new DefaultItemAnimator());
-            contactListAdapter = new ContactListAdapter(activity, contact_list);
+            contactListAdapter = new LogListAdapter(activity, contact_list);
             rv_contact_list.setAdapter(contactListAdapter);
         }
 

@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.instag.vijay.fasttrending.Db.DataBaseHandler;
 import com.instag.vijay.fasttrending.R;
 import com.instag.vijay.fasttrending.chat.ChatListActivity;
+import com.instag.vijay.fasttrending.chat.ContactListAdapter;
 import com.instag.vijay.fasttrending.chat.LogListAdapter;
 import com.instag.vijay.fasttrending.model.UserModel;
 
@@ -28,7 +29,7 @@ import static android.view.View.VISIBLE;
 
 public class ChatFragment extends Fragment {
 
-    private LogListAdapter contactListAdapter;
+    private ContactListAdapter contactListAdapter;
     private DataBaseHandler dataBaseHandler;
     private ChatListActivity contactList;
     private static boolean isAgentLog;
@@ -64,7 +65,7 @@ public class ChatFragment extends Fragment {
     public void fetchContacts() {
         try {
             DataBaseHandler dataBaseHandler = DataBaseHandler.getInstance(activity);
-            dataBaseHandler.updateChatStatus(1);
+            //dataBaseHandler.updateChatStatus(1);
             contact_list = dataBaseHandler.getAllContactDisplayCallLogs();
 
         } catch (Exception var7) {
@@ -83,7 +84,7 @@ public class ChatFragment extends Fragment {
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(activity.getApplicationContext());
             rv_contact_list.setLayoutManager(mLayoutManager);
             rv_contact_list.setItemAnimator(new DefaultItemAnimator());
-            contactListAdapter = new LogListAdapter(activity, contact_list);
+            contactListAdapter = new ContactListAdapter(activity, contact_list);
             rv_contact_list.setAdapter(contactListAdapter);
         }
 

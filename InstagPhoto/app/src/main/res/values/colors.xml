@@ -6,6 +6,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="white">#ffffff</color>
     <color name="whitetrans">#80ffffff</color>
+    <color name="fb_bac">#b2b9c9</color>
     <color name="black">#000000</color>
     <color name="blackdark">#00000a</color>
     <color name="black1">#80000000</color>
@@ -27,7 +28,7 @@
     <color name="aspectRatioNotSelected">#757575</color>
     <color name="aspectRatioText">#757575</color>
     <color name="disabledOverlay">#3cffffff</color>
-
+    <color name="grey_overlay">#808080</color>
     <color name="green">#2E8B57</color>
     <color name="participant_view_selected">#27AF81</color>
     <color name="participant_view_unselected">#EEEEEE</color>

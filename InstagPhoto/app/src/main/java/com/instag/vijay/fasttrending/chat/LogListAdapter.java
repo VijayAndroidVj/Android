@@ -96,7 +96,10 @@ public class LogListAdapter extends RecyclerView.Adapter<LogListAdapter.MyViewHo
         private TextView tv_contact_list_item_name;
         private TextView tv_contact_list_item_phone;
         private TextView tv_contact_list_item_alphabet;
+        private TextView tv_contact_list_item_count;
+        private TextView tv_contact_list_time;
         private CircleImageView iv_contact_list_item_alphabet;
+        private ImageView iv_contact_list_item_phone;
         private View rl_contact_list_item_container;
 
         private MyViewHolder(View view) {
@@ -104,8 +107,11 @@ public class LogListAdapter extends RecyclerView.Adapter<LogListAdapter.MyViewHo
             tv_contact_list_item_name = view.findViewById(R.id.tv_contact_list_item_name);
             tv_contact_list_item_phone = view.findViewById(R.id.tv_contact_list_item_phone);
             tv_contact_list_item_alphabet = view.findViewById(R.id.tv_contact_list_item_alphabet);
+            tv_contact_list_time = view.findViewById(R.id.tv_contact_list_time);
+            tv_contact_list_item_count = view.findViewById(R.id.tv_contact_list_item_count);
             iv_contact_list_item_alphabet = view.findViewById(R.id.iv_contact_list_item_alphabet);
             rl_contact_list_item_container = view.findViewById(R.id.rl_contact_list_item_container);
+            iv_contact_list_item_phone = view.findViewById(R.id.iv_contact_list_item_phone);
 
         }
     }
@@ -152,6 +158,10 @@ public class LogListAdapter extends RecyclerView.Adapter<LogListAdapter.MyViewHo
                 holder.tv_contact_list_item_alphabet.setVisibility(View.VISIBLE);
                 holder.tv_contact_list_item_alphabet.setText(userModel.getName().substring(0, 1).toUpperCase());
             }
+            holder.iv_contact_list_item_phone.setVisibility(View.GONE);
+            holder.tv_contact_list_item_count.setVisibility(View.GONE);
+            holder.tv_contact_list_time.setVisibility(View.GONE);
+
             holder.rl_contact_list_item_container.setTag(userModel);
             holder.rl_contact_list_item_container.setOnClickListener(new View.OnClickListener() {
                 @Override

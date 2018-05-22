@@ -15,7 +15,10 @@ public class ChatMessageModel implements Parcelable {
 
     private String id;
     private String name = "";
-    private String userID;
+    private String userId;
+    private String productId;
+    private String widgetPhone;
+    private String businessName = "";
     private String message = "";
     private String date;
     private String time;
@@ -41,6 +44,8 @@ public class ChatMessageModel implements Parcelable {
     private String mediaLink = "";
     private int readMessage;
     private int colorState;
+    private String agentKey;
+
     public MediaPlayer player;
     public Handler seekHandler = new Handler();
     public Runnable run;
@@ -52,7 +57,10 @@ public class ChatMessageModel implements Parcelable {
     protected ChatMessageModel(Parcel in) {
         id = in.readString();
         name = in.readString();
-        userID = in.readString();
+        userId = in.readString();
+        productId = in.readString();
+        widgetPhone = in.readString();
+        businessName = in.readString();
         message = in.readString();
         date = in.readString();
         time = in.readString();
@@ -78,6 +86,7 @@ public class ChatMessageModel implements Parcelable {
         mediaLink = in.readString();
         readMessage = in.readInt();
         colorState = in.readInt();
+        agentKey = in.readString();
     }
 
     public static final Creator<ChatMessageModel> CREATOR = new Creator<ChatMessageModel>() {
@@ -100,6 +109,14 @@ public class ChatMessageModel implements Parcelable {
         this.fileUpload = fileUpload;
     }
 
+    public String getAgentKey() {
+        return agentKey;
+    }
+
+    public void setAgentKey(String agentKey) {
+        this.agentKey = agentKey;
+    }
+
     public String getId() {
         return id;
     }
@@ -116,12 +133,36 @@ public class ChatMessageModel implements Parcelable {
         this.name = name;
     }
 
-    public String getUserID() {
-        return userID;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUserID(String userID) {
-        this.userID = userID;
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public String getWidgetPhone() {
+        return widgetPhone;
+    }
+
+    public void setWidgetPhone(String widgetPhone) {
+        this.widgetPhone = widgetPhone;
+    }
+
+    public String getBusinessName() {
+        return businessName;
+    }
+
+    public void setBusinessName(String businessName) {
+        this.businessName = businessName;
     }
 
     public String getMessage() {
@@ -348,7 +389,10 @@ public class ChatMessageModel implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(id);
         parcel.writeString(name);
-        parcel.writeString(userID);
+        parcel.writeString(userId);
+        parcel.writeString(productId);
+        parcel.writeString(widgetPhone);
+        parcel.writeString(businessName);
         parcel.writeString(message);
         parcel.writeString(date);
         parcel.writeString(time);
@@ -374,5 +418,6 @@ public class ChatMessageModel implements Parcelable {
         parcel.writeString(mediaLink);
         parcel.writeInt(readMessage);
         parcel.writeInt(colorState);
+        parcel.writeString(agentKey);
     }
 }

@@ -4,9 +4,9 @@
     <string name="signup">Register</string>
     <string name="signin">SignIn</string>
     <string name="name">Name*</string>
-    <string name="username">username</string>
-    <string name="email">email</string>
-    <string name="password">password</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
     <string-array name="attachment">
         <item>@string/camera</item>
         <item>@string/gallery</item>

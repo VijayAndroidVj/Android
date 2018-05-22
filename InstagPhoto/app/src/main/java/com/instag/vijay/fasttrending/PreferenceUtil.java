@@ -111,7 +111,7 @@ public class PreferenceUtil {
         editor.apply();
 
         DataBaseHandler dataBaseHandler = DataBaseHandler.getInstance(context);
-        dataBaseHandler.dropTables();
+        dataBaseHandler.deleteContactLogTable();
     }
 
     public String getMyCoverPhoto() {

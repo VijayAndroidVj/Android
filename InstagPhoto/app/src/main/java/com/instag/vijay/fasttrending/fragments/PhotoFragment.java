@@ -80,7 +80,7 @@ public class PhotoFragment extends Fragment {
 
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int PICK_VIDEO_REQUEST = 2;
-    private static final int UPLOAD = 3;
+    public static final int UPLOAD = 3;
     private Uri selectedImageUri;
     private static PhotoFragment photoFragment;
 

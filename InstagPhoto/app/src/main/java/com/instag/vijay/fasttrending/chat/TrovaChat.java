@@ -7,9 +7,9 @@ import android.app.NotificationManager;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Build;
@@ -54,6 +54,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.instag.vijay.fasttrending.CommonUtil;
 import com.instag.vijay.fasttrending.Db.DataBaseHandler;
+import com.instag.vijay.fasttrending.MainActivity;
 import com.instag.vijay.fasttrending.PreferenceUtil;
 import com.instag.vijay.fasttrending.R;
 import com.instag.vijay.fasttrending.Utils.CommonDateTimeZone;
@@ -67,7 +68,6 @@ import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -91,6 +91,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 
+import static com.instag.vijay.fasttrending.chat.CustomGrid.IMAGE_PREVIEW;
 import static com.instag.vijay.fasttrending.fcm.MyFirebaseMessagingService.sendUpdateMessage;
 
 
@@ -305,6 +306,11 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
             atach.setOnClickListener(this);
         }
 
+        findViewById(R.id.iv_chat_camera).setOnClickListener(this);
+        findViewById(R.id.iv_chat_gallery).setOnClickListener(this);
+        findViewById(R.id.iv_chat_file).setOnClickListener(this);
+        findViewById(R.id.iv_chat_mic).setOnClickListener(this);
+        findViewById(R.id.iv_chat_video).setOnClickListener(this);
         findViewById(R.id.sendMessageButton).setOnClickListener(this);
         chatSwipeRefreshLayout = findViewById(R.id.chatSwipeRefreshLayout);
         chatSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -351,8 +357,7 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
                 sendNotificationObject.put("userId", preferenceUtil.getUserContactNumber());
 
                 sendUpdateMessage(activity, messageId, dataBaseHandler.getUserToken(chatSenderId), 2);
-                //  Globalclass.trovaSDK_init.trovaXmit_Notification(chatSenderId, sendNotificationObject.toString(), "high", 0, "", "");
-                dataBaseHandler.updateChatMessageStatus(chatSenderId, "" + messageId, 2);
+                dataBaseHandler.updateChatMessageStatus("" + messageId, 2);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -389,38 +394,6 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
             dataBaseHandler = DataBaseHandler.getInstance(this);
             if (chatSenderId != null) {
                 chatList = dataBaseHandler.getChatMessages(chatSenderId);
-                try {
-                    UserModel userModel = new UserModel();
-                    Calendar cal = Calendar.getInstance();
-                    TimeZone tz = cal.getTimeZone();
-                    String timezone = tz.getDisplayName();
-                    SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-                    String currDate = df.format(cal.getTime());
-                    df = new SimpleDateFormat("hh:mm a", Locale.getDefault());
-                    String time = df.format(cal.getTime());
-                    String callDuration = "00:00:00";
-                    userModel.setUserId(chatSenderId);
-                    userModel.setDate(currDate);
-                    userModel.setTime(time);
-                    userModel.setTimeZone(timezone);
-                    userModel.setCallDuration(callDuration);
-                    userModel.setCallCount(0);
-                    userModel.setStatus("1");
-
-                    userModel.setName(chatSenderName);
-                    DataBaseHandler dataBaseHandler = DataBaseHandler.getInstance(activity);
-                    if (TextUtils.isEmpty(userModel.getName())) {
-                        String userName = dataBaseHandler.getUserName(userModel.getUserId());
-                        userModel.setName(userName);
-                    }
-                    userModel.setCallType(UserModel.DIALEDCALL);
-                    userModel.setCallMode("chat");
-                    userModel.setTimemillis(System.currentTimeMillis());
-                    dataBaseHandler.saveCallLogs(userModel);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
                 getToken();
             }
         }
@@ -451,12 +424,16 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
                             JSONObject jsonObject = new JSONObject(requestBody.string());
                             String token = jsonObject.getString("token");
                             dataBaseHandler.updateToken(chatSenderId, token);
-
+                            dataBaseHandler.updateContactToken(chatSenderId, token);
+                            String tokenGet = dataBaseHandler.getUserToken(chatSenderId);
+                            Log.w("tokenGet", tokenGet);
                             for (int i = 0; i < chatList.size(); i++) {
                                 if (chatList.get(i).getMessageSentOrReceived() == 1 && chatList.get(i).getSeenstatus() != 2) {
                                     sendMessageSeenStatus(chatList.get(i).getMessageId(), chatList.get(i).getMediaLink());
                                 }
                             }
+                            dataBaseHandler.updateChatLogSeenStatus(chatSenderId, 2, false, "");
+                            dataBaseHandler.updateChatStatus(chatSenderId, 2, false);
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -480,7 +457,17 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.iv_attach) {
-            showAttachmentPopup(v);
+            //showAttachmentPopup(v);
+        } else if (i == R.id.iv_chat_camera) {
+            launchCameraIntent();
+        } else if (i == R.id.iv_chat_gallery) {
+            launchGalleryIntent();
+        } else if (i == R.id.iv_chat_file) {
+            launchDocumentPicker();
+        } else if (i == R.id.iv_chat_mic) {
+            launchAudioIntent();
+        } else if (i == R.id.iv_chat_video) {
+            launchVideoIntent();
         } else if (i == R.id.sendMessageButton) {
             String message = messageEditText.getText().toString().trim();
             if (!TextUtils.isEmpty(message)) {
@@ -538,7 +525,7 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
         String time = df.format(cal.getTime());
 
         chatMessageModel.setName(chatSenderName);
-        chatMessageModel.setUserID(chatSenderId);
+        chatMessageModel.setUserId(chatSenderId);
         chatMessageModel.setMessage(message);
 
         if (chatMessageModel.getMessageId() == 0) {
@@ -551,16 +538,39 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
 
         chatMessageModel.setName(chatSenderName);
         chatMessageModel.setSeenstatus(-1);
+        chatMessageModel.setMimeType("text");
         chatMessageModel.setTimemilliseconds(timemilliseconds);
         chatMessageModel.setMessageSentOrReceived(0);
         chatList.add(chatMessageModel);
         chatMessageAdapter.notifyDataSetChanged();
-//        recyclerView.smoothScrollToPosition(chatList.size());
-        if (chatList != null && chatList.size() > 1) {
-            smoothScroller.setTargetPosition(chatList.size() - 1);
-            mLayoutManager.startSmoothScroll(smoothScroller);
-        }
+
+        recyclerView.smoothScrollToPosition(chatList.size());
+
         dataBaseHandler.saveChatMessage(chatMessageModel);
+
+        UserModel userModel = new UserModel();
+        userModel.setUserId(chatSenderId);
+        SimpleDateFormat df1 = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        String currDate1 = df1.format(cal.getTime());
+        df1 = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+        String time1 = df1.format(cal.getTime());
+        userModel.setDate(currDate1);
+        userModel.setTime(time1);
+        userModel.setStatus(0);
+        userModel.setMessage(message);
+        userModel.setMessageId("" + chatMessageModel.getMessageId());
+        userModel.setMessageSeenStatus(-1);
+        userModel.setMimeType("text");
+        userModel.setTo_token(dataBaseHandler.getUserToken(chatSenderId));
+        userModel.setImage(dataBaseHandler.getUserImage(chatMessageModel.getUserId()));
+        userModel.setName(chatSenderName);
+        if (TextUtils.isEmpty(userModel.getName())) {
+            String userName = dataBaseHandler.getUserName(userModel.getUserId());
+            userModel.setName(userName);
+        }
+        userModel.setAgentKey("");
+        userModel.setDisplayName("");
+        dataBaseHandler.saveContactLogs(userModel);
         try {
             if (chatMessageModel.getMimeType().equalsIgnoreCase("text")) {
                 Calendar calendar = Calendar.getInstance();
@@ -580,9 +590,10 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
 
                 JSONObject userObj = new JSONObject();
                 jsonValuePut(userObj, "messageJson", data);
-
+                String tokenGet = dataBaseHandler.getUserToken(chatSenderId);
+                Log.w("tokenGet", tokenGet);
 //                sendPushToSingleInstance(activity, userObj, dataBaseHandler.getUserToken(chatSenderId));
-                sendPushToSingleInstanceRetro(activity, chatMessageModel.getMessageId(), userObj, dataBaseHandler.getUserToken(chatSenderId), chatList.size() - 1);
+                sendPushToSingleInstanceRetro(activity, chatMessageModel.getMessageId(), userObj, tokenGet, chatList.size() - 1);
 //
 //                FirebaseMessaging fm = FirebaseMessaging.getInstance();
 //                fm.send(new RemoteMessage.Builder(dataBaseHandler.getUserToken(chatSenderId) + "@gcm.googleapis.com")
@@ -593,7 +604,7 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
 
 
 //                if (Globalclass.trovaSDK_init != null)
-//                    Globalclass.trovaSDK_init.trovaXmit_Chat(chatMessageModel.getMessage(), "", chatMessageModel.getPhone(), preferenceUtil.getUserName(), chatMessageModel.getMessage(), chatMessageModel.getMessageId());
+//                    Globalclass.trovaSDK_init.trovaXmit_Chat(chatMessageModel.getMessage(), "", chatMessageModel.getUserId(), preferenceUtil.getUserName(), chatMessageModel.getMessage(), chatMessageModel.getMessageId());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -619,9 +630,11 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
                     //DashBoardActivity.dismissProgress();
                     if (requestBody != null) {
                         try {
-                            dataBaseHandler.updateChatMessageStatus(chatSenderId, "" + messageId, 1);
+                            dataBaseHandler.updateChatMessageStatus("" + messageId, 0);
+                            dataBaseHandler.updateChatLogSeenStatus(chatSenderId, 0, true, "" + messageId);
                             chatList.get(position).setSeenstatus(0);
                             chatMessageAdapter.notifyDataSetChanged();
+                            MainActivity.mainActivity.refreshChat();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -955,11 +968,29 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
                     break;
                 case CustomGrid.CAMERA_REQUEST:
                     if (Utils.isNetworkAvailable(activity)) {
-                        selectedImageUri = getImageUri(activity, (Bitmap) data.getExtras().get("data"));
+//                        selectedImageUri = getImageUri(activity, (Bitmap) data.getExtras().get("data"));
 //                    thumbnail = (Bitmap) data.getExtras().get("data");
 //                    compressedImage = compressBitmap(thumbnail, 100);
 //                    selectedImageUri = Uri.fromFile(new File(saveImage(thumbnail)));
-                        onSelectFromGalleryResult(activity, selectedImageUri);
+                        String filePath = "";
+                        if (selectedImageUri != null)
+                            try {
+                                filePath = getRealPathFromURI(activity, selectedImageUri);
+                                if (filePath == null) {
+                                    filePath = getFilePathFromURI(activity, selectedImageUri);
+                                }
+                            } catch (URISyntaxException e) {
+                                e.printStackTrace();
+                            }
+
+                        if (filePath == null) {
+                            Snackbar snackbar = Snackbar.make(edit, "File path not found..", Snackbar.LENGTH_LONG);
+                            snackbar.show();
+                            return;
+                        }
+                        Intent intent = new Intent(activity, ImagePreviewActivity.class);
+                        intent.putExtra("filePath", filePath);
+                        startActivityForResult(intent, IMAGE_PREVIEW);
                     } else {
                         Snackbar snackbar = Snackbar.make(edit, "Check your internet connection..", Snackbar.LENGTH_LONG);
                         snackbar.show();
@@ -969,10 +1000,34 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
                 case CustomGrid.PICK_IMAGE_REQUEST:
                     if (Utils.isNetworkAvailable(activity)) {
                         selectedImageUri = data.getData();
-                        onImagePickerSuccess(activity, selectedImageUri);
+                        String filePath = "";
+                        if (selectedImageUri != null)
+                            try {
+                                filePath = getRealPathFromURI(activity, selectedImageUri);
+                                if (filePath == null) {
+                                    filePath = getFilePathFromURI(activity, selectedImageUri);
+                                }
+                            } catch (URISyntaxException e) {
+                                e.printStackTrace();
+                            }
+
+                        if (filePath == null) {
+                            Snackbar snackbar = Snackbar.make(edit, "File path not found..", Snackbar.LENGTH_LONG);
+                            snackbar.show();
+                            return;
+                        }
+                        Intent intent = new Intent(activity, ImagePreviewActivity.class);
+                        intent.putExtra("filePath", filePath);
+                        startActivityForResult(intent, IMAGE_PREVIEW);
                     } else {
                         Snackbar snackbar = Snackbar.make(edit, "Check your internet connection..", Snackbar.LENGTH_LONG);
                         snackbar.show();
+                    }
+                    break;
+                case IMAGE_PREVIEW:
+                    if (data.hasExtra("filePath")) {
+                        String path = data.getStringExtra("filePath");
+                        onSelectFromGalleryResult(path);
                     }
                     break;
                 case CustomGrid.PICK_AUDIO_REQUEST:
@@ -1006,13 +1061,6 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
     }
 
 
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
-    }
-
     public void onAudioPickerSuccess(Context context, Uri uri) throws URISyntaxException {
         String sourceFilePath = getRealPathFromURI(context, uri);
         String mimeType = getMimeType(activity, sourceFilePath);
@@ -1026,16 +1074,16 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
             if (sourceFilePath == null) {
                 return;
             }
-            int totalSize = 0;
+            long totalSize = 0;
             final String fileExt = (sourceFilePath.substring(sourceFilePath.lastIndexOf("."))).substring(1);
             final CommonDateTimeZone commonDateTimeZone = new CommonDateTimeZone();
 
             data = readFileUriContentToBytes(context, uri);
-            if (data != null)
-                totalSize = data.length;
+
 
             filePath = sourceFilePath;
             final File file = new File(filePath);
+            totalSize = file.length();
             String message;
             if (mimeType != null && mimeType.contains("video/")) {
                 message = "video";
@@ -1069,26 +1117,19 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
                 chatMessageModel.setFileSize(totalSize);
                 chatMessageModel.setFileName(file.getName());
                 chatMessageModel.setFilePath(filePath);
+                chatMessageModel.setSeenstatus(-1);
+                chatMessageModel.setFileUploading(true);
+                chatMessageModel.setFileUpload(false);
                 Calendar cal = Calendar.getInstance();
                 SimpleDateFormat df = new SimpleDateFormat("hh:mm a", Locale.getDefault());
                 String time = df.format(cal.getTime());
                 chatMessageModel.setTime(time);
                 chatMessageModel.setTimemilliseconds(System.currentTimeMillis());
-                chatMessageModel.setUserID(chatSenderId);
+                chatMessageModel.setUserId(chatSenderId);
                 chatMessageModel.setName(chatSenderName);
                 chatMessageModel.setDurationTime(dur);
 
-                dataBaseHandler.saveChatMessage(chatMessageModel);
-                chatList.add(chatMessageModel);
-                chatMessageAdapter.notifyDataSetChanged();
-//                recyclerView.smoothScrollToPosition(chatList.size());
-                if (chatList != null && chatList.size() > 1) {
-                    smoothScroller.setTargetPosition(chatList.size() - 1);
-                    mLayoutManager.startSmoothScroll(smoothScroller);
-                }
-                Calendar calender = Calendar.getInstance();
-//                if (Globalclass.trovaSDK_init != null)
-//                    Globalclass.trovaSDK_init.trovaAmazonS3_Upload(sourceFilePath, calender.get(Calendar.YEAR) + "/" + (calender.get(Calendar.MONTH) + 1) + "/" + calender.get(Calendar.DATE) + "/" + calender.get(Calendar.HOUR) + "/" + calender.get(Calendar.MINUTE), "");
+                uploadFilesAlert(chatMessageModel, "Audio", file.getName());
             } else {
                 Toast.makeText(activity, "Upload file size is too low", Toast.LENGTH_LONG).show();
             }
@@ -1127,16 +1168,15 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
             String filePath;
             String dur = null;
 
-            int totalSize = 0;
+            long totalSize = 0;
             final String fileExt = (sourceFilePath.substring(sourceFilePath.lastIndexOf("."))).substring(1);
             final CommonDateTimeZone commonDateTimeZone = new CommonDateTimeZone();
 
             data = readFileUriContentToBytes(context, uri);
-            if (data != null)
-                totalSize = data.length;
 
             filePath = sourceFilePath;
             final File file = new File(filePath);
+            totalSize = file.length();
             String message;
             if (mimeType != null && mimeType.contains("video/")) {
                 message = "video";
@@ -1172,25 +1212,17 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
                 SimpleDateFormat df = new SimpleDateFormat("hh:mm a", Locale.getDefault());
                 String time = df.format(cal.getTime());
                 chatMessageModel.setTime(time);
-                chatMessageModel.setUserID(chatSenderId);
+                chatMessageModel.setUserId(chatSenderId);
                 chatMessageModel.setName(chatSenderName);
-
+                chatMessageModel.setSeenstatus(-1);
+                chatMessageModel.setFileUploading(true);
+                chatMessageModel.setFileUpload(false);
                 chatMessageModel.setFileSize(totalSize);
                 chatMessageModel.setFileName(file.getName());
                 chatMessageModel.setFilePath(filePath);
                 chatMessageModel.setDurationTime(dur);
                 chatMessageModel.setTimemilliseconds(System.currentTimeMillis());
-                dataBaseHandler.saveChatMessage(chatMessageModel);
-                chatList.add(chatMessageModel);
-                chatMessageAdapter.notifyDataSetChanged();
-//                recyclerView.smoothScrollToPosition(chatList.size());
-                if (chatList != null && chatList.size() > 1) {
-                    smoothScroller.setTargetPosition(chatList.size() - 1);
-                    mLayoutManager.startSmoothScroll(smoothScroller);
-                }
-                Calendar calender = Calendar.getInstance();
-//                if (Globalclass.trovaSDK_init != null)
-//                    Globalclass.trovaSDK_init.trovaAmazonS3_Upload(sourceFilePath, calender.get(Calendar.YEAR) + "/" + (calender.get(Calendar.MONTH) + 1) + "/" + calender.get(Calendar.DATE) + "/" + calender.get(Calendar.HOUR) + "/" + calender.get(Calendar.MINUTE), "");
+                uploadFilesAlert(chatMessageModel, "Video", file.getName());
             } else {
                 Toast.makeText(activity, "Upload file size is too low", Toast.LENGTH_LONG).show();
             }
@@ -1199,20 +1231,11 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
         }
     }
 
-    public void onImagePickerSuccess(Context context, Uri selectedImageUri) {
-        try {
-            onSelectFromGalleryResult(context, selectedImageUri);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
     public void onDocumentPickerSuccess(Context context, Uri uri) throws URISyntaxException {
         String sourceFilePath = getRealPathFromURI(context, uri);
 
 //        String mimeType = getMimeType(activity, sourceFilePath);
-        String mimeType = "doc";
+        String mimeType = "doc/";
 //        if ((mimeType.contains("video/")) || (mimeType.contains("audio/")) || (mimeType.contains("image/"))) {
 //            Toast.makeText(context, "Please choose a different file.", Toast.LENGTH_LONG).show();
 //            return;
@@ -1227,12 +1250,10 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
                 File thumbFile;
                 String dur = null;
 
-                int totalSize = 0;
+                long totalSize = 0;
                 final String fileExt = (sourceFilePath.substring(sourceFilePath.lastIndexOf("."))).substring(1);
 
                 data = readFileUriContentToBytes(context, uri);
-                if (data != null)
-                    totalSize = data.length;
                 String filenameOnly = new File(sourceFilePath).getName();
                 filenameOnly = (filenameOnly.split("\\."))[0] + String.valueOf(System.currentTimeMillis());
                 String message;
@@ -1248,7 +1269,7 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
                         message = "audio";
                         dur = getDuration(context, uri);
                     } else {
-                        mimeType = "doc";
+                        mimeType = "doc/";
                         message = "document";
                         try {
 
@@ -1261,43 +1282,101 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
 
                     }
                 }
-
+                totalSize = new File(sourceFilePath).length();
                 ChatMessageModel chatMessageModel = new ChatMessageModel();
                 chatMessageModel.setMessage(message);
                 chatMessageModel.setMimeType(mimeType);
                 chatMessageModel.setFileExt(fileExt);
                 chatMessageModel.setFileSize(totalSize);
+                chatMessageModel.setSeenstatus(-1);
+                chatMessageModel.setFileUploading(true);
+                chatMessageModel.setFileUpload(false);
                 chatMessageModel.setFileName(filenameOnly);
                 chatMessageModel.setFilePath(sourceFilePath);
                 Calendar cal = Calendar.getInstance();
                 SimpleDateFormat df = new SimpleDateFormat("hh:mm a", Locale.getDefault());
                 String time = df.format(cal.getTime());
                 chatMessageModel.setTime(time);
-                chatMessageModel.setUserID(chatSenderId);
+                chatMessageModel.setUserId(chatSenderId);
                 chatMessageModel.setName(chatSenderName);
                 chatMessageModel.setDurationTime(dur);
                 chatMessageModel.setTimemilliseconds(System.currentTimeMillis());
-                dataBaseHandler.saveChatMessage(chatMessageModel);
-                chatList.add(chatMessageModel);
-                chatMessageAdapter.notifyDataSetChanged();
-//                recyclerView.smoothScrollToPosition(chatList.size());
-                if (chatList != null && chatList.size() > 1) {
-                    smoothScroller.setTargetPosition(chatList.size() - 1);
-                    mLayoutManager.startSmoothScroll(smoothScroller);
-                }
+                uploadFilesAlert(chatMessageModel, "Document", file.getName());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
-            Calendar calender = Calendar.getInstance();
-//            if (Globalclass.trovaSDK_init != null)
-//                Globalclass.trovaSDK_init.trovaAmazonS3_Upload(sourceFilePath, calender.get(Calendar.YEAR) + "/" + (calender.get(Calendar.MONTH) + 1) + "/" + calender.get(Calendar.DATE) + "/" + calender.get(Calendar.HOUR) + "/" + calender.get(Calendar.MINUTE), mimeType);
         } else {
             Toast.makeText(activity, "Upload file size is too low", Toast.LENGTH_LONG).show();
         }
 
     }
+
+    private void uploadFilesAlert(final ChatMessageModel chatMessageModel, String title, String fileName) {
+        try {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
+
+            // Setting Dialog Title
+            alertDialog.setTitle("Send " + title);
+
+            // Setting Dialog Message
+            alertDialog.setMessage(fileName);
+            // Setting Positive "Yes" Button
+            alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                    Calendar calender = Calendar.getInstance();
+
+                    dataBaseHandler.saveChatMessage(chatMessageModel);
+                    chatList.add(chatMessageModel);
+                    chatMessageAdapter.notifyDataSetChanged();
+                    if (chatList.size() > 1)
+                        recyclerView.smoothScrollToPosition(chatList.size());
+
+//                    if (Globalclass.trovaSDK_init != null)
+//                        Globalclass.trovaSDK_init.trovaAmazonS3_Upload(chatMessageModel.getFilePath(), calender.get(Calendar.YEAR) + "/" + (calender.get(Calendar.MONTH) + 1) + "/" + calender.get(Calendar.DATE) + "/" + calender.get(Calendar.HOUR) + "/" + calender.get(Calendar.MINUTE), chatMessageModel.getMimeType());
+
+                    UserModel userModel = new UserModel();
+                    userModel.setUserId(chatSenderId);
+                    SimpleDateFormat df1 = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                    String currDate1 = df1.format(calender.getTime());
+                    df1 = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+                    String time1 = df1.format(calender.getTime());
+                    userModel.setDate(currDate1);
+                    userModel.setTime(time1);
+                    userModel.setStatus(0);
+                    userModel.setMessageId("" + chatMessageModel.getMessageId());
+                    userModel.setMessage(chatMessageModel.getMimeType());
+                    userModel.setMessageSeenStatus(-1);
+                    userModel.setFileName(chatMessageModel.getFileName());
+                    userModel.setName(chatSenderName);
+                    userModel.setTo_token(dataBaseHandler.getUserToken(chatMessageModel.getUserId()));
+                    userModel.setImage(dataBaseHandler.getUserImage(chatMessageModel.getUserId()));
+                    userModel.setMimeType(chatMessageModel.getMimeType());
+                    if (TextUtils.isEmpty(userModel.getName())) {
+                        String userName = dataBaseHandler.getUserName(userModel.getUserId());
+                        userModel.setName(userName);
+                    }
+                    userModel.setAgentKey("");
+                    userModel.setDisplayName("");
+                    dataBaseHandler.saveContactLogs(userModel);
+                }
+            });
+
+            // Setting Negative "NO" Button
+            alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    // Write your code here to invoke NO event
+                    dialog.cancel();
+                }
+            });
+
+            // Showing Alert Message
+            alertDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public static String getMimeType(Activity activity, String url) {
         try {
@@ -1325,38 +1404,20 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
     }
 
     @SuppressWarnings("deprecation")
-    public void onSelectFromGalleryResult(Context context, Uri selectedImageUri) {
+    public void onSelectFromGalleryResult(String filePath) {
         try {
-
+            long totalSize = 0;
             ChatMessageModel chatMessageModel = new ChatMessageModel();
-
+            chatMessageModel.setFilePath(filePath);
       /*  Intent intent = new Intent(context.getApplicationContext(), ViewImage.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);*/
-            String filePath = "";
-            if (selectedImageUri != null)
-                try {
-                    filePath = getRealPathFromURI(activity, selectedImageUri);
-                    if (filePath == null) {
-                        filePath = getFilePathFromURI(activity, selectedImageUri);
-                    }
-                    chatMessageModel.setFilePath(filePath);
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
-                }
 
-
-            int totalSize = 0;
-            if (filePath == null) {
-                return;
-            }
             final String fileExt = (filePath.substring(filePath.lastIndexOf("."))).substring(1);
-            byte[] data = readFileUriContentToBytes(context, selectedImageUri);
-            if (data != null)
-                totalSize = data.length;
+//            byte[] data = readFileUriContentToBytes(context, selectedImageUri);
 
             final File file = new File(filePath);
-
+            totalSize = file.length();
             if (totalSize > 0) {
 
                 long timeMilliSeconds = System.currentTimeMillis();
@@ -1367,39 +1428,63 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
                 String currDate = df.format(cal.getTime());
                 df = new SimpleDateFormat("hh:mm a", Locale.getDefault());
                 String time = df.format(cal.getTime());
-                final String mediaLink = cal.get(Calendar.YEAR) + "/" + (cal.get(Calendar.MONTH) + 1) + "/" + cal.get(Calendar.DATE) + "/" + cal.get(Calendar.HOUR) + "/" + cal.get(Calendar.MINUTE);
-
                 chatMessageModel.setMessage("image");
-                chatMessageModel.setMimeType("image");
+                chatMessageModel.setMimeType("image/");
                 chatMessageModel.setFileExt(fileExt);
                 chatMessageModel.setFileSize(totalSize);
                 chatMessageModel.setFileName(file.getName());
                 chatMessageModel.setFilePath(filePath);
                 chatMessageModel.setDurationTime("0");
-                chatMessageModel.setMediaLink(mediaLink);
-
-                chatMessageModel.setUserID(chatSenderId);
+//                chatMessageModel.setMediaLink(mediaLink);
+                chatMessageModel.setSeenstatus(-1);
+                chatMessageModel.setFileUploading(true);
+                chatMessageModel.setFileUpload(false);
+                chatMessageModel.setUserId(chatSenderId);
                 chatMessageModel.setName(chatSenderName);
 
                 chatMessageModel.setDate(currDate);
                 chatMessageModel.setTime(time);
                 chatMessageModel.setTimeZone(timezone);
                 chatMessageModel.setMessageId(System.currentTimeMillis());
-                chatMessageModel.setSeenstatus(1);
                 chatMessageModel.setId("0");
                 chatMessageModel.setTimemilliseconds(timeMilliSeconds);
                 chatMessageModel.setMessageSentOrReceived(0);
 
+                Calendar calender = Calendar.getInstance();
+
                 dataBaseHandler.saveChatMessage(chatMessageModel);
                 chatList.add(chatMessageModel);
                 chatMessageAdapter.notifyDataSetChanged();
-//                recyclerView.smoothScrollToPosition(chatList.size());
-                if (chatList != null && chatList.size() > 1) {
-                    smoothScroller.setTargetPosition(chatList.size() - 1);
-                    mLayoutManager.startSmoothScroll(smoothScroller);
+                if (chatList.size() > 1)
+                    recyclerView.smoothScrollToPosition(chatList.size());
+
+                UserModel userModel = new UserModel();
+                userModel.setUserId(chatSenderId);
+                SimpleDateFormat df1 = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                String currDate1 = df1.format(calender.getTime());
+                df1 = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+                String time1 = df1.format(calender.getTime());
+                userModel.setDate(currDate1);
+                userModel.setTime(time1);
+                userModel.setStatus(0);
+                userModel.setMessageId("" + chatMessageModel.getMessageId());
+                userModel.setMessage(chatMessageModel.getMimeType());
+                userModel.setMessageSeenStatus(-1);
+                userModel.setMessage("image");
+                userModel.setMimeType("image");
+                userModel.setTo_token(dataBaseHandler.getUserToken(chatMessageModel.getUserId()));
+                userModel.setFileName(chatMessageModel.getFileName());
+                userModel.setImage(dataBaseHandler.getUserImage(chatMessageModel.getUserId()));
+                userModel.setName(chatSenderName);
+                if (TextUtils.isEmpty(userModel.getName())) {
+                    String userName = dataBaseHandler.getUserName(userModel.getUserId());
+                    userModel.setName(userName);
                 }
-//                if (Globalclass.trovaSDK_init != null)
-//                    Globalclass.trovaSDK_init.trovaAmazonS3_Upload(chatMessageModel.getFilePath(), mediaLink, "");
+                userModel.setAgentKey("");
+                userModel.setDisplayName("");
+                dataBaseHandler.saveContactLogs(userModel);
+
+                //uploadFilesAlert(chatMessageModel, "Image", file.getName());
 
             } else {
                 Toast.makeText(activity, "Upload file size is too low", Toast.LENGTH_LONG).show();
@@ -1474,6 +1559,8 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
                 }
             }
             chatMessageAdapter.notifyDataSetChanged();
+            dataBaseHandler.updateChatMessageStatus("" + messageID, status);
+            dataBaseHandler.updateChatLogSeenStatus(chatSenderId, status, true, "" + messageID);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1523,7 +1610,7 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
                         chatMessageModel.setTime(time);
                         chatMessageModel.setTimeZone(timezone);
                         chatMessageModel.setMediaLink(serverPath);
-                        chatMessageModel.setPhone(chatSenderId);
+                        chatMessageModel.setUserId(chatSenderId);
 
                         for (int j = 0; j < TrovaChat.chatList.size(); j++) {
                             if (chatList.get(j).getFilePath() != null && chatList.get(j).getFilePath().equalsIgnoreCase(localFilePath)) {
@@ -1534,7 +1621,7 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
                         DataBaseHandler dataBaseHandler = DataBaseHandler.getInstance(activity);
                         dataBaseHandler.updateFileMessage(localFilePath, serverPath);
                         if (Globalclass.trovaSDK_init != null)
-                            Globalclass.trovaSDK_init.trovaXmit_File(chatMessageModel.getMediaLink(), chatMessageModel.getFileName(), chatMessageModel.getMimeType(), chatMessageModel.getFileSize(), chatMessageModel.getDurationTime(), "", chatMessageModel.getPhone(), preferenceUtil.getUserName(), "File Received", chatMessageModel.getMessageId());
+                            Globalclass.trovaSDK_init.trovaXmit_File(chatMessageModel.getMediaLink(), chatMessageModel.getFileName(), chatMessageModel.getMimeType(), chatMessageModel.getFileSize(), chatMessageModel.getDurationTime(), "", chatMessageModel.getUserId(), preferenceUtil.getUserName(), "File Received", chatMessageModel.getMessageId());
                         chatMessageAdapter.notifyDataSetChanged();
 //                        recyclerView.smoothScrollToPosition(chatList.size());
                         smoothScroller.setTargetPosition(chatList.size() - 1);

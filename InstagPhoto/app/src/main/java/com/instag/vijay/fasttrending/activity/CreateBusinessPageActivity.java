@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.instag.vijay.fasttrending.CommonUtil;
 import com.instag.vijay.fasttrending.EventResponse;
 import com.instag.vijay.fasttrending.MainActivity;
+import com.instag.vijay.fasttrending.PermissionCheck;
 import com.instag.vijay.fasttrending.PreferenceUtil;
 import com.instag.vijay.fasttrending.R;
 import com.instag.vijay.fasttrending.model.CategoryMain;
@@ -75,6 +76,12 @@ public class CreateBusinessPageActivity extends AppCompatActivity {
         iv_business_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                ArrayList<String> pendingPermissions = PermissionCheck.checkPermission(activity, PermissionCheck.getAllPermissions());
+                if (pendingPermissions.size() > 0) {
+                    PermissionCheck.requestPermission(activity, pendingPermissions, 301);
+                    return;
+                }
                 CropImage.activity()
                         .setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(16, 16)
                         .start(activity);

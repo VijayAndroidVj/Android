@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.media.ThumbnailUtils;
@@ -26,9 +27,14 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
+import com.bumptech.glide.load.resource.bitmap.FileDescriptorBitmapDecoder;
+import com.bumptech.glide.load.resource.bitmap.VideoBitmapDecoder;
 import com.instag.vijay.fasttrending.BuildConfig;
 import com.instag.vijay.fasttrending.R;
 import com.instag.vijay.fasttrending.Utils.ImageUtil;
@@ -37,6 +43,8 @@ import com.instag.vijay.fasttrending.model.ChatMessageModel;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.util.Calendar;
 
 public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.MyViewHolder> implements View.OnClickListener {
 
@@ -45,8 +53,10 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
     private LayoutInflater layoutInflater;
     private Activity activity;
 
-    public MediaPlayer commonMediaPlayer;
+    MediaPlayer commonMediaPlayer;
     private ImageView commonivAudioPlay, commonivAudioPause;
+    private ColorStateList deliverColors = Utils.getColorStateList("#FFFFFF");
+    private ColorStateList seenColors = Utils.getColorStateList("#57C9FE");
 
     public ChatMessageAdapter(Activity activity) {
 //        this.chatList = moviesList;
@@ -63,19 +73,39 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
             if (i == R.id.ivUploadDownload || i == R.id.ivVideoUploadDownload || i == R.id.ivAudioUploadDownload || i == R.id.ivDocUploadDownload) {
                 ChatMessageModel chatMessageModel = (ChatMessageModel) v.getTag();
                 chatMessageModel.setFileUploading(true);
-                String key = chatMessageModel.getMediaLink();
-                if (key.contains("amazonaws.com/"))
-                    key = chatMessageModel.getMediaLink().split("amazonaws.com/")[1];
-                File file = new File(Environment.getExternalStorageDirectory().toString() + "/" + key);
-                String str_Path = file.getPath().replace(file.getName(), "");
-                File filedir = new File(str_Path);
-                try {
-                    filedir.mkdirs();
-                } catch (Exception ex1) {
-                }
-                notifyDataSetChanged();
-                // Globalclass.trovaSDK_init.trovaAmazonS3_Download(file.getAbsolutePath(), chatMessageModel.getMediaLink());
+                chatMessageModel.setFileUpload(false);
+                if (chatMessageModel.getMessageSentOrReceived() == 1) {
+                    String key = chatMessageModel.getMediaLink();
+                    if (key.contains("amazonaws.com/"))
+                        key = chatMessageModel.getMediaLink().split("amazonaws.com/")[1];
 
+                    if (key.contains(".MOV")) {
+                        key = key.split(".MOV")[0] + ".mp4";
+                    }
+                    File file = new File(Environment.getExternalStorageDirectory().toString() + "/" + key);
+                    String str_Path = file.getPath().replace(file.getName(), "");
+                    File filedir = new File(str_Path);
+                    try {
+                        filedir.mkdirs();
+                    } catch (Exception ex1) {
+                    }
+                    notifyDataSetChanged();
+                    //if (Globalclass.trovaSDK_init != null)
+                    // Globalclass.trovaSDK_init.trovaAmazonS3_Download(file.getAbsolutePath(), chatMessageModel.getMediaLink().replaceAll("%40", "@"));
+
+                } else {
+                    if (TextUtils.isEmpty(chatMessageModel.getFilePath()) || !new File(chatMessageModel.getFilePath()).exists()) {
+                        chatMessageModel.setFileUploading(false);
+                        chatMessageModel.setFileUpload(true);
+                        Toast.makeText(activity, "File not available", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Calendar calender = Calendar.getInstance();
+//                        if (Globalclass.trovaSDK_init != null)
+//                            Globalclass.trovaSDK_init.trovaAmazonS3_Upload(chatMessageModel.getFilePath(), calender.get(Calendar.YEAR) + "/" + (calender.get(Calendar.MONTH) + 1) + "/" + calender.get(Calendar.DATE) + "/" + calender.get(Calendar.HOUR) + "/" + calender.get(Calendar.MINUTE), chatMessageModel.getMimeType());
+                    }
+                    notifyDataSetChanged();
+
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -93,29 +123,24 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
     public void onBindViewHolder(MyViewHolder holder, int position) {
         try {
             ColorStateList textColors = holder.chatTime.getTextColors();
-            ColorStateList seenColors = Utils.getColorStateList("#57C9FE");
+
             ChatMessageModel model = TrovaChat.chatList.get(position);
             RelativeLayout currentView;
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-
             if (model.getMessageSentOrReceived() == 0) {
-                params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
                 holder.llTextMessageStatus.setVisibility(View.VISIBLE);
                 holder.llImageStatus.setVisibility(View.VISIBLE);
                 holder.llAudioStatus.setVisibility(View.VISIBLE);
                 holder.llVideoStatus.setVisibility(View.VISIBLE);
                 holder.llDocStatus.setVisibility(View.VISIBLE);
             } else {
-                params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
-                holder.llTextMessageStatus.setVisibility(View.GONE);
-                holder.llImageStatus.setVisibility(View.GONE);
-                holder.llAudioStatus.setVisibility(View.GONE);
+                holder.llTextMessageStatus.setVisibility(View.INVISIBLE);
+                holder.llImageStatus.setVisibility(View.INVISIBLE);
+                holder.llAudioStatus.setVisibility(View.INVISIBLE);
                 holder.llVideoStatus.setVisibility(View.INVISIBLE);
-                holder.llDocStatus.setVisibility(View.GONE);
+                holder.llDocStatus.setVisibility(View.INVISIBLE);
             }
 
             if (model.getMimeType().equals("text")) {
-                holder.txtMsgLyt.setLayoutParams(params);
                 holder.txtMsgLyt.setVisibility(View.VISIBLE);
                 currentView = holder.txtMsgLyt;
                 holder.rlImageLayout.setVisibility(View.GONE);
@@ -125,14 +150,14 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                 switch (model.getSeenstatus()) {
                     case -1:
                         holder.img_chat_message_status_sent.setVisibility(View.VISIBLE);
-                        holder.img_chat_message_status_sent.setImageResource(R.drawable.clock);
+                        holder.img_chat_message_status_sent.setImageResource(R.drawable.ic_access_alarms_black_24dp);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             holder.img_chat_message_status_sent.setImageTintList(textColors);
                         }
                         break;
                     case 0:
                         holder.img_chat_message_status_sent.setVisibility(View.VISIBLE);
-                        holder.img_chat_message_status_sent.setImageResource(R.drawable.single_tick);
+                        holder.img_chat_message_status_sent.setImageResource(R.drawable.ic_done_black);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             holder.img_chat_message_status_sent.setImageTintList(textColors);
                         }
@@ -159,28 +184,33 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
 
             } else if (model.getMimeType().contains("image")) {
                 switch (model.getSeenstatus()) {
+                    case -1:
+                        holder.img_chat_image_status_sent.setVisibility(View.VISIBLE);
+                        holder.img_chat_image_status_sent.setImageResource(R.drawable.ic_access_alarms_black_24dp);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            holder.img_chat_image_status_sent.setImageTintList(deliverColors);
+                        }
+                        break;
                     case 0:
                         holder.img_chat_image_status_sent.setVisibility(View.VISIBLE);
-                        holder.img_chat_image_status_delivered.setVisibility(View.GONE);
+                        holder.img_chat_image_status_sent.setImageResource(R.drawable.ic_done_black);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            holder.img_chat_image_status_sent.setImageTintList(textColors);
+                            holder.img_chat_image_status_sent.setImageTintList(deliverColors);
                         }
                         break;
                     case 1:
                         holder.img_chat_image_status_sent.setVisibility(View.VISIBLE);
-                        holder.img_chat_image_status_delivered.setVisibility(View.VISIBLE);
+                        holder.img_chat_image_status_sent.setImageResource(R.drawable.double_tick);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            holder.img_chat_image_status_sent.setImageTintList(textColors);
-                            holder.img_chat_image_status_delivered.setImageTintList(textColors);
+                            holder.img_chat_image_status_sent.setImageTintList(deliverColors);
                         }
                         break;
 
                     case 2:
                         holder.img_chat_image_status_sent.setVisibility(View.VISIBLE);
-                        holder.img_chat_image_status_delivered.setVisibility(View.VISIBLE);
+                        holder.img_chat_image_status_sent.setImageResource(R.drawable.double_tick);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             holder.img_chat_image_status_sent.setImageTintList(seenColors);
-                            holder.img_chat_image_status_delivered.setImageTintList(seenColors);
                         }
                         break;
                 }
@@ -211,18 +241,29 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                         e.printStackTrace();
                     }
                 } else {
-                    if (model.getFilePath() != null) {
+                    if (TextUtils.isEmpty(model.getMediaLink())) {
+                        if (model.getFilePath() != null) {
+                            File file = new File(model.getFilePath());
+                            if (file.exists()) {
+                                Uri imageUri = Uri.fromFile(file);
+                                Glide.with(activity)
+                                        .load(imageUri)
+                                        .into(holder.ivImage);
+                            }
+                        }
+                    } else {
+                        model.setFileUpload(true);
+                        model.setFileUploading(false);
                         File file = new File(model.getFilePath());
                         if (file.exists()) {
                             Uri imageUri = Uri.fromFile(file);
                             Glide.with(activity)
                                     .load(imageUri)
                                     .into(holder.ivImage);
-                            model.setFileUpload(true);
-                            model.setFileUploading(false);
                         } else {
-                            model.setFileUpload(true);
-                            model.setFileUploading(false);
+                            Glide.with(activity)
+                                    .load(model.getMediaLink())
+                                    .into(holder.ivImage);
                         }
                     }
                 }
@@ -255,33 +296,37 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                 holder.txtImageTime.setText(model.getTime());
             } else if (model.getMimeType().contains("video")) {
                 switch (model.getSeenstatus()) {
+                    case -1:
+                        holder.img_chat_video_status_sent.setVisibility(View.VISIBLE);
+                        holder.img_chat_video_status_sent.setImageResource(R.drawable.ic_access_alarms_black_24dp);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            holder.img_chat_video_status_sent.setImageTintList(deliverColors);
+                        }
+                        break;
                     case 0:
                         holder.img_chat_video_status_sent.setVisibility(View.VISIBLE);
-                        holder.img_chat_video_status_delivered.setVisibility(View.GONE);
+                        holder.img_chat_video_status_sent.setImageResource(R.drawable.ic_done_black);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            holder.img_chat_video_status_sent.setImageTintList(textColors);
+                            holder.img_chat_video_status_sent.setImageTintList(deliverColors);
                         }
                         break;
                     case 1:
                         holder.img_chat_video_status_sent.setVisibility(View.VISIBLE);
-                        holder.img_chat_video_status_delivered.setVisibility(View.VISIBLE);
+                        holder.img_chat_video_status_sent.setImageResource(R.drawable.double_tick);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            holder.img_chat_video_status_sent.setImageTintList(textColors);
-                            holder.img_chat_video_status_delivered.setImageTintList(textColors);
+                            holder.img_chat_video_status_sent.setImageTintList(deliverColors);
                         }
                         break;
 
                     case 2:
                         holder.img_chat_video_status_sent.setVisibility(View.VISIBLE);
-                        holder.img_chat_video_status_delivered.setVisibility(View.VISIBLE);
+                        holder.img_chat_video_status_sent.setImageResource(R.drawable.double_tick);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             holder.img_chat_video_status_sent.setImageTintList(seenColors);
-                            holder.img_chat_video_status_delivered.setImageTintList(seenColors);
                         }
                         break;
                 }
                 holder.rlVideoLayout.setTag(model);
-                holder.rlVideoLayout.setLayoutParams(params);
                 holder.rlVideoLayout.setVisibility(View.VISIBLE);
                 currentView = holder.rlVideoLayout;
                 holder.txtMsgLyt.setVisibility(View.GONE);
@@ -296,32 +341,77 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                     String key = model.getMediaLink();
                     if (key.contains("amazonaws.com/"))
                         key = model.getMediaLink().split("amazonaws.com/")[1];
+                    if (key.contains(".MOV")) {
+                        key = key.split(".MOV")[0] + ".mp4";
+                    }
                     File file = new File(Environment.getExternalStorageDirectory().toString() + "/" + key);
                     if (file.exists()) {
-//                        new loadVideoThumbFromFilePath(file.getAbsolutePath(), activity, holder.ivVideoThumb).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        new loadVideoThumbFromFilePath(file.getAbsolutePath(), activity, holder.ivVideoThumb).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 //                        Glide.with(activity).load(createThumbnailAtTime(file.getAbsolutePath(),1))
 //                                .diskCacheStrategy(DiskCacheStrategy.ALL)
 //                                .into(holder.ivVideoThumb);
-                        Bitmap bitmap = createThumbnailAtTime(file.getAbsolutePath(), 1);
-                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 70, stream);
-                        holder.ivVideoThumb.setImageBitmap(bitmap);
+//                        Bitmap bitmap = retriveVideoFrameFromVideo(file.getAbsolutePath());
+//                        Bitmap bitmap = createThumbnailAtTime(file.getAbsolutePath(), 1);
+//                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                        bitmap.compress(Bitmap.CompressFormat.PNG, 70, stream);
+//                        holder.ivVideoThumb.setImageBitmap(bitmap);
+                        //   new ThumbnailExtract(file.getAbsolutePath(), holder.ivVideoThumb).execute();
+
+                       /* BitmapPool bitmapPool = Glide.get(activity).getBitmapPool();
+                        int microSecond = 6000000;// 6th second as an example
+                        VideoBitmapDecoder videoBitmapDecoder = new VideoBitmapDecoder(microSecond);
+                        FileDescriptorBitmapDecoder fileDescriptorBitmapDecoder = new FileDescriptorBitmapDecoder(videoBitmapDecoder, bitmapPool, DecodeFormat.PREFER_ARGB_8888);
+                        Glide.with(activity)
+                                .load(Uri.fromFile(new File(file.getAbsolutePath())))
+                                .asBitmap()
+                                .override(50, 50)// Example
+                                .videoDecoder(fileDescriptorBitmapDecoder)
+                                .into(holder.ivVideoThumb);
+*/
                         model.setFileUpload(true);
                         model.setFileUploading(false);
                     }
                 } else {
-                    model.setFileUpload(true);
-//                    new loadVideoThumbFromFilePath(model.getFilePath(), activity, holder.ivVideoThumb).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                    if (TextUtils.isEmpty(model.getMediaLink())) {
+                        if (model.getFilePath() != null) {
+                            File file = new File(model.getFilePath());
+                            if (file.exists()) {
+                                new loadVideoThumbFromFilePath(model.getFilePath(), activity, holder.ivVideoThumb).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                            }
+                        }
+                    } else {
+                        model.setFileUpload(true);
+                        model.setFileUploading(false);
+                    }
+                    new loadVideoThumbFromFilePath(model.getFilePath(), activity, holder.ivVideoThumb).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 //                    Glide.with(activity).load(createThumbnailAtTime(model.getFilePath(),1))
 //                            .diskCacheStrategy(DiskCacheStrategy.ALL)
 //                            .into(holder.ivVideoThumb);
-                    Bitmap bitmap = createThumbnailAtTime(model.getFilePath(), 1);
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 70, stream);
-                    holder.ivVideoThumb.setImageBitmap(bitmap);
+                  /*  try {
+                        Bitmap bitmap = createThumbnailAtTime(model.getFilePath(), 1);
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 70, stream);
+                        holder.ivVideoThumb.setImageBitmap(bitmap);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }*/
+
+                   /* BitmapPool bitmapPool = Glide.get(activity).getBitmapPool();
+                    int microSecond = 6000000;// 6th second as an example
+                    VideoBitmapDecoder videoBitmapDecoder = new VideoBitmapDecoder(microSecond);
+                    FileDescriptorBitmapDecoder fileDescriptorBitmapDecoder = new FileDescriptorBitmapDecoder(videoBitmapDecoder, bitmapPool, DecodeFormat.PREFER_ARGB_8888);
+                    Glide.with(activity)
+                            .load(Uri.fromFile(new File(model.getFilePath())))
+                            .asBitmap()
+                            .override(50, 50)// Example
+                            .videoDecoder(fileDescriptorBitmapDecoder)
+                            .into(holder.ivVideoThumb);
+*/
                 }
+                holder.txtVideoDuration.setText(model.getDurationTime());
                 if (model.isFileUpload()) {
                     holder.ivVideoUploadDownload.setVisibility(View.GONE);
+                    holder.ivPlayVideo.setVisibility(View.VISIBLE);
                 } else {
                     holder.ivVideoUploadDownload.setVisibility(View.VISIBLE);
                     holder.ivVideoUploadDownload.setOnClickListener(this);
@@ -334,45 +424,52 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                 }
 
                 if (model.isFileUploading()) {
+                    holder.ivPlayVideo.setVisibility(View.GONE);
                     holder.ivVideoUploadDownload.setVisibility(View.GONE);
                     holder.pbVideo.setVisibility(View.VISIBLE);
                 } else {
                     holder.pbVideo.setVisibility(View.GONE);
-                    if (model.isFileUpload())
+                    if (model.isFileUpload()) {
+                        holder.ivPlayVideo.setVisibility(View.VISIBLE);
                         holder.ivVideoUploadDownload.setVisibility(View.GONE);
-                    else {
+                    } else {
+                        holder.ivPlayVideo.setVisibility(View.GONE);
                         holder.ivVideoUploadDownload.setVisibility(View.VISIBLE);
                     }
                 }
 
             } else if (model.getMimeType().contains("audio")) {
                 switch (model.getSeenstatus()) {
+                    case -1:
+                        holder.img_chat_audio_status_sent.setVisibility(View.VISIBLE);
+                        holder.img_chat_audio_status_sent.setImageResource(R.drawable.ic_access_alarms_black_24dp);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            holder.img_chat_audio_status_sent.setImageTintList(textColors);
+                        }
+                        break;
                     case 0:
                         holder.img_chat_audio_status_sent.setVisibility(View.VISIBLE);
-                        holder.img_chat_audio_status_delivered.setVisibility(View.GONE);
+                        holder.img_chat_audio_status_sent.setImageResource(R.drawable.ic_done_black);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             holder.img_chat_audio_status_sent.setImageTintList(textColors);
                         }
                         break;
                     case 1:
                         holder.img_chat_audio_status_sent.setVisibility(View.VISIBLE);
-                        holder.img_chat_audio_status_delivered.setVisibility(View.VISIBLE);
+                        holder.img_chat_audio_status_sent.setImageResource(R.drawable.double_tick);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             holder.img_chat_audio_status_sent.setImageTintList(textColors);
-                            holder.img_chat_audio_status_delivered.setImageTintList(textColors);
                         }
                         break;
 
                     case 2:
                         holder.img_chat_audio_status_sent.setVisibility(View.VISIBLE);
-                        holder.img_chat_audio_status_delivered.setVisibility(View.VISIBLE);
+                        holder.img_chat_audio_status_sent.setImageResource(R.drawable.double_tick);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             holder.img_chat_audio_status_sent.setImageTintList(seenColors);
-                            holder.img_chat_audio_status_delivered.setImageTintList(seenColors);
                         }
                         break;
                 }
-                holder.rlAudioLayout.setLayoutParams(params);
                 holder.rlAudioLayout.setVisibility(View.VISIBLE);
                 holder.rlAudioLayout.setTag(model);
                 currentView = holder.rlAudioLayout;
@@ -391,7 +488,6 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                     File file = new File(model.getFilePath());
                     model.setFileName(file.getName());
                 }
-                holder.txtAudioFilename.setText(model.getFileName());
                 if (model.getMessageSentOrReceived() == 1) {
                     String key = model.getMediaLink();
                     if (key.contains("amazonaws.com/"))
@@ -402,8 +498,11 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                         model.setFileUploading(false);
                     }
                 } else {
-                    model.setFileUpload(true);
-                    model.setFileUploading(false);
+                    if (TextUtils.isEmpty(model.getMediaLink())) {
+                    } else {
+                        model.setFileUpload(true);
+                        model.setFileUploading(false);
+                    }
                 }
 
                 if (model.isFileUpload()) {
@@ -433,32 +532,36 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
 
             } else {
                 switch (model.getSeenstatus()) {
+                    case -1:
+                        holder.img_chat_doc_status_sent.setVisibility(View.VISIBLE);
+                        holder.img_chat_doc_status_sent.setImageResource(R.drawable.ic_access_alarms_black_24dp);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            holder.img_chat_doc_status_sent.setImageTintList(textColors);
+                        }
+                        break;
                     case 0:
                         holder.img_chat_doc_status_sent.setVisibility(View.VISIBLE);
-                        holder.img_chat_doc_status_delivered.setVisibility(View.GONE);
+                        holder.img_chat_doc_status_sent.setImageResource(R.drawable.ic_done_black);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             holder.img_chat_doc_status_sent.setImageTintList(textColors);
                         }
                         break;
                     case 1:
                         holder.img_chat_doc_status_sent.setVisibility(View.VISIBLE);
-                        holder.img_chat_doc_status_delivered.setVisibility(View.VISIBLE);
+                        holder.img_chat_doc_status_sent.setImageResource(R.drawable.double_tick);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             holder.img_chat_doc_status_sent.setImageTintList(textColors);
-                            holder.img_chat_doc_status_delivered.setImageTintList(textColors);
                         }
                         break;
 
                     case 2:
                         holder.img_chat_doc_status_sent.setVisibility(View.VISIBLE);
-                        holder.img_chat_doc_status_delivered.setVisibility(View.VISIBLE);
+                        holder.img_chat_doc_status_sent.setImageResource(R.drawable.double_tick);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             holder.img_chat_doc_status_sent.setImageTintList(seenColors);
-                            holder.img_chat_doc_status_delivered.setImageTintList(seenColors);
                         }
                         break;
                 }
-                holder.rlDocLayout.setLayoutParams(params);
                 holder.rlDocLayout.setTag(model);
                 holder.rlDocLayout.setVisibility(View.VISIBLE);
                 currentView = holder.rlDocLayout;
@@ -468,6 +571,12 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                 holder.rlVideoLayout.setVisibility(View.GONE);
                 holder.pbDoc.setVisibility(View.GONE);
                 holder.ivDocTime.setText(model.getTime());
+                if (model.getFileName().contains("."))
+                    holder.tvDocType.setText(model.getFileName().substring(model.getFileName().lastIndexOf(".")).substring(1));
+                if (model.getFileSize() > 0) {
+                    String fileSize = Utils.getFileSize(model.getFileSize());
+                    holder.txtDocSize.setText(fileSize);
+                }
                 if (model.getMessageSentOrReceived() == 1) {
                     File file = new File(model.getMediaLink());
                     model.setFileName(file.getName());
@@ -487,8 +596,11 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                         model.setFileUploading(false);
                     }
                 } else {
-                    model.setFileUpload(true);
-                    model.setFileUploading(false);
+                    if (TextUtils.isEmpty(model.getMediaLink())) {
+                    } else {
+                        model.setFileUpload(true);
+                        model.setFileUploading(false);
+                    }
                 }
                 if (model.isFileUpload()) {
                     holder.ivDocUploadDownload.setVisibility(View.GONE);
@@ -503,7 +615,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                     holder.ivDocUploadDownload.setTag(model);
                 }
                 if (model.isFileUploading()) {
-                    holder.ivAudioUploadDownload.setVisibility(View.GONE);
+                    holder.ivDocUploadDownload.setVisibility(View.GONE);
                     holder.pbDoc.setVisibility(View.VISIBLE);
                 } else {
                     holder.pbDoc.setVisibility(View.GONE);
@@ -543,6 +655,97 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
         }
     }
 
+    public class ThumbnailExtract extends AsyncTask<String, long[], Bitmap> {
+
+        private final String videoUrl;
+        private final ImageView mThumbnail;
+
+        public ThumbnailExtract(String videoLocalUrl, ImageView thumbnail) {
+            this.videoUrl = videoLocalUrl;
+            mThumbnail = thumbnail;
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            return getBitmap(videoUrl);
+            //return ThumbnailUtils.createVideoThumbnail(videoUrl,
+            //    MediaStore.Images.Thumbnails.MINI_KIND);
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap thumb) {
+            if (thumb != null) {
+                mThumbnail.setImageBitmap(thumb);
+            } else {
+                BitmapPool bitmapPool = Glide.get(activity).getBitmapPool();
+                int microSecond = 6000000;// 6th second as an example
+                VideoBitmapDecoder videoBitmapDecoder = new VideoBitmapDecoder(microSecond);
+                FileDescriptorBitmapDecoder fileDescriptorBitmapDecoder = new FileDescriptorBitmapDecoder(videoBitmapDecoder, bitmapPool, DecodeFormat.PREFER_ARGB_8888);
+                Glide.with(activity)
+                        .load(videoUrl)
+                        .asBitmap()
+                        .override(50, 50)// Example
+                        .videoDecoder(fileDescriptorBitmapDecoder)
+                        .into(mThumbnail);
+            }
+        }
+
+        private Bitmap getBitmap(String fileUrl) {
+            Bitmap bitmap = null;
+            MediaMetadataRetriever mediaMetadataRetriever = null;
+            try {
+                mediaMetadataRetriever = new MediaMetadataRetriever();
+                FileInputStream inputStream = new FileInputStream(fileUrl);
+                mediaMetadataRetriever.setDataSource(inputStream.getFD());
+                bitmap = mediaMetadataRetriever.getFrameAtTime(1 * 1000000, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
+            } catch (Exception e) {
+                e.printStackTrace();
+                // throw new Throwable(
+//                        "Exception in retriveVideoFrameFromVideo(String videoPath)"
+//                                + e.getMessage());
+
+            } finally {
+                if (mediaMetadataRetriever != null) {
+                    mediaMetadataRetriever.release();
+                }
+            }
+            if (bitmap == null) {
+                bitmap = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(fileUrl), 40, 40);
+            }
+            if (bitmap == null) {
+                bitmap = ThumbnailUtils.createVideoThumbnail(fileUrl, MediaStore.Images.Thumbnails.MICRO_KIND);
+            }
+            if (bitmap == null) {
+                bitmap = ThumbnailUtils.createVideoThumbnail(fileUrl, MediaStore.Video.Thumbnails.MINI_KIND);
+            }
+            return bitmap;
+            // return bitmap != null ? Bitmap.createScaledBitmap(bitmap, 40, 40, false) : bitmap;
+        }
+    }
+
+
+    public static Bitmap retriveVideoFrameFromVideo(String videoPath) {
+        Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(videoPath, MediaStore.Video.Thumbnails.MINI_KIND);
+//        MediaMetadataRetriever mediaMetadataRetriever = null;
+//        try {
+//            mediaMetadataRetriever = new MediaMetadataRetriever();
+//            if (Build.VERSION.SDK_INT >= 14)
+//                mediaMetadataRetriever.setDataSource(videoPath, new HashMap<String, String>());
+//            else
+//                mediaMetadataRetriever.setDataSource(videoPath);
+//            //   mediaMetadataRetriever.setDataSource(videoPath);
+//            bitmap = mediaMetadataRetriever.getFrameAtTime();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            //throw new Throwable("Exception in retriveVideoFrameFromVideo(String videoPath)" + e.getMessage());
+//        } finally {
+//            if (mediaMetadataRetriever != null) {
+//                mediaMetadataRetriever.release();
+//            }
+//        }
+        return bitmap;
+    }
+
     @Override
     public int getItemCount() {
         return TrovaChat.chatList == null ? 0 : TrovaChat.chatList.size();
@@ -569,7 +772,6 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
         private ImageView ivAudioImage;
         private RelativeLayout rlAudioUploadDownloadLayout;
         private ProgressBar pbAudio;
-        private TextView txtAudioFilename;
         private ImageView ivAudioUploadDownload;
         private RelativeLayout rlAudioPlayLayout;
         private ImageView ivAudioPlay;
@@ -582,7 +784,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
         private ImageView ivVideoThumb;
         private ProgressBar pbVideo;
         private ImageView ivVideoUploadDownload;
-        private ImageView ivVideoIcon;
+        private ImageView ivPlayVideo;
         private TextView txtVideoDuration;
         private TextView txtVideoTime;
         private LinearLayout llVideoStatus;
@@ -595,16 +797,13 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
         private TextView txtDocSize;
         private LinearLayout llDocStatus;
         private TextView ivDocTime;
+        private TextView tvDocType;
 
-        ImageView img_chat_message_status_sent;
-        ImageView img_chat_image_status_sent;
-        ImageView img_chat_image_status_delivered;
-        ImageView img_chat_audio_status_sent;
-        ImageView img_chat_audio_status_delivered;
-        ImageView img_chat_video_status_sent;
-        ImageView img_chat_video_status_delivered;
-        ImageView img_chat_doc_status_sent;
-        ImageView img_chat_doc_status_delivered;
+        private ImageView img_chat_message_status_sent;
+        private ImageView img_chat_image_status_sent;
+        private ImageView img_chat_audio_status_sent;
+        private ImageView img_chat_video_status_sent;
+        private ImageView img_chat_doc_status_sent;
 
         private MyViewHolder(View view) {
             super(view);
@@ -627,7 +826,6 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
             ivAudioImage = view.findViewById(R.id.ivAudioImage);
             rlAudioUploadDownloadLayout = view.findViewById(R.id.rlAudioUploadDownloadLayout);
             pbAudio = view.findViewById(R.id.pbAudio);
-            txtAudioFilename = view.findViewById(R.id.txtAudioFilename);
             ivAudioUploadDownload = view.findViewById(R.id.ivAudioUploadDownload);
             rlAudioPlayLayout = view.findViewById(R.id.rlAudioPlayLayout);
             ivAudioPlay = view.findViewById(R.id.ivAudioPlay);
@@ -640,7 +838,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
             ivVideoThumb = view.findViewById(R.id.ivVideoThumb);
             pbVideo = view.findViewById(R.id.pbVideo);
             ivVideoUploadDownload = view.findViewById(R.id.ivVideoUploadDownload);
-            ivVideoIcon = view.findViewById(R.id.ivVideoIcon);
+            ivPlayVideo = view.findViewById(R.id.ivPlayVideo);
             txtVideoDuration = view.findViewById(R.id.txtVideoDuration);
             txtVideoTime = view.findViewById(R.id.txtVideoTime);
             llVideoStatus = view.findViewById(R.id.llVideoStatus);
@@ -653,15 +851,12 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
             txtDocSize = view.findViewById(R.id.txtDocSize);
             llDocStatus = view.findViewById(R.id.llDocStatus);
             ivDocTime = view.findViewById(R.id.ivDocTime);
+            tvDocType = view.findViewById(R.id.tvDocType);
             img_chat_message_status_sent = view.findViewById(R.id.img_chat_message_status_sent);
             img_chat_image_status_sent = view.findViewById(R.id.img_chat_image_status_sent);
-            img_chat_image_status_delivered = view.findViewById(R.id.img_chat_image_status_delivered);
             img_chat_audio_status_sent = view.findViewById(R.id.img_chat_audio_status_sent);
-            img_chat_audio_status_delivered = view.findViewById(R.id.img_chat_audio_status_delivered);
             img_chat_video_status_sent = view.findViewById(R.id.img_chat_video_status_sent);
-            img_chat_video_status_delivered = view.findViewById(R.id.img_chat_video_status_delivered);
             img_chat_doc_status_sent = view.findViewById(R.id.img_chat_doc_status_sent);
-            img_chat_doc_status_delivered = view.findViewById(R.id.img_chat_doc_status_delivered);
 
             rlImageLayout.setOnClickListener(this);
             rlVideoLayout.setOnClickListener(this);
@@ -956,6 +1151,9 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
             if (path != null) {
                 thumbnail = ThumbnailUtils.createVideoThumbnail(path,
                         MediaStore.Video.Thumbnails.MINI_KIND);
+            }
+            if (thumbnail == null) {
+                thumbnail = createThumbnailAtTime(path, 2000);
             }
             return thumbnail;
         }

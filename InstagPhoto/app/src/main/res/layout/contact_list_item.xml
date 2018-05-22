@@ -1,71 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_contact_list_item_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:orientation="horizontal"
+    android:background="@drawable/list_item_background"
     android:padding="10dp">
 
-    <FrameLayout
-        android:id="@+id/fl_actionbar"
+    <RelativeLayout
+        android:id="@+id/rl_contact_list_item_alphabet"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/rounded_corner">
 
         <TextView
             android:id="@+id/tv_contact_list_item_alphabet"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/rounded_corner"
             android:gravity="center"
             android:text="A"
             android:textColor="@android:color/white"
-            android:textSize="25sp" />
+            android:textSize="25sp"
+            android:visibility="visible" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_contact_list_item_alphabet"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:visibility="gone"
-            android:src="@drawable/profile"
-            app:civ_border_color="#FF000000"
-            app:civ_border_width="2dp" />
+            android:gravity="center" />
 
-    </FrameLayout>
+    </RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="10dp"
-        android:layout_toEndOf="@+id/fl_actionbar"
-        android:layout_toRightOf="@+id/fl_actionbar"
-        android:gravity="left|center"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="@dimen/_3dp"
+        android:layout_marginStart="@dimen/_3dp"
+        android:layout_toEndOf="@+id/rl_contact_list_item_alphabet"
+        android:layout_toLeftOf="@+id/ll_contact_list_item_controls"
+        android:layout_toRightOf="@+id/rl_contact_list_item_alphabet"
+        android:layout_toStartOf="@+id/ll_contact_list_item_controls"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_contact_list_item_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:singleLine="true"
+            android:layout_marginLeft="@dimen/_3dp"
+            android:layout_marginStart="@dimen/_3dp"
             android:text="ContactName"
             android:textColor="@color/black"
-            android:textSize="15dp" />
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tv_contact_list_item_phone"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:text="number"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:layout_below="@+id/tv_contact_list_item_name"
+            android:layout_gravity="left|center"
+            android:orientation="horizontal">
 
+            <ImageView
+                android:id="@+id/iv_contact_list_item_phone"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_done_black"
+                android:tint="@color/grey_overlay" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tv_contact_list_item_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/_3dp"
+                android:layout_marginStart="@dimen/_3dp"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text="number"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/ll_contact_list_item_controls"
@@ -73,36 +93,33 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:orientation="horizontal"
-        android:visibility="gone">
+        android:gravity="right"
+        android:orientation="vertical"
+        android:visibility="visible">
 
-        <ImageView
-            android:id="@+id/img_contact_list_item_voice_call"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="7dp"
-            android:layout_marginRight="7dp"
-            android:padding="7dp"
-            android:src="@drawable/ic_phone_black_24dp" />
+        <TextView
+            android:id="@+id/tv_contact_list_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_3dp"
+            android:text="11.00 pm"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
 
-        <ImageView
-            android:id="@+id/img_contact_list_item_video_call"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="7dp"
-            android:layout_marginRight="7dp"
-            android:padding="7dp"
-            android:src="@drawable/ic_videocam_black_24dp" />
+        <TextView
+            android:id="@+id/tv_contact_list_item_count"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="right|center"
+            android:layout_marginTop="@dimen/_3dp"
+            android:background="@drawable/rounded_corner_green"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="11"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/img_contact_list_item_chat"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="7dp"
-            android:layout_marginRight="7dp"
-            android:padding="7dp"
-            android:src="@drawable/ic_chat_bubble_black_24dp" />
 
     </LinearLayout>
 </RelativeLayout>

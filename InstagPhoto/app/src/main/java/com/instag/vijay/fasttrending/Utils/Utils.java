@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -270,4 +271,24 @@ public class Utils {
             }
         });
     }
+
+    private static final DecimalFormat format = new DecimalFormat("#.##");
+    private static final long MiB = 1024 * 1024;
+    private static final long KiB = 1024;
+
+    public static String getFileSize(long length) {
+
+        if (length == 0) {
+            throw new IllegalArgumentException("Expected a file");
+        }
+
+        if (length > MiB) {
+            return format.format(length / MiB) + " MB";
+        }
+        if (length > KiB) {
+            return format.format(length / KiB) + " KB";
+        }
+        return format.format(length) + " B";
+    }
+
 }

@@ -18,11 +18,12 @@
             android:layout_height="40dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/feelout"
             android:contentDescription="@string/app_name"
             android:gravity="center"
             android:padding="5dp"
-            android:visibility="visible" />
+            android:src="@drawable/ic_camera_black"
+            android:tint="@color/white"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/txtAppName"
@@ -38,7 +39,7 @@
             android:textColor="@android:color/white"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <EditText
             android:id="@+id/edtsearchview"
@@ -46,11 +47,11 @@
             android:layout_height="match_parent"
             android:layout_toLeftOf="@+id/rlnotifi"
             android:layout_toStartOf="@+id/rlnotifi"
-            android:background="@drawable/border_bg_prescription_list"
+            android:background="@drawable/search_background"
             android:drawableLeft="@drawable/ic_search_black"
             android:drawablePadding="@dimen/_5dp"
             android:drawableStart="@drawable/ic_search_black"
-            android:drawableTint="@color/black"
+            android:drawableTint="@color/white"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:gravity="center|left"
@@ -58,8 +59,8 @@
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:padding="@dimen/_5dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             android:textSize="14sp"
             android:visibility="gone" />
 
@@ -68,8 +69,10 @@
             android:id="@+id/searchview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/_3dp"
             android:layout_toLeftOf="@+id/rlnotifi"
             android:layout_toStartOf="@+id/rlnotifi"
+            android:background="@drawable/search_background"
             android:drawableLeft="@drawable/ic_search_black"
             android:drawablePadding="@dimen/_5dp"
             android:drawableStart="@drawable/ic_search_black"

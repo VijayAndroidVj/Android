@@ -192,6 +192,11 @@ public class EditProfile extends AppCompatActivity {
         ivProfile1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ArrayList<String> pendingPermissions = PermissionCheck.checkPermission(activity, PermissionCheck.getAllPermissions());
+                if (pendingPermissions.size() > 0) {
+                    PermissionCheck.requestPermission(activity, pendingPermissions, 301);
+                    return;
+                }
                 isCoverPhoto = false;
                 CropImage.activity()
                         .setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(16, 16)
@@ -201,6 +206,11 @@ public class EditProfile extends AppCompatActivity {
         findViewById(R.id.lblechanagephoto).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ArrayList<String> pendingPermissions = PermissionCheck.checkPermission(activity, PermissionCheck.getAllPermissions());
+                if (pendingPermissions.size() > 0) {
+                    PermissionCheck.requestPermission(activity, pendingPermissions, 301);
+                    return;
+                }
                 isCoverPhoto = false;
                 CropImage.activity()
                         .setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(16, 16)
@@ -211,6 +221,11 @@ public class EditProfile extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 isCoverPhoto = true;
+                ArrayList<String> pendingPermissions = PermissionCheck.checkPermission(activity, PermissionCheck.getAllPermissions());
+                if (pendingPermissions.size() > 0) {
+                    PermissionCheck.requestPermission(activity, pendingPermissions, 301);
+                    return;
+                }
                 CropImage.activity()
                         .setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(16, 9)
                         .start(activity);

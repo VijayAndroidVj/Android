@@ -4,20 +4,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
-import android.support.v7.graphics.Palette;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -33,6 +29,7 @@ import com.instag.vijay.fasttrending.EditProfile;
 import com.instag.vijay.fasttrending.EventResponse;
 import com.instag.vijay.fasttrending.Keys;
 import com.instag.vijay.fasttrending.MainActivity;
+import com.instag.vijay.fasttrending.PermissionCheck;
 import com.instag.vijay.fasttrending.PreferenceUtil;
 import com.instag.vijay.fasttrending.R;
 import com.instag.vijay.fasttrending.activity.CreateBusinessPageActivity;
@@ -236,7 +233,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
 
         setPallette();
-        toolbarTextAppernce();
+        //toolbarTextAppernce();
 
         getMyPosts();
     }
@@ -251,7 +248,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                         public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
                             ivCoverPhoto.setImageBitmap(resource);
 
-                            Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
+                          /*  Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
                                 @Override
                                 public void onGenerated(Palette palette) {
                                     Palette.Swatch dominant = palette.getDominantSwatch();
@@ -273,7 +270,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
                                     }
                                 }
-                            });
+                            });*/
 
                         }
                     });
@@ -728,12 +725,22 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     activity.startActivity(intent);
                     break;
                 case R.id.editCoverPhoto:
+                    ArrayList<String> pendingPermissions = PermissionCheck.checkPermission(activity, PermissionCheck.getAllPermissions());
+                    if (pendingPermissions.size() > 0) {
+                        PermissionCheck.requestPermission(activity, pendingPermissions, 301);
+                        return;
+                    }
                     isCoverPhoto = true;
                     CropImage.activity()
                             .setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(16, 9)
                             .start(getContext(), this);
                     break;
                 case R.id.editProfilePhoto:
+                    pendingPermissions = PermissionCheck.checkPermission(activity, PermissionCheck.getAllPermissions());
+                    if (pendingPermissions.size() > 0) {
+                        PermissionCheck.requestPermission(activity, pendingPermissions, 301);
+                        return;
+                    }
                     isCoverPhoto = false;
                     CropImage.activity()
                             .setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(16, 16)

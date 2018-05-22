@@ -26,6 +26,7 @@ public class CustomGrid extends BaseAdapter implements View.OnClickListener {
     public final static int PICK_IMAGE_REQUEST = 3;
     public final static int PICK_AUDIO_REQUEST = 4;
     public final static int PICK_VIDEO_REQUEST = 5;
+    public final static int IMAGE_PREVIEW = 6;
 
     public CustomGrid(Activity context, String[] menuText, int[] images) {
         this.activity = context;

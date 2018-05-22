@@ -164,18 +164,26 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         jsonObject = new JSONObject(jsonObject.getString("nameValuePairs"));
                         Long messageID = jsonObject.getLong("messageId");
                         String senderId = jsonObject.getString("senderId");
-                        dataBaseHandler.updateChatMessageStatus(senderId, "" + messageID, 1);
+                        dataBaseHandler.updateChatMessageStatus(messageID + "", 1);
                         if (TrovaChat.trovaChat != null && TrovaChat.chatSenderId.equalsIgnoreCase(senderId)) {
                             TrovaChat.trovaChat.updateMesageStatus(messageID, 1);
+                        }
+                        dataBaseHandler.updateChatLogSeenStatus(senderId, 1, true, messageID + "");
+                        if (mainActivity != null) {
+                            mainActivity.refreshChat();
                         }
                     } else if (jsonObject.has("updateSeenMessage")) {
                         jsonObject = new JSONObject(jsonObject.getString("updateSeenMessage"));
                         jsonObject = new JSONObject(jsonObject.getString("nameValuePairs"));
                         Long messageID = jsonObject.getLong("messageId");
                         String senderId = jsonObject.getString("senderId");
-                        dataBaseHandler.updateChatMessageStatus(senderId, "" + messageID, 1);
+                        dataBaseHandler.updateChatMessageStatus(messageID + "", 2);
                         if (TrovaChat.trovaChat != null && TrovaChat.chatSenderId.equalsIgnoreCase(senderId)) {
                             TrovaChat.trovaChat.updateMesageStatus(messageID, 2);
+                        }
+                        dataBaseHandler.updateChatLogSeenStatus(senderId, 2, true, messageID + "");
+                        if (mainActivity != null) {
+                            mainActivity.refreshChat();
                         }
                     } else if (jsonObject.has("messageJson")) {
                         jsonObject = new JSONObject(jsonObject.getString("messageJson"));
@@ -191,7 +199,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         String senderId = jsonObject.getString("senderId");
                         ChatMessageModel chatMessageModel = new ChatMessageModel();
                         chatMessageModel.setMessageId(jsonObject.getLong("messageId"));
-                        chatMessageModel.setUserID(senderId);
+                        chatMessageModel.setUserId(senderId);
                         chatMessageModel.setMessage(message1);
                         chatMessageModel.setMimeType("text");
                         chatMessageModel.setMessageSentOrReceived(1);
@@ -207,45 +215,32 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         //  dataBaseHandler.saveFilteredContacts(userModel);
                         dataBaseHandler.saveChatMessage(chatMessageModel);
 
-                        String name = dataBaseHandler.getUserName(chatMessageModel.getUserID());
+                        String name = dataBaseHandler.getUserName(chatMessageModel.getUserId());
                         UserModel userModel = new UserModel();
-                        userModel.setUserId(chatMessageModel.getUserID());
+                        userModel.setUserId(chatMessageModel.getUserId());
                         cal = Calendar.getInstance();
-                        tz = cal.getTimeZone();
-                        timezone = tz.getDisplayName();
                         df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
                         currDate = df.format(cal.getTime());
                         df = new SimpleDateFormat("hh:mm a", Locale.getDefault());
                         time = df.format(cal.getTime());
-                        String callDuration = "00:00:00";
                         userModel.setDate(currDate);
                         userModel.setTime(time);
-                        userModel.setTimeZone(timezone);
-                        userModel.setCallDuration(callDuration);
-                        userModel.setCallCount(0);
-                        if (chatMessageModel.getMessageSentOrReceived() == 0) {
-                            userModel.setStatus("1");
-                            userModel.setCallType(UserModel.DIALEDCALL);
-                        } else {
-                            userModel.setStatus("0");
-                            userModel.setCallType(UserModel.RECIVEDCALL);
-                        }
-
-                        userModel.setCallMode("chat");
+                        userModel.setMimeType("text");
+                        userModel.setTo_token(dataBaseHandler.getUserToken(chatMessageModel.getUserId()));
+                        userModel.setImage(dataBaseHandler.getUserImage(chatMessageModel.getUserId()));
+                        userModel.setStatus(chatMessageModel.getMessageSentOrReceived());
                         userModel.setMessage(chatMessageModel.getMessage());
+                        userModel.setUnseenMessageCount(dataBaseHandler.unseenCount(senderId));
                         userModel.setName(name);
-                        userModel.setTimemillis(chatMessageModel.getTimemilliseconds());
-                        dataBaseHandler.saveContactLogs(userModel);
-                        dataBaseHandler.saveCallLogs(userModel);
-
-//                                if (agentLogActivity != null) {
-//                                    agentLogActivity.callBackListener(null, "refresh");
-//                                }
                         String senderToken = jsonObject.has("senderToken") ? jsonObject.getString("senderToken") : "";
-                        if (!TextUtils.isEmpty(senderToken))
+                        if (!TextUtils.isEmpty(senderToken)) {
                             dataBaseHandler.updateToken(senderId, senderToken);
+                            dataBaseHandler.updateContactToken(senderId, senderToken);
+                            userModel.setTo_token(senderToken);
+                        }
                         if (TrovaChat.trovaChat != null) {
                             if (TrovaChat.chatSenderId.equalsIgnoreCase(senderId)) {
+                                userModel.setUnseenMessageCount(0);
                                 //handle trova event
                                 sendUpdateMessage(MyFirebaseMessagingService.this, chatMessageModel.getMessageId(), dataBaseHandler.getUserToken(senderId), 2);
                                 TrovaChat.chatList.add(chatMessageModel);
@@ -278,7 +273,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                     }
                                     if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                         mNotificationBuilder.setSmallIcon(R.drawable.feelout_1_36x36);
-                                        mNotificationBuilder.setColor(getResources().getColor(R.color.white));
+                                        mNotificationBuilder.setColor(getResources().getColor(R.color.colorPrimary));
                                     } else {
                                         mNotificationBuilder.setSmallIcon(R.drawable.feelout_1_36x36);
                                     }
@@ -330,7 +325,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                 }
                                 if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                     mNotificationBuilder.setSmallIcon(R.drawable.feelout_1_36x36);
-                                    mNotificationBuilder.setColor(getResources().getColor(R.color.white));
+                                    mNotificationBuilder.setColor(getResources().getColor(R.color.colorPrimary));
                                 } else {
                                     mNotificationBuilder.setSmallIcon(R.drawable.feelout_1_36x36);
                                 }
@@ -347,11 +342,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                 Notification nf = mNotificationBuilder.build();
                                 i = (i + 1);
                                 notificationManager.notify(i, nf);
+
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
 
                         }
+                        dataBaseHandler.saveContactLogs(userModel);
 
                         if (mainActivity != null) {
                             mainActivity.refreshChat();

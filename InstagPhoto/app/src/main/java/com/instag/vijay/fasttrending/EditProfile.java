@@ -111,6 +111,10 @@ public class EditProfile extends AppCompatActivity {
         setContentView(R.layout.edit_profile);
         activity = this;
         preferenceUtil = new PreferenceUtil(activity);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("My Profile");
         actionBar.setDisplayHomeAsUpEnabled(true);

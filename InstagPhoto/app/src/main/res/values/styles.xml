@@ -3,10 +3,10 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorControlNormal">@color/white</item>
-        <item name="titleTextColor">@color/white</item>
+        <item name="colorControlNormal">@color/black</item>
+        <item name="titleTextColor">@color/black</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
@@ -26,10 +26,19 @@
     <!-- Base application theme. -->
     <style name="AppTheme1" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorControlNormal">@color/white</item>
-        <item name="titleTextColor">@color/white</item>
+        <item name="colorControlNormal">@color/black</item>
+        <item name="titleTextColor">@color/black</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme2" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorControlNormal">@color/black</item>
+        <item name="titleTextColor">@color/black</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
@@ -46,7 +55,7 @@
     <style name="MyActionBar" parent="ThemeOverlay.AppCompat.ActionBar">
         <!-- Customize your theme here. -->
         <item name="android:windowContentOverlay">@null</item>
-        <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlNormal">@color/black</item>
         <!-- Support library compatibility -->
         <item name="titleTextColor">@color/white</item>
         <item name="elevation">0dp</item>

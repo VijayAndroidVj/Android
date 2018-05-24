@@ -9,6 +9,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -46,6 +47,10 @@ public class ChatListActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_contact_list);
         activity = this;
         dataBaseHandler = DataBaseHandler.getInstance(activity);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Friends");
         actionBar.setDisplayHomeAsUpEnabled(true);

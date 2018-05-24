@@ -191,6 +191,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     ivLogo.setVisibility(View.GONE);
                     searchEditText.setVisibility(View.GONE);
                     edtsearchview.setVisibility(View.VISIBLE);
+                    iv_actionbar_peoples.setVisibility(View.VISIBLE);
                     //edtsearchview.requestFocus();
                 } else {
                     name.setVisibility(View.VISIBLE);
@@ -201,8 +202,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                        PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
                         name.setText("My Profile");
                         iv_actionbar_settings.setVisibility(View.VISIBLE);
-                    } else if (position == 3) {
-                        iv_actionbar_peoples.setVisibility(View.VISIBLE);
                     }
 
                 }

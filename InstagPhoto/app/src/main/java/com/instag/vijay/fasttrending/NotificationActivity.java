@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
@@ -49,6 +50,11 @@ public class NotificationActivity extends AppCompatActivity {
         setContentView(R.layout.list_layout);
         activity = this;
         preferenceUtil = new PreferenceUtil(activity);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setVisibility(View.VISIBLE);
+        setSupportActionBar(toolbar);
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Notification");
         actionBar.setDisplayHomeAsUpEnabled(true);

@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.instag.vijay.fasttrending.R;
 import com.instag.vijay.fasttrending.fragments.PhotoFragment;
@@ -28,6 +30,11 @@ public class PostActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.post_page);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setVisibility(View.VISIBLE);
+        setSupportActionBar(toolbar);
+
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Create Post");

@@ -23,7 +23,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
+                android:background="@color/white"
                 android:contentInsetLeft="0dp"
                 android:contentInsetStart="0dp"
                 app:contentInsetEndWithActions="0dp"
@@ -31,6 +31,7 @@
                 app:contentInsetStart="0dp"
                 app:contentInsetStartWithNavigation="0dp"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:theme="@style/ThemeOverlay.AppCompat.Light"
                 app:titleMargin="0dp" />
         </android.support.design.widget.AppBarLayout>
     </android.support.design.widget.CoordinatorLayout>

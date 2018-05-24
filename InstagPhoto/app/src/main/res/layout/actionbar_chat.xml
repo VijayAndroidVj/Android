@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:contentInsetLeft="0dp"
     android:contentInsetStart="0dp"
     android:padding="3dp"
@@ -53,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="kjbhkhjk"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -63,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start|center"
             android:text="bkbbhb"
-            android:textColor="@android:color/white"
+            android:textColor="@color/grey"
             android:textSize="14sp"
             android:visibility="visible" />
 
@@ -78,7 +79,7 @@
         android:layout_gravity="start|center"
         android:layout_margin="@dimen/_5dp"
         android:src="@drawable/ic_videocam_black_24dp"
-        android:tint="@color/white"
+        android:tint="@color/black"
         android:visibility="gone" />
 
 </RelativeLayout>

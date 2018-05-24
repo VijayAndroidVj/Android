@@ -68,6 +68,7 @@ public class CreateBusinessPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_business_page);
         activity = this;
+
         input_business_title = findViewById(R.id.input_business_title);
         iv_business_image = findViewById(R.id.iv_business_image);
         sp_add_business_category = findViewById(R.id.sp_add_business_category);

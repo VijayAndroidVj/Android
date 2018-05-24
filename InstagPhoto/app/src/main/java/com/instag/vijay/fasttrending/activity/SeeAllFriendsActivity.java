@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -53,6 +54,10 @@ public class SeeAllFriendsActivity extends AppCompatActivity {
         if (getIntent() != null && getIntent().getExtras() != null) {
             action = getIntent().getStringExtra("action");
         }
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
 
         ActionBar actionBar = getSupportActionBar();
         if (action.equalsIgnoreCase("friends")) {

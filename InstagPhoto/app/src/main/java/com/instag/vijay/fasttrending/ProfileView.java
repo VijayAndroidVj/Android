@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
@@ -69,6 +70,10 @@ public class ProfileView extends AppCompatActivity {
         setContentView(R.layout.profileview);
 
         activity = this;
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setVisibility(View.VISIBLE);
+        setSupportActionBar(toolbar);
+
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Profile View");

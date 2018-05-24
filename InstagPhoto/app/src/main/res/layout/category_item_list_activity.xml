@@ -12,6 +12,8 @@
         app:contentInsetLeft="0dp"
         app:contentInsetRight="0dp"
         app:contentInsetStart="0dp"
+        app:theme="@style/ThemeOverlay.AppCompat.Light"
+        android:background="@color/white"
         app:popupTheme="@style/MyBlackActionBar">
 
     </android.support.v7.widget.Toolbar>

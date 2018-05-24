@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -18,12 +20,16 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +42,6 @@ import com.instag.vijay.fasttrending.fragments.ChatFragment;
 import com.instag.vijay.fasttrending.fragments.NewsfeedFragment;
 import com.instag.vijay.fasttrending.fragments.PhotoFragment;
 import com.instag.vijay.fasttrending.fragments.ProfileFragment;
-import com.instag.vijay.fasttrending.fragments.SearchFragment;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
 import com.roughike.bottombar.BottomBar;
@@ -65,6 +70,7 @@ import static com.instag.vijay.fasttrending.fragments.PhotoFragment.getRealPathF
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     public TextView searchEditText;
+    public EditText edtsearchview;
     private Activity activity;
     private View iv_actionbar_settings;
     private View iv_actionbar_peoples;
@@ -76,6 +82,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private View flcamera;
     private View flheart;
     private View flprofile;
+    private ImageView ivHome;
+    private ImageView ivSearch;
+    private ImageView ivVideo;
+    private ImageView ivChat;
+    private ImageView ivFav;
+    private ImageView ivProfile;
+    private ColorStateList selectedColorStateList;
+    private ColorStateList unselectedColorStateList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,12 +114,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         iv_actionbar_settings = view.findViewById(R.id.iv_actionbar_settings);
         iv_actionbar_peoples = view.findViewById(R.id.iv_actionbar_peoples);
         searchEditText = view.findViewById(R.id.searchview);
+        edtsearchview = view.findViewById(R.id.edtsearchview);
 //        searchEditText.setTextColor(getResources().getColor(R.color.black));
 //        searchEditText.setHintTextColor(getResources().getColor(R.color.grey1));
         iv_actionbar_peoples.setOnClickListener(this);
         iv_actionbar_settings.setOnClickListener(this);
         ivLogo.setOnClickListener(this);
-
+        selectedColorStateList = CommonUtil.getColorStateList(activity, R.color.colorPrimary);
+        unselectedColorStateList = CommonUtil.getColorStateList(activity, R.color.grey);
         name.setVisibility(View.VISIBLE);
         ivLogo.setVisibility(View.VISIBLE);
         searchEditText.setVisibility(View.GONE);
@@ -118,10 +134,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         final BottomBar bottomBar = findViewById(R.id.bottomBar);
         final ViewPager viewPager = findViewById(R.id.pager);
-        adapter = new PagerAdapter
-                (getSupportFragmentManager(), 6);
+        adapter = new PagerAdapter(getSupportFragmentManager(), 6);
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(4);
+
+        edtsearchview.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (viewPager.getCurrentItem() == 3) {
+                    ChatFragment chatFragment = (ChatFragment) adapter.getItem(3);
+                    chatFragment.filter(s.toString());
+                }
+            }
+        });
+
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -129,13 +165,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             @Override
-            public void onPageSelected(int position) {
+            public void onPageSelected(final int position) {
                 bottomBar.selectTabAtPosition(position);
                 iv_actionbar_settings.setVisibility(View.GONE);
                 iv_actionbar_peoples.setVisibility(View.GONE);
+                edtsearchview.setVisibility(View.GONE);
                 if (position == 1) {
-                    SearchFragment searchFragment = (SearchFragment) adapter.getItem(1);
-                    searchFragment.refreshItems();
+//                    SearchFragment searchFragment = (SearchFragment) adapter.getItem(1);
+//                    searchFragment.refreshItems();
                     name.setVisibility(View.GONE);
                     ivLogo.setVisibility(View.GONE);
                     searchEditText.setVisibility(View.VISIBLE);
@@ -147,6 +184,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             activity.startActivity(intent);
                         }
                     });
+                } else if (position == 3) {
+//                    SearchFragment searchFragment = (SearchFragment) adapter.getItem(1);
+//                    searchFragment.refreshItems();
+                    name.setVisibility(View.GONE);
+                    ivLogo.setVisibility(View.GONE);
+                    searchEditText.setVisibility(View.GONE);
+                    edtsearchview.setVisibility(View.VISIBLE);
+                    //edtsearchview.requestFocus();
                 } else {
                     name.setVisibility(View.VISIBLE);
                     ivLogo.setVisibility(View.VISIBLE);
@@ -161,32 +206,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
 
                 }
-                flnewsfeed.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                flsearch.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                flvideo.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                flcamera.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                flheart.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                flprofile.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                switch (position) {
-                    case 0:
-                        flnewsfeed.setBackgroundColor(Color.parseColor("#d9d9d9"));
-                        break;
-                    case 1:
-                        flsearch.setBackgroundColor(Color.parseColor("#d9d9d9"));
-                        break;
-                    case 2:
-                        flvideo.setBackgroundColor(Color.parseColor("#d9d9d9"));
-                        break;
-                    case 3:
-                        flcamera.setBackgroundColor(Color.parseColor("#d9d9d9"));
-                        break;
-                    case 4:
-                        flheart.setBackgroundColor(Color.parseColor("#d9d9d9"));
-                        break;
-                    case 5:
-                        flprofile.setBackgroundColor(Color.parseColor("#d9d9d9"));
-                        break;
-                }
+                // updateSelectionItem(position);
             }
 
             @Override
@@ -201,7 +221,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         flcamera = findViewById(R.id.flcamera);
         flheart = findViewById(R.id.flheart);
         flprofile = findViewById(R.id.flprofile);
-        flnewsfeed.setBackgroundColor(Color.parseColor("#d9d9d9"));
+
+        ivHome = findViewById(R.id.ivHome);
+        ivSearch = findViewById(R.id.ivSearch);
+        ivVideo = findViewById(R.id.ivVideo);
+        ivChat = findViewById(R.id.ivChat);
+        ivFav = findViewById(R.id.ivFav);
+        ivProfile = findViewById(R.id.ivProfile);
+
+        /*updateSelectionItem(0);
+
         flnewsfeed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -242,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View v) {
                 viewPager.setCurrentItem(5);
             }
-        });
+        });*/
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelected(@IdRes int tabId) {
@@ -294,6 +323,75 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
 
+    }
+
+    private void updateSelectionItem(int position) {
+        try {
+
+            flnewsfeed.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            flsearch.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            flvideo.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            flcamera.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            flheart.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            flprofile.setBackgroundColor(Color.parseColor("#FFFFFF"));
+
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                ivHome.setImageTintList(unselectedColorStateList);
+                ivSearch.setImageTintList(unselectedColorStateList);
+                ivVideo.setImageTintList(unselectedColorStateList);
+                ivChat.setImageTintList(unselectedColorStateList);
+                ivFav.setImageTintList(unselectedColorStateList);
+                ivProfile.setImageTintList(unselectedColorStateList);
+
+                switch (position) {
+                    case 0:
+                        ivHome.setImageTintList(selectedColorStateList);
+                        flnewsfeed.setBackgroundColor(Color.parseColor("#d9d9d9"));
+                        break;
+                    case 1:
+                        ivSearch.setImageTintList(selectedColorStateList);
+                        flsearch.setBackgroundColor(Color.parseColor("#d9d9d9"));
+                        break;
+                    case 2:
+                        ivVideo.setImageTintList(selectedColorStateList);
+                        flvideo.setBackgroundColor(Color.parseColor("#d9d9d9"));
+                        break;
+                    case 3:
+                        ivChat.setImageTintList(selectedColorStateList);
+                        flcamera.setBackgroundColor(Color.parseColor("#d9d9d9"));
+                        break;
+                    case 4:
+                        ivFav.setImageTintList(selectedColorStateList);
+                        flheart.setBackgroundColor(Color.parseColor("#d9d9d9"));
+                        break;
+                    case 5:
+                        flprofile.setBackgroundColor(Color.parseColor("#d9d9d9"));
+                        ivProfile.setImageTintList(selectedColorStateList);
+                        break;
+                }
+            } else {
+                switch (position) {
+                    case 1:
+                        flsearch.setBackgroundColor(Color.parseColor("#d9d9d9"));
+                        break;
+                    case 2:
+                        flvideo.setBackgroundColor(Color.parseColor("#d9d9d9"));
+                        break;
+                    case 3:
+                        flcamera.setBackgroundColor(Color.parseColor("#d9d9d9"));
+                        break;
+                    case 4:
+                        flheart.setBackgroundColor(Color.parseColor("#d9d9d9"));
+                        break;
+                    case 5:
+                        flprofile.setBackgroundColor(Color.parseColor("#d9d9d9"));
+                        break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void registerFcmToken(String token, Context context) {

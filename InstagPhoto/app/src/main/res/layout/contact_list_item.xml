@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/list_item_background"
-    android:padding="10dp">
+    android:padding="15dp">
 
     <RelativeLayout
         android:id="@+id/rl_contact_list_item_alphabet"
@@ -16,8 +16,8 @@
 
         <TextView
             android:id="@+id/tv_contact_list_item_alphabet"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:gravity="center"
             android:text="A"
             android:textColor="@android:color/white"
@@ -28,14 +28,15 @@
             android:id="@+id/iv_contact_list_item_alphabet"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:visibility="gone"
-            android:gravity="center" />
+            android:gravity="center"
+            android:visibility="gone" />
 
     </RelativeLayout>
 
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_centerInParent="true"
         android:layout_marginLeft="@dimen/_3dp"
         android:layout_marginStart="@dimen/_3dp"
@@ -43,6 +44,7 @@
         android:layout_toLeftOf="@+id/ll_contact_list_item_controls"
         android:layout_toRightOf="@+id/rl_contact_list_item_alphabet"
         android:layout_toStartOf="@+id/ll_contact_list_item_controls"
+        android:gravity="center"
         android:orientation="vertical">
 
         <TextView
@@ -58,9 +60,11 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="25dp"
             android:layout_below="@+id/tv_contact_list_item_name"
             android:layout_gravity="left|center"
+            android:layout_marginTop="@dimen/_3dp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <ImageView
@@ -73,16 +77,16 @@
 
             <TextView
                 android:id="@+id/tv_contact_list_item_phone"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/_3dp"
-                android:layout_marginStart="@dimen/_3dp"
+                android:layout_marginLeft="@dimen/_5dp"
+                android:layout_marginStart="@dimen/_5dp"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:text="number"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
+                android:textColor="@color/focus_color"
+                android:textSize="14sp" />
 
         </LinearLayout>
     </RelativeLayout>
@@ -90,10 +94,11 @@
     <LinearLayout
         android:id="@+id/ll_contact_list_item_controls"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:gravity="right"
+        android:layout_centerVertical="true"
+        android:gravity="right|center"
         android:orientation="vertical"
         android:visibility="visible">
 
@@ -103,14 +108,14 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_3dp"
             android:text="11.00 pm"
-            android:textColor="@color/black"
+            android:textColor="@color/focus_color"
             android:textSize="15sp" />
 
         <TextView
             android:id="@+id/tv_contact_list_item_count"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_gravity="right|center"
+            android:layout_gravity="center"
             android:layout_marginTop="@dimen/_3dp"
             android:background="@drawable/rounded_corner_green"
             android:gravity="center"

@@ -160,7 +160,7 @@
         android:paddingLeft="5sp"
         android:paddingRight="5sp"
         android:paddingTop="5sp"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <RelativeLayout
             android:id="@+id/rlAudioInnerLayout"
@@ -265,6 +265,7 @@
                     android:contentDescription="@string/app_name"
                     android:rotation="0"
                     android:src="@drawable/upload"
+                    android:tint="@color/white"
                     android:visibility="visible" />
             </RelativeLayout>
 
@@ -303,7 +304,7 @@
                     android:layout_toStartOf="@+id/llAudioStatus"
                     android:gravity="center"
                     android:text=""
-                    android:textColor="@color/grey3"
+                    android:textColor="@color/white"
                     android:textSize="12sp" />
 
 
@@ -318,7 +319,7 @@
                     android:layout_toStartOf="@+id/txtAudioTime"
                     android:gravity="center"
                     android:text=""
-                    android:textColor="@color/grey3"
+                    android:textColor="@color/white"
                     android:textSize="12sp" />
             </RelativeLayout>
 
@@ -330,7 +331,7 @@
     <!-- Sending Video -->
     <RelativeLayout
         android:id="@+id/rlVideoLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="250dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
@@ -340,13 +341,15 @@
         android:layout_marginTop="5dp"
         android:background="@drawable/chat_rounded_cornner"
         android:padding="5dp"
-        android:visibility="gone">
+        android:visibility="visible">
 
 
         <ImageView
             android:id="@+id/ivVideoThumb"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_5dp"
             android:contentDescription="@string/app_name"
             android:scaleType="centerCrop" />
 
@@ -377,7 +380,8 @@
             android:layout_marginRight="5sp"
             android:contentDescription="@string/app_name"
             android:rotation="0"
-            android:src="@drawable/upload" />
+            android:src="@drawable/upload"
+            android:tint="@color/white" />
 
 
         <RelativeLayout
@@ -397,7 +401,7 @@
                 android:layout_marginStart="5dp"
                 android:contentDescription="@string/app_name"
                 android:src="@drawable/video"
-                android:tint="@color/colorPrimary"
+                android:tint="@color/white"
                 android:visibility="visible" />
 
             <TextView
@@ -487,7 +491,8 @@
                 android:contentDescription="@string/app_name"
                 android:gravity="center_horizontal"
                 android:scaleType="fitXY"
-                android:src="@drawable/doc" />
+                android:src="@drawable/doc"
+                android:tint="@color/white" />
 
             <TextView
                 android:id="@+id/tvDocType"
@@ -501,7 +506,7 @@
                 android:alpha="1.0"
                 android:gravity="center"
                 android:text=""
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="8sp"
                 android:textStyle="bold" />
 
@@ -522,7 +527,7 @@
                 android:maxWidth="200sp"
                 android:singleLine="true"
                 android:text="@string/app_name"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="normal" />
 
@@ -549,6 +554,7 @@
                     android:contentDescription="@string/app_name"
                     android:rotation="180"
                     android:src="@drawable/upload"
+                    android:tint="@color/white"
                     android:visibility="visible" />
 
             </RelativeLayout>
@@ -573,7 +579,7 @@
                     android:layout_centerVertical="true"
                     android:gravity="center"
                     android:text=""
-                    android:textColor="@color/grey_overlay"
+                    android:textColor="@color/white"
                     android:textSize="12sp" />
 
                 <LinearLayout
@@ -590,7 +596,8 @@
                         android:id="@+id/img_chat_doc_status_sent"
                         android:layout_width="15dp"
                         android:layout_height="15dp"
-                        android:src="@drawable/ic_done_black" />
+                        android:src="@drawable/ic_done_black"
+                        android:tint="@color/white" />
 
                 </LinearLayout>
 
@@ -604,7 +611,7 @@
                     android:layout_toLeftOf="@+id/llDocStatus"
                     android:layout_toStartOf="@+id/llDocStatus"
                     android:text="00:00"
-                    android:textColor="@color/grey_overlay"
+                    android:textColor="@color/white"
                     android:textSize="12sp" />
             </RelativeLayout>
         </RelativeLayout>

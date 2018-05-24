@@ -136,7 +136,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(R.drawable.feelout_1_36x36)
+                        .setSmallIcon(R.drawable.feelout_noti)
                         .setContentTitle(getString(R.string.app_name))
                         .setContentText(messageBody)
                         .setAutoCancel(true)
@@ -258,7 +258,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                             PendingIntent.FLAG_UPDATE_CURRENT);
 
                                     Uri notificationSoundURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                                    mNotificationBuilder.setSmallIcon(R.drawable.feelout_1_36x36);
+                                    mNotificationBuilder.setSmallIcon(R.drawable.feelout_noti);
 
                                     String title = chatMessageModel.getName();
                                     mNotificationBuilder.setContentTitle(title);
@@ -272,10 +272,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                         mNotificationBuilder.setChannelId(CHANNEL_ID);
                                     }
                                     if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                        mNotificationBuilder.setSmallIcon(R.drawable.feelout_1_36x36);
+                                        mNotificationBuilder.setSmallIcon(R.drawable.feelout_noti);
                                         mNotificationBuilder.setColor(getResources().getColor(R.color.colorPrimary));
                                     } else {
-                                        mNotificationBuilder.setSmallIcon(R.drawable.feelout_1_36x36);
+                                        mNotificationBuilder.setSmallIcon(R.drawable.feelout_noti);
                                     }
                                     NotificationManager notificationManager = (NotificationManager) getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
                                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -308,7 +308,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                         PendingIntent.FLAG_UPDATE_CURRENT);
 
                                 Uri notificationSoundURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                                mNotificationBuilder.setSmallIcon(R.drawable.feelout_1_36x36);
+                                mNotificationBuilder.setSmallIcon(R.drawable.feelout_noti);
                                 String title = "";
                                 if (!TextUtils.isEmpty(chatMessageModel.getName())) {
                                     title = chatMessageModel.getName();
@@ -324,10 +324,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                     mNotificationBuilder.setChannelId(CHANNEL_ID);
                                 }
                                 if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    mNotificationBuilder.setSmallIcon(R.drawable.feelout_1_36x36);
+                                    mNotificationBuilder.setSmallIcon(R.drawable.feelout_noti);
                                     mNotificationBuilder.setColor(getResources().getColor(R.color.colorPrimary));
                                 } else {
-                                    mNotificationBuilder.setSmallIcon(R.drawable.feelout_1_36x36);
+                                    mNotificationBuilder.setSmallIcon(R.drawable.feelout_noti);
                                 }
                                 NotificationManager notificationManager = (NotificationManager) getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
                                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {

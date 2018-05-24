@@ -69,7 +69,7 @@ public class NewsfeedFragment extends Fragment implements ListListener {
 
         viewInfo = view.findViewById(R.id.txtContactInfo);
         recyclerView = view.findViewById(R.id.recyclerviewContact);
-        recyclerView.setBackgroundColor(Color.parseColor("#b2b9c9"));
+        recyclerView.setBackgroundColor(Color.parseColor(getString(R.string.fb_bac)));
         progressBar = view.findViewById(R.id.progressBar_cyclic);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

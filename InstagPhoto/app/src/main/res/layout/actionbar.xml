@@ -22,7 +22,7 @@
             android:gravity="center"
             android:padding="5dp"
             android:src="@drawable/ic_camera_black"
-            android:tint="@color/white"
+            android:tint="@color/black"
             android:visibility="gone" />
 
         <TextView
@@ -36,7 +36,7 @@
             android:padding="5dp"
             android:singleLine="true"
             android:text="@string/app_name"
-            android:textColor="@android:color/white"
+            android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
             android:visibility="gone" />
@@ -51,7 +51,7 @@
             android:drawableLeft="@drawable/ic_search_black"
             android:drawablePadding="@dimen/_5dp"
             android:drawableStart="@drawable/ic_search_black"
-            android:drawableTint="@color/white"
+            android:drawableTint="@color/black"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:gravity="center|left"
@@ -59,8 +59,8 @@
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:padding="@dimen/_5dp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey"
             android:textSize="14sp"
             android:visibility="gone" />
 
@@ -76,14 +76,14 @@
             android:drawableLeft="@drawable/ic_search_black"
             android:drawablePadding="@dimen/_5dp"
             android:drawableStart="@drawable/ic_search_black"
-            android:drawableTint="@color/white"
+            android:drawableTint="@color/black"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:gravity="center|left"
             android:hint="Search"
-            android:padding="@dimen/_5dp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
+            android:padding="@dimen/_7dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey"
             android:textSize="14sp"
             android:visibility="gone" />
 
@@ -102,7 +102,7 @@
                 android:gravity="center"
                 android:padding="5dp"
                 android:src="@drawable/ic_person_black"
-                android:tint="@color/white"
+                android:tint="@color/black"
                 android:visibility="gone" />
 
             <ImageView
@@ -113,7 +113,7 @@
                 android:gravity="center"
                 android:padding="5dp"
                 android:src="@drawable/ic_notifications_black"
-                android:tint="@color/white" />
+                android:tint="@color/black" />
 
             <ImageView
                 android:id="@+id/iv_actionbar_settings"
@@ -123,7 +123,7 @@
                 android:gravity="center"
                 android:padding="5dp"
                 android:src="@drawable/ic_more_vert_black"
-                android:tint="@color/white"
+                android:tint="@color/black"
                 android:visibility="gone" />
 
 

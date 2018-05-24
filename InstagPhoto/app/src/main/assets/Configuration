@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<body>
+
+    <CreateAccount>
+         <parent_background></parent_background>
+         <app_logo></app_logo>
+         <app_name></app_name>
+         <selected_form_image></selected_form_image>
+         <unselected_form_image></unselected_form_image>
+         <form_title></form_title>
+         <button_style></button_style>
+         <button_color></button_color>
+    </CreateAccount>
+
+    <ConfirmOtp>
+         <parent_background></parent_background>
+         <app_logo></app_logo>
+         <app_name></app_name>
+         <selected_form_image></selected_form_image>
+         <unselected_form_image></unselected_form_image>
+         <form_title></form_title>
+         <otp_message></otp_message>
+         <button_style></button_style>
+         <button_color></button_color>
+         <button_disabled_color></button_disabled_color>
+         <resend_button_timer></resend_button_timer>
+    </ConfirmOtp>
+
+    <SetPassword>
+         <parent_background></parent_background>
+         <app_logo></app_logo>
+         <app_name></app_name>
+         <selected_form_image></selected_form_image>
+         <unselected_form_image></unselected_form_image>
+         <form_title></form_title>
+         <password_toggle_color></password_toggle_color>
+         <button_style></button_style>
+         <button_color></button_color>
+    </SetPassword>
+
+    <Login>
+         <parent_background></parent_background>
+         <app_logo></app_logo>
+         <app_name></app_name>
+         <form_title></form_title>
+         <password_toggle_color></password_toggle_color>
+         <button_style></button_style>
+         <button_color></button_color>
+    </Login>
+
+     <ForgotPassword>
+          <parent_background></parent_background>
+          <app_logo></app_logo>
+          <app_name></app_name>
+          <selected_form_image></selected_form_image>
+          <unselected_form_image></unselected_form_image>
+          <form_title></form_title>
+          <button_style></button_style>
+          <button_color></button_color>
+     </ForgotPassword>
+
+     <Dashboard>
+          <parent_background></parent_background>
+     </Dashboard>
+
+    <ContactList>
+        <parent_background></parent_background>
+        <actionbar_color></actionbar_color>
+        <back_button></back_button>
+        <contact_background></contact_background>
+        <control_icon_color></control_icon_color>
+    </ContactList>
+
+    <VoiceCall>
+        <parent_background></parent_background>
+        <control_icon_color></control_icon_color>
+    </VoiceCall>
+
+</body>

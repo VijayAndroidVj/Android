@@ -18,118 +18,147 @@
 
     </android.support.v7.widget.Toolbar>
 
-
-    <LinearLayout
+    <android.support.v7.widget.CardView
+        android:id="@+id/cv_category"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:visibility="gone">
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:cardBackgroundColor="@color/white"
+        app:cardElevation="@dimen/_15dp">
 
-        <FrameLayout
-            android:id="@+id/flnewsfeed"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:padding="@dimen/_5dp">
 
-            <ImageView
-                android:layout_width="@dimen/_30dp"
-                android:layout_height="@dimen/_30dp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:visibility="visible">
+
+            <FrameLayout
+                android:id="@+id/flnewsfeed"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:src="@drawable/document" />
+                android:layout_weight="1"
+                android:padding="@dimen/_5dp">
 
-        </FrameLayout>
+                <ImageView
+                    android:id="@+id/ivHome"
+                    android:layout_width="@dimen/_25dp"
+                    android:layout_height="@dimen/_25dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_5dp"
+                    android:src="@drawable/ic_home_black"
+                    android:tint="@color/grey" />
 
-        <FrameLayout
-            android:id="@+id/flsearch"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:padding="@dimen/_5dp">
+            </FrameLayout>
 
-            <ImageView
-                android:layout_width="@dimen/_30dp"
-                android:layout_height="@dimen/_30dp"
+            <FrameLayout
+                android:id="@+id/flsearch"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:src="@drawable/search" />
+                android:layout_weight="1"
+                android:padding="@dimen/_5dp">
 
-        </FrameLayout>
+                <ImageView
+                    android:id="@+id/ivSearch"
+                    android:layout_width="@dimen/_30dp"
+                    android:layout_height="@dimen/_30dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_5dp"
+                    android:src="@drawable/letter_b"
+                    android:tint="@color/grey" />
 
-        <FrameLayout
-            android:id="@+id/flvideo"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:padding="@dimen/_5dp">
+            </FrameLayout>
 
-            <ImageView
-                android:layout_width="@dimen/_30dp"
-                android:layout_height="@dimen/_30dp"
+            <FrameLayout
+                android:id="@+id/flvideo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:src="@drawable/youtube1" />
+                android:layout_weight="1"
+                android:padding="@dimen/_5dp">
 
-        </FrameLayout>
+                <ImageView
+                    android:id="@+id/ivVideo"
+                    android:layout_width="@dimen/_25dp"
+                    android:layout_height="@dimen/_25dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_5dp"
+                    android:src="@drawable/youtube"
+                    android:tint="@color/grey" />
 
-        <FrameLayout
-            android:id="@+id/flcamera"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:padding="@dimen/_5dp">
+            </FrameLayout>
 
-            <ImageView
-                android:layout_width="@dimen/_30dp"
-                android:layout_height="@dimen/_30dp"
+            <FrameLayout
+                android:id="@+id/flcamera"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:src="@drawable/camera" />
+                android:layout_weight="1"
+                android:padding="@dimen/_5dp">
 
-        </FrameLayout>
+                <ImageView
+                    android:id="@+id/ivChat"
+                    android:layout_width="@dimen/_20dp"
+                    android:layout_height="@dimen/_20dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_5dp"
+                    android:src="@drawable/chat"
+                    android:tint="@color/grey" />
 
-        <FrameLayout
-            android:id="@+id/flheart"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:padding="@dimen/_5dp">
+            </FrameLayout>
 
-            <ImageView
-                android:layout_width="@dimen/_30dp"
-                android:layout_height="@dimen/_30dp"
+            <FrameLayout
+                android:id="@+id/flheart"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:src="@drawable/heart" />
+                android:layout_weight="1"
+                android:padding="@dimen/_5dp">
 
-        </FrameLayout>
+                <ImageView
+                    android:id="@+id/ivFav"
+                    android:layout_width="@dimen/_25dp"
+                    android:layout_height="@dimen/_25dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_5dp"
+                    android:src="@drawable/hashtag"
+                    android:tint="@color/grey" />
 
-        <FrameLayout
-            android:id="@+id/flprofile"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:padding="@dimen/_5dp">
+            </FrameLayout>
 
-            <ImageView
-                android:layout_width="@dimen/_30dp"
-                android:layout_height="@dimen/_30dp"
+            <FrameLayout
+                android:id="@+id/flprofile"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:src="@drawable/man" />
+                android:layout_weight="1"
+                android:padding="@dimen/_5dp">
 
-        </FrameLayout>
+                <ImageView
+                    android:id="@+id/ivProfile"
+                    android:layout_width="@dimen/_25dp"
+                    android:layout_height="@dimen/_25dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_5dp"
+                    android:src="@drawable/ic_person_black"
+                    android:tint="@color/grey" />
+
+            </FrameLayout>
 
 
-    </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_below="@id/toolbar"
-        android:layout_marginBottom="60dp" />
+        android:layout_marginBottom="45dp" />
 
     <com.roughike.bottombar.BottomBar
         android:id="@+id/bottomBar"

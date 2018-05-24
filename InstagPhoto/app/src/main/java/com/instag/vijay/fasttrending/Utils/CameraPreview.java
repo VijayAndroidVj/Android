@@ -33,12 +33,23 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         mHolder = getHolder();
         mHolder.addCallback(this);
         // deprecated setting, but required on Android versions prior to 3.0
-//        mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-        mHolder.setType(SurfaceHolder.SURFACE_TYPE_NORMAL);
+        mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+//        mHolder.setType(SurfaceHolder.SURFACE_TYPE_NORMAL);
     }
 
+    @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        startCamera();
         // The Surface has been created, now tell the camera where to draw the preview.
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        destroycamView();
+        // empty. Take care of releasing the Camera preview in your activity.
+    }
+
+    public void startCamera() {
         int cameraCount = Camera.getNumberOfCameras();
         if (cameraCount > 0) {
             mCamera = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT);
@@ -59,6 +70,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         try {
             Camera.Parameters parameters = mCamera.getParameters();
             parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
+            parameters.setPreviewFrameRate(20);
             mHolder.setFormat(PixelFormat.TRANSLUCENT);
             mCamera.setParameters(parameters);
             mCamera.setDisplayOrientation(90);
@@ -68,11 +80,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         } catch (Exception e) {
             Log.d(TAG, "Error starting camera preview: " + e.getMessage());
         }
-    }
-
-    public void surfaceDestroyed(SurfaceHolder holder) {
-        // empty. Take care of releasing the Camera preview in your activity.
-        destroycamView();
     }
 
     public void destroycamView() {
@@ -127,7 +134,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     private Camera.Size getOptimalPreviewSize(List<Camera.Size> sizes, int w, int h) {
-        final double ASPECT_TOLERANCE = 0.2;
+        final double ASPECT_TOLERANCE = 0.1;
         double targetRatio = (double) w / h;
 
         if (sizes == null)

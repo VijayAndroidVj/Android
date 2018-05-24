@@ -7,6 +7,7 @@
     <string name="username">Username</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="call_duration">Call Duration : </string>
     <string-array name="attachment">
         <item>@string/camera</item>
         <item>@string/gallery</item>

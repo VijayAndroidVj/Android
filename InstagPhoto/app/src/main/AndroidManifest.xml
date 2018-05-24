@@ -16,6 +16,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.NETWORK" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -54,12 +55,12 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/feelout" />
+            android:resource="@drawable/feelout_noti" />
         <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
              notification message. See README(https://goo.gl/6BKBk7) for more. -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/colorAccent" />
+            android:resource="@color/colorPrimary" />
         <!-- [END fcm_default_icon] -->
         <!-- [START fcm_default_channel] -->
         <meta-data
@@ -93,6 +94,13 @@
         <activity
             android:name="com.instag.vijay.fasttrending.activity.CategoryExploreActivity"
             android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".video.ReachVideoCall"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:showOnLockScreen="true" />
+
         <activity
             android:name="com.instag.vijay.fasttrending.activity.SeeAllFriendsActivity"
             android:theme="@style/AppTheme" />

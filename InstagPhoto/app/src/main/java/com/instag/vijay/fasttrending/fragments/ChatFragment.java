@@ -16,7 +16,6 @@ import com.instag.vijay.fasttrending.Db.DataBaseHandler;
 import com.instag.vijay.fasttrending.R;
 import com.instag.vijay.fasttrending.chat.ChatListActivity;
 import com.instag.vijay.fasttrending.chat.ContactListAdapter;
-import com.instag.vijay.fasttrending.chat.LogListAdapter;
 import com.instag.vijay.fasttrending.model.UserModel;
 
 import java.util.ArrayList;
@@ -105,19 +104,23 @@ public class ChatFragment extends Fragment {
             }
 
             public boolean onQueryTextChange(String newText) {
-                try {
-                    if (contactListAdapter != null) {
-                        contactListAdapter.filter(newText);
-                    }
-                } catch (Exception var4) {
-                    var4.printStackTrace();
-                }
-
+                filter(newText);
                 return false;
             }
         }));
         searchView_contact_list.clearFocus();
         searchView_contact_list.setFocusable(false);
+    }
+
+    public void filter(String newText) {
+        try {
+            if (contactListAdapter != null) {
+                contactListAdapter.filter(newText);
+            }
+        } catch (Exception var4) {
+            var4.printStackTrace();
+        }
+
     }
 
     RecyclerView rv_contact_list;
@@ -129,6 +132,7 @@ public class ChatFragment extends Fragment {
         tv_contact_info = view.findViewById(R.id.tv_contact_info);
         searchView_contact_list = view.findViewById(R.id.searchView_contact_list);
 
+        searchView_contact_list.setVisibility(View.GONE);
         tv_contact_info.setVisibility(View.GONE);
         rv_contact_list.setVisibility(VISIBLE);
         searchView_contact_list.setQueryHint("Type to search");

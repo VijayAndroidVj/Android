@@ -63,6 +63,7 @@ import com.instag.vijay.fasttrending.model.ChatMessageModel;
 import com.instag.vijay.fasttrending.model.UserModel;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
+import com.instag.vijay.fasttrending.video.ReachVideoCall;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
@@ -457,7 +458,13 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.iv_attach) {
-            //showAttachmentPopup(v);
+            Intent CallActivity = new Intent(activity, ReachVideoCall.class);
+            CallActivity.putExtra("status", 0);
+            CallActivity.putExtra("otherUserName", chatSenderName);
+            CallActivity.putExtra("otherUserID", chatSenderId);
+            CallActivity.putExtra("callType", "dial");
+            CallActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            activity.startActivity(CallActivity);
         } else if (i == R.id.iv_chat_camera) {
             launchCameraIntent();
         } else if (i == R.id.iv_chat_gallery) {

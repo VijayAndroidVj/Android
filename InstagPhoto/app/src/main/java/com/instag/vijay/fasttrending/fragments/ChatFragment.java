@@ -131,6 +131,7 @@ public class ChatFragment extends Fragment {
         rv_contact_list = view.findViewById(R.id.rv_contact_list);
         tv_contact_info = view.findViewById(R.id.tv_contact_info);
         searchView_contact_list = view.findViewById(R.id.searchView_contact_list);
+        view.findViewById(R.id.toolbar).setVisibility(View.GONE);
 
         searchView_contact_list.setVisibility(View.GONE);
         tv_contact_info.setVisibility(View.GONE);
@@ -138,6 +139,7 @@ public class ChatFragment extends Fragment {
         searchView_contact_list.setQueryHint("Type to search");
         searchView_contact_list.setIconified(false);
         searchView_contact_list.clearFocus();
+        searchView_contact_list.setVisibility(View.GONE);
     }
 
     public void onClick(@Nullable View view) {

@@ -44,7 +44,7 @@ public class ProfileView extends AppCompatActivity {
     private Activity activity;
     private ArrayList<Posts> postsArrayList = new ArrayList<>();
     private PostAdapter postAdapter;
-    private TextView viewInfo, txtPostsCount, txtFollowersCount, txtFolloweringCount;
+    private TextView viewInfo, txtPostsCount, txtFollowersCount, txtFolloweringCount, txtFriendsCount;
     private TextView txtUsername;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
@@ -87,6 +87,7 @@ public class ProfileView extends AppCompatActivity {
         txtPostsCount = findViewById(R.id.txtPostsCount);
         txtFollowersCount = findViewById(R.id.txtFollowersCount);
         txtFolloweringCount = findViewById(R.id.txtFolloweringCount);
+        txtFriendsCount = findViewById(R.id.txtFriendsCount);
         viewInfo = findViewById(R.id.txtContactInfo);
         recyclerView = findViewById(R.id.recyclerviewContact);
         progressBar = findViewById(R.id.progressBar_cyclic);
@@ -127,6 +128,7 @@ public class ProfileView extends AppCompatActivity {
                                 txtPostsCount.setText(String.valueOf(postModelMain.getTotalposts()));
                                 txtFolloweringCount.setText(String.valueOf(postModelMain.getTotal_followering()));
                                 txtFollowersCount.setText(String.valueOf(postModelMain.getTotal_followers()));
+                                txtFriendsCount.setText(String.valueOf(postModelMain.getFriendsCount()));
                                 if (!TextUtils.isEmpty(postModelMain.getProfile_image()) && postModelMain.getProfile_image().contains("http://")) {
                                     if (!activity.isFinishing())
                                         Glide.with(activity)

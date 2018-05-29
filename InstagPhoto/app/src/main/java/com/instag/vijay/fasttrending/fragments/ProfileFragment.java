@@ -803,6 +803,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 //                    setList();
 //                    recyclerView.setVisibility(View.VISIBLE);
                     break;*/
+                case R.id.ivEdit:
                 case R.id.btnEditProfile:
                     in = new Intent(activity, EditProfile.class);
                     startActivity(in);

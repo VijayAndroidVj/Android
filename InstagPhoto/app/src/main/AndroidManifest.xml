@@ -83,7 +83,7 @@
             android:theme="@style/AppTheme2" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat" />
+            android:theme="@style/AppTheme3" />
         <activity
             android:name="com.instag.vijay.fasttrending.activity.PostActivity"
             android:theme="@style/AppTheme2" />
@@ -134,7 +134,7 @@
         <activity
             android:name="com.instag.vijay.fasttrending.UpLoadImagePreview"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme1"
+            android:theme="@style/AppTheme2"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name="com.instag.vijay.fasttrending.PostView"

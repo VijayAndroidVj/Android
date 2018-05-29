@@ -186,9 +186,11 @@
                         android:layout_centerInParent="true"
                         android:layout_gravity="right|center"
                         android:layout_margin="@dimen/_5dp"
-                        android:background="@drawable/rounded_corner_green">
+                        android:background="@drawable/rounded_corner_green"
+                        android:padding="@dimen/_10dp">
 
                         <ImageButton
+                            android:id="@+id/sendMessageButton1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"

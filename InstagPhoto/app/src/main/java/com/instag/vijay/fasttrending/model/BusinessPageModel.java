@@ -4,18 +4,18 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
-import com.instag.vijay.fasttrending.UserModel;
-
-import java.util.ArrayList;
 
 /**
  * Created by vijay on 25/11/17.
  */
 
-public class BusinessPageModel implements Parcelable{
+public class BusinessPageModel implements Parcelable {
 
     @SerializedName("title")
     private String title;
+
+    @SerializedName("email")
+    private String email;
 
     @SerializedName("image")
     private String image;
@@ -28,6 +28,7 @@ public class BusinessPageModel implements Parcelable{
 
     protected BusinessPageModel(Parcel in) {
         title = in.readString();
+        email = in.readString();
         image = in.readString();
         category = in.readString();
         subcategory = in.readString();
@@ -77,6 +78,14 @@ public class BusinessPageModel implements Parcelable{
         this.subcategory = subcategory;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -85,6 +94,7 @@ public class BusinessPageModel implements Parcelable{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(title);
+        dest.writeString(email);
         dest.writeString(image);
         dest.writeString(category);
         dest.writeString(subcategory);

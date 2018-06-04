@@ -215,6 +215,10 @@ public interface ApiInterface {
     @FormUrlEncoded
     Call<EventResponse> delete_post(@Field("useremail") String useremail, @Field("post_id") String post_id);
 
+    @POST("delete_group_page.php")
+    @FormUrlEncoded
+    Call<EventResponse> delete_group_page(@Field("useremail") String useremail, @Field("title") String title, @Field("group") String group);
+
     @POST("deleteNotification.php")
     @FormUrlEncoded
     Call<EventResponse> deleteNotification(@Field("notificationid") String post_id);

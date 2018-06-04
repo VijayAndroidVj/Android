@@ -9,11 +9,13 @@ import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -83,16 +85,40 @@ public class CreateGroupActivity extends AppCompatActivity {
                         .start(activity);
             }
         });
-        findViewById(R.id.btnGroupCreate).setOnClickListener(new View.OnClickListener() {
+
+        TextView btnCreate = findViewById(R.id.btnGroupCreate);
+        TextView btnCancel = findViewById(R.id.btnGroupCancel);
+
+
+        btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createBusinessPage();
+
+                if (businessPageModel != null) {
+                    PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
+                    if (businessPageModel.getEmail() != null && businessPageModel.getEmail().equalsIgnoreCase(preferenceUtil.getUserMailId())) {
+                        createBusinessPage();
+                    } else {
+                        Toast.makeText(activity, "Followed", Toast.LENGTH_SHORT).show();
+                        onBackPressed();
+                    }
+                } else
+                    createBusinessPage();
+
             }
         });
-        findViewById(R.id.btnGroupCancel).setOnClickListener(new View.OnClickListener() {
+        btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                if (businessPageModel != null) {
+                    PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
+                    if (businessPageModel.getEmail() != null && businessPageModel.getEmail().equalsIgnoreCase(preferenceUtil.getUserMailId())) {
+                        deleteGroupBusiness();
+                    } else {
+                        onBackPressed();
+                    }
+                } else
+                    onBackPressed();
             }
         });
 
@@ -101,6 +127,15 @@ public class CreateGroupActivity extends AppCompatActivity {
         if (getIntent() != null) {
             businessPageModel = getIntent().getParcelableExtra("model");
             if (businessPageModel != null) {
+                PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
+                if (businessPageModel.getEmail() != null && businessPageModel.getEmail().equalsIgnoreCase(preferenceUtil.getUserMailId())) {
+                    btnCreate.setText("Update");
+                    btnCancel.setText("Delete");
+                } else {
+                    btnCreate.setText("Follow");
+                    btnCancel.setText("Cancel");
+                }
+
                 input_business_title.setText(businessPageModel.getTitle());
                 if (businessPageModel.getImage() != null) {
                     Glide.with(activity)
@@ -347,6 +382,49 @@ public class CreateGroupActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    private void deleteGroupBusiness() {
+        if (CommonUtil.isNetworkAvailable(activity)) {
+            initProgress("Deleting....");
+            ApiInterface service =
+                    ApiClient.getClient().create(ApiInterface.class);
+            PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
+
+            String usermail = preferenceUtil.getUserMailId();
+            Call<EventResponse> call = service.delete_group_page(usermail, businessPageModel.getTitle(), "true");
+            call.enqueue(new Callback<EventResponse>() {
+                @Override
+                public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
+                    EventResponse patientDetails = response.body();
+                    Log.i("patientDetails", response.toString());
+                    if (patientDetails != null && patientDetails.getResult().equalsIgnoreCase("success")) {
+                        closeProgress();
+                        MainActivity.mainActivity.refresh(5);
+                        onBackPressed();
+
+
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<EventResponse> call, Throwable t) {
+                    // Log error here since request failed
+                    String message = t.toString();
+                    if (message.contains("Failed to")) {
+                        message = "Failed to Connect";
+                    } else {
+                        message = "Failed";
+                    }
+                    closeProgress();
+                    Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Toast.makeText(activity, "Check your internet connection!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     private ProgressDialog progressDoalog;
 

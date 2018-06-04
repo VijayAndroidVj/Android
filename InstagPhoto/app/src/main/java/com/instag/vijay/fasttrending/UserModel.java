@@ -53,6 +53,9 @@ public class UserModel {
     @SerializedName("to_token")
     private String to_token;
 
+    @SerializedName("follow")
+    private boolean follow;
+
     public String getFrom_token() {
         return from_token;
     }
@@ -171,5 +174,13 @@ public class UserModel {
 
     public void setContact_number(String contact_number) {
         this.contact_number = contact_number;
+    }
+
+    public boolean isFollow() {
+        return follow;
+    }
+
+    public void setFollow(boolean follow) {
+        this.follow = follow;
     }
 }

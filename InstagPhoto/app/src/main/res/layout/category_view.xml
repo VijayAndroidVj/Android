@@ -41,6 +41,7 @@
                 android:background="@color/white"
                 app:cardBackgroundColor="@color/white">
 
+
                 <technolifestyle.com.imageslider.FlipperLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/flipper_layout"
                     android:layout_width="match_parent"
@@ -64,19 +65,41 @@
                     android:layout_margin="@dimen/_15dp"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/txtViewTitle"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="View all comments"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tvCategoryViewfollow"
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_gravity="right"
+                            android:background="@color/button_background"
+                            android:drawablePadding="@dimen/_5dp"
+                            android:gravity="center"
+                            android:paddingLeft="@dimen/_5dp"
+                            android:paddingRight="@dimen/_5dp"
+                            android:text="unFollow"
+                            android:textColor="@color/white"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+
+                        <TextView
+                            android:id="@+id/txtViewTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="View all comments"
+                            android:textColor="@color/black"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
 
                     <TextView
                         android:id="@+id/txtViewDes"
@@ -91,6 +114,7 @@
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:textStyle="normal" />
+
 
                     <TextView
                         android:id="@+id/txtViewAddress"
@@ -127,7 +151,99 @@
                         android:textStyle="normal"
                         android:visibility="visible" />
 
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_5dp"
+                        android:gravity="center"
+                        android:weightSum="3">
 
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="@dimen/_15dp"
+                            android:layout_weight="1"
+                            android:drawablePadding="@dimen/_5dp"
+                            android:gravity="center"
+                            android:text="Years Established"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="@dimen/_15dp"
+                            android:layout_weight="1"
+                            android:drawablePadding="@dimen/_5dp"
+                            android:gravity="center"
+                            android:text="Opening hours"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="@dimen/_15dp"
+                            android:layout_weight="1"
+                            android:drawablePadding="@dimen/_5dp"
+                            android:gravity="center"
+                            android:text="Verified"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:weightSum="3">
+
+                        <TextView
+                            android:id="@+id/tvCategoryViewYearsEstablis"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="@dimen/_15dp"
+                            android:layout_weight="1"
+                            android:drawablePadding="@dimen/_5dp"
+                            android:gravity="center"
+                            android:text="2014"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvCategoryViewhrs"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="@dimen/_15dp"
+                            android:layout_weight="1"
+                            android:drawablePadding="@dimen/_5dp"
+                            android:gravity="center"
+                            android:text="9-6"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvCategoryViewVerified"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="@dimen/_15dp"
+                            android:layout_weight="1"
+                            android:drawablePadding="@dimen/_5dp"
+                            android:gravity="center"
+                            android:text="Yes"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                    </TableRow>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 

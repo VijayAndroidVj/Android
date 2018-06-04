@@ -23,7 +23,7 @@ public class AspectRatioPreviewAdapter extends RecyclerView.Adapter<AspectRatioP
 
     public AspectRatioPreviewAdapter() {
         ratios = Arrays.asList(
-                new AspectRatio(4, 4),
+                // new AspectRatio(4, 4),
                 new AspectRatio(16, 9));
         selectedRatio = ratios.get(0);
     }
@@ -36,9 +36,11 @@ public class AspectRatioPreviewAdapter extends RecyclerView.Adapter<AspectRatioP
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        AspectRatio ratio = ratios.get(position);
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+        final AspectRatio ratio = ratios.get(position);
         holder.ratioView.setAspectRatio(ratio);
+        holder.ratioView.callOnClick();
+        holder.ratioView.setVisibility(View.GONE);
         if (ratio.equals(selectedRatio)) {
             lastSelectedView = holder.ratioView;
             holder.ratioView.setSelected(true);
@@ -66,13 +68,13 @@ public class AspectRatioPreviewAdapter extends RecyclerView.Adapter<AspectRatioP
 
         @Override
         public void onClick(View v) {
-            if (lastSelectedView == ratioView) {
+           /* if (lastSelectedView == ratioView) {
                 selectedRatio = ratioView.getRatio();
                 return;
             }
             if (ratioView.getRatio().equals(selectedRatio)) {
                 return;
-            }
+            }*/
             if (lastSelectedView != null) {
                 lastSelectedView.setSelected(false);
             }

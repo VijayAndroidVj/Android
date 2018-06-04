@@ -442,10 +442,10 @@ public class EditProfile extends AppCompatActivity {
                             preferenceUtil.putString(Keys.PROFILE_IMAGE, sigInResponse.getServerimage());
                             preferenceUtil.putString(Keys.COVER_IMAGE, sigInResponse.getCoverimage());
                             if (!TextUtils.isEmpty(imagePath) && MainActivity.mainActivity != null) {
-                                MainActivity.mainActivity.refresh();
+                                MainActivity.mainActivity.refresh(-1);
                             }
                             if (!TextUtils.isEmpty(coverimagePath) && MainActivity.mainActivity != null) {
-                                MainActivity.mainActivity.refresh();
+                                MainActivity.mainActivity.refresh(-1);
                             }
                         } else {
                             Toast.makeText(activity, sigInResponse.getMessage(), Toast.LENGTH_SHORT).show();

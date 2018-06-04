@@ -92,6 +92,12 @@ public class CategoryItem implements Parcelable {
     @SerializedName("verified")
     private String verified;
 
+    @SerializedName("hrs")
+    private String hrs;
+
+    @SerializedName("follow")
+    private boolean follow;
+
     protected CategoryItem(Parcel in) {
         _id = in.readString();
         title = in.readString();
@@ -120,6 +126,8 @@ public class CategoryItem implements Parcelable {
         created_on = in.readString();
         updated_on = in.readString();
         verified = in.readString();
+        hrs = in.readString();
+        follow = in.readByte() != 0;
     }
 
     public static final Creator<CategoryItem> CREATOR = new Creator<CategoryItem>() {
@@ -133,6 +141,14 @@ public class CategoryItem implements Parcelable {
             return new CategoryItem[size];
         }
     };
+
+    public boolean isFollow() {
+        return follow;
+    }
+
+    public void setFollow(boolean follow) {
+        this.follow = follow;
+    }
 
     public String get_id() {
         return _id;
@@ -314,6 +330,14 @@ public class CategoryItem implements Parcelable {
         return established;
     }
 
+    public String getHrs() {
+        return hrs;
+    }
+
+    public void setHrs(String hrs) {
+        this.hrs = hrs;
+    }
+
     public void setEstablished(String established) {
         this.established = established;
     }
@@ -350,6 +374,7 @@ public class CategoryItem implements Parcelable {
         this.verified = verified;
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -384,5 +409,7 @@ public class CategoryItem implements Parcelable {
         dest.writeString(created_on);
         dest.writeString(updated_on);
         dest.writeString(verified);
+        dest.writeString(hrs);
+        dest.writeByte((byte) (follow ? 1 : 0));
     }
 }

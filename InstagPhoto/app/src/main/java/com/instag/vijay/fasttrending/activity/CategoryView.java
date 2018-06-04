@@ -39,6 +39,10 @@ public class CategoryView extends AppCompatActivity implements View.OnClickListe
     private TextView ivCategoryViewCall;
     private TextView ivCategoryViewEmail;
     private TextView ivCategoryViewChat;
+    private TextView tvCategoryViewYearsEstablis;
+    private TextView tvCategoryViewhrs;
+    private TextView tvCategoryViewVerified;
+    private TextView tvCategoryViewfollow;
     private FlipperLayout flipperLayout;
     private CategoryItem categoryItem;
 
@@ -66,9 +70,14 @@ public class CategoryView extends AppCompatActivity implements View.OnClickListe
         ivCategoryViewCall = findViewById(R.id.ivCategoryViewCall);
         ivCategoryViewEmail = findViewById(R.id.ivCategoryViewEmail);
         ivCategoryViewChat = findViewById(R.id.ivCategoryViewChat);
+        tvCategoryViewfollow = findViewById(R.id.tvCategoryViewfollow);
+        tvCategoryViewYearsEstablis = findViewById(R.id.tvCategoryViewYearsEstablis);
+        tvCategoryViewhrs = findViewById(R.id.tvCategoryViewhrs);
+        tvCategoryViewVerified = findViewById(R.id.tvCategoryViewVerified);
         ivCategoryViewCall.setOnClickListener(this);
         ivCategoryViewEmail.setOnClickListener(this);
         ivCategoryViewChat.setOnClickListener(this);
+        tvCategoryViewfollow.setOnClickListener(this);
 
         if (categoryItem != null) {
 
@@ -107,6 +116,21 @@ public class CategoryView extends AppCompatActivity implements View.OnClickListe
                 txtProfileWebInfo.setText("");
             } else {
                 txtProfileWebInfo.setText(categoryItem.getWebsite());
+            }
+            if (TextUtils.isEmpty(categoryItem.getEstablished())) {
+                tvCategoryViewYearsEstablis.setText("--");
+            } else {
+                tvCategoryViewYearsEstablis.setText(categoryItem.getEstablished());
+            }
+            if (TextUtils.isEmpty(categoryItem.getVerified())) {
+                tvCategoryViewVerified.setText("--");
+            } else {
+                tvCategoryViewVerified.setText(categoryItem.getVerified().equalsIgnoreCase("0") ? "No" : "Yes");
+            }
+            if (TextUtils.isEmpty(categoryItem.getHrs())) {
+                tvCategoryViewhrs.setText("--");
+            } else {
+                tvCategoryViewhrs.setText(categoryItem.getHrs());
             }
 
         }
@@ -187,6 +211,15 @@ public class CategoryView extends AppCompatActivity implements View.OnClickListe
                         startActivity(it);
                     }
 
+                    break;
+                case R.id.tvCategoryViewfollow:
+                    if (categoryItem.isFollow()) {
+                        categoryItem.setFollow(false);
+                        tvCategoryViewfollow.setText("Unfollow");
+                    } else {
+                        categoryItem.setFollow(true);
+                        tvCategoryViewfollow.setText("Follow");
+                    }
                     break;
             }
         } catch (Exception e) {

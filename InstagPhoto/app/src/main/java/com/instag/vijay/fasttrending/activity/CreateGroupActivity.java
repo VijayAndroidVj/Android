@@ -18,9 +18,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.instag.vijay.fasttrending.CommonUtil;
+import com.instag.vijay.fasttrending.EventResponse;
+import com.instag.vijay.fasttrending.MainActivity;
 import com.instag.vijay.fasttrending.PermissionCheck;
 import com.instag.vijay.fasttrending.PreferenceUtil;
 import com.instag.vijay.fasttrending.R;
+import com.instag.vijay.fasttrending.model.BusinessPageModel;
 import com.instag.vijay.fasttrending.model.CategoryMain;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
@@ -36,6 +39,8 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -74,7 +79,7 @@ public class CreateGroupActivity extends AppCompatActivity {
                     return;
                 }
                 CropImage.activity()
-                        .setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(16, 16)
+                        .setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(4, 4)
                         .start(activity);
             }
         });
@@ -92,9 +97,25 @@ public class CreateGroupActivity extends AppCompatActivity {
         });
 
         categoryMains = new ArrayList<>();
+
+        if (getIntent() != null) {
+            businessPageModel = getIntent().getParcelableExtra("model");
+            if (businessPageModel != null) {
+                input_business_title.setText(businessPageModel.getTitle());
+                if (businessPageModel.getImage() != null) {
+                    Glide.with(activity)
+                            .load(businessPageModel.getImage())
+                            .asBitmap()
+                            .into(iv_business_image);
+                }
+            }
+        }
         setCategoryList();
+
         //getBusinessCategory();
     }
+
+    BusinessPageModel businessPageModel;
 
     private void getBusinessCategory() {
         try {
@@ -183,6 +204,14 @@ public class CreateGroupActivity extends AppCompatActivity {
             list.add("Sports");
             list.add("Job");
 
+            int sPos = -1;
+            for (int i = 0; i < list.size(); i++) {
+                String categoryMain = list.get(i);
+                if (businessPageModel != null && businessPageModel.getCategory() != null && businessPageModel.getCategory().equalsIgnoreCase(categoryMain)) {
+                    sPos = i;
+                }
+            }
+
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             sp_add_group_type.setAdapter(adapter);
@@ -203,6 +232,9 @@ public class CreateGroupActivity extends AppCompatActivity {
 
                 }
             });
+            if (sPos != -1) {
+                sp_add_group_type.setSelection(sPos + 1);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -231,13 +263,13 @@ public class CreateGroupActivity extends AppCompatActivity {
         try {
             String title = input_business_title.getText().toString().trim();
             if (TextUtils.isEmpty(title)) {
-                input_business_title.setError("Please enter business title");
+                input_business_title.setError("Please enter group name");
                 return;
             }
             input_business_title.setError(null);
 
             if (sp_add_group_type.getSelectedItemPosition() <= 0) {
-                sp_add_group_type.setError("Please select business category");
+                sp_add_group_type.setError("Please select group type");
                 sp_add_group_type.requestFocus();
                 return;
             }
@@ -251,10 +283,8 @@ public class CreateGroupActivity extends AppCompatActivity {
             } else if (imagePath != null) {
                 file = new File(imagePath);
             }
-            Toast.makeText(activity, "Created successfully",
-                    Toast.LENGTH_LONG).show();
-            onBackPressed();
-           /* if (CommonUtil.isNetworkAvailable(activity)) {
+
+            if (CommonUtil.isNetworkAvailable(activity)) {
                 initProgress("Uploading please wait...");
                 ApiInterface apiService =
                         ApiClient.getClient().create(ApiInterface.class);
@@ -264,41 +294,35 @@ public class CreateGroupActivity extends AppCompatActivity {
                             null,
                             file
                     );
+                title = title.substring(0, 1).toUpperCase() + title.substring(1);
                 PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
                 MultipartBody.Part titlemul =
                         MultipartBody.Part.createFormData("title", title);
 
-                MultipartBody.Part categorymul =
-                        MultipartBody.Part.createFormData("category", category);
-
                 // MultipartBody.Part is used to send also the actual file name
-                MultipartBody.Part uploaded_file =
-                        MultipartBody.Part.createFormData("uploaded_file", file == null ? "" : file.getName(), requestFile);
-                MultipartBody.Part txtEmpPreAddress =
-                        MultipartBody.Part.createFormData("txtEmpPreAddress", "");
-                MultipartBody.Part state =
-                        MultipartBody.Part.createFormData("state", preferenceUtil.getUserState());
-                MultipartBody.Part city =
-                        MultipartBody.Part.createFormData("city", "");
-                MultipartBody.Part txtEmpContact =
-                        MultipartBody.Part.createFormData("txtEmpContact", preferenceUtil.getUserContactNumber());
-                MultipartBody.Part keyword =
-                        MultipartBody.Part.createFormData("key", new PreferenceUtil(activity).getUserMailId());
+                MultipartBody.Part uploaded_file = null;
+                if (requestFile != null)
+                    uploaded_file = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+                MultipartBody.Part type =
+                        MultipartBody.Part.createFormData("type", category);
                 MultipartBody.Part txtEmail =
                         MultipartBody.Part.createFormData("email", new PreferenceUtil(activity).getUserMailId());
+                MultipartBody.Part update = null;
+                if (businessPageModel != null)
+                    update = MultipartBody.Part.createFormData("update", businessPageModel.getTitle());
 
-                // finally, execute the request
-                Call<EventResponse> call = apiService.add_business_page(titlemul, uploaded_file, txtEmpPreAddress, state, city, txtEmpContact, categorymul, null, keyword, txtEmail);
+                Call<EventResponse> call = apiService.add_group(titlemul, uploaded_file, type, txtEmail, update);
                 call.enqueue(new Callback<EventResponse>() {
                     @Override
-                    public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
+                    public void onResponse(Call<EventResponse> call, retrofit2.Response<EventResponse> response) {
                         closeProgress();
                         EventResponse sigInResponse = response.body();
                         if (sigInResponse != null) {
                             if (sigInResponse.getResult().equals("success")) {
                                 if (!TextUtils.isEmpty(sigInResponse.getMessage()))
                                     Toast.makeText(activity, sigInResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                                MainActivity.mainActivity.refresh();
+                                MainActivity.mainActivity.refresh(5);
+                                finish();
                             } else {
                                 Toast.makeText(activity, sigInResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }
@@ -317,7 +341,7 @@ public class CreateGroupActivity extends AppCompatActivity {
                 });
             } else {
                 Toast.makeText(activity, "Check your internet connection!", Toast.LENGTH_SHORT).show();
-            }*/
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

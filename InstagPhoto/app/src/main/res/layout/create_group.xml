@@ -93,7 +93,7 @@
 
                     <ImageView
                         android:id="@+id/iv_business_image"
-                        android:layout_width="150dp"
+                        android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:background="@drawable/default_cover_photo"
                         android:scaleType="fitXY" />

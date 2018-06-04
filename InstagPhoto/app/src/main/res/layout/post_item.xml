@@ -262,10 +262,10 @@
             android:layout_marginRight="10dp"
             android:maxLines="3"
             android:padding="5dp"
-            android:text="mbhbkjkjbkkbk"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="14sp"
-            android:textStyle="normal" />
+            android:textStyle="bold" />
 
     </LinearLayout>
 

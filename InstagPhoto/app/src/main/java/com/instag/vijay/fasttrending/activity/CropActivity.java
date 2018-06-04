@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -25,8 +26,10 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.instag.vijay.fasttrending.CropViewConfigurator;
+import com.instag.vijay.fasttrending.MainActivity;
 import com.instag.vijay.fasttrending.R;
 import com.instag.vijay.fasttrending.UpLoadImagePreview;
 import com.steelkiwi.cropiwa.CropIwaView;
@@ -42,6 +45,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class CropActivity extends AppCompatActivity {
 
@@ -91,21 +97,33 @@ public class CropActivity extends AppCompatActivity {
                 break;
             case R.id.done:
                 cropView.crop(configurator.getSelectedSaveConfig());
-                try {
-                    String filePath = getRealPathFromURI(activity, configurator.getSelectedSaveConfig().getDstUri());
-                    if (filePath == null) {
-                        filePath = getFilePathFromURI(activity, configurator.getSelectedSaveConfig().getDstUri());
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            String filePath = getRealPathFromURI(activity, configurator.getSelectedSaveConfig().getDstUri());
+                            if (filePath == null) {
+                                filePath = getFilePathFromURI(activity, configurator.getSelectedSaveConfig().getDstUri());
+                            }
+                            String finalFilePath = filePath;
+                            if (!TextUtils.isEmpty(finalFilePath)) {
+                                String fpath = compressImage(finalFilePath);
+                                if (fpath == null || !new File(fpath).exists()) {
+                                    Toast.makeText(activity, "Try again..", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                                Intent intent = new Intent(activity, UpLoadImagePreview.class);
+                                intent.putExtra("path", fpath);
+                                startActivityForResult(intent, 500);
+                            }
+                        } catch (Exception e) {
+                            Toast.makeText(activity, "Try again..", Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
                     }
-                    if (!TextUtils.isEmpty(filePath)) {
-                        String fpath = compressImage(filePath);
+                }, 500);
 
-                        Intent intent = new Intent(activity, UpLoadImagePreview.class);
-                        intent.putExtra("path", fpath);
-                        startActivityForResult(intent, 500);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+
                 break;
         }
 
@@ -142,6 +160,66 @@ public class CropActivity extends AppCompatActivity {
 
         return inSampleSize;
     }
+
+
+    private String decodeFile(File f) {
+        Bitmap b = null;
+
+        //Decode image size
+        BitmapFactory.Options o = new BitmapFactory.Options();
+        o.inJustDecodeBounds = true;
+
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(f);
+            BitmapFactory.decodeStream(fis, null, o);
+            fis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        int IMAGE_MAX_SIZE = 1024;
+        int scale = 1;
+        if (o.outHeight > IMAGE_MAX_SIZE || o.outWidth > IMAGE_MAX_SIZE) {
+            scale = (int) Math.pow(2, (int) Math.ceil(Math.log(IMAGE_MAX_SIZE /
+                    (double) Math.max(o.outHeight, o.outWidth)) / Math.log(0.5)));
+        }
+
+        //Decode with inSampleSize
+        BitmapFactory.Options o2 = new BitmapFactory.Options();
+        o2.inSampleSize = scale;
+        try {
+            fis = new FileInputStream(f);
+            b = BitmapFactory.decodeStream(fis, null, o2);
+            fis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+
+        Log.d("", "Width :" + b.getWidth() + " Height :" + b.getHeight());
+        File file = new File(Environment.getExternalStorageDirectory().getPath(), getString(R.string.app_name));
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        File destFile = new File(file, "img_"
+                + dateFormatter.format(new Date()).toString() + ".png");
+        try {
+            FileOutputStream out = new FileOutputStream(destFile);
+            b.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return destFile.getAbsolutePath();
+    }
+
 
     public String compressImage(String imageUri) {
 
@@ -276,7 +354,11 @@ public class CropActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 500 && resultCode == Activity.RESULT_OK) {
+            MainActivity.mainActivity.refresh(0);
+            Intent intent = new Intent();
+            setResult(Activity.RESULT_OK, intent);
             finish();
+
         }
     }
 

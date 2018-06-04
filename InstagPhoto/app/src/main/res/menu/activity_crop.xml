@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/done"
+        android:icon="@drawable/ic_done_black"
         android:title="@string/mi_done"
-        android:icon="@drawable/ic_done_white_24dp"
         app:showAsAction="ifRoom" />
 </menu>

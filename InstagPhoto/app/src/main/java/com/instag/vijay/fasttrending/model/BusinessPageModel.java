@@ -1,5 +1,8 @@
 package com.instag.vijay.fasttrending.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 import com.instag.vijay.fasttrending.UserModel;
 
@@ -9,7 +12,7 @@ import java.util.ArrayList;
  * Created by vijay on 25/11/17.
  */
 
-public class BusinessPageModel {
+public class BusinessPageModel implements Parcelable{
 
     @SerializedName("title")
     private String title;
@@ -22,6 +25,25 @@ public class BusinessPageModel {
 
     @SerializedName("subcategory")
     private String subcategory;
+
+    protected BusinessPageModel(Parcel in) {
+        title = in.readString();
+        image = in.readString();
+        category = in.readString();
+        subcategory = in.readString();
+    }
+
+    public static final Creator<BusinessPageModel> CREATOR = new Creator<BusinessPageModel>() {
+        @Override
+        public BusinessPageModel createFromParcel(Parcel in) {
+            return new BusinessPageModel(in);
+        }
+
+        @Override
+        public BusinessPageModel[] newArray(int size) {
+            return new BusinessPageModel[size];
+        }
+    };
 
     public String getTitle() {
         return title;
@@ -53,5 +75,18 @@ public class BusinessPageModel {
 
     public void setSubcategory(String subcategory) {
         this.subcategory = subcategory;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
+        dest.writeString(image);
+        dest.writeString(category);
+        dest.writeString(subcategory);
     }
 }

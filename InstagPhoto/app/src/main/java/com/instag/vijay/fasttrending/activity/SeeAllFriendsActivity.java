@@ -5,18 +5,21 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.instag.vijay.fasttrending.CommonUtil;
+import com.instag.vijay.fasttrending.MainActivity;
 import com.instag.vijay.fasttrending.PreferenceUtil;
 import com.instag.vijay.fasttrending.R;
 import com.instag.vijay.fasttrending.UserModel;
-import com.instag.vijay.fasttrending.adapter.FriendsGridAdapter;
+import com.instag.vijay.fasttrending.adapter.FriendsAllAdapter;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
-import com.instag.vijay.fasttrending.view.ExpandableHeightGridView;
 
 import java.util.ArrayList;
 
@@ -32,7 +35,7 @@ public class SeeAllFriendsActivity extends AppCompatActivity {
 
     private String action = "";
     private Activity activity;
-    private ExpandableHeightGridView gv_list;
+    private RecyclerView recyclerView;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -44,13 +47,22 @@ public class SeeAllFriendsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (isFinishing()) {
+            if (MainActivity.mainActivity != null) {
+                MainActivity.mainActivity.refreshProfile();
+            }
+        }
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.seeallfriends);
         activity = this;
-        gv_list = findViewById(R.id.gv_list);
+        recyclerView = findViewById(R.id.gv_list);
         if (getIntent() != null && getIntent().getExtras() != null) {
             action = getIntent().getStringExtra("action");
         }
@@ -87,9 +99,13 @@ public class SeeAllFriendsActivity extends AppCompatActivity {
                     public void onResponse(Call<ArrayList<UserModel>> call, Response<ArrayList<UserModel>> response) {
                         ArrayList<UserModel> postModelMain = response.body();
                         if (postModelMain != null) {
+
 //                            postsArrayList = postModelMain.getPostsArrayList();
-                            FriendsGridAdapter friendsGridAdapter = new FriendsGridAdapter(activity, postModelMain);
-                            gv_list.setAdapter(friendsGridAdapter);
+                            FriendsAllAdapter friendsGridAdapter = new FriendsAllAdapter(activity, postModelMain, action);
+                            recyclerView.setAdapter(friendsGridAdapter);
+                            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(activity);
+                            recyclerView.setLayoutManager(mLayoutManager);
+                            recyclerView.setItemAnimator(new DefaultItemAnimator());
                         }
                         // showGrid();
                     }

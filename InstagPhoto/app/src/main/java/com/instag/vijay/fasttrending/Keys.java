@@ -22,6 +22,7 @@ public interface Keys {
     String PRIVACY_SETTINGS = "PRIVACY_SETTINGS";
     String PROFILE_STATUS = "PROFILE_STATUS";
     String WEN_INFO = "WEN_INFO";
+    String NOTI_COUNT = "NOTI_COUNT";
 
     /**
      * Preference keys

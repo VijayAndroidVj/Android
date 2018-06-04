@@ -23,6 +23,7 @@ import com.instag.vijay.fasttrending.MainActivity;
 import com.instag.vijay.fasttrending.PermissionCheck;
 import com.instag.vijay.fasttrending.PreferenceUtil;
 import com.instag.vijay.fasttrending.R;
+import com.instag.vijay.fasttrending.model.BusinessPageModel;
 import com.instag.vijay.fasttrending.model.CategoryMain;
 import com.instag.vijay.fasttrending.model.SubCategory;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
@@ -84,7 +85,7 @@ public class CreateBusinessPageActivity extends AppCompatActivity {
                     return;
                 }
                 CropImage.activity()
-                        .setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(16, 16)
+                        .setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(4, 4)
                         .start(activity);
             }
         });
@@ -103,7 +104,21 @@ public class CreateBusinessPageActivity extends AppCompatActivity {
         setCategoryList();
         getBusinessCategory();
         setSubCategoryList();
+        if (getIntent() != null) {
+            businessPageModel = getIntent().getParcelableExtra("model");
+            if (businessPageModel != null) {
+                input_business_title.setText(businessPageModel.getTitle());
+                if (businessPageModel.getImage() != null) {
+                    Glide.with(activity)
+                            .load(businessPageModel.getImage())
+                            .asBitmap()
+                            .into(iv_business_image);
+                }
+            }
+        }
     }
+
+    BusinessPageModel businessPageModel;
 
     private void getBusinessCategory() {
         try {
@@ -183,9 +198,14 @@ public class CreateBusinessPageActivity extends AppCompatActivity {
     private void setCategoryList() {
 
         try {
+            int sPos = -1;
             ArrayList<String> list = new ArrayList<>();
-            for (CategoryMain categoryMain : categoryMains) {
+            for (int i = 0; i < categoryMains.size(); i++) {
+                CategoryMain categoryMain = categoryMains.get(i);
                 list.add(categoryMain.getName());
+                if (businessPageModel != null && businessPageModel.getCategory() != null && businessPageModel.getCategory().equalsIgnoreCase(categoryMain.getName())) {
+                    sPos = i;
+                }
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -209,6 +229,9 @@ public class CreateBusinessPageActivity extends AppCompatActivity {
 
                 }
             });
+            if (sPos != -1) {
+                sp_add_business_category.setSelection(sPos + 1);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -257,8 +280,13 @@ public class CreateBusinessPageActivity extends AppCompatActivity {
 
         try {
             ArrayList<String> list = new ArrayList<>();
-            for (SubCategory subCategory : subCategoryMains) {
-                list.add(subCategory.getCategory());
+            int sPos = -1;
+            for (int i = 0; i < subCategoryMains.size(); i++) {
+                SubCategory categoryMain = subCategoryMains.get(i);
+                list.add(categoryMain.getCategory());
+                if (businessPageModel != null && businessPageModel.getSubcategory() != null && businessPageModel.getSubcategory().equalsIgnoreCase(categoryMain.getCategory())) {
+                    sPos = i;
+                }
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -280,6 +308,9 @@ public class CreateBusinessPageActivity extends AppCompatActivity {
 
                 }
             });
+            if (sPos != -1) {
+                sp_add_business_sub_category.setSelection(sPos + 1);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -371,9 +402,12 @@ public class CreateBusinessPageActivity extends AppCompatActivity {
                         MultipartBody.Part.createFormData("key", "");
                 MultipartBody.Part txtEmail =
                         MultipartBody.Part.createFormData("email", new PreferenceUtil(activity).getUserMailId());
+                MultipartBody.Part update = null;
+                if (businessPageModel != null)
+                    update = MultipartBody.Part.createFormData("update", businessPageModel.getTitle());
 
                 // finally, execute the request
-                Call<EventResponse> call = apiService.add_business_page(titlemul, uploaded_file, txtEmpPreAddress, state, city, txtEmpContact, categorymul, subcategorymul, keyword, txtEmail);
+                Call<EventResponse> call = apiService.add_business_page(titlemul, uploaded_file, txtEmpPreAddress, state, city, txtEmpContact, categorymul, subcategorymul, keyword, txtEmail, update);
                 call.enqueue(new Callback<EventResponse>() {
                     @Override
                     public void onResponse(Call<EventResponse> call, retrofit2.Response<EventResponse> response) {
@@ -383,7 +417,8 @@ public class CreateBusinessPageActivity extends AppCompatActivity {
                             if (sigInResponse.getResult().equals("success")) {
                                 if (!TextUtils.isEmpty(sigInResponse.getMessage()))
                                     Toast.makeText(activity, sigInResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                                MainActivity.mainActivity.refresh();
+                                MainActivity.mainActivity.refresh(5);
+                                finish();
                             } else {
                                 Toast.makeText(activity, sigInResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }

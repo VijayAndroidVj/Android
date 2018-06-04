@@ -41,7 +41,7 @@ public class CropViewConfigurator implements StorageModule, ConfigChangeListener
 
         AspectRatioPreviewAdapter ratioPreviewAdapter = new AspectRatioPreviewAdapter();
         ratioPreviewAdapter.setListener(this);
-        fixedRatioList = (RecyclerView) screen.findViewById(R.id.fixed_ratio_list);
+        fixedRatioList = screen.findViewById(R.id.fixed_ratio_list);
         fixedRatioList.setLayoutManager(new LinearLayoutManager(
                 cropIwaView.getContext(),
                 LinearLayoutManager.HORIZONTAL,

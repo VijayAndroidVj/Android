@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -119,6 +120,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private TextView txt_see_all_followers;
     private TextView txtProfileWebInfo;
     private TextView txtProfileMobile;
+    private TextView txtProfileName1;
     private TextView txtProfileEmail;
     private ListView listview_business_pages;
     private ListView listview_Groups;
@@ -148,6 +150,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         badge_followers = view.findViewById(R.id.badge_followers);
         txtProfileWebInfo = view.findViewById(R.id.txtProfileWebInfo);
         txtProfileMobile = view.findViewById(R.id.txtProfileMobile);
+        txtProfileName1 = view.findViewById(R.id.txtProfileName1);
         txtProfileEmail = view.findViewById(R.id.txtProfileEmail);
         listview_business_pages = view.findViewById(R.id.listview_business_pages);
         listview_Groups = view.findViewById(R.id.listview_Groups);
@@ -201,7 +204,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         preferenceUtil = new PreferenceUtil(getActivity());
         ivProfile1 = view.findViewById(R.id.ivProfile1);
         ivCoverPhoto = view.findViewById(R.id.ivCoverPhoto);
-        txtUserName.setText(" # " + preferenceUtil.getUserName());
+        txtUserName.setText(String.valueOf(" # " + preferenceUtil.getUserName()));
+        txtProfileName1.setText(preferenceUtil.getProfileName());
 
         String profileImage = preferenceUtil.getMyProfile();
         if (!TextUtils.isEmpty(profileImage) && profileImage.contains("http://")) {
@@ -365,10 +369,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                             preferenceUtil.putString(Keys.PROFILE_IMAGE, sigInResponse.getServerimage());
                             preferenceUtil.putString(Keys.COVER_IMAGE, sigInResponse.getCoverimage());
                             if (!TextUtils.isEmpty(imagePath) && MainActivity.mainActivity != null) {
-                                MainActivity.mainActivity.refresh();
+                                MainActivity.mainActivity.refresh(5);
                             }
                             if (!TextUtils.isEmpty(coverimagePath) && MainActivity.mainActivity != null) {
-                                MainActivity.mainActivity.refresh();
+                                MainActivity.mainActivity.refresh(5);
                             }
                             setPallette();
                         } else {
@@ -456,7 +460,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                             FriendsGridAdapter followersGridAdapter = new FriendsGridAdapter(activity, postModelMain.getFollowersList());
                             gv_followers_list.setAdapter(followersGridAdapter);
 
-                            ArrayList<BusinessPageModel> bList = postModelMain.getBusinessPagesList();
+                            final ArrayList<BusinessPageModel> bList = postModelMain.getBusinessPagesList();
                             if (bList == null || bList.size() <= 0) {
                                 txtProfilePagesLable.setVisibility(View.VISIBLE);
                             } else {
@@ -464,8 +468,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                                 GroupPageListAdapter arrayAdapter = new GroupPageListAdapter(activity, bList);
                                 listview_business_pages.setAdapter(arrayAdapter);
                                 setListViewHeightBasedOnChildren(listview_business_pages);
+                                listview_business_pages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                        Intent in = new Intent(activity, CreateBusinessPageActivity.class);
+                                        in.putExtra("model", bList.get(position));
+                                        startActivity(in);
+                                    }
+                                });
                             }
-                            ArrayList<BusinessPageModel> gList = postModelMain.getGroupsList();
+                            final ArrayList<BusinessPageModel> gList = postModelMain.getGroupsList();
                             if (gList.size() <= 0) {
                                 txtProfileGroupsLable.setVisibility(View.VISIBLE);
                             } else {
@@ -473,6 +485,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                                 GroupPageListAdapter arrayAdapter = new GroupPageListAdapter(activity, gList);
                                 listview_Groups.setAdapter(arrayAdapter);
                                 setListViewHeightBasedOnChildren(listview_Groups);
+                                listview_Groups.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                        Intent in = new Intent(activity, CreateGroupActivity.class);
+                                        in.putExtra("model", gList.get(position));
+                                        startActivity(in);
+                                    }
+                                });
                             }
                             yourPosts = postModelMain.getYourPostsList();
 

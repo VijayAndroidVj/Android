@@ -20,6 +20,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.instag.vijay.fasttrending.CommonUtil;
 import com.instag.vijay.fasttrending.Db.DataBaseHandler;
+import com.instag.vijay.fasttrending.Keys;
 import com.instag.vijay.fasttrending.MainActivity;
 import com.instag.vijay.fasttrending.PreferenceUtil;
 import com.instag.vijay.fasttrending.R;
@@ -143,6 +144,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent);
 
+        PreferenceUtil preferenceUtil = new PreferenceUtil(this);
+        int noti_count = preferenceUtil.getInt(Keys.NOTI_COUNT, 0);
+        preferenceUtil.putInt(Keys.NOTI_COUNT, noti_count + 1);
+        if (MainActivity.mainActivity != null) {
+            MainActivity.mainActivity.updateNotiCount();
+        }
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 

@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -34,6 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.instag.vijay.fasttrending.activity.ComingSoon;
 import com.instag.vijay.fasttrending.activity.CropActivity;
 import com.instag.vijay.fasttrending.activity.SearchActivity;
 import com.instag.vijay.fasttrending.adapter.PagerAdapter;
@@ -73,9 +75,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public EditText edtsearchview;
     private Activity activity;
     private View iv_actionbar_settings;
+    private TextView badge_noti;
     private View iv_actionbar_peoples;
+    private View iv_actionbar_peoples_group;
     public static MainActivity mainActivity;
     private PagerAdapter adapter;
+    private ViewPager viewPager;
     private View flnewsfeed;
     private View flsearch;
     private View flvideo;
@@ -112,12 +117,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final TextView name = view.findViewById(R.id.txtAppName);
         view.findViewById(R.id.iv_actionbar_noti).setOnClickListener(this);
         iv_actionbar_settings = view.findViewById(R.id.iv_actionbar_settings);
+        badge_noti = view.findViewById(R.id.badge_noti);
         iv_actionbar_peoples = view.findViewById(R.id.iv_actionbar_peoples);
+        iv_actionbar_peoples_group = view.findViewById(R.id.iv_actionbar_peoples_group);
         searchEditText = view.findViewById(R.id.searchview);
         edtsearchview = view.findViewById(R.id.edtsearchview);
 //        searchEditText.setTextColor(getResources().getColor(R.color.black));
 //        searchEditText.setHintTextColor(getResources().getColor(R.color.grey1));
         iv_actionbar_peoples.setOnClickListener(this);
+        iv_actionbar_peoples_group.setOnClickListener(this);
         iv_actionbar_settings.setOnClickListener(this);
         ivLogo.setOnClickListener(this);
         selectedColorStateList = CommonUtil.getColorStateList(activity, R.color.colorPrimary);
@@ -133,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         actionBar.setElevation(0);
 
         final BottomBar bottomBar = findViewById(R.id.bottomBar);
-        final ViewPager viewPager = findViewById(R.id.pager);
+        viewPager = findViewById(R.id.pager);
         adapter = new PagerAdapter(getSupportFragmentManager(), 6);
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(4);
@@ -169,6 +177,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 bottomBar.selectTabAtPosition(position);
                 iv_actionbar_settings.setVisibility(View.GONE);
                 iv_actionbar_peoples.setVisibility(View.GONE);
+                iv_actionbar_peoples_group.setVisibility(View.GONE);
                 edtsearchview.setVisibility(View.GONE);
                 if (position == 1) {
 //                    SearchFragment searchFragment = (SearchFragment) adapter.getItem(1);
@@ -192,6 +201,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     searchEditText.setVisibility(View.GONE);
                     edtsearchview.setVisibility(View.VISIBLE);
                     iv_actionbar_peoples.setVisibility(View.VISIBLE);
+                    iv_actionbar_peoples_group.setVisibility(View.VISIBLE);
                     //edtsearchview.requestFocus();
                 } else {
                     name.setVisibility(View.VISIBLE);
@@ -308,6 +318,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         String token = FirebaseInstanceId.getInstance().getToken();
         registerFcmToken(token, activity);
+
+        updateNotiCount();
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -459,6 +471,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void moveToNotification() {
+        PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
+        preferenceUtil.putInt(Keys.NOTI_COUNT, 0);
+        updateNotiCount();
         Intent intent = new Intent(activity, NotificationActivity.class);
         startActivity(intent);
     }
@@ -557,6 +572,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //            startActivityForResult(intent, UPLOAD);
 
                 startActivity(CropActivity.callingIntent(activity, selectedImageUri));
+            } else if (requestCode == PhotoFragment.UPLOAD && resultCode == Activity.RESULT_OK) {
+                viewPager.setCurrentItem(0);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -620,6 +637,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.iv_actionbar_peoples:
                 Intent in = new Intent(activity, ChatListActivity.class);
+                startActivity(in);
+                break;
+            case R.id.iv_actionbar_peoples_group:
+                in = new Intent(activity, ComingSoon.class);
                 startActivity(in);
                 break;
             case R.id.iv_actionbar_settings:
@@ -721,6 +742,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {
+        if (viewPager.getCurrentItem() > 0) {
+            viewPager.setCurrentItem(0);
+            return;
+        }
         if (back_pressed + TIME_DELAY > System.currentTimeMillis()) {
             moveTaskToBack(true);
         } else {
@@ -730,11 +755,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void refresh() {
+    public void refresh(int movePos) {
         try {
+            if (movePos > -1) {
+                viewPager.setCurrentItem(movePos);
+            }
             NewsfeedFragment newsfeedFragment = (NewsfeedFragment) adapter.getItem(0);
             ProfileFragment profileFragment = (ProfileFragment) adapter.getItem(5);
             newsfeedFragment.refreshItems();
+            profileFragment.getMyPosts();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void refreshProfile() {
+        try {
+            ProfileFragment profileFragment = (ProfileFragment) adapter.getItem(5);
             profileFragment.getMyPosts();
         } catch (Exception e) {
             e.printStackTrace();
@@ -745,6 +782,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         try {
             ChatFragment chatFragment = (ChatFragment) adapter.getItem(3);
             chatFragment.onResume();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateNotiCount() {
+        try {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
+                    int count = preferenceUtil.getInt(Keys.NOTI_COUNT, 0);
+                    if (count > 0) {
+                        badge_noti.setVisibility(View.VISIBLE);
+                        badge_noti.setText(String.valueOf(count));
+                    } else {
+                        badge_noti.setVisibility(View.GONE);
+                    }
+                }
+            }, 0);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -313,7 +313,6 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
         findViewById(R.id.iv_chat_mic).setOnClickListener(this);
         findViewById(R.id.iv_chat_video).setOnClickListener(this);
         findViewById(R.id.sendMessageButton).setOnClickListener(this);
-        findViewById(R.id.sendMessageButton1).setOnClickListener(this);
         chatSwipeRefreshLayout = findViewById(R.id.chatSwipeRefreshLayout);
         chatSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -476,7 +475,7 @@ public class TrovaChat extends AppCompatActivity implements View.OnClickListener
             launchAudioIntent();
         } else if (i == R.id.iv_chat_video) {
             launchVideoIntent();
-        } else if (i == R.id.sendMessageButton || i == R.id.sendMessageButton1) {
+        } else if (i == R.id.sendMessageButton) {
             String message = messageEditText.getText().toString().trim();
             if (!TextUtils.isEmpty(message)) {
                 if (Utils.isNetworkAvailable(activity)) {

@@ -1,5 +1,6 @@
 package com.instag.vijay.fasttrending.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -8,8 +9,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.instag.vijay.fasttrending.MainActivity;
 import com.instag.vijay.fasttrending.R;
 import com.instag.vijay.fasttrending.fragments.PhotoFragment;
+
+import static com.instag.vijay.fasttrending.fragments.PhotoFragment.UPLOAD;
 
 /**
  * Created by vijay on 13/5/18.
@@ -50,5 +54,14 @@ public class PostActivity extends AppCompatActivity {
 
         fragmentTransaction.add(R.id.fragment_container, fragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == UPLOAD && resultCode == RESULT_OK && data != null) {
+            finish();
+            MainActivity.mainActivity.refresh(0);
+        }
     }
 }

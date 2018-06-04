@@ -97,9 +97,10 @@
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
                                 android:layout_margin="@dimen/_15dp"
+                                android:background="?android:attr/selectableItemBackground"
                                 android:padding="@dimen/_7dp"
                                 android:src="@drawable/ic_camera_black"
-                                android:tint="@color/grey_overlay" />
+                                android:tint="@color/disabledOverlay" />
 
                             <ImageView
                                 android:id="@+id/iv_chat_gallery"
@@ -107,9 +108,10 @@
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
                                 android:layout_margin="@dimen/_15dp"
+                                android:background="?android:attr/selectableItemBackground"
                                 android:padding="@dimen/_7dp"
                                 android:src="@drawable/ic_insert_photo"
-                                android:tint="@color/grey_overlay" />
+                                android:tint="@color/disabledOverlay" />
 
                             <ImageView
                                 android:id="@+id/iv_chat_file"
@@ -117,9 +119,10 @@
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
                                 android:layout_margin="@dimen/_15dp"
+                                android:background="?android:attr/selectableItemBackground"
                                 android:padding="@dimen/_7dp"
                                 android:src="@drawable/ic_file"
-                                android:tint="@color/grey_overlay" />
+                                android:tint="@color/disabledOverlay" />
 
                             <ImageView
                                 android:id="@+id/iv_chat_mic"
@@ -127,9 +130,10 @@
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
                                 android:layout_margin="@dimen/_15dp"
+                                android:background="?android:attr/selectableItemBackground"
                                 android:padding="@dimen/_7dp"
                                 android:src="@drawable/ic_mic"
-                                android:tint="@color/grey_overlay" />
+                                android:tint="@color/disabledOverlay" />
 
                             <ImageView
                                 android:id="@+id/iv_chat_video"
@@ -137,9 +141,10 @@
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
                                 android:layout_margin="@dimen/_15dp"
+                                android:background="?android:attr/selectableItemBackground"
                                 android:padding="@dimen/_7dp"
                                 android:src="@drawable/ic_video_library"
-                                android:tint="@color/grey_overlay" />
+                                android:tint="@color/disabledOverlay" />
 
 
                         </LinearLayout>
@@ -150,61 +155,65 @@
                 <RelativeLayout
                     android:id="@+id/edit"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:background="@drawable/right_round_corner_rect_white_chat">
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/right_round_corner_rect_white_chat"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_2dp"
+                    android:weightSum="1">
 
+                    <ImageView
+                        android:id="@+id/iv_attach_files"
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="start|center"
+                        android:padding="@dimen/_5dp"
+                        android:src="@drawable/ic_attach"
+                        android:tint="@color/grey_overlay"
+                        android:visibility="gone" />
 
                     <EditText
                         android:id="@+id/messageEditText"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_centerInParent="true"
-                        android:layout_marginBottom="1dp"
-                        android:layout_marginEnd="40dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="40dp"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="1dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginStart="2dp"
+                        android:layout_toEndOf="@+id/iv_attach_files"
                         android:layout_toLeftOf="@+id/sendMessageButton"
-                        android:background="@color/participant_view_unselected"
+                        android:layout_toRightOf="@+id/iv_attach_files"
+                        android:layout_toStartOf="@+id/sendMessageButton"
+                        android:background="@color/white"
                         android:ems="10"
                         android:inputType="textMultiLine"
                         android:maxLength="2048"
-                        android:maxLines="4"
-                        android:minHeight="40dp"
+                        android:maxLines="3"
+                        android:minHeight="@dimen/_45dp"
+                        android:padding="5dp"
                         android:scrollHorizontally="false"
                         android:scrollbars="vertical"
-                        android:textColor="@android:color/black"
-                        android:textSize="14sp" />
+                        android:textColor="@android:color/black" />
 
-                    <FrameLayout
+                    <ImageButton
                         android:id="@+id/sendMessageButton"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
+                        android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_centerInParent="true"
-                        android:layout_gravity="right|center"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
                         android:layout_margin="@dimen/_5dp"
-                        android:background="@drawable/rounded_corner_green"
-                        android:padding="@dimen/_10dp">
-
-                        <ImageButton
-                            android:id="@+id/sendMessageButton1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="2sp"
-                            android:layout_marginStart="2sp"
-                            android:background="@drawable/send"
-                            android:backgroundTint="@color/white"
-                            android:contentDescription="@string/app_name"
-                            android:gravity="center"
-                            android:padding="@dimen/_5dp"
-                            android:paddingBottom="2sp"
-                            android:tint="@color/white" />
-
-                    </FrameLayout>
+                        android:background="?android:attr/selectableItemBackground"
+                        android:backgroundTint="@color/grey1"
+                        android:contentDescription="@string/app_name"
+                        android:gravity="center"
+                        android:padding="@dimen/_5dp"
+                        android:src="@drawable/ic_send_black_24dp"
+                        android:tint="@color/grey1" />
                 </RelativeLayout>
             </LinearLayout>
         </RelativeLayout>

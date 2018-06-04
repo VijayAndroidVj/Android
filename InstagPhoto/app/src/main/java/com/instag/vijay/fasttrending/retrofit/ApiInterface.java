@@ -98,7 +98,18 @@ public interface ApiInterface {
             @Part MultipartBody.Part category,
             @Part MultipartBody.Part scategory,
             @Part MultipartBody.Part key,
-            @Part MultipartBody.Part email
+            @Part MultipartBody.Part email,
+            @Part MultipartBody.Part update
+    );
+
+    @Multipart
+    @POST("add_group.php")
+    Call<EventResponse> add_group(
+            @Part MultipartBody.Part title,
+            @Part MultipartBody.Part uploaded_file,
+            @Part MultipartBody.Part type,
+            @Part MultipartBody.Part email,
+            @Part MultipartBody.Part update
     );
 
 

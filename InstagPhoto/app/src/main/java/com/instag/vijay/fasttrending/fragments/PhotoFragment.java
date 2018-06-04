@@ -10,11 +10,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.media.ExifInterface;
 import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
@@ -53,7 +48,6 @@ import org.apache.commons.io.IOUtils;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -81,6 +75,7 @@ public class PhotoFragment extends Fragment {
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int PICK_VIDEO_REQUEST = 2;
     public static final int UPLOAD = 3;
+    public static final int CROP = 44;
     private Uri selectedImageUri;
     private static PhotoFragment photoFragment;
 
@@ -301,8 +296,10 @@ public class PhotoFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         try {
-            if (requestCode == REQUEST_CHOOSE_PHOTO && resultCode == Activity.RESULT_OK) {
-                startActivity(CropActivity.callingIntent(getContext(), data.getData()));
+            if (requestCode == CROP) {
+                getActivity().finish();
+            } else if (requestCode == REQUEST_CHOOSE_PHOTO && resultCode == Activity.RESULT_OK) {
+                startActivityForResult(CropActivity.callingIntent(getContext(), data.getData()), CROP);
             } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 if (resultCode == RESULT_OK) {
@@ -335,7 +332,7 @@ public class PhotoFragment extends Fragment {
 //            intent.putExtra("path", destination.getAbsolutePath());
 //            startActivityForResult(intent, UPLOAD);
 
-                startActivity(CropActivity.callingIntent(getContext(), selectedImageUri));
+                startActivityForResult(CropActivity.callingIntent(getContext(), selectedImageUri), CROP);
             } else if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
 
                 Uri uri = data.getData();
@@ -376,6 +373,7 @@ public class PhotoFragment extends Fragment {
                 }
 
             } else if (requestCode == UPLOAD && resultCode == RESULT_OK && data != null) {
+                getActivity().finish();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -527,7 +525,8 @@ public class PhotoFragment extends Fragment {
                             if (sigInResponse.getResult().equals("success")) {
                                 if (!TextUtils.isEmpty(sigInResponse.getMessage()))
                                     Toast.makeText(activity, sigInResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                                MainActivity.mainActivity.refresh();
+                                getActivity().finish();
+                                MainActivity.mainActivity.refresh(0);
                             } else {
                                 Toast.makeText(activity, sigInResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }

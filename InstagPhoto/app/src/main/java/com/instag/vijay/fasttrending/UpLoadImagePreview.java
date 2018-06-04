@@ -3,8 +3,6 @@ package com.instag.vijay.fasttrending;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -17,8 +15,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
 
@@ -74,19 +74,22 @@ public class UpLoadImagePreview extends AppCompatActivity {
         View view = LayoutInflater.from(this).inflate(R.layout.ulpoadactionbar, null);
         uploadbtn = view.findViewById(R.id.iv_actionbar_noti);
 
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setCustomView(view, params);
         actionBar.setElevation(0);
 
-        ScaleImageView imageView = findViewById(R.id.imageDialog);
+        ImageView imageView = findViewById(R.id.imageDialog);
         edtDes = findViewById(R.id.edtDescription);
         if (getIntent() != null && getIntent().getExtras() != null) {
             uploadFile = getIntent().getStringExtra("path");
             if (!TextUtils.isEmpty(uploadFile)) {
-                Bitmap bitmap = BitmapFactory.decodeFile(uploadFile);
-                if (bitmap != null)
-                    imageView.setImageBitmap(bitmap);
+                Glide.with(activity)
+                        .load(uploadFile)
+                        .asBitmap()
+                        .into(imageView);
+//                Bitmap bitmap = BitmapFactory.decodeFile(uploadFile);
+//                if (bitmap != null)
+//                    imageView.setImageBitmap(bitmap);
             }
         }
 
@@ -176,7 +179,6 @@ public class UpLoadImagePreview extends AppCompatActivity {
                                     Toast.makeText(activity, sigInResponse.getMessage(), Toast.LENGTH_SHORT).show();
 
                                 MainActivity.dismissProgress();
-                                MainActivity.mainActivity.refresh();
                                 Intent intent = new Intent();
                                 setResult(Activity.RESULT_OK, intent);
                                 finish();

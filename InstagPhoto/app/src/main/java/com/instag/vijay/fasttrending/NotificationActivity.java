@@ -62,10 +62,10 @@ public class NotificationActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDefaultDisplayHomeAsUpEnabled(true);
 
-        viewInfo = (TextView) findViewById(R.id.txtContactInfo);
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerviewContact);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar_cyclic);
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        viewInfo = findViewById(R.id.txtContactInfo);
+        recyclerView = findViewById(R.id.recyclerviewContact);
+        progressBar = findViewById(R.id.progressBar_cyclic);
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

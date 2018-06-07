@@ -148,7 +148,7 @@ public class FriendsGridAdapter extends BaseAdapter {
             String followermail = userModel.getEmail();
 
             if (!TextUtils.isEmpty(followermail)) {
-                Call<EventResponse> call = service.add_follow(usermail, followermail, !userModel.isFollow());
+                Call<EventResponse> call = service.add_follow(usermail, followermail, !userModel.isFollow(), "profile", "");
                 call.enqueue(new Callback<EventResponse>() {
                     @Override
                     public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {

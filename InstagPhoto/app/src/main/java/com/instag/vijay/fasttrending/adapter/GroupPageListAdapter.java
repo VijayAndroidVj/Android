@@ -27,10 +27,17 @@ public class GroupPageListAdapter extends ArrayAdapter<BusinessPageModel> {
     }
 
     private Context context;
+    private boolean isGroup;
 
     public GroupPageListAdapter(Context context, ArrayList<BusinessPageModel> users) {
         super(context, R.layout.page_list_item, users);
         this.context = context;
+    }
+
+    public GroupPageListAdapter(Context context, ArrayList<BusinessPageModel> users, boolean isGroup) {
+        super(context, R.layout.page_list_item, users);
+        this.context = context;
+        this.isGroup = isGroup;
     }
 
     @Override
@@ -56,10 +63,17 @@ public class GroupPageListAdapter extends ArrayAdapter<BusinessPageModel> {
         // into the template view.
         viewHolder.name.setText(businessPageModel.getTitle());
         if (businessPageModel.getImage() != null && !businessPageModel.getImage().isEmpty()) {
+            viewHolder.ivProfileGroupListItem.setBackgroundResource(0);
             Glide.with(context).load("http://www.xooads.com/FEELOUTADMIN/img/upload/" + businessPageModel.getImage()).centerCrop()
                     .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(viewHolder.ivProfileGroupListItem);
+        } else {
+            if (isGroup) {
+                viewHolder.ivProfileGroupListItem.setBackgroundResource(R.drawable.ic_group_black_24dp);
+            } else {
+                viewHolder.ivProfileGroupListItem.setBackgroundResource(R.drawable.ic_flag_black_24dp);
+            }
         }
         // Return the completed view to render on screen
         return convertView;

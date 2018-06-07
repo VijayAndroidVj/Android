@@ -482,7 +482,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                                 txtProfileGroupsLable.setVisibility(View.VISIBLE);
                             } else {
                                 txtProfileGroupsLable.setVisibility(View.GONE);
-                                GroupPageListAdapter arrayAdapter = new GroupPageListAdapter(activity, gList);
+                                GroupPageListAdapter arrayAdapter = new GroupPageListAdapter(activity, gList, true);
                                 listview_Groups.setAdapter(arrayAdapter);
                                 setListViewHeightBasedOnChildren(listview_Groups);
                                 listview_Groups.setOnItemClickListener(new AdapterView.OnItemClickListener() {

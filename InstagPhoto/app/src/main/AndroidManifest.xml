@@ -125,11 +125,11 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name="com.instag.vijay.fasttrending.activity.CreateBusinessPageActivity"
-            android:theme="@style/AppTheme1"
+            android:theme="@style/AppTheme2"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name="com.instag.vijay.fasttrending.activity.CreateGroupActivity"
-            android:theme="@style/AppTheme1"
+            android:theme="@style/AppTheme2"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name="com.instag.vijay.fasttrending.UpLoadImagePreview"

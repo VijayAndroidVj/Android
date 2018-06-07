@@ -7,9 +7,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -62,12 +65,42 @@ public class CreateGroupActivity extends AppCompatActivity {
     private MaterialSpinner sp_add_group_type;
     private String imagePath;
     private ArrayList<CategoryMain> categoryMains;
+    private boolean view;
+    TextView btnCreate;
+    TextView tvTitleGroup;
+
+    PreferenceUtil preferenceUtil;
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private ActionBar actionBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_group);
         activity = this;
+        preferenceUtil = new PreferenceUtil(activity);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle("Create Group");
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setElevation(0);
+
+        tvTitleGroup = findViewById(R.id.tvTitleGroup);
         input_business_title = findViewById(R.id.input_business_title);
         iv_business_image = findViewById(R.id.iv_business_image);
         sp_add_group_type = findViewById(R.id.sp_add_group_type);
@@ -75,21 +108,23 @@ public class CreateGroupActivity extends AppCompatActivity {
         iv_business_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<String> pendingPermissions = PermissionCheck.checkPermission(activity, PermissionCheck.getAllPermissions());
-                if (pendingPermissions.size() > 0) {
-                    PermissionCheck.requestPermission(activity, pendingPermissions, 301);
-                    return;
+                if (businessPageModel.getEmail() != null && businessPageModel.getEmail().equalsIgnoreCase(preferenceUtil.getUserMailId())) {
+                    ArrayList<String> pendingPermissions = PermissionCheck.checkPermission(activity, PermissionCheck.getAllPermissions());
+                    if (pendingPermissions.size() > 0) {
+                        PermissionCheck.requestPermission(activity, pendingPermissions, 301);
+                        return;
+                    }
+                    CropImage.activity()
+                            .setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(4, 4)
+                            .start(activity);
                 }
-                CropImage.activity()
-                        .setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(4, 4)
-                        .start(activity);
+
             }
         });
 
-        TextView btnCreate = findViewById(R.id.btnGroupCreate);
+        btnCreate = findViewById(R.id.btnGroupCreate);
+
         TextView btnCancel = findViewById(R.id.btnGroupCancel);
-
-
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,7 +142,9 @@ public class CreateGroupActivity extends AppCompatActivity {
 
             }
         });
-        btnCancel.setOnClickListener(new View.OnClickListener() {
+        btnCancel.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
                 if (businessPageModel != null) {
@@ -126,26 +163,48 @@ public class CreateGroupActivity extends AppCompatActivity {
 
         if (getIntent() != null) {
             businessPageModel = getIntent().getParcelableExtra("model");
+            view = false;
             if (businessPageModel != null) {
                 PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
                 if (businessPageModel.getEmail() != null && businessPageModel.getEmail().equalsIgnoreCase(preferenceUtil.getUserMailId())) {
                     btnCreate.setText("Update");
                     btnCancel.setText("Delete");
+                    actionBar.setTitle("Update Group");
+                    tvTitleGroup.setText("Update Group");
                 } else {
-                    btnCreate.setText("Follow");
+                    view = true;
+                    actionBar.setTitle("Group Details");
+                    tvTitleGroup.setText("Group Details");
+                    if (businessPageModel.isFollow()) {
+                        btnCreate.setText("UnFollow");
+                    } else
+                        btnCreate.setText("Follow");
                     btnCancel.setText("Cancel");
+                    input_business_title.setEnabled(false);
+
+                    ArrayList<String> list = new ArrayList<>();
+                    list.add(businessPageModel.getCategory());
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    sp_add_group_type.setAdapter(adapter);
+                    sp_add_group_type.setPaddingSafe(0, 0, 0, 0);
+                    sp_add_group_type.setSelection(1);
+                    sp_add_group_type.setEnabled(false);
+
                 }
 
                 input_business_title.setText(businessPageModel.getTitle());
                 if (businessPageModel.getImage() != null) {
                     Glide.with(activity)
-                            .load(businessPageModel.getImage())
+                            .load("http://www.xooads.com/FEELOUTADMIN/img/upload/" + businessPageModel.getImage())
                             .asBitmap()
                             .into(iv_business_image);
                 }
             }
         }
-        setCategoryList();
+
+        if (!view)
+            setCategoryList();
 
         //getBusinessCategory();
     }
@@ -244,6 +303,7 @@ public class CreateGroupActivity extends AppCompatActivity {
                 String categoryMain = list.get(i);
                 if (businessPageModel != null && businessPageModel.getCategory() != null && businessPageModel.getCategory().equalsIgnoreCase(categoryMain)) {
                     sPos = i;
+
                 }
             }
 

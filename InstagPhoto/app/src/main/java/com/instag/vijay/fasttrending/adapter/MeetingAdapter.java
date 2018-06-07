@@ -24,6 +24,9 @@ import com.instag.vijay.fasttrending.FavModel;
 import com.instag.vijay.fasttrending.PreferenceUtil;
 import com.instag.vijay.fasttrending.ProfileView;
 import com.instag.vijay.fasttrending.R;
+import com.instag.vijay.fasttrending.activity.CreateBusinessPageActivity;
+import com.instag.vijay.fasttrending.activity.CreateGroupActivity;
+import com.instag.vijay.fasttrending.model.BusinessPageModel;
 import com.instag.vijay.fasttrending.retrofit.ApiClient;
 import com.instag.vijay.fasttrending.retrofit.ApiInterface;
 
@@ -58,9 +61,55 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
                     if (TextUtils.isEmpty(followermail)) {
                         followermail = userModel.getEmail();
                     }
-                    Intent intent = new Intent(activity, ProfileView.class);
-                    intent.putExtra("profileId", followermail);
-                    activity.startActivity(intent);
+
+                    if (userModel.getType() == null) {
+                        Intent intent = new Intent(activity, ProfileView.class);
+                        intent.putExtra("profileId", followermail);
+                        activity.startActivity(intent);
+                        return;
+                    }
+                    switch (userModel.getType()) {
+                        case "profile":
+                            Intent intent = new Intent(activity, ProfileView.class);
+                            intent.putExtra("profileId", followermail);
+                            activity.startActivity(intent);
+                            break;
+                        case "page":
+                            BusinessPageModel businessPageModel = new BusinessPageModel();
+                            businessPageModel.setTitle(userModel.getName());
+                            businessPageModel.setEmail(userModel.getEmail());
+                            businessPageModel.setCategory(userModel.getCategory());
+                            businessPageModel.setSubcategory(userModel.getSubcategory());
+                            businessPageModel.setImage(userModel.getProfile_image());
+                            businessPageModel.setFollow(userModel.isFollowing());
+                            businessPageModel.setShop_id(userModel.getShop_id());
+                            Intent in = new Intent(activity, CreateBusinessPageActivity.class);
+                            in.putExtra("model", businessPageModel);
+                            in.putExtra("view", true);
+                            activity.startActivity(in);
+                            break;
+                        case "group":
+                            businessPageModel = new BusinessPageModel();
+                            businessPageModel.setTitle(userModel.getName());
+                            businessPageModel.setEmail(userModel.getEmail());
+                            businessPageModel.setCategory(userModel.getCategory());
+                            businessPageModel.setSubcategory(userModel.getSubcategory());
+                            businessPageModel.setImage(userModel.getProfile_image());
+                            businessPageModel.setFollow(userModel.isFollowing());
+                            businessPageModel.setShop_id(userModel.getShop_id());
+                            in = new Intent(activity, CreateGroupActivity.class);
+                            in.putExtra("model", businessPageModel);
+                            in.putExtra("view", true);
+                            activity.startActivity(in);
+                            break;
+                        default:
+                            intent = new Intent(activity, ProfileView.class);
+                            intent.putExtra("profileId", followermail);
+                            activity.startActivity(intent);
+                            break;
+                    }
+
+
                 }
                 break;
         }
@@ -102,8 +151,11 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
             if (TextUtils.isEmpty(followermail)) {
                 followermail = meetingItem.getEmail();
             }
+            if (TextUtils.isEmpty(meetingItem.getType())) {
+                meetingItem.setType("profile");
+            }
             if (!TextUtils.isEmpty(followermail)) {
-                Call<EventResponse> call = service.add_follow(usermail, followermail, !meetingItem.isFollowing());
+                Call<EventResponse> call = service.add_follow(usermail, followermail, !meetingItem.isFollowing(), meetingItem.getType(), meetingItem.getShop_id());
                 call.enqueue(new Callback<EventResponse>() {
                     @Override
                     public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
@@ -182,37 +234,98 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
 //        holder.txtMeetingName.setTypeface(font);
         holder.rlParentMeeting.setOnClickListener(this);
         holder.rlParentMeeting.setTag(userModel);
-        if (TextUtils.isEmpty(userModel.getUserName())) {
-            if (!TextUtils.isEmpty(userModel.getWhom()) && userModel.getWhom().contains("@")) {
-                String[] name = userModel.getWhom().split("@");
-                holder.txtMeetingName.setText(name[0]);
+        if (TextUtils.isEmpty(userModel.getType())) {
+            if (TextUtils.isEmpty(userModel.getUserName())) {
+                if (!TextUtils.isEmpty(userModel.getWhom()) && userModel.getWhom().contains("@")) {
+                    String[] name = userModel.getWhom().split("@");
+                    holder.txtMeetingName.setText(name[0]);
+                } else {
+                    holder.txtMeetingName.setText("");
+                }
+
             } else {
-                holder.txtMeetingName.setText("");
+                holder.txtMeetingName.setText(userModel.getUserName());
+            }
+
+            if (preferenceUtil.getUserMailId().equalsIgnoreCase(userModel.getWho()) && preferenceUtil.getUserMailId().equalsIgnoreCase(userModel.getWhom())) {
+                holder.btnMeetingJoin.setVisibility(View.GONE);
+            } else {
+                holder.btnMeetingJoin.setVisibility(View.VISIBLE);
+                holder.btnMeetingJoin.setTypeface(font);
+                if (userModel.isFollowing()) {
+                    holder.btnMeetingJoin.setText(activity.getString(R.string.unfollow));
+                } else {
+                    holder.btnMeetingJoin.setText(activity.getString(R.string.follow));
+                }
+            }
+
+            if (userModel.getProfile_image() != null && !userModel.getProfile_image().isEmpty()) {
+
+                Glide.with(activity).load(userModel.getProfile_image()).asBitmap().centerCrop()
+                        .thumbnail(0.5f)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(holder.ivProfile);
             }
 
         } else {
-            holder.txtMeetingName.setText(userModel.getUserName());
-        }
-
-        if (preferenceUtil.getUserMailId().equalsIgnoreCase(userModel.getWho()) && preferenceUtil.getUserMailId().equalsIgnoreCase(userModel.getWhom())) {
-            holder.btnMeetingJoin.setVisibility(View.GONE);
-        } else {
-            holder.btnMeetingJoin.setVisibility(View.VISIBLE);
-            holder.btnMeetingJoin.setTypeface(font);
-            if (userModel.isFollowing()) {
-                holder.btnMeetingJoin.setText(activity.getString(R.string.unfollow));
+            holder.txtMeetingName.setText(userModel.getName());
+            if (preferenceUtil.getUserMailId().equalsIgnoreCase(userModel.getEmail())) {
+                holder.btnMeetingJoin.setVisibility(View.GONE);
             } else {
-                holder.btnMeetingJoin.setText(activity.getString(R.string.follow));
+                holder.btnMeetingJoin.setVisibility(View.VISIBLE);
+                holder.btnMeetingJoin.setTypeface(font);
+                if (userModel.isFollowing()) {
+                    holder.btnMeetingJoin.setText(activity.getString(R.string.unfollow));
+                } else {
+                    holder.btnMeetingJoin.setText(activity.getString(R.string.follow));
+                }
             }
+            holder.ivProfile.setBackgroundResource(0);
+            switch (userModel.getType()) {
+                case "profile":
+                    if (userModel.getProfile_image() != null && !userModel.getProfile_image().isEmpty()) {
+
+                        Glide.with(activity).load(userModel.getProfile_image()).asBitmap().centerCrop()
+                                .thumbnail(0.5f)
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .into(holder.ivProfile);
+                    } else {
+                        holder.ivProfile.setBackgroundResource(R.drawable.ic_person_black);
+                    }
+                    break;
+                case "page":
+                    if (userModel.getProfile_image() != null && !userModel.getProfile_image().isEmpty()) {
+
+                        Glide.with(activity).load("http://www.xooads.com/FEELOUTADMIN/img/upload/" + userModel.getProfile_image()).asBitmap().centerCrop()
+                                .thumbnail(0.5f)
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .into(holder.ivProfile);
+                    } else {
+                        holder.ivProfile.setBackgroundResource(R.drawable.ic_flag_black_24dp);
+                    }
+                    break;
+                case "group":
+                    if (userModel.getProfile_image() != null && !userModel.getProfile_image().isEmpty()) {
+
+                        Glide.with(activity).load("http://www.xooads.com/FEELOUTADMIN/img/upload/" + userModel.getProfile_image()).asBitmap().centerCrop()
+                                .thumbnail(0.5f)
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .into(holder.ivProfile);
+                    } /*else {
+                        Glide.with(activity).load(R.drawable.ic_group_black_24dp).asBitmap().centerCrop()
+                                .thumbnail(0.5f)
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .into(holder.ivProfile);
+                    }*/
+                    holder.ivProfile.setBackgroundResource(R.drawable.ic_group_black_24dp);
+                    holder.btnMeetingJoin.setVisibility(View.GONE);
+                    break;
+            }
+
+
         }
 
-        if (userModel.getProfile_image() != null && !userModel.getProfile_image().isEmpty()) {
 
-            Glide.with(activity).load(userModel.getProfile_image()).asBitmap().centerCrop()
-                    .thumbnail(0.5f)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(holder.ivProfile);
-        }
         holder.btnMeetingJoin.setTag(userModel);
         holder.btnMeetingJoin.setOnClickListener(this);
 

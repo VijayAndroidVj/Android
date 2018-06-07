@@ -67,7 +67,7 @@ public interface ApiInterface {
 
     @POST("add_follow.php")
     @FormUrlEncoded
-    Call<EventResponse> add_follow(@Field("useremail") String useremail, @Field("emailtofollow") String emailtofollow, @Field("follow") boolean follow);
+    Call<EventResponse> add_follow(@Field("useremail") String useremail, @Field("emailtofollow") String emailtofollow, @Field("follow") boolean follow, @Field("type") String type, @Field("shop_id") String shop_id);
 
     @POST("follow_followers.php")
     @FormUrlEncoded

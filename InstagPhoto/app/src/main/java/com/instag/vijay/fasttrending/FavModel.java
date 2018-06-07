@@ -29,6 +29,63 @@ public class FavModel {
     @SerializedName("following")
     private boolean following;
 
+    @SerializedName("type")
+    private String type;
+
+    @SerializedName("shop_id")
+    private String shop_id;
+
+    @SerializedName("category")
+    private String category;
+
+    @SerializedName("subcategory")
+    private String subcategory;
+
+
+    @SerializedName("group_type")
+
+    private String group_type;
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getSubcategory() {
+        return subcategory;
+    }
+
+    public void setSubcategory(String subcategory) {
+        this.subcategory = subcategory;
+    }
+
+    public String getGroup_type() {
+        return group_type;
+    }
+
+    public void setGroup_type(String group_type) {
+        this.group_type = group_type;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getShop_id() {
+        return shop_id;
+    }
+
+    public void setShop_id(String shop_id) {
+        this.shop_id = shop_id;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public String getProfile_image() {
         return profile_image;
     }

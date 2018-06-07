@@ -414,8 +414,8 @@ public class PostView extends AppCompatActivity implements View.OnClickListener 
 
     private void showMeetingtAlert(Activity activity, String title, String message, final Posts post) {
         new SweetAlertDialog(activity, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
-                .setTitleText("Delete Comment")
-                .setContentText("Are you sure want to delete this comment?")
+                .setTitleText(title)
+                .setContentText(message)
 //                .setCustomImage(R.drawable.app_logo_back)
                 .setCancelText("No").setConfirmText("Yes")
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {

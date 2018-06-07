@@ -7,7 +7,7 @@
         icon="@drawable/ic_search_black"
         id="@+id/tab_search" />
     <tab
-        icon="@drawable/youtube"
+        icon="@drawable/ic_ondemand_video_black_24dp"
         id="@+id/tab_video" />
     <tab
         icon="@drawable/ic_chat_black_24dp"

@@ -57,7 +57,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             String followermail = meetingItem.getFrom_email();
 
             if (!TextUtils.isEmpty(followermail)) {
-                Call<EventResponse> call = service.add_follow(usermail, followermail, !meetingItem.getFollowing());
+                Call<EventResponse> call = service.add_follow(usermail, followermail, !meetingItem.getFollowing(), "profile","");
                 call.enqueue(new Callback<EventResponse>() {
                     @Override
                     public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {

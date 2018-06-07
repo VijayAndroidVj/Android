@@ -26,12 +26,24 @@ public class BusinessPageModel implements Parcelable {
     @SerializedName("subcategory")
     private String subcategory;
 
+    @SerializedName("shop_id")
+    private String shop_id;
+
+    @SerializedName("follow")
+    private boolean follow;
+
+    public BusinessPageModel() {
+
+    }
+
     protected BusinessPageModel(Parcel in) {
         title = in.readString();
         email = in.readString();
         image = in.readString();
         category = in.readString();
         subcategory = in.readString();
+        shop_id = in.readString();
+        follow = in.readByte() != 0;
     }
 
     public static final Creator<BusinessPageModel> CREATOR = new Creator<BusinessPageModel>() {
@@ -86,6 +98,22 @@ public class BusinessPageModel implements Parcelable {
         this.email = email;
     }
 
+    public boolean isFollow() {
+        return follow;
+    }
+
+    public void setFollow(boolean follow) {
+        this.follow = follow;
+    }
+
+    public String getShop_id() {
+        return shop_id;
+    }
+
+    public void setShop_id(String shop_id) {
+        this.shop_id = shop_id;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -98,5 +126,7 @@ public class BusinessPageModel implements Parcelable {
         dest.writeString(image);
         dest.writeString(category);
         dest.writeString(subcategory);
+        dest.writeString(shop_id);
+        dest.writeByte((byte) (follow ? 1 : 0));
     }
 }

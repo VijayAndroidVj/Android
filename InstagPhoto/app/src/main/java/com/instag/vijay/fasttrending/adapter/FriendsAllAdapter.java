@@ -47,7 +47,7 @@ public class FriendsAllAdapter extends RecyclerView.Adapter<FriendsAllAdapter.My
             String followermail = meetingItem.getEmail();
 
             if (!TextUtils.isEmpty(followermail)) {
-                Call<EventResponse> call = service.add_follow(usermail, followermail, !meetingItem.isFollow());
+                Call<EventResponse> call = service.add_follow(usermail, followermail, !meetingItem.isFollow(), "profile","");
                 call.enqueue(new Callback<EventResponse>() {
                     @Override
                     public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {

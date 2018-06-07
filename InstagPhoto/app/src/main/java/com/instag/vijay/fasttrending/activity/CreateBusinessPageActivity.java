@@ -7,9 +7,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -66,6 +69,22 @@ public class CreateBusinessPageActivity extends AppCompatActivity {
     private ArrayList<CategoryMain> categoryMains = new ArrayList<>();
     private ArrayList<SubCategory> subCategoryMains = new ArrayList<>();
     PreferenceUtil preferenceUtil;
+    public boolean view;
+    TextView btnCreate;
+    TextView btnCancel;
+    TextView tvTitleBPage;
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private ActionBar actionBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,6 +92,16 @@ public class CreateBusinessPageActivity extends AppCompatActivity {
         setContentView(R.layout.create_business_page);
         activity = this;
         preferenceUtil = new PreferenceUtil(activity);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle("Create Business Page");
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setElevation(0);
+
         input_business_title = findViewById(R.id.input_business_title);
         iv_business_image = findViewById(R.id.iv_business_image);
         sp_add_business_category = findViewById(R.id.sp_add_business_category);
@@ -82,28 +111,32 @@ public class CreateBusinessPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                ArrayList<String> pendingPermissions = PermissionCheck.checkPermission(activity, PermissionCheck.getAllPermissions());
-                if (pendingPermissions.size() > 0) {
-                    PermissionCheck.requestPermission(activity, pendingPermissions, 301);
-                    return;
+                if (businessPageModel == null || (businessPageModel.getEmail() != null && businessPageModel.getEmail().equalsIgnoreCase(preferenceUtil.getUserMailId()))) {
+                    ArrayList<String> pendingPermissions = PermissionCheck.checkPermission(activity, PermissionCheck.getAllPermissions());
+                    if (pendingPermissions.size() > 0) {
+                        PermissionCheck.requestPermission(activity, pendingPermissions, 301);
+                        return;
+                    }
+                    CropImage.activity()
+                            .setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(4, 4)
+                            .start(activity);
                 }
-                CropImage.activity()
-                        .setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(4, 4)
-                        .start(activity);
+
             }
         });
-        TextView btnCreate = findViewById(R.id.btnCreate);
-        TextView btnCancel = findViewById(R.id.btnCancel);
+        btnCreate = findViewById(R.id.btnCreate);
+        btnCancel = findViewById(R.id.btnCancel);
+        tvTitleBPage = findViewById(R.id.tvTitleBPage);
 
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (businessPageModel != null) {
                     if (businessPageModel.getEmail() != null && businessPageModel.getEmail().equalsIgnoreCase(preferenceUtil.getUserMailId())) {
                         createBusinessPage();
                     } else {
-                        Toast.makeText(activity, "Followed", Toast.LENGTH_SHORT).show();
-                        onBackPressed();
+                        followUser(businessPageModel);
                     }
                 } else
                     createBusinessPage();
@@ -124,29 +157,106 @@ public class CreateBusinessPageActivity extends AppCompatActivity {
 
             }
         });
-        setCategoryList();
-        getBusinessCategory();
-        setSubCategoryList();
+
+
         if (getIntent() != null) {
             businessPageModel = getIntent().getParcelableExtra("model");
+            view = false;
             if (businessPageModel != null) {
                 if (businessPageModel.getEmail() != null && businessPageModel.getEmail().equalsIgnoreCase(preferenceUtil.getUserMailId())) {
                     btnCreate.setText("Update");
                     btnCancel.setText("Delete");
+                    tvTitleBPage.setText("Update Business Page");
+                    actionBar.setTitle("Update Business Page");
                 } else {
-                    btnCreate.setText("Follow");
+                    view = true;
+                    actionBar.setTitle("Business Page");
+                    tvTitleBPage.setText("Business Page");
+                    input_business_title.setEnabled(false);
+                    if (businessPageModel.isFollow()) {
+                        btnCreate.setText("UnFollow");
+                    } else
+                        btnCreate.setText("Follow");
                     btnCancel.setText("Cancel");
+
+                    ArrayList<String> list = new ArrayList<>();
+                    list.add(businessPageModel.getCategory());
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    sp_add_business_category.setAdapter(adapter);
+                    sp_add_business_category.setPaddingSafe(0, 0, 0, 0);
+                    sp_add_business_category.setSelection(1);
+                    sp_add_business_category.setEnabled(false);
+
+                    ArrayList<String> list1 = new ArrayList<>();
+                    list1.add(businessPageModel.getSubcategory());
+                    ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list1);
+                    adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    sp_add_business_sub_category.setAdapter(adapter1);
+                    sp_add_business_sub_category.setPaddingSafe(0, 0, 0, 0);
+                    sp_add_business_sub_category.setSelection(1);
+                    sp_add_business_sub_category.setEnabled(false);
                 }
                 input_business_title.setText(businessPageModel.getTitle());
+
                 if (businessPageModel.getImage() != null) {
                     Glide.with(activity)
-                            .load(businessPageModel.getImage())
+                            .load("http://www.xooads.com/FEELOUTADMIN/img/upload/" + businessPageModel.getImage())
                             .asBitmap()
                             .into(iv_business_image);
                 }
             }
         }
+
+        if (!view) {
+            setCategoryList();
+            getBusinessCategory();
+            setSubCategoryList();
+        }
     }
+
+    private void followUser(final BusinessPageModel meetingItem) {
+        if (CommonUtil.isNetworkAvailable(activity)) {
+            ApiInterface service =
+                    ApiClient.getClient().create(ApiInterface.class);
+            PreferenceUtil preferenceUtil = new PreferenceUtil(activity);
+
+            String usermail = preferenceUtil.getUserMailId();
+
+            Call<EventResponse> call = service.add_follow(usermail, "", !meetingItem.isFollow(), "page", meetingItem.getShop_id());
+            call.enqueue(new Callback<EventResponse>() {
+                @Override
+                public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
+                    EventResponse patientDetails = response.body();
+                    Log.i("patientDetails", response.toString());
+                    if (patientDetails != null && patientDetails.getResult().equalsIgnoreCase("success")) {
+                        meetingItem.setFollow(!meetingItem.isFollow());
+                        if (businessPageModel.isFollow()) {
+                            btnCreate.setText("UnFollow");
+                        } else
+                            btnCreate.setText("Follow");
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<EventResponse> call, Throwable t) {
+                    // Log error here since request failed
+                    String message = t.toString();
+                    if (message.contains("Failed to")) {
+                        message = "Failed to Connect";
+                    } else {
+                        message = "Failed";
+                    }
+                    Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        } else {
+            Toast.makeText(activity, "Check your internet connection!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     private void deleteGroupBusiness() {
         if (CommonUtil.isNetworkAvailable(activity)) {
@@ -278,6 +388,8 @@ public class CreateBusinessPageActivity extends AppCompatActivity {
                 list.add(categoryMain.getName());
                 if (businessPageModel != null && businessPageModel.getCategory() != null && businessPageModel.getCategory().equalsIgnoreCase(categoryMain.getName())) {
                     sPos = i;
+
+                    break;
                 }
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
@@ -359,6 +471,9 @@ public class CreateBusinessPageActivity extends AppCompatActivity {
                 list.add(categoryMain.getCategory());
                 if (businessPageModel != null && businessPageModel.getSubcategory() != null && businessPageModel.getSubcategory().equalsIgnoreCase(categoryMain.getCategory())) {
                     sPos = i;
+                    if (!(businessPageModel.getEmail() != null && businessPageModel.getEmail().equalsIgnoreCase(preferenceUtil.getUserMailId()))) {
+                        sp_add_business_sub_category.setEnabled(false);
+                    }
                 }
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
